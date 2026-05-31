@@ -386,6 +386,62 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
   </div>
 
+  <!-- 1.1b DBMS Characteristics, Schema vs Instance, DBMS Languages -->
+  <div class="topic" id="t-1-1b">
+    <h3>DBMS Characteristics, Schema vs Instance &amp; DBMS Languages</h3>
+
+    <h4>Key Characteristics of a DBMS</h4>
+    <div class="box def">
+      <span class="label">Definition</span>
+      A DBMS is distinguished from simple file storage by five core properties that together provide <mark>data independence</mark>, integrity, and concurrent access.
+    </div>
+    <ul>
+      <li><b><mark>Self-describing nature</mark>:</b> The DBMS stores a complete description of its own structure in an internal <mark>catalogue (data dictionary)</mark>. Schema definitions, constraints, and user privileges live <em>inside</em> the database — unlike file systems, where metadata is buried in application code.</li>
+      <li><b><mark>Insulation between programs and data</mark> (data abstraction):</b> The physical storage structure can change (e.g. adding an index, changing a file layout) without requiring any change to application programs. This is the property that enables physical data independence.</li>
+      <li><b>Support for multiple views:</b> Different users can see different subsets or computed views of the same underlying data. A payroll clerk sees salary rows; an auditor sees aggregate totals — both from the same tables.</li>
+      <li><b><mark>Sharing of data &amp; multiuser transaction processing</mark>:</b> Concurrent access is managed via <mark>ACID</mark> transaction guarantees — Atomicity, Consistency, Isolation, Durability — so simultaneous updates never corrupt each other.</li>
+      <li><b>Data integrity enforcement:</b> Constraints (PRIMARY KEY, FOREIGN KEY, CHECK, UNIQUE, NOT NULL) are declared once at the schema level and enforced by the engine for every operation — not scattered across dozens of application programs.</li>
+    </ul>
+
+    <h4>Schema vs Instance</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Concept</th><th>Definition</th><th>Changes?</th><th>OOP Analogy</th></tr>
+        <tr><td><b><mark>Schema</mark></b></td><td>Overall logical design/structure of the database (table names, column types, constraints). Defined once by the DBA.</td><td>Rarely — only via DDL (ALTER, CREATE)</td><td>Like a <b>Class</b> definition</td></tr>
+        <tr><td><b><mark>Instance</mark></b> (Database State)</td><td>The actual data stored at a particular moment in time. Every INSERT/UPDATE/DELETE changes the instance.</td><td>Constantly</td><td>Like an <b>Object</b> (instantiation of the class)</td></tr>
+        <tr><td><b>Sub-schema</b></td><td>An external schema defining one user's restricted view of the conceptual schema.</td><td>Defined per user/role</td><td>Like a <b>partial interface</b></td></tr>
+      </table>
+    </div>
+    <div class="box tip">
+      <span class="label">Exam tip</span>
+      "What is the difference between schema and instance?" is a classic 2M Part-A short. One sentence each + the OOP analogy earns full marks.
+    </div>
+
+    <h4>DBMS Languages</h4>
+    <p>Every DBMS operation maps to one of four standard SQL sublanguages:</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Abbreviation</th><th>Full Form</th><th>Purpose</th><th>Key Commands</th><th>Quick Example</th></tr>
+        <tr><td><b><mark>DDL</mark></b></td><td>Data Definition Language</td><td>Define and modify the schema structure</td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td><td><code>CREATE TABLE Student(sid INT PRIMARY KEY, name VARCHAR(50));</code></td></tr>
+        <tr><td><b><mark>DML</mark></b></td><td>Data Manipulation Language</td><td>Read and write data (the day-to-day operations)</td><td>SELECT, INSERT, UPDATE, DELETE</td><td><code>SELECT name FROM Student WHERE sid = 101;</code></td></tr>
+        <tr><td><b><mark>DCL</mark></b></td><td>Data Control Language</td><td>Manage access rights and privileges</td><td>GRANT, REVOKE</td><td><code>GRANT SELECT ON Student TO user1;</code></td></tr>
+        <tr><td><b><mark>TCL</mark></b></td><td>Transaction Control Language</td><td>Manage transaction boundaries and savepoints</td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td><code>ROLLBACK TO SAVEPOINT sp1;</code></td></tr>
+      </table>
+    </div>
+    <div class="box tip">
+      <span class="label">DDL auto-commits — exam trap</span>
+      DDL statements (CREATE, DROP, ALTER, TRUNCATE) <mark>implicitly commit</mark> any open transaction and cannot themselves be rolled back. DML statements (INSERT, UPDATE, DELETE) <em>inside</em> a transaction CAN be rolled back before COMMIT is issued.
+    </div>
+    <div class="box why">
+      <span class="label">ANSI/SPARC extension</span>
+      In the formal ANSI/SPARC model two further languages exist: <b>VDL</b> (View Definition Language) — defines external-level views mapping to the conceptual schema — and <b>SDL</b> (Storage Definition Language) — defines the internal/physical storage structures. In practice, modern SQL engines fold VDL into DDL (CREATE VIEW) and SDL into proprietary storage parameters.
+    </div>
+    <div class="box prof">
+      <span class="label">Professor Pattern</span>
+      "List and explain DBMS languages" appears in Dec-25 Q1 and BCA May-24. A 5M answer: one paragraph intro + the 4-row table + the DDL-auto-commit tip = complete.
+    </div>
+  </div>
+
   <!-- 1.2 Data Independence -->
   <div class="topic" id="t-1-2">
     <h3>Three-Schema Architecture &amp; Data Independence <span class="tag hot">⭐ Repeated 4×</span></h3>
@@ -441,12 +497,58 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       • <b>I</b>ntegrity rules &amp; checks
     </div>
     <h4>Categories of DBMS Users</h4>
-    <ul>
-      <li><b>Sophisticated Users:</b> Analysts or engineers writing raw SQL queries.</li>
-      <li><b>Application Programmers:</b> Developers writing client programs (Java/Python) interfacing via APIs.</li>
-      <li><b>Naive/End Users:</b> Clerks interacting only with built forms (clicks, no SQL awareness).</li>
-      <li><b>Database Designers:</b> Architect the logical schema (ER diagrams) prior to DBA deployment.</li>
-    </ul>
+    <div class="table-wrap">
+      <table>
+        <tr><th>User Type</th><th>Role</th><th>SQL Knowledge</th><th>Real-world Example</th></tr>
+        <tr><td><b><mark>Database Administrator (DBA)</mark></b></td><td>Owns the schema, grants access, tunes performance, manages backup and recovery</td><td>Expert — writes DDL, DCL, and stored procedures</td><td>Senior DB engineer at a bank managing Oracle schemas</td></tr>
+        <tr><td><b><mark>Database Designers</mark></b></td><td>Architect the logical and physical schema (ER diagrams, normalization) before DBA deploys it</td><td>High — understands FDs, normal forms, ER modelling</td><td>Data architect designing a hospital management schema</td></tr>
+        <tr><td><b><mark>Sophisticated / Casual Users</mark></b></td><td>Query the DB directly with ad-hoc SQL for analysis without needing a custom app</td><td>Medium-High — writes SELECT, JOINs, aggregates</td><td>Business analyst running monthly sales reports in SQL</td></tr>
+        <tr><td><b><mark>Application Programmers</mark></b></td><td>Write client-side programs (Java, Python, PHP) that interact with the DB through ODBC/JDBC APIs</td><td>Medium — embeds parameterized SQL inside code</td><td>Backend developer building a university portal in Java</td></tr>
+        <tr><td><b><mark>Naive / Parametric End Users</mark></b></td><td>Interact only through pre-built forms and menus; unaware of SQL or underlying tables</td><td>None — clicks buttons, fills forms</td><td>Bank teller using a deposit/withdrawal GUI; online shopper</td></tr>
+      </table>
+    </div>
+
+    <h4>DBMS Components &amp; Their Functions</h4>
+    <div class="box def">
+      <span class="label">Core Components</span>
+      A DBMS is not a single program — it is built from several cooperating subsystems. Knowing each component and its function is the basis of a "components with diagram" question (Dec-25 Q2):
+      <ul>
+        <li><b><mark>Query Processor</mark>:</b> Parses SQL text, checks syntax and semantics against the catalogue, then passes the parsed tree to the query optimizer.</li>
+        <li><b><mark>Query Optimizer</mark>:</b> Evaluates alternative relational-algebra execution plans (using statistics from the catalogue) and selects the lowest-cost plan. Output: an execution plan.</li>
+        <li><b><mark>DML Compiler</mark>:</b> Translates the optimized DML into low-level instructions the storage manager can execute. Also handles pre-compilation of embedded SQL.</li>
+        <li><b><mark>Storage Manager</mark>:</b> Mediates between the logical database and physical disk. Manages the <mark>buffer pool</mark> (RAM cache of disk pages), file organization, and I/O scheduling. Sub-components: buffer manager, file manager, disk space manager.</li>
+        <li><b><mark>Transaction Manager</mark>:</b> Enforces ACID properties. Implements <mark>concurrency control</mark> (locking / MVCC) and <mark>recovery</mark> (WAL — Write-Ahead Logging, redo/undo logs). Every COMMIT or ROLLBACK passes through here.</li>
+        <li><b><mark>Catalogue / Data Dictionary</mark>:</b> Stores metadata — table names, column types, constraint definitions, statistics, user privileges, and view definitions. The query processor consults it for every operation. This is what makes the DBMS "self-describing".</li>
+        <li><b><mark>DDL Interpreter</mark>:</b> Processes CREATE / ALTER / DROP statements, updates the catalogue, and creates or modifies storage structures.</li>
+      </ul>
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-direction:column; gap:6px; max-width:520px; margin:0 auto; font-size:12.5px;">
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>User / Application</b><br><span style="font-size:11px; color:var(--muted);">SQL query or embedded SQL call</span></div>
+        <div style="text-align:center; color:var(--brand);">↓</div>
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1; background:var(--gold-soft); border:1.5px solid var(--gold); border-radius:4px; padding:8px; text-align:center;"><b>DDL Interpreter</b><br><span style="font-size:11px;">schema → catalogue</span></div>
+          <div style="flex:1; background:var(--gold-soft); border:1.5px solid var(--gold); border-radius:4px; padding:8px; text-align:center;"><b>Query Processor</b><br><span style="font-size:11px;">parse → optimize → plan</span></div>
+        </div>
+        <div style="text-align:center; color:var(--gold);">↓ execution plan</div>
+        <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:8px; text-align:center;"><b>DML Compiler / Runtime Engine</b><br><span style="font-size:11px;">translates plan → low-level ops</span></div>
+        <div style="text-align:center; color:var(--forest);">↓</div>
+        <div style="display:flex; gap:8px;">
+          <div style="flex:1; background:var(--navy-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>Transaction Manager</b><br><span style="font-size:11px;">ACID · locking · WAL</span></div>
+          <div style="flex:1; background:var(--navy-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>Storage Manager</b><br><span style="font-size:11px;">buffer pool · file I/O</span></div>
+          <div style="flex:1; background:var(--navy-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>Catalogue</b><br><span style="font-size:11px;">metadata · stats · privileges</span></div>
+        </div>
+        <div style="text-align:center; color:var(--brand);">↓</div>
+        <div style="background:#e5e7eb; border:1.5px solid var(--rule); border-radius:4px; padding:8px; text-align:center;"><b>Physical Database (Disk)</b></div>
+      </div>
+      <figcaption><b>Fig 1.2</b> · DBMS internal components — from user SQL to disk I/O</figcaption>
+    </figure>
+
+    <div class="box prof">
+      <span class="label">Professor Pattern</span>
+      Dec-25 Q2: "Explain the components of DBMS with a neat diagram." This is a 10M question — use the fig above + the component list, add one sentence per component explaining its role.
+    </div>
   </div>
 
   <!-- 1.4 Tier architectures & classification -->
@@ -464,7 +566,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div style="text-align:center; color:var(--gold); font-weight:700;">↓</div>
         <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:8px; text-align:center; font-size:12.5px;"><b>3-Tier / n-Tier</b><br>client ⇄ <b>application server</b> ⇄ DB server (web apps)</div>
       </div>
-      <figcaption><b>Fig 1.4</b> · DBMS tiers — adding a middle application layer improves scalability and security; the client never touches the DB directly.</figcaption>
+      <figcaption><b>Fig 1.4</b> · DBMS tier architectures</figcaption>
     </figure>
 
     <h4>Tier Architectures</h4>
@@ -495,6 +597,40 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="kicker">Unit II</div>
     <h2><span class="num">02</span>Relational Model &amp;<br>ER Designing</h2>
     <p class="lede">Mapping real-world conceptual entities into highly constrained tables.</p>
+  </div>
+
+  <!-- 2.0 Relational Model Terminology -->
+  <div class="topic" id="t-2-0">
+    <h3>Relational Model Terminology <span class="tag fav">★ Part-A staple</span></h3>
+    <p>The <mark>relational model</mark> represents data as a collection of tables. Knowing the precise vocabulary is non-negotiable for Part-A answers.</p>
+
+    <div class="table-wrap"><table>
+      <tr><th>Term</th><th>Meaning</th><th>Example</th></tr>
+      <tr><td><b>Relation</b></td><td>A named two-dimensional table of data</td><td>STUDENT table</td></tr>
+      <tr><td><b>Tuple</b></td><td>One row in a relation</td><td>One student record</td></tr>
+      <tr><td><b>Attribute</b></td><td>One column / field</td><td>Name, RollNo, Course</td></tr>
+      <tr><td><b>Domain</b></td><td>Set of allowed values for an attribute</td><td>Domain(Age) = integers 0–120</td></tr>
+      <tr><td><b>Degree</b></td><td>Number of attributes (columns) in a relation</td><td>STUDENT with 5 cols → degree 5</td></tr>
+      <tr><td><b>Cardinality</b></td><td>Number of tuples (rows) in a relation</td><td>200 students → cardinality 200</td></tr>
+      <tr><td><b>Null</b></td><td>Unknown or inapplicable value — not 0, not blank</td><td>Missing phone number</td></tr>
+      <tr><td><b>Schema (Intension)</b></td><td>Structure: relation name + attribute names — permanent definition</td><td>STUDENT(RollNo, Name, Course)</td></tr>
+      <tr><td><b>Instance (Extension)</b></td><td>Actual data rows stored at a point in time — changes with updates</td><td>The 200 student rows currently stored</td></tr>
+    </table></div>
+
+    <h4>Properties of a Relation</h4>
+    <ul>
+      <li><b>No duplicate tuples:</b> every row is unique — enforced by the <mark>primary key</mark>.</li>
+      <li><b>Tuples are unordered:</b> no concept of &quot;first&quot; or &quot;last&quot; row; a relation is a mathematical set.</li>
+      <li><b>Attributes are unordered:</b> columns carry no left-to-right positional meaning.</li>
+      <li><b>Attribute values are atomic:</b> each cell holds exactly ONE indivisible value — the basis of <mark>1NF</mark>. No lists, no sets, no nested tables in a cell.</li>
+      <li><b>Unique attribute names within a relation:</b> the same name may appear in different relations but not twice in the same one.</li>
+      <li><b>Null values permitted:</b> for non-key attributes, Null represents unknown or inapplicable data.</li>
+    </ul>
+
+    <div class="box prof">
+      <span class="label">Professor Pattern</span>
+      <b>Degree vs Cardinality</b> is a classic Part-A 1.5 M trap. Degree = <em>columns</em> (fixed by the schema; changes only on ALTER TABLE). Cardinality = <em>rows</em> (changes every INSERT / DELETE). Write both words with a one-line example each — that is the full expected answer.
+    </div>
   </div>
 
   <!-- 2.1 Keys -->
@@ -560,6 +696,101 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
   </div>
 
+  <!-- 2.3b ER Diagram Notation -->
+  <div class="topic" id="t-2-3b">
+    <h3>ER Diagram Notation &amp; Attribute Types <span class="tag hot">⭐ ER diagram in EVERY paper</span></h3>
+    <p>Drawing a correct ER diagram means using the right <mark>shapes and line styles</mark> for every element. Examiners deduct marks for rectangles used as relationships or single ovals for multi-valued attributes.</p>
+
+    <div class="table-wrap"><table>
+      <tr><th>Symbol</th><th>Shape</th><th>Represents</th></tr>
+      <tr><td><b>Rectangle</b></td><td>Single border</td><td>Strong entity set</td></tr>
+      <tr><td><b>Double rectangle</b></td><td>Double border</td><td>Weak entity set</td></tr>
+      <tr><td><b>Oval</b></td><td>Single border</td><td>Simple / single-valued attribute</td></tr>
+      <tr><td><b>Double oval</b></td><td>Double border</td><td>Multi-valued attribute (e.g. phone numbers)</td></tr>
+      <tr><td><b>Dashed oval</b></td><td>Dashed border</td><td>Derived attribute (e.g. Age from DOB)</td></tr>
+      <tr><td><b>Diamond</b></td><td>Single border</td><td>Relationship type (verb between entities)</td></tr>
+      <tr><td><b>Double diamond</b></td><td>Double border</td><td>Identifying relationship (links weak entity to owner)</td></tr>
+      <tr><td><b>Single line</b></td><td>Connecting entity to relationship</td><td>Partial participation (some entities may not participate)</td></tr>
+      <tr><td><b>Double line</b></td><td>Connecting entity to relationship</td><td>Total participation (every entity MUST participate)</td></tr>
+      <tr><td><b>Underline on name</b></td><td>Attribute name underlined</td><td>Primary key attribute</td></tr>
+      <tr><td><b>Dashed underline</b></td><td>Attribute name dashed-underlined</td><td>Partial key / discriminator of a weak entity</td></tr>
+    </table></div>
+
+    <h4>Attribute Types</h4>
+    <ul>
+      <li><b>Simple (atomic):</b> cannot be divided further. Example: <mark>Age</mark>, <code>GenderCode</code>.</li>
+      <li><b>Composite:</b> can be broken into meaningful sub-parts. Example: <mark>Name</mark> → {FirstName, LastName}; Address → {HouseNo, Street, City, PIN}.</li>
+      <li><b>Single-valued:</b> holds exactly one value per entity. Example: <code>SSN</code>, <code>RollNo</code>.</li>
+      <li><b>Multi-valued:</b> can hold multiple values. Example: <mark>{PhoneNumbers}</mark>, {Degrees}. Drawn as double oval.</li>
+      <li><b>Derived:</b> computed from another attribute. Example: Age derived from DOB. Drawn as dashed oval.</li>
+      <li><b>Null attribute:</b> value unknown or not applicable. Example: SpouseName for an unmarried employee.</li>
+      <li><b>Key attribute:</b> uniquely identifies entity instances — underlined in the ER diagram.</li>
+    </ul>
+
+    <h4>Relationship Arity Types</h4>
+    <ul>
+      <li><b>Unary (recursive):</b> entity relates to itself. Example: <code>Employee SUPERVISES Employee</code>.</li>
+      <li><b>Binary:</b> most common — two entity sets. Example: <code>Student ENROLLS_IN Course</code>.</li>
+      <li><b>Ternary:</b> three entity sets participate together. Example: Student, Course, Instructor in a TEACHING relationship.</li>
+      <li><b>Cardinality ratios:</b> <mark>1:1</mark>, <mark>1:N</mark>, <mark>M:N</mark>. Arrow tip = 1 side; straight line = many side.</li>
+    </ul>
+
+    <div class="box warn">
+      <span class="label">Common Mistake</span>
+      Relationships are VERBS — they use <b>diamond shapes</b>. Drawing a relationship as a rectangle (entity shape) is the single most common ER diagram error. Also: multi-valued attributes need a <b>double oval</b>, not a plain oval. Derived attributes need a <b>dashed oval</b>, not a solid one.
+    </div>
+
+    <!-- ER symbol visual -->
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; max-width:560px; margin:0 auto; font-size:11.5px; text-align:center;">
+        <div style="border:2px solid var(--brand); border-radius:2px; padding:8px;"><b>ENTITY</b><br><span style="color:var(--muted);">Rectangle</span></div>
+        <div style="border:2px solid var(--brand); border-radius:2px; outline:2px solid var(--brand); outline-offset:3px; padding:8px;"><b>WEAK ENTITY</b><br><span style="color:var(--muted);">Double rect</span></div>
+        <div style="border:2px solid var(--gold); border-radius:50%; padding:8px;"><b>Attribute</b><br><span style="color:var(--muted);">Oval</span></div>
+        <div style="border:2px solid var(--gold); border-radius:50%; outline:2px solid var(--gold); outline-offset:3px; padding:8px;"><b>{Multi-val}</b><br><span style="color:var(--muted);">Double oval</span></div>
+        <div style="border:2px dashed var(--muted); border-radius:50%; padding:8px;"><b><i>Derived</i></b><br><span style="color:var(--muted);">Dashed oval</span></div>
+        <div style="border:2px solid var(--crimson); transform:rotate(45deg) scale(.85); padding:6px; margin:4px auto; width:70px; height:70px; display:flex; align-items:center; justify-content:center;"><span style="transform:rotate(-45deg); font-size:10.5px; font-weight:700;">RELATION<br>SHIP</span></div>
+      </div>
+      <figcaption><b>Fig 2.10</b> · ER diagram shapes — memorise these before drawing any ER diagram in the exam.</figcaption>
+    </figure>
+
+    <!-- Simple Employee-Department ER example -->
+    <figure class="diagram-fig">
+      <div style="max-width:560px; margin:0 auto;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:0; flex-wrap:wrap;">
+          <!-- EMPLOYEE entity -->
+          <div style="text-align:center;">
+            <div style="display:flex; gap:8px; justify-content:center; margin-bottom:6px;">
+              <div style="border:1.5px dashed var(--gold); border-radius:50%; padding:3px 8px; font-size:11px;">EmpName</div>
+              <div style="border:1.5px solid var(--gold); border-radius:50%; padding:3px 8px; font-size:11px; text-decoration:underline;">EmpID</div>
+              <div style="border:1.5px dashed var(--gold); border-radius:50%; padding:3px 8px; font-size:11px; border-style:dashed; border-color:var(--muted);">Age</div>
+            </div>
+            <div style="border:2px solid var(--brand); padding:10px 18px; font-weight:700; font-size:13px;">EMPLOYEE</div>
+            <div style="border:1.5px solid var(--gold); border-radius:50%; padding:3px 10px; font-size:11px; margin-top:6px; border-style:dashed; border-color:var(--muted);"><i>Salary</i></div>
+          </div>
+          <!-- connector + relationship -->
+          <div style="display:flex; flex-direction:column; align-items:center; margin:0 8px;">
+            <div style="font-size:11px; color:var(--muted); margin-bottom:2px;">N</div>
+            <div style="height:2px; width:48px; background:var(--ink);"></div>
+            <div style="border:2px solid var(--crimson); transform:rotate(45deg); width:54px; height:54px; display:flex; align-items:center; justify-content:center; margin:2px 0;">
+              <span style="transform:rotate(-45deg); font-size:11px; font-weight:700; color:var(--crimson);">WORKS IN</span>
+            </div>
+            <div style="height:2px; width:48px; background:var(--ink);"></div>
+            <div style="font-size:11px; color:var(--muted); margin-top:2px;">1</div>
+          </div>
+          <!-- DEPARTMENT entity -->
+          <div style="text-align:center;">
+            <div style="display:flex; gap:8px; justify-content:center; margin-bottom:6px;">
+              <div style="border:1.5px solid var(--gold); border-radius:50%; padding:3px 8px; font-size:11px; text-decoration:underline;">DeptID</div>
+              <div style="border:1.5px dashed var(--gold); border-radius:50%; padding:3px 8px; font-size:11px;">DeptName</div>
+            </div>
+            <div style="border:2px solid var(--brand); padding:10px 18px; font-weight:700; font-size:13px;">DEPARTMENT</div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.11</b> · Sample ER diagram — Employee WORKS IN Department (N:1). Underlined attribute = primary key. Dashed oval = derived attribute (Age from DOB).</figcaption>
+    </figure>
+  </div>
+
   <!-- 2.4 Data models: hierarchical, network, relational -->
   <div class="topic" id="t-2-4">
     <h3>Data Models — Hierarchical, Network, Relational <span class="tag fav">★ Dec-25 Q7</span></h3>
@@ -622,11 +853,125 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       The aggregate operator groups rows and applies <mark>SUM, AVG, COUNT, MIN, MAX</mark>. Syntax: <code><sub>Dept</sub>𝒢<sub>AVG(Salary)</sub>(Emp)</code> — group Emp by Dept, average salary per group. (SQL equivalent: <code>GROUP BY Dept</code>.)
     </div>
 
+    <h4>Set Operations</h4>
+    <ul>
+      <li><b><mark>Union (R &cup; S)</mark>:</b> All tuples from R <em>or</em> S with no duplicates. Requires R and S to be <mark>union-compatible</mark> — same degree, same attribute domains. Example: <code>UGSTUDENTS &cup; PGSTUDENTS</code> &rarr; all students.</li>
+      <li><b>Intersection (R &cap; S):</b> Tuples that appear in <em>both</em> R and S. Also requires union-compatibility. Example: <code>UGSTUDENTS &cap; PGSTUDENTS</code> &rarr; dual-registered students.</li>
+      <li><b>Set Difference (R &minus; S):</b> Tuples in R but <em>not</em> in S. Example: <code>UGSTUDENTS &minus; PGSTUDENTS</code> &rarr; undergrads not in postgrad programme.</li>
+      <li><b>Cartesian Product (R &times; S):</b> Every row of R paired with every row of S. If R has m rows and S has n rows, result has m&times;n rows and degree&nbsp;=&nbsp;deg(R)&nbsp;+&nbsp;deg(S).</li>
+    </ul>
+    <div class="box tip"><span class="label">Union-Compatibility Rule</span>
+      Union-compatible = same number of attributes AND corresponding attributes have compatible domains. The attribute <em>names</em> do not need to match — only the domains and degree matter.
+    </div>
+
+    <h4>Join Operations</h4>
+    <div class="table-wrap"><table>
+      <tr><th>Join Type</th><th>Symbol</th><th>Keeps</th><th>Notes</th></tr>
+      <tr><td><b>Theta Join</b></td><td><code>R &#8904;<sub>&theta;</sub> S</code></td><td>Rows satisfying &theta; condition</td><td>Most general; &theta; can be any predicate</td></tr>
+      <tr><td><b>Equi-Join</b></td><td><code>R &#8904;<sub>a=b</sub> S</code></td><td>Rows where attribute values are equal</td><td>Special case of theta join with = only</td></tr>
+      <tr><td><b>Natural Join</b></td><td><code>R &#8904; S</code></td><td>Rows matching on all common attribute names; removes duplicate column</td><td>Most common SQL JOIN form</td></tr>
+      <tr><td><b>Left Outer Join</b></td><td><code>R &#10205; S</code></td><td>All rows from left + matching right (NULL if no match)</td><td>Preserves left dangling tuples</td></tr>
+      <tr><td><b>Right Outer Join</b></td><td><code>R &#10206; S</code></td><td>All rows from right + matching left (NULL if no match)</td><td>Preserves right dangling tuples</td></tr>
+      <tr><td><b>Full Outer Join</b></td><td><code>R &#10207; S</code></td><td>All rows from both sides (NULL-padded where no match)</td><td>Preserves all dangling tuples</td></tr>
+    </table></div>
+    <div class="box warn"><span class="label">Natural Join Trap</span>
+      Natural Join gives wrong results if two relations share an attribute name with <em>different meaning</em> in each (e.g. both have a <code>Date</code> column — it will silently join on Date). Always verify shared column names before using Natural Join.
+    </div>
+
     <div class="box tip">
       <span class="label">Worked Joins Analogy</span>
-      • <b>Inner Join (⋈):</b> Keeps only matching rows. Discards dangling tuples.<br>
-      • <b>Left Outer Join (⟝):</b> Keeps all rows from left table, pads right mismatched columns with <code>NULL</code>.<br>
-      • <b>Right Outer Join (⟞):</b> Keeps all rows from right table, pads left with <code>NULL</code>.
+      &bull; <b>Inner Join (&#8904;):</b> Keeps only matching rows. Discards dangling tuples.<br>
+      &bull; <b>Left Outer Join (&#10205;):</b> Keeps all rows from left table, pads right mismatched columns with <code>NULL</code>.<br>
+      &bull; <b>Right Outer Join (&#10206;):</b> Keeps all rows from right table, pads left with <code>NULL</code>.
+    </div>
+
+    <!-- Set operations + join visual -->
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; max-width:580px; margin:0 auto; font-size:12px; text-align:center;">
+        <div>
+          <div style="display:flex; justify-content:center; margin-bottom:6px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-soft); border:2px solid var(--brand); margin-right:-14px;"></div>
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--gold-soft); border:2px solid var(--gold); margin-left:-14px;"></div>
+          </div>
+          <b>R ∪ S (Union)</b><br><span style="color:var(--muted);">All rows from both (no duplicates)</span>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:center; margin-bottom:6px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:rgba(219,234,254,.3); border:2px solid var(--brand); margin-right:-14px;"></div>
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-soft); border:2px solid var(--gold); margin-left:-14px;"></div>
+          </div>
+          <b>R ∩ S (Intersection)</b><br><span style="color:var(--muted);">Rows in BOTH tables</span>
+        </div>
+        <div>
+          <div style="display:flex; justify-content:center; margin-bottom:6px;">
+            <div style="width:44px; height:44px; border-radius:50%; background:var(--brand-soft); border:2px solid var(--brand); margin-right:-14px;"></div>
+            <div style="width:44px; height:44px; border-radius:50%; background:rgba(219,234,254,.15); border:2px dashed var(--muted); margin-left:-14px;"></div>
+          </div>
+          <b>R − S (Difference)</b><br><span style="color:var(--muted);">Rows in R but NOT in S</span>
+        </div>
+      </div>
+      <figcaption><b>Fig 3.1</b> · Set operations — all require union-compatible relations (same degree, same domains).</figcaption>
+    </figure>
+  </div>
+
+  <!-- 3.1b Worked RA Examples -->
+  <div class="topic" id="t-3-1b">
+    <h3>Worked Relational Algebra Examples <span class="tag hot">&#11088; 10M in both papers</span></h3>
+    <div class="box def"><span class="label">Schema Used in All Examples</span>
+      <code>Employee(<u>EmpID</u>, Name, Salary, DeptID)</code><br>
+      <code>Department(<u>DeptID</u>, DeptName, ManagerID)</code><br>
+      <code>WorksOn(<u>EmpID, ProjID</u>, Hours)</code><br>
+      <code>Project(<u>ProjID</u>, ProjName, Budget)</code>
+    </div>
+
+    <p><b>Query 1 &mdash; Find names of employees in Dept 10:</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">Select: <code>&sigma;<sub>DeptID=10</sub>(Employee)</code> &mdash; filter rows where DeptID = 10.</div></div>
+      <div class="step"><span class="k">2</span><div class="body">Project: <code>&pi;<sub>Name</sub>(&sigma;<sub>DeptID=10</sub>(Employee))</code> &mdash; keep only the Name column.</div></div>
+    </div>
+
+    <p><b>Query 2 &mdash; Find names of employees with their department names (JOIN):</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">Natural join on common attribute DeptID: <code>Employee &#8904; Department</code></div></div>
+      <div class="step"><span class="k">2</span><div class="body">Project needed columns: <code>&pi;<sub>Name, DeptName</sub>(Employee &#8904; Department)</code></div></div>
+    </div>
+
+    <p><b>Query 3 &mdash; Find employees earning more than 50000 in Dept 20:</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">Both conditions in one &sigma; using &and;: <code>&sigma;<sub>Salary&gt;50000 &and; DeptID=20</sub>(Employee)</code></div></div>
+      <div class="step"><span class="k">2</span><div class="body">Project: <code>&pi;<sub>Name</sub>(&sigma;<sub>Salary&gt;50000 &and; DeptID=20</sub>(Employee))</code></div></div>
+    </div>
+
+    <p><b>Query 4 &mdash; Find employees who work on Project P1:</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">Filter WorksOn: <code>&sigma;<sub>ProjID=&#39;P1&#39;</sub>(WorksOn)</code></div></div>
+      <div class="step"><span class="k">2</span><div class="body">Join with Employee: <code>Employee &#8904; &sigma;<sub>ProjID=&#39;P1&#39;</sub>(WorksOn)</code></div></div>
+      <div class="step"><span class="k">3</span><div class="body">Project: <code>&pi;<sub>Name</sub>(Employee &#8904; &sigma;<sub>ProjID=&#39;P1&#39;</sub>(WorksOn))</code></div></div>
+    </div>
+
+    <p><b>Query 5 &mdash; Find employees NOT in Dept 10 (set difference):</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">All employee IDs: <code>&pi;<sub>EmpID</sub>(Employee)</code></div></div>
+      <div class="step"><span class="k">2</span><div class="body">Dept-10 IDs: <code>&pi;<sub>EmpID</sub>(&sigma;<sub>DeptID=10</sub>(Employee))</code></div></div>
+      <div class="step"><span class="k">3</span><div class="body">Subtract: <code>&pi;<sub>EmpID</sub>(Employee) &minus; &pi;<sub>EmpID</sub>(&sigma;<sub>DeptID=10</sub>(Employee))</code></div></div>
+    </div>
+
+    <p><b>Query 6 &mdash; Find employees who work on ALL projects (division):</b></p>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body">Employee-project pairs: <code>&pi;<sub>EmpID, ProjID</sub>(WorksOn)</code></div></div>
+      <div class="step"><span class="k">2</span><div class="body">All project IDs: <code>&pi;<sub>ProjID</sub>(Project)</code></div></div>
+      <div class="step"><span class="k">3</span><div class="body">Divide: <code>&pi;<sub>EmpID, ProjID</sub>(WorksOn) &divide; &pi;<sub>ProjID</sub>(Project)</code> &mdash; returns EmpIDs paired with every ProjID in Project.</div></div>
+    </div>
+
+    <div class="box tip"><span class="label">RA &harr; SQL Quick Map</span>
+      <ul style="margin:6px 0 0 0; padding-left:18px;">
+        <li><code>&sigma;</code> (Select) &equiv; SQL <code>WHERE</code></li>
+        <li><code>&pi;</code> (Project) &equiv; SQL <code>SELECT</code> column list</li>
+        <li><code>&#8904;</code> (Join) &equiv; SQL <code>JOIN</code></li>
+        <li><code>&cup;</code> (Union) &equiv; SQL <code>UNION</code></li>
+        <li><code>&minus;</code> (Difference) &equiv; SQL <code>EXCEPT</code> / <code>MINUS</code></li>
+        <li><code>&divide;</code> (Division) &equiv; SQL <code>NOT EXISTS</code> double-negation pattern</li>
+      </ul>
     </div>
   </div>
 
@@ -647,6 +992,34 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <span class="label">Pitfall: Unsafe Queries</span>
       A query is <em>unsafe</em> if it returns an infinite number of tuples (e.g. <code>{ t | ¬Student(t) }</code> — every possible tuple NOT in Student). A <b>safe expression</b> restricts results to values actually present in the database (the active domain).
     </div>
+
+    <h4>TRC Worked Examples</h4>
+    <p><b>Example 1 &mdash; Find names of employees with Salary &gt; 50000:</b></p>
+    <div class="box def" style="font-family:monospace; font-size:13.5px;">
+      { t.Name | Employee(t) &and; t.Salary &gt; 50000 }
+    </div>
+    <p>Read: &ldquo;For every tuple <em>t</em> in Employee where the salary condition holds, give me t.Name.&rdquo;</p>
+
+    <p><b>Example 2 &mdash; Find names of employees in Dept 10:</b></p>
+    <div class="box def" style="font-family:monospace; font-size:13.5px;">
+      { t.Name | Employee(t) &and; t.DeptID = 10 }
+    </div>
+
+    <h4>DRC Worked Example</h4>
+    <p><b>Example &mdash; Find names of employees with Salary &gt; 50000:</b></p>
+    <div class="box def" style="font-family:monospace; font-size:13.5px;">
+      { &lt;n&gt; | &exist; e, s, d ( Employee(e, n, s, d) &and; s &gt; 50000 ) }
+    </div>
+    <p>Read: &ldquo;There exist values e, s, d such that the tuple <em>(e,&nbsp;n,&nbsp;s,&nbsp;d)</em> is in Employee and salary s &gt; 50000.&rdquo;</p>
+
+    <h4>TRC vs DRC Comparison</h4>
+    <div class="table-wrap"><table>
+      <tr><th>Parameter</th><th>TRC</th><th>DRC</th></tr>
+      <tr><td><b>Variable ranges over</b></td><td>Whole tuples (rows)</td><td>Individual domain values (column values)</td></tr>
+      <tr><td><b>Notation</b></td><td><code>t.Name</code> (dot access)</td><td><code>&lt;x1, x2&gt;</code> positional</td></tr>
+      <tr><td><b>Closer to</b></td><td><mark>SQL</mark></td><td>QBE (Query By Example)</td></tr>
+      <tr><td><b>Quantifiers</b></td><td>&exist; (exists), &forall; (for all)</td><td>&exist; (exists), &forall; (for all)</td></tr>
+    </table></div>
   </div>
 </section>
 
@@ -658,6 +1031,76 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="kicker">Unit IV · Core Systems</div>
     <h2><span class="num">04</span>Database Design, SQL &amp;<br>Transaction Processing</h2>
     <p class="lede">Normalization, SQL queries, query processing, concurrency, recovery, and the concept of security.</p>
+  </div>
+
+  <!-- 4.0 Transactions, ACID, Modification Anomalies -->
+  <div class="topic" id="t-4-0">
+    <h3>Transactions, ACID Properties &amp; Modification Anomalies <span class="tag hot">⭐ Core — Every Paper</span></h3>
+
+    <div class="box def"><span class="label">Transaction</span>
+      A <mark>transaction</mark> is a logical unit of work — a sequence of database operations (reads and writes) that must execute <b>completely or not at all</b>. Classic example: bank transfer (debit account A <em>and</em> credit account B — both must succeed, or both must be cancelled).
+    </div>
+
+    <h4>Transaction States</h4>
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-wrap:wrap; align-items:center; gap:6px; justify-content:center; max-width:640px; margin:0 auto; font-size:12px;">
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:7px 10px; text-align:center;"><b>Active</b><br><span style="color:var(--muted)">Executing ops</span></div>
+        <div style="color:var(--brand); font-weight:700;">→</div>
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:7px 10px; text-align:center;"><b>Partially Committed</b><br><span style="color:var(--muted)">Last op done</span></div>
+        <div style="color:var(--brand); font-weight:700;">→</div>
+        <div style="background:#dcfce7; border:1.5px solid var(--forest); border-radius:4px; padding:7px 10px; text-align:center;"><b>Committed</b><br><span style="color:var(--muted)">Written to disk</span></div>
+        <div style="width:100%; text-align:center; color:var(--muted); font-size:11px; margin:2px 0;">— OR on error —</div>
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:7px 10px; text-align:center;"><b>Active</b></div>
+        <div style="color:var(--crimson); font-weight:700;">→</div>
+        <div style="background:#fef2f2; border:1.5px solid var(--crimson); border-radius:4px; padding:7px 10px; text-align:center;"><b>Failed</b><br><span style="color:var(--muted)">Error detected</span></div>
+        <div style="color:var(--crimson); font-weight:700;">→</div>
+        <div style="background:#fef2f2; border:1.5px solid var(--crimson); border-radius:4px; padding:7px 10px; text-align:center;"><b>Aborted</b><br><span style="color:var(--muted)">Rolled back</span></div>
+      </div>
+      <figcaption><b>Fig 4.0</b> · Transaction state diagram — success path (top) and failure path (bottom).</figcaption>
+    </figure>
+
+    <ul>
+      <li><b>Active:</b> transaction is currently executing its operations.</li>
+      <li><b>Partially Committed:</b> the last operation has been executed but changes are not yet written to permanent storage.</li>
+      <li><b>Committed:</b> all changes are permanently written to the database — cannot be undone.</li>
+      <li><b>Failed:</b> an error has been detected; the transaction cannot proceed normally.</li>
+      <li><b>Aborted:</b> the transaction has been rolled back to the state before it began — as if it never ran.</li>
+    </ul>
+
+    <h4>ACID Properties</h4>
+    <p>Every database transaction must satisfy four properties. Examiners love the <mark>bank transfer example</mark> — use it for every property.</p>
+
+    <div class="table-wrap"><table>
+      <tr><th>Property</th><th>Full Meaning</th><th>Bank Transfer Example</th><th>Enforced By</th></tr>
+      <tr><td><b><mark>Atomicity</mark></b></td><td>ALL operations succeed or NONE do — no partial state.</td><td>Debit A fails → credit B is also cancelled automatically.</td><td>Recovery Manager (Undo log)</td></tr>
+      <tr><td><b><mark>Consistency</mark></b></td><td>DB moves from one valid state to another valid state — all integrity constraints remain satisfied.</td><td>Total balance before transfer = total balance after transfer.</td><td>Integrity Constraints + Application</td></tr>
+      <tr><td><b><mark>Isolation</mark></b></td><td>Concurrent transactions do not see each other's intermediate (uncommitted) states.</td><td>T1 reads account A before T2 updates it — T1 sees the old, committed value.</td><td>Concurrency Control (2PL, MVCC)</td></tr>
+      <tr><td><b><mark>Durability</mark></b></td><td>Once committed, changes survive any subsequent crash or power failure.</td><td>Power cut after COMMIT → transaction data is still there on restart.</td><td>Recovery Manager (Redo log / WAL)</td></tr>
+    </table></div>
+
+    <div class="mnem">
+      <b>Mnemonic — ACID</b>
+      <ul>
+        <li><b>A</b>tomicity — "All or nothing"</li>
+        <li><b>C</b>onsistency — "Constraints hold before and after"</li>
+        <li><b>I</b>solation — "Invisible intermediate states"</li>
+        <li><b>D</b>urability — "Disk survives crash"</li>
+      </ul>
+    </div>
+
+    <h4>Modification Anomalies</h4>
+    <p><mark>Modification anomalies</mark> occur in unnormalized or partially-normalized relations that store multiple independent facts in a single table. The standard demonstration relation is <code>EMP_DEPT(EmpID, EmpName, DeptID, DeptName, DeptHead)</code>.</p>
+
+    <div class="table-wrap"><table>
+      <tr><th>Anomaly Type</th><th>Definition</th><th>Example in EMP_DEPT</th></tr>
+      <tr><td><b><mark>Insertion Anomaly</mark></b></td><td>Cannot insert one fact without being forced to supply an unrelated fact.</td><td>Cannot add a new department until at least one employee joins it — DeptName is tied to an employee row.</td></tr>
+      <tr><td><b><mark>Deletion Anomaly</mark></b></td><td>Deleting one fact accidentally destroys another unrelated fact.</td><td>If the last employee in Dept 5 leaves, the entire record of Dept 5 (DeptName, DeptHead) is also lost.</td></tr>
+      <tr><td><b><mark>Update Anomaly</mark></b></td><td>Updating one fact requires changing many redundant rows, risking inconsistency.</td><td>DeptHead changes → every employee row for that department must be updated; missing even one leaves the DB inconsistent.</td></tr>
+    </table></div>
+
+    <div class="box why"><span class="label">Why this matters</span>
+      These three anomalies are the primary reason normalization exists. Examiners ask: <em>"What are modification anomalies? Explain with examples."</em> Always use the <code>EMP_DEPT</code> relation above — it demonstrates all three clearly in one table.
+    </div>
   </div>
 
   <!-- 4.1 FDs & Closures -->
@@ -692,6 +1135,149 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <tr><td><b>BCNF</b></td><td>Must be in 3NF AND for every non-trivial dependency <code>X → A</code>, <b>X must be a Super Key</b>.</td><td>Stricter than 3NF. Eliminates overlaps where key columns are functionally dependent on non-keys.</td></tr>
         <tr><td><b>4NF / 5NF</b></td><td><b>4NF:</b> No non-trivial multi-valued dependencies (MVDs). <b>5NF:</b> No non-trivial Join Dependencies.</td><td>Removes independent multi-valued facts (4NF). Rarely needed in business practice.</td></tr>
       </table>
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-direction:column; gap:6px; max-width:520px; margin:0 auto; font-size:12px;">
+        <div style="background:#fef2f2; border:2px solid var(--crimson); border-radius:4px; padding:8px; text-align:center;"><b>Unnormalized (UNF)</b><br><span style="color:var(--muted);">Repeating groups / multi-valued cells</span></div>
+        <div style="text-align:center; color:var(--crimson); font-size:11px;">↓ make all values atomic</div>
+        <div style="background:var(--brand-soft); border:2px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>1NF</b> — Atomic values, no repeating groups</div>
+        <div style="text-align:center; color:var(--brand); font-size:11px;">↓ remove partial dependencies (non-prime → subset of key)</div>
+        <div style="background:var(--brand-soft); border:2px solid var(--brand); border-radius:4px; padding:8px; text-align:center;"><b>2NF</b> — No partial FDs (meaningful only with composite key)</div>
+        <div style="text-align:center; color:var(--brand); font-size:11px;">↓ remove transitive dependencies (non-prime → non-prime)</div>
+        <div style="background:var(--gold-soft); border:2px solid var(--gold); border-radius:4px; padding:8px; text-align:center;"><b>3NF</b> — No transitive FDs</div>
+        <div style="text-align:center; color:var(--gold); font-size:11px;">↓ every LHS of non-trivial FD must be a superkey</div>
+        <div style="background:var(--forest-soft); border:2px solid var(--forest); border-radius:4px; padding:8px; text-align:center;"><b>BCNF</b> — Every determinant is a superkey</div>
+        <div style="text-align:center; color:var(--forest); font-size:11px;">↓ no non-trivial multi-valued dependencies</div>
+        <div style="background:#f0fdf4; border:2px solid var(--forest); border-radius:4px; padding:8px; text-align:center;"><b>4NF / 5NF</b> — No MVDs / Join Dependencies</div>
+      </div>
+      <figcaption><b>Fig 4.1</b> · Normalization ladder — each level removes one type of anomaly. Exam questions typically ask for 1NF → 3NF or 3NF → BCNF.</figcaption>
+    </figure>
+  </div>
+
+  <!-- 4.2b FD Closure & Candidate Key Algorithm -->
+  <div class="topic" id="t-4-2b">
+    <h3>FD Closure (F⁺) &amp; Attribute Closure (X⁺) Algorithm <span class="tag hot">⭐ Needed for normalization &amp; key questions</span></h3>
+
+    <div class="box def"><span class="label">Attribute Closure (X⁺)</span>
+      Given a set of FDs F, the <mark>closure of attribute set X</mark> under F — written X⁺ — is the complete set of attributes that are functionally determined by X. Used to: (1) find candidate keys, (2) check whether a given FD is in F⁺.
+    </div>
+
+    <h4>Algorithm — 3 Steps (always write these in the exam)</h4>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body"><b>Initialise:</b> result = X (start with the attribute set itself).</div></div>
+      <div class="step"><span class="k">2</span><div class="body"><b>Repeat until no change:</b> for each FD (Y → Z) in F, if Y ⊆ result then add Z to result.</div></div>
+      <div class="step"><span class="k">3</span><div class="body"><b>Return:</b> X⁺ = final result.</div></div>
+    </div>
+
+    <h4>Worked Example — Finding Candidate Keys</h4>
+    <p>Relation: <code>R(A, B, C, D, E)</code>, F = {A→B, BC→D, D→E, E→A}</p>
+
+    <div class="steps">
+      <div class="step"><span class="k">A⁺</span><div class="body">
+        Start: {A} → A→B: add B → {A,B} → BC→D: C ∉ result, skip → D→E: D ∉, skip → E→A: E ∉, skip → second pass: no new additions.<br>
+        <b>A⁺ = {A, B}</b> — not all attributes, so A alone is <em>not</em> a superkey.
+      </div></div>
+      <div class="step"><span class="k">AC⁺</span><div class="body">
+        Start: {A,C} → A→B: add B → {A,B,C} → BC→D: B,C ∈ result, add D → {A,B,C,D} → D→E: add E → {A,B,C,D,E} → E→A: already have A.<br>
+        <b>AC⁺ = {A,B,C,D,E}</b> = all attributes → AC is a <mark>superkey</mark>.<br>
+        Minimality check: C⁺ = {C} ≠ all; A⁺ = {A,B} ≠ all → neither subset alone is a superkey → <b>AC is a candidate key</b>.
+      </div></div>
+    </div>
+
+    <div class="box tip"><span class="label">Quick Test Rule</span>
+      X is a <mark>candidate key</mark> if and only if: (1) X⁺ = all attributes of R, AND (2) no proper subset of X satisfies condition (1). Condition (1) → superkey. Condition (2) → minimal. Both together → candidate key.
+    </div>
+
+    <h4>Minimal Cover (Canonical Cover) F<sub>c</sub></h4>
+    <p>F<sub>c</sub> is an FD set equivalent to F (same closure) but reduced to its smallest form. Required for <mark>3NF synthesis algorithm</mark>. Three conditions:</p>
+    <ul>
+      <li><b>Single attribute RHS:</b> every FD in F<sub>c</sub> has exactly one attribute on the right side (decompose A→BC into A→B, A→C).</li>
+      <li><b>No extraneous LHS attributes:</b> for each FD XA→B in F<sub>c</sub>, removing A must change the closure (i.e. A is genuinely needed on the left).</li>
+      <li><b>No redundant FDs:</b> removing any single FD from F<sub>c</sub> must change the overall closure F<sub>c</sub>⁺.</li>
+    </ul>
+  </div>
+
+  <!-- 4.3b SQL — DDL, DML, DCL, Views -->
+  <div class="topic" id="t-4-3b">
+    <h3>SQL — DDL, DML, DCL &amp; Views <span class="tag hot">⭐ Dec-25 Q7 · Core exam topic</span></h3>
+
+    <div class="box def"><span class="label">Structured Query Language</span>
+      <mark>SQL</mark> is the standard declarative language for creating, querying, and managing relational databases. Commands are grouped into four categories: DDL (schema), DML (data), DCL (permissions), and TCL (transactions).
+    </div>
+
+    <h4>DDL — Data Definition Language</h4>
+    <pre><code class="language-sql">-- CREATE TABLE with constraints
+CREATE TABLE Student (
+  RollNo    INT          PRIMARY KEY,
+  Name      VARCHAR(50)  NOT NULL,
+  Course    VARCHAR(30),
+  Age       INT          CHECK (Age &gt; 0 AND Age &lt; 100),
+  DeptID    INT          REFERENCES Department(DeptID)
+);
+
+-- ALTER TABLE
+ALTER TABLE Student ADD COLUMN Email VARCHAR(100);
+ALTER TABLE Student MODIFY COLUMN Name VARCHAR(80);
+ALTER TABLE Student DROP COLUMN Age;
+
+-- DROP TABLE (permanent — deletes structure + data)
+DROP TABLE Student;
+
+-- TRUNCATE (delete all rows, keep table structure)
+TRUNCATE TABLE Student;</code></pre>
+
+    <h4>DML — Data Manipulation Language</h4>
+    <pre><code class="language-sql">-- SELECT with WHERE, GROUP BY, HAVING, ORDER BY
+SELECT DeptID, COUNT(*) AS EmpCount, AVG(Salary) AS AvgSal
+FROM Employee
+WHERE Salary &gt; 30000
+GROUP BY DeptID
+HAVING COUNT(*) &gt; 5
+ORDER BY AvgSal DESC;
+
+-- JOIN (INNER JOIN — only matching rows)
+SELECT E.Name, D.DeptName
+FROM Employee E
+JOIN Department D ON E.DeptID = D.DeptID
+WHERE E.Salary &gt; 50000;
+
+-- INSERT
+INSERT INTO Student VALUES (101, 'Rahul', 'BCA', 2, 'rahul@mail.com');
+INSERT INTO Student (RollNo, Name) VALUES (102, 'Priya');
+
+-- UPDATE
+UPDATE Employee SET Salary = Salary * 1.10 WHERE DeptID = 5;
+
+-- DELETE
+DELETE FROM Employee WHERE EmpID = 201;</code></pre>
+
+    <h4>SQL Views</h4>
+    <pre><code class="language-sql">-- Create view (virtual table — stores query, NOT data)
+CREATE VIEW HighPaid AS
+  SELECT Name, Salary, DeptID FROM Employee WHERE Salary &gt; 60000;
+
+-- Query through the view
+SELECT * FROM HighPaid WHERE DeptID = 3;
+
+-- Drop view
+DROP VIEW HighPaid;</code></pre>
+
+    <div class="box def"><span class="label">What is a VIEW?</span>
+      A <mark>VIEW</mark> is a named SQL query stored in the database — a virtual table whose data is not physically stored; only the query definition is saved. Benefits: (1) <b>Security</b> — hide sensitive columns from certain users; (2) <b>Simplicity</b> — hide complex multi-table joins behind a simple name; (3) <b>Logical data independence</b> — applications can query the view even if underlying tables change.
+    </div>
+
+    <h4>DDL vs DML vs DCL vs TCL</h4>
+    <div class="table-wrap"><table>
+      <tr><th>Category</th><th>Commands</th><th>Auto-commit?</th><th>Effect</th></tr>
+      <tr><td><b><mark>DDL</mark></b></td><td>CREATE, ALTER, DROP, TRUNCATE, RENAME</td><td>YES — cannot be rolled back</td><td>Changes the database schema / structure</td></tr>
+      <tr><td><b><mark>DML</mark></b></td><td>SELECT, INSERT, UPDATE, DELETE</td><td>NO — runs inside a transaction</td><td>Changes data rows (retrieving or modifying)</td></tr>
+      <tr><td><b><mark>DCL</mark></b></td><td>GRANT, REVOKE</td><td>YES</td><td>Changes user access permissions</td></tr>
+      <tr><td><b><mark>TCL</mark></b></td><td>COMMIT, ROLLBACK, SAVEPOINT</td><td>N/A — controls DML transactions</td><td>Controls transaction boundaries</td></tr>
+    </table></div>
+
+    <div class="box prof"><span class="label">Professor Pattern</span>
+      Examiners ask: <em>"What is the difference between DELETE and TRUNCATE?"</em> Answer: <b>DELETE</b> is DML — can be rolled back, fires row-level triggers, removes rows one at a time. <b>TRUNCATE</b> is DDL — cannot be rolled back, no triggers, removes all rows in a single operation (much faster, but dangerous). Also memorise: <code>GRANT SELECT ON Student TO Registrar;</code> as the DCL example.
     </div>
   </div>
 
@@ -732,6 +1318,21 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="step"><span class="k">1</span><div class="body"><b>Growing Phase:</b> Transaction acquires locks (Shared, Exclusive). Cannot release any locks.</div></div>
       <div class="step"><span class="k">2</span><div class="body"><b>Shrinking Phase:</b> Transaction releases locks. Cannot acquire any new locks.</div></div>
     </div>
+
+    <figure class="diagram-fig">
+      <div style="max-width:520px; margin:0 auto; font-size:12px;">
+        <div style="display:flex; align-items:flex-end; gap:0; height:80px; border-bottom:2px solid var(--ink); position:relative; margin-bottom:24px;">
+          <div style="flex:1; background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px 4px 0 0; height:70%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--brand); font-size:11px;">GROWING PHASE<br>acquire only</div>
+          <div style="width:3px; background:var(--crimson); height:100%; flex-shrink:0;"></div>
+          <div style="flex:1; background:#fef2f2; border:1.5px solid var(--crimson); border-radius:4px 4px 0 0; height:50%; display:flex; align-items:center; justify-content:center; font-weight:700; color:var(--crimson); font-size:11px;">SHRINKING PHASE<br>release only</div>
+          <div style="position:absolute; bottom:-20px; left:50%; transform:translateX(-50%); background:var(--crimson); color:#fff; padding:2px 8px; border-radius:3px; font-size:10.5px; font-weight:700; white-space:nowrap;">Lock Point (peak)</div>
+        </div>
+        <div style="display:flex; justify-content:space-between; font-size:11px; color:var(--muted); padding:0 4px; margin-top:4px;">
+          <span>Transaction starts</span><span>→ time →</span><span>Commit / Abort</span>
+        </div>
+      </div>
+      <figcaption><b>Fig 4.5</b> · 2PL protocol — the lock point is the peak where all needed locks are held. After this point only releases happen.</figcaption>
+    </figure>
 
     <h4>The Concurrency Locking Variants</h4>
     <div class="table-wrap">
