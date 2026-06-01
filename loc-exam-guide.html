@@ -131,8 +131,12 @@ th mark, thead mark{ background:transparent !important; color:inherit !important
 strong{ color:var(--ink); font-weight:700; }
 em{ color:var(--ink-soft); }
 code{ font-family:"JetBrains Mono",monospace; font-size:.86em; background:var(--paper-deep); color:var(--ink); padding:1px 6px; border-radius:3px; border:1px solid var(--rule); }
+pre{ margin:12px 0; padding:10px 12px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; font-size:12.5px; line-height:1.5; }
+pre code{ background:none; border:none; padding:0; font-size:inherit; white-space:pre; }
 .mnem{ display:block; margin:10px 0; padding:10px 14px; background:#fffbe5; border:1.5px dashed var(--gold); border-radius:4px; font-family:"Caveat",cursive; font-size:19px; color:var(--ink-soft); line-height:1.25; }
-.mnem b{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.2em; color:var(--gold); text-transform:uppercase; display:block; margin-bottom:4px; font-weight:700; }
+.mnem b{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.2em; color:var(--gold); text-transform:uppercase; display:inline; margin-bottom:0; font-weight:700; }
+.mnem > b:first-child{ display:block; margin-bottom:8px; }
+.mnem b:not(:first-child){ font-family:"Caveat",cursive; font-size:inherit; letter-spacing:0; text-transform:none; }
 
 /* ── BOXES ── */
 .box{ margin:12px 0; padding:10px 12px 10px 14px; border-radius:4px; background:var(--paper-soft); border-left:4px solid var(--brand); font-size:14px; }
@@ -242,7 +246,32 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   .cover{ padding:18px 14px 16px; }
   .cheat-grid{ grid-template-columns:1fr; }
 }
-@media print{
+/* ── DIAGRAM-MOBILE-OPT · stack multi-col diagrams, scroll wide ones, lift tiny labels (all phones) ── */
+@media(max-width:599px){
+  .diagram-fig{ overflow-x:auto; -webkit-overflow-scrolling:touch; padding:8px 6px 6px; }
+  .diagram-fig > div{ max-width:100% !important; }
+  .diagram-fig [style*="grid-template-columns:1fr 1fr 1fr"],
+  .diagram-fig [style*="grid-template-columns:1fr 1fr"],
+  .diagram-fig [style*="grid-template-columns: 1fr 1fr"],
+  .diagram-fig [style*="grid-template-columns:1fr auto"],
+  .diagram-fig [style*="repeat(3,1fr)"],
+  .diagram-fig [style*="repeat(3, 1fr)"],
+  .diagram-fig [style*="repeat(2,1fr)"],
+  .diagram-fig [style*="repeat(2, 1fr)"]{ grid-template-columns:1fr !important; }
+  .diagram-fig [style*="gap:14px"]{ gap:8px !important; }
+  .diagram-fig [style*="gap:16px"]{ gap:8px !important; }
+  .diagram-fig [style*="gap:18px"]{ gap:9px !important; }
+  .diagram-fig [style*="gap:24px"]{ gap:10px !important; }
+  .diagram-fig [style*="font-size:9px"],
+  .diagram-fig [style*="font-size:9.5px"],
+  .diagram-fig [style*="font-size:10px"],
+  .diagram-fig [style*="font-size:10.5px"]{ font-size:11.5px !important; }
+  .diagram-fig [style*="min-width:180px"],
+  .diagram-fig [style*="min-width:200px"],
+  .diagram-fig [style*="min-width:220px"],
+  .diagram-fig [style*="min-width:240px"]{ min-width:0 !important; width:100%; }
+  .diagram-fig figcaption{ font-size:10.5px; line-height:1.45; }
+}@media print{
   @page{ margin:1.4cm 1.2cm; }
   html,body{ background:#fff !important; color:#000 !important; font-size:11pt; }
   body::before,.topbar,.up{ display:none !important; }
@@ -344,6 +373,276 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       • <code>10</code>: Subtract multiplicand ($A \leftarrow A - M$), shift arithmetic right.
     </div>
   </div>
+
+  <!-- 1.3 Functional Blocks of a Computer -->
+  <div class="topic" id="t-1-3">
+    <h3>Functional Blocks of a Computer <span class="tag hot">⭐ Repeated 3×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      A digital computer is built from three functional units linked by a <b><mark>system bus</mark></b>: the <b>CPU</b> (the processor), the <b>main memory</b>, and the <b>I/O subsystem</b>. This is the classic <b><mark>Von Neumann</mark></b> organisation — instructions and data share the same memory.
+    </div>
+    <h4>The Three Functional Units</h4>
+    <ul>
+      <li><b><mark>CPU (Central Processing Unit)</mark></b> — the brain. Has three internal parts: the <b>ALU</b> (Arithmetic &amp; Logic Unit — does add, subtract, AND, OR, shift), the <b>Control Unit (CU)</b> (generates timing/control signals, sequences instruction execution), and a set of <b>registers</b> (fast on-chip storage: PC, IR, MAR, MBR, AC, general-purpose).</li>
+      <li><b><mark>Main Memory</mark></b> — stores the program (instructions) and data. Addressable in words/bytes; CPU reads/writes via the address and data buses. Volatile (RAM).</li>
+      <li><b><mark>I/O Subsystem</mark></b> — interfaces (controllers) connecting peripherals (keyboard, disk, display) to the bus. Converts external signals to a form the CPU understands.</li>
+    </ul>
+    <h4>The System Bus (three buses)</h4>
+    <ul>
+      <li><b>Address Bus</b> — carries the memory/device address; <mark>unidirectional</mark> (CPU → memory). Width fixes the addressable space (n lines ⇒ 2ⁿ locations).</li>
+      <li><b>Data Bus</b> — carries the actual data/instruction; <mark>bidirectional</mark>. Width = word size.</li>
+      <li><b>Control Bus</b> — carries timing &amp; command signals (<code>READ</code>, <code>WRITE</code>, clock, interrupt, bus-grant); bidirectional.</li>
+    </ul>
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:520px;margin:0 auto;">
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;">
+          <div style="border:2px solid var(--brand);border-radius:6px;padding:10px 6px;background:var(--brand-soft);">
+            <div style="font-weight:700;font-size:12px;color:var(--brand-deep);">CPU</div>
+            <div style="font-size:10px;color:var(--ink-soft);margin-top:4px;line-height:1.45;">ALU<br>Control Unit<br>Registers</div>
+          </div>
+          <div style="border:2px solid var(--ink);border-radius:6px;padding:10px 6px;background:#fffefb;">
+            <div style="font-weight:700;font-size:12px;">Main Memory</div>
+            <div style="font-size:10px;color:var(--ink-soft);margin-top:4px;line-height:1.45;">Instructions<br>+ Data</div>
+          </div>
+          <div style="border:2px solid var(--ink);border-radius:6px;padding:10px 6px;background:#fffefb;">
+            <div style="font-weight:700;font-size:12px;">I/O Subsystem</div>
+            <div style="font-size:10px;color:var(--ink-soft);margin-top:4px;line-height:1.45;">Controllers<br>Peripherals</div>
+          </div>
+        </div>
+        <div style="height:14px;border-left:2px solid var(--muted);border-right:2px solid var(--muted);margin:0 16%;"></div>
+        <div style="border:2px solid var(--ink);border-radius:6px;padding:8px;background:var(--paper-soft);">
+          <div style="font-weight:700;font-size:11px;letter-spacing:.08em;">SYSTEM BUS</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:6px;font-size:10px;color:var(--ink-soft);">
+            <div style="border-top:2px solid var(--brand);padding-top:3px;">Address Bus<br>(unidirectional)</div>
+            <div style="border-top:2px solid var(--brand);padding-top:3px;">Data Bus<br>(bidirectional)</div>
+            <div style="border-top:2px solid var(--brand);padding-top:3px;">Control Bus<br>(bidirectional)</div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>Fig 1.1</b> · Von Neumann functional blocks — CPU, Memory, I/O communicating over a three-line system bus</figcaption>
+    </figure>
+    <div class="box why">
+      <span class="label">Why this matters</span>
+      The single shared memory bus creates the <b><mark>Von Neumann bottleneck</mark></b>: the CPU cannot fetch an instruction and read/write data in the same cycle, since both contend for one bus. The <b>Harvard architecture</b> fixes this by giving instructions and data separate memories and buses.
+    </div>
+  </div>
+
+  <!-- 1.4 Instruction Execution Cycle & RTL -->
+  <div class="topic" id="t-1-4">
+    <h3>Instruction Execution Cycle &amp; RTL <span class="tag hot">⭐ Repeated 4×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      Every instruction passes through the <b><mark>Fetch → Decode → Execute</mark></b> cycle. <b><mark>Register Transfer Language (RTL)</mark></b> is the notation that describes each micro-operation as a transfer between registers, written <code>destination ← source</code>.
+    </div>
+    <h4>Key Registers in the Cycle</h4>
+    <ul>
+      <li><b><mark>PC</mark></b> (Program Counter) — holds the address of the <b>next</b> instruction.</li>
+      <li><b><mark>MAR</mark></b> (Memory Address Register) — holds the address being sent on the address bus.</li>
+      <li><b><mark>MBR / MDR</mark></b> (Memory Buffer / Data Register) — holds data just read from / to be written to memory.</li>
+      <li><b><mark>IR</mark></b> (Instruction Register) — holds the current instruction being decoded.</li>
+      <li><b>ALU + AC</b> (Accumulator) — perform and hold the result of the operation.</li>
+    </ul>
+    <h4>RTL of the Fetch Cycle</h4>
+    <div class="steps">
+      <div class="step"><span class="k">t₀</span><div class="body"><code>MAR &larr; PC</code> — copy the next-instruction address into the MAR (place it on the address bus).</div></div>
+      <div class="step"><span class="k">t₁</span><div class="body"><code>MBR &larr; Memory[MAR]</code>, &nbsp;<code>PC &larr; PC + 1</code> — read the instruction from memory into MBR; increment PC to point past it.</div></div>
+      <div class="step"><span class="k">t₂</span><div class="body"><code>IR &larr; MBR</code> — transfer the fetched word into the Instruction Register. <b>Fetch complete.</b></div></div>
+      <div class="step"><span class="k">Decode</span><div class="body">Control Unit interprets the opcode field of <code>IR</code> to decide which micro-routine runs next.</div></div>
+      <div class="step"><span class="k">Execute</span><div class="body">Operands fetched (per addressing mode), ALU performs the operation, e.g. <code>AC &larr; AC + MBR</code>. Then loop back to fetch.</div></div>
+    </div>
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:column;gap:0;align-items:center;max-width:300px;margin:0 auto;">
+        <div style="border:2px solid var(--brand);border-radius:6px;padding:9px 16px;background:var(--brand-soft);font-weight:700;font-size:12px;color:var(--brand-deep);width:200px;">FETCH<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">MAR&larr;PC; MBR&larr;M[MAR]; IR&larr;MBR</span></div>
+        <div style="height:12px;border-left:2px solid var(--muted);"></div>
+        <div style="border:2px solid var(--ink);border-radius:6px;padding:9px 16px;background:#fffefb;font-weight:700;font-size:12px;width:200px;">DECODE<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">CU reads opcode in IR</span></div>
+        <div style="height:12px;border-left:2px solid var(--muted);"></div>
+        <div style="border:2px solid var(--ink);border-radius:6px;padding:9px 16px;background:#fffefb;font-weight:700;font-size:12px;width:200px;">EXECUTE<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">ALU operates; result &rarr; AC</span></div>
+        <div style="font-size:18px;color:var(--brand);margin-top:4px;">&#8635;</div>
+        <div style="font-size:10px;color:var(--muted);">loop to next instruction</div>
+      </div>
+      <figcaption><b>Fig 1.2</b> · The instruction execution cycle — Fetch, Decode, Execute, repeat</figcaption>
+    </figure>
+  </div>
+
+  <!-- 1.5 Signed Number Representation -->
+  <div class="topic" id="t-1-5">
+    <h3>Signed Number Representation <span class="tag hot">⭐ Repeated 5×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      Three schemes encode the sign of a binary integer. In all three the <b>MSB is the sign bit</b> (<code>0</code> = positive, <code>1</code> = negative). They differ in how the <b>magnitude</b> of a negative number is stored.
+    </div>
+    <ul>
+      <li><b><mark>Sign-Magnitude</mark></b> — sign bit + true magnitude. Simple to read but has <b>two zeros</b> (<code>+0</code>, <code>−0</code>) and needs separate add/subtract logic.</li>
+      <li><b><mark>1's Complement</mark></b> — negate by inverting <b>every</b> bit. Also has two zeros; addition needs an <b>end-around carry</b>.</li>
+      <li><b><mark>2's Complement</mark></b> — negate by inverting all bits then <b>adding 1</b>. <b>Single zero</b>, subtraction = addition of the negative, no end-around carry. This is why <mark>all modern CPUs use 2's complement</mark>.</li>
+    </ul>
+    <h4>Worked Example — represent +13 and −13 in 8-bit</h4>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body"><b>+13 magnitude</b> in binary = <code>0001101</code> (7 magnitude bits). With sign bit 0 ⇒ <code>+13 = </code><mark><b><code>0000 1101</code></b></mark> in <b>all three</b> schemes (positives are identical).</div></div>
+      <div class="step"><span class="k">2</span><div class="body"><b>−13 Sign-Magnitude</b>: keep magnitude <code>0001101</code>, flip sign bit to 1 ⇒ <mark><b><code>1000 1101</code></b></mark>.</div></div>
+      <div class="step"><span class="k">3</span><div class="body"><b>−13 1's Complement</b>: invert every bit of <code>0000 1101</code> ⇒ <mark><b><code>1111 0010</code></b></mark>.</div></div>
+      <div class="step"><span class="k">4</span><div class="body"><b>−13 2's Complement</b>: 1's complement <code>1111 0010</code> + 1 ⇒ <mark><b><code>1111 0011</code></b></mark>.</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Property</th><th>Sign-Magnitude</th><th>1's Complement</th><th>2's Complement</th></tr>
+        <tr><td><b>+13 (8-bit)</b></td><td><code>0000 1101</code></td><td><code>0000 1101</code></td><td><code>0000 1101</code></td></tr>
+        <tr><td><b>−13 (8-bit)</b></td><td><code>1000 1101</code></td><td><code>1111 0010</code></td><td><code>1111 0011</code></td></tr>
+        <tr><td><b>Number of zeros</b></td><td>Two (±0)</td><td>Two (±0)</td><td>One</td></tr>
+        <tr><td><b>Range (n-bit)</b></td><td>−(2ⁿ⁻¹−1) … +(2ⁿ⁻¹−1)</td><td>−(2ⁿ⁻¹−1) … +(2ⁿ⁻¹−1)</td><td>−2ⁿ⁻¹ … +(2ⁿ⁻¹−1)</td></tr>
+        <tr><td><b>Subtraction</b></td><td>Separate hardware</td><td>End-around carry</td><td>Add the negative (simplest)</td></tr>
+      </table>
+    </div>
+    <div class="box tip">
+      <span class="label">Exam check</span>
+      Verify by adding: <code>0000 1101 (+13) + 1111 0011 (−13) = 1 0000 0000</code>. Discard the carry-out of the 8th bit ⇒ <code>0000 0000 = 0</code> ✓. That dropped carry is exactly why 2's-complement arithmetic "just works".
+    </div>
+  </div>
+
+  <!-- 1.6 Adders -->
+  <div class="topic" id="t-1-6">
+    <h3>Computer Arithmetic — Ripple Carry vs Carry Look-Ahead Adder <span class="tag hot">⭐ Repeated 3×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      An n-bit adder is built from n <b><mark>full adders</mark></b>. A full adder takes Aᵢ, Bᵢ, Cᵢ and outputs sum <code>Sᵢ = Aᵢ ⊕ Bᵢ ⊕ Cᵢ</code> and carry <code>Cᵢ₊₁ = Aᵢ·Bᵢ + (Aᵢ⊕Bᵢ)·Cᵢ</code>.
+    </div>
+    <h4>Ripple Carry Adder (RCA)</h4>
+    <ul>
+      <li>Full adders are <mark>cascaded</mark> — the carry-out of stage i feeds the carry-in of stage i+1.</li>
+      <li>Stage i cannot compute its true sum until the carry has <mark>rippled</mark> through all lower stages.</li>
+      <li><b>Slow:</b> worst-case delay grows linearly, <code>≈ n × (gate delay)</code> for n bits.</li>
+    </ul>
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:row-reverse;gap:0;align-items:center;justify-content:center;max-width:520px;margin:0 auto;">
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="font-size:10px;color:var(--ink-soft);">A₀ B₀</div>
+          <div style="border:2px solid var(--brand);border-radius:5px;padding:8px 10px;background:var(--brand-soft);font-weight:700;font-size:11px;">FA₀</div>
+          <div style="font-size:10px;color:var(--ink-soft);">S₀</div>
+        </div>
+        <div style="width:24px;border-top:2px solid var(--brand);margin-bottom:18px;text-align:center;font-size:9px;color:var(--brand-deep);">C₁&rarr;</div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="font-size:10px;color:var(--ink-soft);">A₁ B₁</div>
+          <div style="border:2px solid var(--brand);border-radius:5px;padding:8px 10px;background:var(--brand-soft);font-weight:700;font-size:11px;">FA₁</div>
+          <div style="font-size:10px;color:var(--ink-soft);">S₁</div>
+        </div>
+        <div style="width:24px;border-top:2px solid var(--brand);margin-bottom:18px;text-align:center;font-size:9px;color:var(--brand-deep);">C₂&rarr;</div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="font-size:10px;color:var(--ink-soft);">A₂ B₂</div>
+          <div style="border:2px solid var(--brand);border-radius:5px;padding:8px 10px;background:var(--brand-soft);font-weight:700;font-size:11px;">FA₂</div>
+          <div style="font-size:10px;color:var(--ink-soft);">S₂</div>
+        </div>
+        <div style="width:24px;border-top:2px solid var(--brand);margin-bottom:18px;text-align:center;font-size:9px;color:var(--brand-deep);">C₃&rarr;</div>
+        <div style="display:flex;flex-direction:column;align-items:center;">
+          <div style="font-size:10px;color:var(--ink-soft);">A₃ B₃</div>
+          <div style="border:2px solid var(--brand);border-radius:5px;padding:8px 10px;background:var(--brand-soft);font-weight:700;font-size:11px;">FA₃</div>
+          <div style="font-size:10px;color:var(--ink-soft);">S₃</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 1.3</b> · 4-bit ripple carry adder — carry propagates FA₀ &rarr; FA₃ (right to left)</figcaption>
+    </figure>
+    <h4>Carry Look-Ahead Adder (CLA)</h4>
+    <p>The CLA computes all carries <mark>in parallel</mark> from the inputs, removing the ripple. For each bit define two signals:</p>
+    <ul>
+      <li><b><mark>Generate</mark></b> <code>Gᵢ = Aᵢ · Bᵢ</code> — this stage produces a carry regardless of carry-in (both inputs 1).</li>
+      <li><b><mark>Propagate</mark></b> <code>Pᵢ = Aᵢ ⊕ Bᵢ</code> — this stage passes an incoming carry through.</li>
+      <li>Carry recurrence: <code>Cᵢ₊₁ = Gᵢ + Pᵢ · Cᵢ</code>.</li>
+    </ul>
+    <p>Expanding the recurrence gives each carry as a direct function of the inputs and C₀:</p>
+    <div class="steps">
+      <div class="step"><span class="k">C₁</span><div class="body"><code>C₁ = G₀ + P₀·C₀</code></div></div>
+      <div class="step"><span class="k">C₂</span><div class="body"><code>C₂ = G₁ + P₁·G₀ + P₁·P₀·C₀</code></div></div>
+      <div class="step"><span class="k">C₃</span><div class="body"><code>C₃ = G₂ + P₂·G₁ + P₂·P₁·G₀ + P₂·P₁·P₀·C₀</code></div></div>
+    </div>
+    <div class="box why">
+      <span class="label">Why CLA is faster</span>
+      Each carry above is a <b>two-level (AND-OR) expression</b> of inputs already available — so every carry is ready after a <mark>constant ≈2-gate delay</mark>, independent of n, versus the RCA's n-stage ripple. The cost is far more gates (the expressions grow with i), so CLA trades hardware area for speed. Real ALUs build wide adders by chaining 4-bit CLA blocks.
+    </div>
+  </div>
+
+  <!-- 1.7 Booth's Multiplier -->
+  <div class="topic" id="t-1-7">
+    <h3>Booth's Signed Multiplier <span class="tag hot">⭐ Repeated 4×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      <b><mark>Booth's algorithm</mark></b> multiplies two <b>signed</b> 2's-complement numbers directly (no sign correction). It scans the multiplier's bit pair <code>(Q₀, Q₋₁)</code> and acts on <mark>runs of 1's</mark>, replacing many additions with one add + one subtract per run.
+    </div>
+    <h4>Recoding Rule (examine Q₀ Q₋₁)</h4>
+    <ul>
+      <li><code>0 0</code> or <code>1 1</code> → no arithmetic, just <b>arithmetic shift right</b> (ASR) of A·Q·Q₋₁.</li>
+      <li><code>0 1</code> → <code>A ← A + M</code>, then ASR. (end of a run of 1's)</li>
+      <li><code>1 0</code> → <code>A ← A − M</code>, then ASR. (start of a run of 1's)</li>
+    </ul>
+    <h4>Worked Example — (−5) × (+2) in 4-bit</h4>
+    <p>M = −5 = <code>1011</code>, −M = <code>0101</code>, multiplier Q = +2 = <code>0010</code>. Initialise A = <code>0000</code>, Q₋₁ = <code>0</code>. Run n = 4 cycles. Expected product = −10.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Step</th><th>Q₀Q₋₁</th><th>Action</th><th>A</th><th>Q</th><th>Q₋₁</th></tr>
+        <tr><td>Init</td><td>—</td><td>—</td><td><code>0000</code></td><td><code>0010</code></td><td><code>0</code></td></tr>
+        <tr><td>1</td><td>0&nbsp;0</td><td>ASR only</td><td><code>0000</code></td><td><code>0001</code></td><td><code>0</code></td></tr>
+        <tr><td>2</td><td>1&nbsp;0</td><td>A←A−M; ASR</td><td><code>0010</code></td><td><code>1000</code></td><td><code>1</code></td></tr>
+        <tr><td>3</td><td>0&nbsp;1</td><td>A←A+M; ASR</td><td><code>1110</code></td><td><code>1100</code></td><td><code>0</code></td></tr>
+        <tr><td>4</td><td>0&nbsp;0</td><td>ASR only</td><td><code>1111</code></td><td><code>0110</code></td><td><code>0</code></td></tr>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="k">2</span><div class="body">A−M = <code>0000 + 0101 = 0101</code>; concatenate <code>0101 1000 0</code>, ASR (sign-fill) → A=<code>0010</code>, Q=<code>1000</code>, Q₋₁=<code>1</code>.</div></div>
+      <div class="step"><span class="k">3</span><div class="body">A+M = <code>0010 + 1011 = 1101</code>; concatenate <code>1101 1000 1</code>, ASR → A=<code>1110</code>, Q=<code>1100</code>, Q₋₁=<code>0</code>.</div></div>
+      <div class="step"><span class="k">4</span><div class="body">ASR of <code>1110 1100 0</code> → A=<code>1111</code>, Q=<code>0110</code>.</div></div>
+      <div class="step"><span class="k">✓</span><div class="body">Product = <code>A:Q</code> = <mark><b><code>1111 0110</code></b></mark>. As 2's complement this is −10. Check: <code>−5 × 2 = −10</code> ✓.</div></div>
+    </div>
+    <div class="box warn">
+      <span class="label">Examiner trap</span>
+      The shift is an <b>arithmetic</b> shift right — the sign bit (MSB of A) is <mark>copied, not zero-filled</mark>. Zero-filling here gives a wrong product for negative values. Also remember to extend the register pair by Q₋₁ before shifting.
+    </div>
+  </div>
+
+  <!-- 1.8 Division -->
+  <div class="topic" id="t-1-8">
+    <h3>Restoring vs Non-Restoring Division <span class="tag hot">⭐ Repeated 3×</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      Both algorithms divide an unsigned dividend (in register pair <b>A:Q</b>, A = remainder, Q = quotient) by a divisor <b>M</b> over n steps. Each step <mark>shifts A:Q left</mark> then either subtracts or adds M.
+    </div>
+    <h4>Restoring Algorithm — repeat n times</h4>
+    <ul>
+      <li>Shift A:Q left by 1.</li>
+      <li><code>A ← A − M</code>.</li>
+      <li>If <code>A &lt; 0</code> (MSB = 1): set <code>Q₀ = 0</code> and <mark>restore</mark> by <code>A ← A + M</code>.</li>
+      <li>Else (<code>A ≥ 0</code>): set <code>Q₀ = 1</code> (no restore).</li>
+    </ul>
+    <h4>Non-Restoring Algorithm — repeat n times</h4>
+    <ul>
+      <li>If <code>A ≥ 0</code>: shift left, <code>A ← A − M</code>. &nbsp; If <code>A &lt; 0</code>: shift left, <code>A ← A + M</code>.</li>
+      <li>Set <code>Q₀ = 1</code> if the new A ≥ 0, else <code>Q₀ = 0</code>.</li>
+      <li><mark>No separate restore step</mark> — a wrong subtraction is corrected by adding M in the <b>next</b> cycle. If A is negative after the last step, do one final <code>A ← A + M</code>.</li>
+    </ul>
+    <h4>Worked Example — 7 ÷ 3 (4-bit, restoring)</h4>
+    <p>Dividend Q = 7 = <code>0111</code>, divisor M = 3 = <code>0011</code>, A = <code>0000</code>. Run n = 4 cycles. Expected: quotient = 2, remainder = 1.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Step</th><th>Operation</th><th>A</th><th>Q</th><th>Q₀ set</th></tr>
+        <tr><td>Init</td><td>—</td><td><code>0000</code></td><td><code>0111</code></td><td>—</td></tr>
+        <tr><td>1</td><td>shift; A−M=<code>1101</code> (&lt;0) → restore</td><td><code>0000</code></td><td><code>1110</code></td><td><code>0</code></td></tr>
+        <tr><td>2</td><td>shift; A−M=<code>1110</code> (&lt;0) → restore</td><td><code>0001</code></td><td><code>1100</code></td><td><code>0</code></td></tr>
+        <tr><td>3</td><td>shift; A−M=<code>0000</code> (≥0)</td><td><code>0000</code></td><td><code>1001</code></td><td><code>1</code></td></tr>
+        <tr><td>4</td><td>shift; A−M=<code>1110</code> (&lt;0) → restore</td><td><code>0001</code></td><td><code>0010</code></td><td><code>0</code></td></tr>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="k">✓</span><div class="body">Quotient = Q = <mark><b><code>0010</code> = 2</code></b></mark>, &nbsp; Remainder = A = <mark><b><code>0001</code> = 1</code></b></mark>. Check: <code>3 × 2 + 1 = 7</code> ✓.</div></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Property</th><th>Restoring</th><th>Non-Restoring</th></tr>
+        <tr><td><b>Restore step</b></td><td>Yes — adds M back whenever A &lt; 0</td><td>No — fixes error in the next cycle</td></tr>
+        <tr><td><b>Operations / cycle</b></td><td>Up to 2 (subtract + restore add)</td><td>Exactly 1 (add or subtract)</td></tr>
+        <tr><td><b>Speed</b></td><td>Slower (extra adds)</td><td>Faster (fewer adds)</td></tr>
+        <tr><td><b>End correction</b></td><td>None needed</td><td>Final add M if A &lt; 0</td></tr>
+      </table>
+    </div>
+    <div class="mnem"><b>Division</b> "<b>R</b>estore = <b>R</b>etry add when negative; <b>N</b>on-restore = <b>N</b>ever undo, just flip the next op."</div>
+  </div>
+
 </section>
 
 <!-- ══════════════════════════════════════════════════════════ -->
@@ -401,6 +700,210 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       The CPU is patient because its instructions can wait. High-speed I/O peripherals are <b><mark>volatile</mark></b> and impatient — if incoming data blocks are not read instantly, they will overwrite and be lost. Thus, DMA holds higher bus priority.
     </div>
   </div>
+
+  <!-- 2.3 Semiconductor Memory Technologies -->
+  <div class="topic" id="t-2-3">
+    <h3>Semiconductor Memory Technologies <span class="tag hot">⭐ Guaranteed 10M</span></h3>
+    <div class="box def"><span class="label">RAM vs ROM</span>
+      <mark>RAM (Random Access Memory)</mark> is read/write and <mark>volatile</mark> — contents vanish when power is removed. It holds running programs and data. <mark>ROM (Read Only Memory)</mark> is read-mostly and <mark>non-volatile</mark> — contents survive power-off. It holds the bootstrap loader / BIOS / firmware. Both are "random access" (any cell reached in equal time, unlike tape).
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="max-width:560px; margin:0 auto; text-align:left;">
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px 10px; text-align:center; font-weight:700;">Semiconductor Memory</div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <div style="flex:1; border-top:2px solid var(--brand); padding-top:8px;">
+            <div style="background:var(--paper-deep); border:1.5px solid var(--rule); border-radius:4px; padding:6px 8px; text-align:center; font-weight:700;">RAM (volatile)</div>
+            <div style="display:flex; gap:6px; margin-top:8px;">
+              <div style="flex:1; background:var(--gold-soft); border:1px solid var(--gold); border-radius:4px; padding:6px;">
+                <b>SRAM</b><p style="margin:2px 0 0; font-size:12px;">flip-flops · fast · cache</p>
+              </div>
+              <div style="flex:1; background:var(--gold-soft); border:1px solid var(--gold); border-radius:4px; padding:6px;">
+                <b>DRAM</b><p style="margin:2px 0 0; font-size:12px;">capacitor · dense · main mem</p>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1; border-top:2px solid var(--brand); padding-top:8px;">
+            <div style="background:var(--paper-deep); border:1.5px solid var(--rule); border-radius:4px; padding:6px 8px; text-align:center; font-weight:700;">ROM (non-volatile)</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-top:8px;">
+              <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:4px; padding:6px; font-size:12px;"><b>PROM</b><br>write once</div>
+              <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:4px; padding:6px; font-size:12px;"><b>EPROM</b><br>UV-erase</div>
+              <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:4px; padding:6px; font-size:12px;"><b>EEPROM</b><br>electrically erase</div>
+              <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:4px; padding:6px; font-size:12px;"><b>Flash</b><br>block-erase</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.3</b> · Classification of semiconductor memory technologies</figcaption>
+    </figure>
+
+    <h5>SRAM vs DRAM</h5>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>SRAM (Static)</th><th>DRAM (Dynamic)</th></tr>
+        <tr><td><b>Cell structure</b></td><td>6 transistors forming a <mark>flip-flop</mark> (latch).</td><td>1 transistor + 1 <mark>capacitor</mark> (charge = bit).</td></tr>
+        <tr><td><b>Refresh</b></td><td>No refresh — holds value while powered.</td><td>Needs periodic <mark>refresh</mark> (capacitor leaks charge, every few ms).</td></tr>
+        <tr><td><b>Speed</b></td><td>Faster (no refresh delay).</td><td>Slower.</td></tr>
+        <tr><td><b>Density</b></td><td>Low (6 transistors/bit → bulky).</td><td>High (1 transistor/bit → many cells per chip).</td></tr>
+        <tr><td><b>Cost / bit</b></td><td>Expensive.</td><td>Cheap.</td></tr>
+        <tr><td><b>Typical use</b></td><td>CPU <mark>cache</mark> (L1/L2/L3).</td><td><mark>Main memory</mark> (RAM sticks).</td></tr>
+      </table>
+    </div>
+
+    <h5>ROM Family</h5>
+    <ul>
+      <li><b><mark>PROM</mark></b> (Programmable ROM): blank from factory, user burns it <b>once</b> by blowing fuses. Cannot be changed.</li>
+      <li><b><mark>EPROM</mark></b> (Erasable PROM): erased by exposing the chip to <mark>UV light</mark> through a quartz window, then re-programmed.</li>
+      <li><b><mark>EEPROM</mark></b> (Electrically Erasable PROM): erased/rewritten <mark>electrically</mark>, byte-by-byte, in-circuit — no UV needed.</li>
+      <li><b><mark>Flash</mark></b>: an EEPROM variant erased in large <mark>blocks/sectors</mark> (faster bulk erase). Basis of SSDs, pen-drives, BIOS chips.</li>
+    </ul>
+    <div class="box tip"><span class="label">Memory hook</span>
+      <b>PROM</b> = burn once · <b>EPROM</b> = UV-erase · <b>EEPROM</b> = electric byte-erase · <b>Flash</b> = electric block-erase. Erase flexibility increases left → right.
+    </div>
+  </div>
+
+  <!-- 2.4 Memory Organization -->
+  <div class="topic" id="t-2-4">
+    <h3>Memory Organization &amp; Address Lines <span class="tag hot">⭐ Numerical</span></h3>
+    <p>A memory chip is a 2-D grid of cells. The cells are grouped into <mark>words</mark> (a word = the number of bits read/written in one access, e.g. 8 bits). The CPU selects one word using the <mark>address bus</mark> and transfers it over the <mark>data bus</mark>.</p>
+
+    <div class="box def"><span class="label">The Address-Line Rule</span>
+      A memory with <b>2<sup>n</sup> words</b> needs <b>n address lines</b> (because n bits address 2<sup>n</sup> distinct locations). The number of <b>data lines = word size in bits</b>. Capacity = (number of words) × (word size).
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="max-width:520px; margin:0 auto; text-align:center;">
+        <div style="display:flex; align-items:center; justify-content:center; gap:10px; flex-wrap:wrap;">
+          <div style="background:var(--gold-soft); border:1.5px solid var(--gold); border-radius:4px; padding:8px 10px;"><b>n address lines</b><br><span style="font-size:12px;">select 1 of 2<sup>n</sup> words</span></div>
+          <div style="font-size:22px; color:var(--brand);">→</div>
+          <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:8px 10px;"><b>Memory Chip</b><br><span style="font-size:12px;">2<sup>n</sup> words × w bits</span></div>
+          <div style="font-size:22px; color:var(--brand);">↔</div>
+          <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:8px 10px;"><b>w data lines</b><br><span style="font-size:12px;">carry the selected word</span></div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.4</b> · Address lines select the word; data lines carry it</figcaption>
+    </figure>
+
+    <h5>Worked Example — 4K × 8 memory</h5>
+    <div class="steps">
+      <div class="step">Capacity = <b>4K words</b>, each word <b>8 bits</b> wide.</div>
+      <div class="step">Number of words = 4K = 4 × 1024 = 4096 = <b>2<sup>12</sup></b>.</div>
+      <div class="step">Address lines = n where 2<sup>n</sup> = 2<sup>12</sup> → <mark><b>12 address lines</b></mark>.</div>
+      <div class="step">Data lines = word size = <mark><b>8 data lines</b></mark>.</div>
+    </div>
+    <div class="box tip"><span class="label">Quick conversions</span>
+      1K = 2<sup>10</sup> · 1M = 2<sup>20</sup> · 1G = 2<sup>30</sup>. So <b>1K×8</b> → 10 addr / 8 data; <b>16K×8</b> → 14 addr / 8 data; <b>1M×16</b> → 20 addr / 16 data.
+    </div>
+  </div>
+
+  <!-- 2.5 I/O Transfer Modes -->
+  <div class="topic" id="t-2-5">
+    <h3>I/O Transfer Modes — Programmed vs Interrupt vs DMA <span class="tag hot">⭐ Repeated</span></h3>
+    <p>Three techniques move data between an I/O device and memory, differing in <mark>how much the CPU is involved</mark>.</p>
+
+    <figure class="diagram-fig">
+      <div style="display:flex; gap:10px; max-width:560px; margin:0 auto; text-align:left; flex-wrap:wrap;">
+        <div style="flex:1; min-width:150px; background:var(--gold-soft); border:1.5px solid var(--gold); border-radius:4px; padding:10px;">
+          <b>Programmed I/O</b>
+          <p style="margin:4px 0 0; font-size:12.5px;">CPU <mark>polls</mark> the status flag in a busy-wait loop. CPU does nothing else — 100% CPU-bound.</p>
+        </div>
+        <div style="flex:1; min-width:150px; background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:10px;">
+          <b>Interrupt-Driven</b>
+          <p style="margin:4px 0 0; font-size:12.5px;">Device <mark>interrupts</mark> CPU when ready. CPU runs other work meanwhile, services on demand.</p>
+        </div>
+        <div style="flex:1; min-width:150px; background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:10px;">
+          <b>DMA</b>
+          <p style="margin:4px 0 0; font-size:12.5px;">DMA controller transfers block <mark>bypassing the CPU</mark>; CPU only set-up + final interrupt.</p>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.5</b> · CPU-polls vs CPU-interrupted vs CPU-bypassed</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Programmed I/O</th><th>Interrupt-Driven I/O</th><th>DMA</th></tr>
+        <tr><td><b>CPU involvement</b></td><td>Highest — CPU polls + moves every word.</td><td>Medium — CPU moves words but only after interrupt.</td><td>Lowest — DMA moves data; CPU free.</td></tr>
+        <tr><td><b>CPU waste</b></td><td>Huge (busy-wait loop).</td><td>Low (no polling).</td><td>Minimal.</td></tr>
+        <tr><td><b>Data path</b></td><td>Device → CPU → memory.</td><td>Device → CPU → memory.</td><td>Device ↔ memory <mark>directly</mark>.</td></tr>
+        <tr><td><b>Speed</b></td><td>Slow.</td><td>Moderate.</td><td>Fast (block transfer).</td></tr>
+        <tr><td><b>Best for</b></td><td>Slow devices, simple systems.</td><td>Moderate-speed, sporadic devices (keyboard).</td><td>High-speed bulk (disk, network).</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2.6 Interrupts & Process State Transitions -->
+  <div class="topic" id="t-2-6">
+    <h3>Interrupts &amp; Process State Transitions <span class="tag hot">⭐ Guaranteed</span></h3>
+    <div class="box def"><span class="label">Interrupt</span>
+      An <mark>interrupt</mark> is a signal that forces the CPU to suspend the current program, save its state, and run an <mark>Interrupt Service Routine (ISR)</mark>, then resume. It lets the CPU respond to events without wasteful polling.
+    </div>
+
+    <h5>Types of Interrupts</h5>
+    <ul>
+      <li><b><mark>Hardware interrupt</mark></b>: raised by a device (disk done, key pressed, timer tick) on a physical line.</li>
+      <li><b><mark>Software interrupt</mark></b> (trap): raised by an instruction (e.g. <code>INT</code>, a system call) inside the program.</li>
+      <li><b><mark>Maskable</mark></b>: can be disabled/ignored by clearing the interrupt-enable flag (most device interrupts).</li>
+      <li><b><mark>Non-maskable (NMI)</mark></b>: cannot be disabled — reserved for critical faults (power failure, memory parity error).</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <div style="max-width:540px; margin:0 auto; text-align:left;">
+        <div style="display:grid; grid-template-columns:30px 1fr; gap:8px 10px; align-items:start;">
+          <div style="background:var(--brand); color:var(--paper); border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700;">1</div>
+          <div style="border-bottom:1px dashed var(--rule); padding-bottom:6px;">Device raises <b>interrupt request</b> (IRQ) on the bus.</div>
+          <div style="background:var(--brand); color:var(--paper); border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700;">2</div>
+          <div style="border-bottom:1px dashed var(--rule); padding-bottom:6px;">CPU finishes current instruction, then <b>saves context</b> (PC + registers) on the stack.</div>
+          <div style="background:var(--brand); color:var(--paper); border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700;">3</div>
+          <div style="border-bottom:1px dashed var(--rule); padding-bottom:6px;">CPU jumps to the <b>ISR</b> address from the interrupt vector table.</div>
+          <div style="background:var(--brand); color:var(--paper); border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700;">4</div>
+          <div style="border-bottom:1px dashed var(--rule); padding-bottom:6px;">ISR services the device.</div>
+          <div style="background:var(--forest); color:var(--paper); border-radius:50%; width:26px; height:26px; text-align:center; line-height:26px; font-weight:700;">5</div>
+          <div>CPU <b>restores context</b> and resumes the interrupted program.</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.6</b> · The interrupt cycle (request → save → ISR → restore)</figcaption>
+    </figure>
+
+    <h5>Role in Process State Transitions</h5>
+    <p>Interrupts drive the OS scheduler's state changes:</p>
+    <ul>
+      <li>A process issues an I/O request → it is moved <b><mark>Running → Blocked</mark></b> (waiting) while the device works.</li>
+      <li>The device finishes and raises an <b>I/O-completion interrupt</b> → the ISR moves the process <b><mark>Blocked → Ready</mark></b>.</li>
+      <li>A <b>timer interrupt</b> expires the running process's time-slice → it is preempted <b><mark>Running → Ready</mark></b>, letting the scheduler dispatch another.</li>
+    </ul>
+  </div>
+
+  <!-- 2.7 Privileged vs Non-Privileged -->
+  <div class="topic" id="t-2-7">
+    <h3>Privileged vs Non-Privileged Instructions</h3>
+    <div class="box def"><span class="label">Two execution modes</span>
+      The CPU runs in <mark>kernel mode</mark> (privileged, full hardware access) or <mark>user mode</mark> (restricted). <mark>Privileged instructions</mark> may execute only in kernel mode; attempting one in user mode triggers a trap. This protects the system from buggy/malicious user programs.
+    </div>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Aspect</th><th>Privileged</th><th>Non-Privileged</th></tr>
+        <tr><td><b>Mode</b></td><td><mark>Kernel</mark> mode only.</td><td>Runs in <mark>user</mark> mode.</td></tr>
+        <tr><td><b>Examples</b></td><td><code>HALT</code>, direct I/O instructions, set-timer, switch context, modify memory-map registers.</td><td><code>ADD</code>, <code>MOV</code>, <code>SUB</code>, arithmetic/logic, register-to-register moves.</td></tr>
+        <tr><td><b>If misused</b></td><td>User-mode attempt → trap to OS.</td><td>Always allowed.</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <!-- 2.8 I/O Interfaces: SCSI & USB -->
+  <div class="topic" id="t-2-8">
+    <h3>I/O Device Interfaces — SCSI &amp; USB <span class="tag">low-yield · in syllabus</span></h3>
+    <p><mark>SCSI</mark> (Small Computer System Interface) and <mark>USB</mark> (Universal Serial Bus) are standard interfaces connecting peripherals to the system.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>SCSI</th><th>USB</th></tr>
+        <tr><td><b>Type</b></td><td>Parallel (older) / serial (SAS), high-end.</td><td><mark>Serial</mark>, consumer-standard.</td></tr>
+        <tr><td><b>Topology</b></td><td>Daisy-chain bus (up to 7-15 devices), needs termination.</td><td><mark>Tiered-star</mark> via hubs (up to 127 devices).</td></tr>
+        <tr><td><b>Speed</b></td><td>High; used for servers / disk arrays.</td><td>1.5 Mbps → 5–20 Gbps (USB 3.x/4).</td></tr>
+        <tr><td><b>Hot-plug / power</b></td><td>Generally not hot-pluggable; separate power.</td><td><mark>Hot-pluggable</mark>, supplies bus power.</td></tr>
+        <tr><td><b>Typical devices</b></td><td>Server hard disks, tape drives, scanners.</td><td>Keyboard, mouse, pen-drive, printer, phone.</td></tr>
+      </table>
+    </div>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════ -->
@@ -425,6 +928,196 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <li><b>Data Hazard:</b> Operands not ready. An instruction depends on a previous instruction's result that has not yet completed the write-back stage (RAW, WAR, WAW). Resolved by <b><mark>forwarding</mark></b> or stalling (bubbles).</li>
       <li><b>Control Hazard:</b> Branch delays. Decisions on jumps affect which instructions to fetch next. Resolved by branch prediction or branch target buffers.</li>
     </ul>
+  </div>
+
+  <!-- 3.2 Pipelining Basics -->
+  <div class="topic" id="t-3-2">
+    <h3>Pipelining: Basic Concept &amp; 5-Stage RISC Pipeline <span class="tag hot">⭐ Core 10M</span></h3>
+    <div class="box def"><span class="label">Plain English</span>
+      A <b><mark>pipeline</mark></b> is an assembly line for instructions. Instead of finishing one instruction completely before starting the next, the CPU splits each instruction into <b>stages</b> and overlaps them — while instruction 1 is being executed, instruction 2 is being decoded and instruction 3 is being fetched. Like a laundromat where you wash, dry and fold different loads at the same time.
+    </div>
+    <p>The classic <b><mark>5-stage RISC pipeline</mark></b> breaks every instruction into these stages, each handled by a separate hardware unit:</p>
+    <ul>
+      <li><b>IF</b> — Instruction Fetch: read the instruction from memory using the Program Counter.</li>
+      <li><b>ID</b> — Instruction Decode: interpret the opcode and read source registers.</li>
+      <li><b>EX</b> — Execute: the ALU performs the arithmetic/logic operation or address calculation.</li>
+      <li><b>MEM</b> — Memory Access: read from or write to data memory (only load/store instructions use this).</li>
+      <li><b>WB</b> — Write Back: write the result back into the destination register.</li>
+    </ul>
+    <p>In an ideal pipeline, once it is "full", <b>one instruction completes every clock cycle</b> even though each individual instruction still takes 5 cycles to traverse the pipe. The pipeline does not make a single instruction faster — it improves <b><mark>throughput</mark></b> (instructions finished per unit time).</p>
+
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:column;gap:6px;min-width:340px;text-align:left;">
+        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">
+          <div></div><div style="text-align:center;">C1</div><div style="text-align:center;">C2</div><div style="text-align:center;">C3</div><div style="text-align:center;">C4</div><div style="text-align:center;">C5</div><div style="text-align:center;">C6</div><div style="text-align:center;">C7</div><div style="text-align:center;">C8</div>
+        </div>
+        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 1</div>
+          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
+          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
+          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
+          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
+          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
+          <div></div><div></div><div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 2</div>
+          <div></div>
+          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
+          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
+          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
+          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
+          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
+          <div></div><div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 3</div>
+          <div></div><div></div>
+          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
+          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
+          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
+          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
+          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
+          <div></div>
+        </div>
+        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 4</div>
+          <div></div><div></div><div></div>
+          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
+          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
+          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
+          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
+          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 3.1</b> · Space-time diagram of a 5-stage pipeline. Each row = one instruction, each column = one clock cycle. After cycle 5 the pipe is full and one instruction completes every cycle.</figcaption>
+    </figure>
+
+    <div class="mnem"><b>5-stage RISC pipeline</b>
+      • <b>I</b> Fetch • <b>I</b> Decode • <b>EX</b>ecute • <b>MEM</b>ory • <b>W</b>rite-<b>B</b>ack</div>
+  </div>
+
+  <!-- 3.3 Throughput & Speedup -->
+  <div class="topic" id="t-3-3">
+    <h3>Throughput &amp; Speedup <span class="tag hot">⭐ Numerical 10M</span></h3>
+    <div class="box def"><span class="label">Key Terms</span>
+      <b><mark>Throughput</mark></b> = number of instructions completed per unit time. <b><mark>Speedup</mark></b> = how many times faster the pipelined processor is compared to a non-pipelined one running the same workload.
+    </div>
+    <p>Let a pipeline have <b>k</b> stages, processing <b>n</b> instructions, with each stage taking time <b>τ</b> (one clock cycle).</p>
+
+    <div class="formula">
+      Time (non-pipelined) = n × k × τ<br>
+      Time (pipelined) = (k + n − 1) × τ<br>
+      <b>Speedup S = (n × k) / (k + n − 1)</b>
+    </div>
+
+    <p>The first <b>k</b> cycles fill the pipeline (instruction 1 reaching write-back); after that, the remaining <b>(n − 1)</b> instructions each finish one cycle apart — giving the <b>(k + n − 1)</b> total. As <b>n → ∞</b>, the speedup approaches its <b><mark>ideal maximum of k</mark></b> (equal to the number of stages).</p>
+
+    <h4>Worked Example — k = 4 stages, n = 100 instructions</h4>
+    <div class="steps">
+      <div class="step"><span class="k">1</span><div class="body"><b>Time without pipeline</b> = n × k × τ = 100 × 4 × τ = <b>400 τ</b> cycles.</div></div>
+      <div class="step"><span class="k">2</span><div class="body"><b>Time with pipeline</b> = (k + n − 1) × τ = (4 + 100 − 1) × τ = <b>103 τ</b> cycles.</div></div>
+      <div class="step"><span class="k">3</span><div class="body"><b>Speedup</b> S = (n × k) / (k + n − 1) = 400 / 103.</div></div>
+      <div class="step"><span class="k">4</span><div class="body">S = <mark><b>3.88</b></mark> (the pipelined CPU is ~3.88× faster). Ideal limit as n → ∞ is k = 4, so 3.88 is close to the ceiling.</div></div>
+    </div>
+    <div class="box tip"><span class="label">Exam tip</span>
+      Always state the two times separately (400τ and 103τ) before dividing — examiners award marks for the substitution steps, not just the final ratio. The answer is <b>unitless</b> (a ratio), so no τ in the final speedup.
+    </div>
+  </div>
+
+  <!-- 3.4 Pipeline Hazards comparison table -->
+  <div class="topic" id="t-3-4">
+    <h3>Pipeline Hazards — Comparison &amp; Resolution</h3>
+    <p>The three hazard types, with a concrete one-line example and the standard fix for each. Data hazards are sub-classified by the order of read/write conflicts (RAW, WAR, WAW).</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Hazard</th><th>Cause</th><th>Example</th><th>Resolution</th></tr>
+        <tr><td><b>Structural</b></td><td>Two stages need the same hardware unit in the same cycle</td><td>IF and MEM both access single-port memory together</td><td>Separate instruction &amp; data caches (Harvard); duplicate the unit</td></tr>
+        <tr><td><b>Data — RAW</b><br>(Read-After-Write)</td><td>Instruction reads an operand before the prior instruction writes it</td><td><code>ADD R1,R2,R3</code> then <code>SUB R4,R1,R5</code> needs R1</td><td><mark>Forwarding/bypassing</mark>; stall (insert bubbles) if forwarding impossible</td></tr>
+        <tr><td><b>Data — WAR</b><br>(Write-After-Read)</td><td>Instruction writes a register before an earlier one reads it</td><td>Later instruction overwrites R2 still needed by earlier read</td><td>Register renaming; rare in in-order pipelines</td></tr>
+        <tr><td><b>Data — WAW</b><br>(Write-After-Write)</td><td>Two instructions write the same register out of order</td><td>Both target R3; wrong one writes last</td><td>Register renaming; enforce in-order write-back</td></tr>
+        <tr><td><b>Control</b></td><td>Branch/jump changes which instruction is fetched next</td><td><code>BEQ</code> outcome unknown until EX; wrong instructions fetched</td><td><mark>Branch prediction</mark>; branch target buffer; delayed branch</td></tr>
+      </table>
+    </div>
+    <div class="box why"><span class="label">Why it matters</span>
+      Every hazard either stalls the pipeline (wastes cycles) or, if unhandled, produces a wrong result. <b>Forwarding</b> (routing an ALU result directly to the next instruction's input without waiting for write-back) is the single most important hardware fix and appears in almost every exam.
+    </div>
+  </div>
+
+  <!-- 3.5 Parallel Processors & Flynn -->
+  <div class="topic" id="t-3-5">
+    <h3>Parallel Processors &amp; Flynn's Taxonomy <span class="tag hot">⭐ Repeated</span></h3>
+    <div class="box def"><span class="label">Plain English</span>
+      A <b><mark>parallel processor</mark></b> uses multiple processing units working at the same time to solve a problem faster than a single processor. <b><mark>Flynn's taxonomy</mark></b> classifies all computer architectures by two axes: how many <b>instruction streams</b> and how many <b>data streams</b> run concurrently.
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:column;gap:5px;min-width:300px;">
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">
+          <div></div><div style="text-align:center;">Single Data</div><div style="text-align:center;">Multiple Data</div>
+        </div>
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;align-items:stretch;">
+          <div style="display:flex;align-items:center;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;padding-right:6px;text-align:right;">Single<br>Instruction</div>
+          <div style="background:var(--brand);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">SISD</b><br><span style="font-size:9.5px;">Single-core PC</span></div>
+          <div style="background:var(--brand-2);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">SIMD</b><br><span style="font-size:9.5px;">Vector / GPU</span></div>
+        </div>
+        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;align-items:stretch;">
+          <div style="display:flex;align-items:center;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;padding-right:6px;text-align:right;">Multiple<br>Instruction</div>
+          <div style="background:var(--auburn,#7c2d12);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">MISD</b><br><span style="font-size:9.5px;">Fault-tolerant</span></div>
+          <div style="background:var(--forest,#166534);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">MIMD</b><br><span style="font-size:9.5px;">Multicore CPU</span></div>
+        </div>
+      </div>
+      <figcaption><b>Fig 3.2</b> · Flynn's taxonomy 2×2 grid — instruction streams (rows) × data streams (columns).</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Class</th><th>Instr × Data</th><th>Meaning</th><th>Example</th></tr>
+        <tr><td><b>SISD</b></td><td>1 × 1</td><td>One instruction stream on one data stream — classic von Neumann uniprocessor</td><td>Traditional single-core PC</td></tr>
+        <tr><td><b>SIMD</b></td><td>1 × many</td><td>One instruction applied to many data items simultaneously (data parallelism)</td><td><mark>GPU</mark>, vector processor, array processor</td></tr>
+        <tr><td><b>MISD</b></td><td>many × 1</td><td>Many instructions on the same data — rare; used for redundancy</td><td>Fault-tolerant flight-control systems</td></tr>
+        <tr><td><b>MIMD</b></td><td>many × many</td><td>Independent processors run different instructions on different data</td><td>Modern <mark>multicore</mark> CPUs, clusters</td></tr>
+      </table>
+    </div>
+    <div class="mnem"><b>Flynn quad</b>
+      • <b>S</b>ingle / <b>M</b>ultiple <b>I</b>nstruction × <b>S</b>ingle / <b>M</b>ultiple <b>D</b>ata → SISD, SIMD, MISD, MIMD</div>
+  </div>
+
+  <!-- 3.6 Concurrent Memory Access & Cache Coherency -->
+  <div class="topic" id="t-3-6">
+    <h3>Concurrent Memory Access &amp; Cache Coherency <span class="tag hot">⭐ Likely 10M</span></h3>
+    <div class="box def"><span class="label">The Cache Coherency Problem</span>
+      In a multicore system each core has its own <b>private cache</b> but they share one main memory. When several cores cache the same memory block and one core <b><mark>writes</mark></b> to it, the copies in the other cores' caches become <b><mark>stale</mark></b> (out of date). If a core then reads its stale copy it gets a wrong value. Keeping all cached copies consistent is the <b>cache coherency problem</b>.
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-direction:column;gap:10px;min-width:320px;">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="background:var(--brand);color:#fff;padding:8px 6px;border-radius:4px;text-align:center;font-weight:700;font-size:11px;">CPU 1</div>
+            <div style="background:var(--paper-soft);border:1.5px solid var(--brand);padding:7px 6px;border-radius:4px;text-align:center;font-size:10px;">Cache 1<br><b style="color:var(--brand);">X = 5</b> <span style="color:var(--muted);">(wrote)</span></div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:5px;">
+            <div style="background:var(--brand-2);color:#fff;padding:8px 6px;border-radius:4px;text-align:center;font-weight:700;font-size:11px;">CPU 2</div>
+            <div style="background:#fdecea;border:1.5px solid var(--auburn,#7c2d12);padding:7px 6px;border-radius:4px;text-align:center;font-size:10px;">Cache 2<br><b style="color:var(--auburn,#7c2d12);">X = 3</b> <span style="color:var(--auburn,#7c2d12);">STALE</span></div>
+          </div>
+        </div>
+        <div style="height:0;border-top:2px solid var(--ink);margin:0 20px;"></div>
+        <div style="background:var(--ink);color:var(--paper);padding:10px 6px;border-radius:4px;text-align:center;font-weight:700;font-size:11px;">Shared Main Memory &nbsp;·&nbsp; X = 3</div>
+      </div>
+      <figcaption><b>Fig 3.3</b> · Coherency problem — CPU 1 updated X to 5 in its own cache; CPU 2 still holds the stale value X = 3.</figcaption>
+    </figure>
+
+    <h4>Coherency Solutions (Protocols)</h4>
+    <ul>
+      <li><b><mark>Write-Invalidate</mark>:</b> when a core writes a block, it broadcasts an invalidate signal so every other cache marks its copy invalid. Other cores must re-fetch the fresh value. Most common (used by MESI).</li>
+      <li><b><mark>Write-Update (write-broadcast)</mark>:</b> a write broadcasts the new value to all caches holding that block so they update in place. Higher bus traffic, used less often.</li>
+      <li><b><mark>Snooping</mark>:</b> every cache controller monitors ("snoops") the shared bus for reads/writes to addresses it holds, and reacts (invalidate or update). Works on bus-based systems.</li>
+      <li><b><mark>MESI protocol</mark>:</b> the standard snooping protocol. Each cache line is tagged <b>M</b>odified, <b>E</b>xclusive, <b>S</b>hared or <b>I</b>nvalid — these four states track whether a copy is dirty, sole, shared or stale, and drive the invalidate logic.</li>
+    </ul>
+    <div class="box tip"><span class="label">Memory hook</span>
+      <b>MESI = Modified · Exclusive · Shared · Invalid</b> — the four states a cache line can be in. "Invalidate one, everyone re-reads" is the core idea of write-invalidate coherency.
+    </div>
   </div>
 </section>
 
@@ -462,6 +1155,199 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       • <b>FIFO (First-In-First-Out):</b> Evicts oldest page. Suffers from Belady's Anomaly (faults can rise with frame count).<br>
       • <b>LRU (Least-Recently-Used):</b> Evicts page untouched for longest time. Most realistic.<br>
       • <b>Optimal:</b> Evicts page used farthest in future. Provides theoretical lower bound baseline.
+    </div>
+  </div>
+
+  <!-- 4.3 Memory Hierarchy -->
+  <div class="topic" id="t-4-3">
+    <h3>Memory Hierarchy <span class="tag hot">⭐ 5M / sub-part</span></h3>
+    <div class="box def"><span class="label">The Idea</span>
+      No single memory is both <mark>fast and cheap and large</mark>. So a computer stacks several memory types in a <mark>hierarchy</mark>: tiny-fast-costly at the top, huge-slow-cheap at the bottom. The CPU looks at the top first; data moves up on demand. This works because of <b><mark>locality of reference</mark></b> (a recently/nearby item is likely reused soon).
+    </div>
+    <p>Climbing <b>up</b> the pyramid: <mark>speed &uarr;</mark>, <mark>cost-per-bit &uarr;</mark>, <mark>capacity &darr;</mark>. Climbing <b>down</b>: cheaper, slower, bigger.</p>
+
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; max-width:420px; margin:4px auto;">
+        <div style="width:46%; background:var(--brand); color:var(--paper); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Registers</b><br>&lt;1 ns &middot; ~B&ndash;KB &middot; fastest</div>
+        <div style="width:60%; background:var(--brand-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Cache</b> (L1 / L2 / L3)<br>1&ndash;20 ns &middot; KB&ndash;MB &middot; SRAM</div>
+        <div style="width:78%; background:var(--auburn-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Main Memory</b> (RAM)<br>50&ndash;100 ns &middot; GB &middot; DRAM</div>
+        <div style="width:96%; background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Secondary Storage</b> (SSD / HDD)<br>&micro;s&ndash;ms &middot; TB &middot; cheapest, slowest</div>
+        <div style="display:flex; justify-content:space-between; width:96%; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; color:var(--muted); margin-top:2px; text-transform:uppercase;">
+          <span>&uarr; Speed &middot; Cost</span><span>Size &darr; at top</span>
+        </div>
+      </div>
+      <figcaption><b>Fig 4.1</b> &middot; Memory hierarchy &mdash; widening toward the bottom (bigger, cheaper, slower)</figcaption>
+    </figure>
+
+    <div class="box tip"><span class="label">L1 / L2 / L3 split</span>
+      &bull; <b>L1</b>: smallest (~32 KB), fastest, split into I-cache + D-cache, private per core.<br>
+      &bull; <b>L2</b>: larger (256 KB&ndash;1 MB), still per-core, a bit slower.<br>
+      &bull; <b>L3</b>: largest (MB), <mark>shared</mark> across all cores, slowest cache level.
+    </div>
+    <p>Effective access uses the <b>hit ratio</b> <code>h</code>: <code>T<sub>avg</sub> = h&middot;T<sub>cache</sub> + (1&minus;h)&middot;T<sub>main</sub></code>. A high hit ratio makes the slow level almost invisible.</p>
+  </div>
+
+  <!-- 4.4 Memory Interleaving -->
+  <div class="topic" id="t-4-4">
+    <h3>Memory Interleaving</h3>
+    <div class="box def"><span class="label">Why</span>
+      A single memory module is busy for its whole cycle time on one access. <mark>Interleaving</mark> splits memory into several independent <mark>banks (modules)</mark> so consecutive addresses land in <i>different</i> banks. The CPU can then start a new access in bank 2 while bank 1 is still completing &mdash; accesses overlap in <b><mark>parallel</mark></b>, raising bandwidth.
+    </div>
+    <ul>
+      <li><b><mark>Low-order interleaving</mark></b>: the <i>low</i> address bits select the bank. Consecutive addresses (0,1,2,3&hellip;) spread across banks 0,1,2,3 &mdash; so sequential / burst access (instruction fetch, array scan) hits all banks in turn and overlaps. Best for streaming.</li>
+      <li><b><mark>High-order interleaving</mark></b>: the <i>high</i> address bits select the bank. A whole contiguous block sits in one module. Good for fault isolation and easy module expansion, but no overlap on sequential access.</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <div style="max-width:440px; margin:4px auto;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; margin-bottom:6px;">Low-order &middot; 4 banks (addr mod 4)</div>
+        <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px;">
+          <div style="background:var(--brand-soft); border:1.5px solid var(--ink); border-radius:4px; padding:6px 4px; font-size:10px; line-height:1.5;"><b>Bank 0</b><br>0 &middot; 4 &middot; 8 &middot; 12</div>
+          <div style="background:var(--auburn-soft); border:1.5px solid var(--ink); border-radius:4px; padding:6px 4px; font-size:10px; line-height:1.5;"><b>Bank 1</b><br>1 &middot; 5 &middot; 9 &middot; 13</div>
+          <div style="background:var(--brand-soft); border:1.5px solid var(--ink); border-radius:4px; padding:6px 4px; font-size:10px; line-height:1.5;"><b>Bank 2</b><br>2 &middot; 6 &middot; 10 &middot; 14</div>
+          <div style="background:var(--auburn-soft); border:1.5px solid var(--ink); border-radius:4px; padding:6px 4px; font-size:10px; line-height:1.5;"><b>Bank 3</b><br>3 &middot; 7 &middot; 11 &middot; 15</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 4.2</b> &middot; Low-order interleaving &mdash; consecutive addresses scatter across banks for parallel access</figcaption>
+    </figure>
+  </div>
+
+  <!-- 4.5 Cache Mapping &mdash; all three (numerical) -->
+  <div class="topic" id="t-4-5">
+    <h3>Cache Mapping &mdash; Direct, Associative, Set-Associative <span class="tag hot">⭐ Guaranteed 10&ndash;15M</span></h3>
+    <div class="box def"><span class="label">Setup</span>
+      The physical address is sliced into fields so cache hardware knows <i>where</i> a block may sit and <i>how</i> to confirm a hit. The <mark>TAG</mark> is stored beside the data and compared on every access.
+    </div>
+    <div class="mnem"><b>Common Example</b> Main memory = <b>4 GB</b> &rArr; <b>32-bit</b> address &middot; Cache = <b>256 KB</b> &middot; Block = <b>64 B</b>. So WORD/offset = log&#8322;(64) = <b>6 bits</b>, and #cache blocks (lines) = 256 KB &divide; 64 B = <b>4096 = 2&sup1;&sup2;</b>.</div>
+
+    <h5>(a) Direct Mapping</h5>
+    <p>Each memory block maps to <b>exactly one</b> cache line: <code>line = (block no.) mod (#lines)</code>. Simplest, cheapest (one comparator), but two hot blocks fighting for the same line cause <mark>conflict misses / thrashing</mark>.</p>
+    <div class="steps">
+      <div class="step"><span class="k">Offset</span><div class="body">log&#8322;(64) = <b>6 bits</b></div></div>
+      <div class="step"><span class="k">Line</span><div class="body">#lines = 256 KB / 64 B = 4096 = 2&sup1;&sup2; &rArr; <b>12 bits</b></div></div>
+      <div class="step"><span class="k">Tag</span><div class="body">32 &minus; 12 &minus; 6 = <mark><b>14 bits</b></mark></div></div>
+    </div>
+    <figure class="diagram-fig">
+      <div style="display:flex; gap:0; max-width:440px; margin:4px auto; font-family:'JetBrains Mono',monospace; font-size:11px;">
+        <div style="flex:14; background:var(--brand); color:var(--paper); border:1.5px solid var(--ink); padding:8px 4px;"><b>TAG</b><br>14</div>
+        <div style="flex:12; background:var(--brand-soft); border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink); padding:8px 4px;"><b>LINE</b><br>12</div>
+        <div style="flex:6; background:var(--auburn-soft); border:1.5px solid var(--ink); padding:8px 4px;"><b>OFFSET</b><br>6</div>
+      </div>
+      <figcaption><b>Fig 4.3</b> &middot; Direct-mapped address = TAG(14) + LINE(12) + OFFSET(6) = 32 bits</figcaption>
+    </figure>
+
+    <h5>(b) Fully Associative Mapping</h5>
+    <p>A block may sit in <b>any</b> cache line. No line/set field &mdash; the hardware compares the TAG against <i>every</i> line in parallel (needs one comparator per line &rArr; <mark>most expensive</mark>). Zero conflict misses; replacement needs a policy (LRU/FIFO).</p>
+    <div class="steps">
+      <div class="step"><span class="k">Offset</span><div class="body">log&#8322;(64) = <b>6 bits</b></div></div>
+      <div class="step"><span class="k">Tag</span><div class="body">32 &minus; 6 = <mark><b>26 bits</b></mark> (no line/set field)</div></div>
+    </div>
+    <figure class="diagram-fig">
+      <div style="display:flex; gap:0; max-width:440px; margin:4px auto; font-family:'JetBrains Mono',monospace; font-size:11px;">
+        <div style="flex:26; background:var(--brand); color:var(--paper); border:1.5px solid var(--ink); padding:8px 4px;"><b>TAG</b><br>26</div>
+        <div style="flex:6; background:var(--auburn-soft); border:1.5px solid var(--ink); padding:8px 4px;"><b>OFFSET</b><br>6</div>
+      </div>
+      <figcaption><b>Fig 4.4</b> &middot; Fully-associative address = TAG(26) + OFFSET(6) = 32 bits</figcaption>
+    </figure>
+
+    <h5>(c) Set-Associative Mapping (4-way)</h5>
+    <p>Middle ground: cache is grouped into <b>sets</b>; a block maps to one <b>set</b> (<code>set = block mod #sets</code>) but may sit in any of the <i>k</i> lines of that set. <mark>4-way</mark> &rArr; k = 4. Compares only k tags &rArr; far cheaper than fully associative, far fewer conflicts than direct.</p>
+    <div class="steps">
+      <div class="step"><span class="k">Offset</span><div class="body">log&#8322;(64) = <b>6 bits</b></div></div>
+      <div class="step"><span class="k">Set</span><div class="body">#sets = #lines / k = 4096 / 4 = 1024 = 2&sup1;&#8304; &rArr; <b>10 bits</b></div></div>
+      <div class="step"><span class="k">Tag</span><div class="body">32 &minus; 10 &minus; 6 = <mark><b>16 bits</b></mark></div></div>
+    </div>
+    <figure class="diagram-fig">
+      <div style="display:flex; gap:0; max-width:440px; margin:4px auto; font-family:'JetBrains Mono',monospace; font-size:11px;">
+        <div style="flex:16; background:var(--brand); color:var(--paper); border:1.5px solid var(--ink); padding:8px 4px;"><b>TAG</b><br>16</div>
+        <div style="flex:10; background:var(--brand-soft); border-top:1.5px solid var(--ink); border-bottom:1.5px solid var(--ink); padding:8px 4px;"><b>SET</b><br>10</div>
+        <div style="flex:6; background:var(--auburn-soft); border:1.5px solid var(--ink); padding:8px 4px;"><b>OFFSET</b><br>6</div>
+      </div>
+      <figcaption><b>Fig 4.5</b> &middot; 4-way set-associative address = TAG(16) + SET(10) + OFFSET(6) = 32 bits</figcaption>
+    </figure>
+
+    <div class="box why"><span class="label">Cache size vs block size</span>
+      For a fixed cache size, a <b>larger block</b> exploits more <mark>spatial locality</mark> per fetch and shrinks the line bookkeeping, BUT it means <b>fewer blocks</b>, so more conflicts, and a miss drags in more useless bytes (<mark>cache pollution</mark>). A <b>smaller block</b> gives more lines (fewer conflicts) but weaker spatial reuse. Miss rate is a U-curve &mdash; there is a sweet-spot block size (commonly 32&ndash;64 B).
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Direct</th><th>Set-Associative (k-way)</th><th>Fully Associative</th></tr>
+        <tr><td><b>Block goes to</b></td><td>one fixed line</td><td>one set, any of k lines</td><td>any line</td></tr>
+        <tr><td><b>Address fields</b></td><td>Tag &middot; Line &middot; Offset</td><td>Tag &middot; Set &middot; Offset</td><td>Tag &middot; Offset</td></tr>
+        <tr><td><b>Comparators (hit logic)</b></td><td>1</td><td>k</td><td>#lines (all)</td></tr>
+        <tr><td><b>Hardware cost</b></td><td>lowest</td><td>moderate</td><td>highest</td></tr>
+        <tr><td><b>Flexibility</b></td><td>none</td><td>medium</td><td>maximum</td></tr>
+        <tr><td><b>Conflict misses</b></td><td>high (thrashing)</td><td>low</td><td>none</td></tr>
+        <tr><td><b>Replacement needed?</b></td><td>no (forced line)</td><td>yes (within set)</td><td>yes (whole cache)</td></tr>
+      </table>
+    </div>
+    <div class="box warn"><span class="label">Exam trap</span>
+      Always check units before log&#8322;. 256 KB = 256 &times; 1024 = 262144 bytes; &divide; 64 = 4096 = 2&sup1;&sup2;. Tag = (address width) &minus; (set/line bits) &minus; (offset bits). Direct is a special case of set-associative with <b>k = 1</b>; fully associative is the case of <b>one set</b> = all lines.
+    </div>
+  </div>
+
+  <!-- 4.6 Replacement Algorithms (LRU worked) -->
+  <div class="topic" id="t-4-6">
+    <h3>Replacement Algorithms &mdash; Worked LRU Trace</h3>
+    <div class="box def"><span class="label">The Four</span>
+      &bull; <b><mark>FIFO</mark></b>: evict the block that entered earliest (queue order). Can suffer Belady's anomaly.<br>
+      &bull; <b><mark>LRU</mark></b>: evict the block unused for the longest time. Best practical approximation of locality.<br>
+      &bull; <b><mark>Optimal (OPT/MIN)</mark></b>: evict the block needed farthest in the future &mdash; theoretical minimum, not implementable (needs future knowledge).<br>
+      &bull; <b><mark>Random</mark></b>: evict a random block. Cheapest hardware, surprisingly decent on average.
+    </div>
+    <p><b>Trace LRU</b> &middot; reference string <code>7 0 1 2 0 3 0 4</code> &middot; <b>3 frames</b>. On a hit, mark the block most-recently-used; on a miss with a full cache, evict the least-recently-used block.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Ref</th><th>Frames (oldest &rarr; newest)</th><th>Result</th><th>Evicted</th></tr>
+        <tr><td>7</td><td>7</td><td>Miss</td><td>&mdash;</td></tr>
+        <tr><td>0</td><td>7, 0</td><td>Miss</td><td>&mdash;</td></tr>
+        <tr><td>1</td><td>7, 0, 1</td><td>Miss</td><td>&mdash;</td></tr>
+        <tr><td>2</td><td>0, 1, 2</td><td>Miss</td><td>7 (LRU)</td></tr>
+        <tr><td>0</td><td>1, 2, 0</td><td><b>Hit</b></td><td>&mdash;</td></tr>
+        <tr><td>3</td><td>2, 0, 3</td><td>Miss</td><td>1 (LRU)</td></tr>
+        <tr><td>0</td><td>2, 3, 0</td><td><b>Hit</b></td><td>&mdash;</td></tr>
+        <tr><td>4</td><td>3, 0, 4</td><td>Miss</td><td>2 (LRU)</td></tr>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="k">Count</span><div class="body">Total references = <b>8</b>. Hits = <b>2</b> (the two reuses of 0). Misses = <b>6</b>.</div></div>
+      <div class="step"><span class="k">Rates</span><div class="body">Hit ratio = 2/8 = <mark><b>0.25 (25%)</b></mark>; Miss ratio = 6/8 = <mark><b>0.75 (75%)</b></mark>.</div></div>
+    </div>
+    <div class="box tip"><span class="label">LRU bookkeeping</span>
+      Treat the frame list as recency order. Touching a block (hit OR fresh load) moves it to the <i>newest</i> end; the eviction victim is always whatever sits at the <i>oldest</i> end. Here 7 (oldest) goes first, then 1, then 2.
+    </div>
+  </div>
+
+  <!-- 4.7 Write Policies -->
+  <div class="topic" id="t-4-7">
+    <h3>Write Policies</h3>
+    <div class="box def"><span class="label">The Question</span>
+      When the CPU <i>writes</i> to a cached block, when does main memory get the new value? Two answers &mdash; and a second axis for what happens on a write that <i>misses</i>.
+    </div>
+    <ul>
+      <li><b><mark>Write-through</mark></b>: every write updates cache AND main memory at once. Memory is always consistent; no dirty bit needed; but slow (every write hits slow memory). A <b>write buffer</b> hides some latency.</li>
+      <li><b><mark>Write-back</mark></b> (copy-back): write only updates the cache line and sets its <mark>dirty bit</mark>. Memory is updated only when that line is evicted. Fast, less memory traffic; but memory is temporarily stale (a problem for DMA / multicore coherence).</li>
+    </ul>
+    <p>On a <b>write miss</b>:</p>
+    <ul>
+      <li><b><mark>Write-allocate</mark></b>: load the block into cache first, then write (usually paired with write-back).</li>
+      <li><b><mark>No-write-allocate</mark></b>: write straight to memory, skip caching the block (usually paired with write-through).</li>
+    </ul>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>Write-Through</th><th>Write-Back</th></tr>
+        <tr><td><b>Memory updated</b></td><td>on every write</td><td>only on block eviction</td></tr>
+        <tr><td><b>Dirty bit</b></td><td>not needed</td><td>required (marks modified line)</td></tr>
+        <tr><td><b>Write speed</b></td><td>slower (memory each time)</td><td>faster (cache only)</td></tr>
+        <tr><td><b>Memory bus traffic</b></td><td>high</td><td>low</td></tr>
+        <tr><td><b>Consistency</b></td><td>always consistent</td><td>memory can be stale</td></tr>
+        <tr><td><b>Risk on power loss</b></td><td>safe (memory current)</td><td>dirty lines lost</td></tr>
+        <tr><td><b>Typical pairing</b></td><td>no-write-allocate</td><td>write-allocate</td></tr>
+      </table>
+    </div>
+    <div class="box why"><span class="label">Why it matters</span>
+      Write-back wins on performance and bandwidth, so most modern CPU caches use <mark>write-back + write-allocate</mark>. Write-through survives where consistency is critical (small L1 in some designs, or systems with frequent DMA / shared memory) because no block is ever dirty in cache.
     </div>
   </div>
 </section>
@@ -600,6 +1486,133 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qbody"><b>What is the function of the Instruction Register (IR) and Program Counter (PC)?</b></div>
       <div class="ans">
         The <b><mark>Program Counter (PC)</mark></b> holds the address of the next instruction to fetch. The <b><mark>Instruction Register (IR)</mark></b> holds the actual opcode of the instruction being decoded and run right now.
+      </div>
+    </div>
+
+    <!-- ======================================================= -->
+    <!-- ALSO PART-A — REAL SAME-CODE PAPER (311404) -->
+    <!-- ======================================================= -->
+    <div class="part-head" style="background:var(--brand);">Also Part-A — BCG-208-V actual same-code paper (311404)</div>
+
+    <div class="box tip">These are the <b>exact</b> Part-A shorts from the verified same-code BCG-208-V / BCA-23-208 paper (311404) — the strongest predictor for 8 June. Drill <i>both</i> Part-A lists.</div>
+
+    <!-- RP a -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Difference between hardware and software interrupts.</b></div>
+      <div class="ans">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Hardware Interrupt</th><th>Software Interrupt</th></tr>
+            <tr><td><b>Source</b></td><td>Raised by an external <mark>device</mark> (I/O, timer, keyboard) via an interrupt line.</td><td>Generated by a program <mark>instruction</mark> (e.g. <code>INT n</code>, trap, system call).</td></tr>
+            <tr><td><b>Timing</b></td><td><mark>Asynchronous</mark> — can occur at any moment, unrelated to the running code.</td><td><mark>Synchronous</mark> — occurs at a fixed point when that instruction executes.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RP b -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Differentiate combinational and sequential circuits.</b></div>
+      <div class="ans">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Combinational</th><th>Sequential</th></tr>
+            <tr><td><b>Output depends on</b></td><td>Only <mark>present inputs</mark>. No memory.</td><td>Present inputs <mark>+ past state</mark>. Has memory.</td></tr>
+            <tr><td><b>Elements / Example</b></td><td>Gates only. Adder, MUX, decoder.</td><td><mark>Flip-flops + clock</mark>. Counters, registers.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RP c -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>How many full adders are needed to form an n-bit parallel adder?</b></div>
+      <div class="ans">
+        Exactly <mark><b>n full adders</b></mark> — one per bit position. The <mark>carry-out</mark> of stage <code>i</code> feeds the <mark>carry-in</mark> of stage <code>i+1</code> (ripple-carry chain). A half-adder may replace the LSB stage when there is no carry-in.
+      </div>
+    </div>
+
+    <!-- RP d -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Why is a floating-point number more difficult to represent and process than a fixed-point integer?</b></div>
+      <div class="ans">
+        A floating-point value carries three separate fields — <mark>sign</mark>, <mark>exponent</mark>, <mark>mantissa</mark> — and must be kept <mark>normalized</mark>. Arithmetic therefore needs extra steps: <mark>exponent alignment</mark>, the mantissa operation, <mark>re-normalization</mark>, and <mark>rounding</mark>. A fixed-point integer add is a single binary addition, so it needs far less hardware and far fewer steps.
+      </div>
+    </div>
+
+    <!-- RP e -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>An address space is 24 bits and a memory space is 16 bits. How many words are in each?</b></div>
+      <div class="ans">
+        Address space = <code>2²⁴</code> = <mark><b>16,777,216 (16 M) words</b></mark>.
+        <br>Memory space = <code>2¹⁶</code> = <mark><b>65,536 (64 K) words</b></mark>.
+      </div>
+    </div>
+
+    <!-- RP f -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Difference between line size and block size in cache memory.</b></div>
+      <div class="ans">
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Block</th><th>Line</th></tr>
+            <tr><td><b>Where</b></td><td>The fixed-size unit of transfer in <mark>main memory</mark>.</td><td>The <mark>cache slot</mark> that holds one block.</td></tr>
+            <tr><td><b>Size</b></td><td colspan="2" style="text-align:center;"><mark>Identical</mark> — "block" is the memory-side term, "line" is the cache-side term for the same number of bytes.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- RP g -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>State the principle of locality of reference.</b></div>
+      <div class="ans">
+        A program tends to access a small portion of its address space repeatedly. <b><mark>Temporal locality</mark>:</b> recently used data is reused soon (e.g. a loop counter). <b><mark>Spatial locality</mark>:</b> addresses near a recently used one are accessed next (e.g. walking an array). This principle is the basis of <mark>caching</mark>.
+      </div>
+    </div>
+
+    <!-- RP h -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>What do CMA, ISZ, SNA, SKI and ION signify? Specify their type.</b></div>
+      <div class="ans">
+        <p>Mano basic-computer instructions:</p>
+        <ul>
+          <li><b><mark>CMA</mark></b>: complement AC — <i>register-reference</i>.</li>
+          <li><b><mark>ISZ</mark></b>: increment memory word, skip if zero — <i>memory-reference</i>.</li>
+          <li><b><mark>SNA</mark></b>: skip if AC negative — <i>register-reference</i>.</li>
+          <li><b><mark>SKI</mark></b>: skip if interrupt flag set — <i>I/O-reference</i>.</li>
+          <li><b><mark>ION</mark></b>: interrupt enable ON — <i>I/O-reference</i>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- RP i -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Define throughput and speedup in pipelined processors.</b></div>
+      <div class="ans">
+        <b><mark>Throughput</mark>:</b> number of instructions completed per unit time — ideally one per clock cycle once the pipeline is full. <b><mark>Speedup</mark>:</b> <code>S = T_nonpipe / T_pipe = (n × k) / (k + n − 1)</code>, where <code>k</code> = pipeline stages and <code>n</code> = instructions. As <code>n</code> grows, S approaches <mark>k</mark>.
+      </div>
+    </div>
+
+    <!-- RP j -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
+      <div class="qbody"><b>Represent the operation "If (P=1) then (R1→R2) else if (Q=1) then (R1→R3)" as two register-transfer statements with control functions.</b></div>
+      <div class="ans">
+        Two <mark>RTL</mark> statements, control function before the colon gating each transfer:
+        <ul>
+          <li><code><mark>P: R2 ← R1</mark></code></li>
+          <li><code><mark>P'Q: R3 ← R1</mark></code></li>
+        </ul>
       </div>
     </div>
 
@@ -1376,6 +2389,27 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
             <li><span>Modern relevance + pitfalls + conclusion</span><span class="m">1.5M</span></li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <!-- Q8 — RISC vs CISC (real same-code paper Q2b, 5M) -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Real Paper 311404 · Q2(b)</span><span class="tag marks">5M</span></div>
+      <div class="qbody"><b>Differentiate between RISC and CISC instruction set architectures.</b></div>
+      <div class="ans">
+        <p><mark>RISC</mark> (Reduced Instruction Set Computer) keeps a <b>small set of simple, fixed-length</b> instructions that each run in one cycle, favouring a pipelined load-store design. <mark>CISC</mark> (Complex Instruction Set Computer) provides <b>many powerful, variable-length</b> instructions that can do multi-step work in a single instruction.</p>
+        <div class="table-wrap"><table>
+          <tr><th>Parameter</th><th>RISC</th><th>CISC</th></tr>
+          <tr><td><b>Instruction set</b></td><td>Small, simple, <mark>fixed-length</mark></td><td>Large, complex, <mark>variable-length</mark></td></tr>
+          <tr><td><b>Cycles / instruction</b></td><td>Mostly 1 (heavily pipelined)</td><td>Varies (multi-cycle)</td></tr>
+          <tr><td><b>Memory access</b></td><td>Only via <mark>LOAD/STORE</mark>; ops are register-to-register</td><td>Arithmetic can act directly on memory operands</td></tr>
+          <tr><td><b>Addressing modes</b></td><td>Few</td><td>Many</td></tr>
+          <tr><td><b>Control unit</b></td><td>Hardwired</td><td>Microprogrammed</td></tr>
+          <tr><td><b>Registers</b></td><td>Many general-purpose</td><td>Fewer</td></tr>
+          <tr><td><b>Code size vs HW</b></td><td>Larger code, simpler hardware</td><td>Smaller code, complex hardware</td></tr>
+          <tr><td><b>Examples</b></td><td>ARM, RISC-V, MIPS, SPARC</td><td>Intel x86, VAX, Motorola 68k</td></tr>
+        </table></div>
+        <div class="box tip"><span class="label">One-liner</span> RISC = <mark>simple instructions, smart compiler, fast pipeline</mark>; CISC = <mark>complex instructions, simpler compiler, denser code</mark>.</div>
       </div>
     </div>
 
