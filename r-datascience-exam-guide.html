@@ -6738,7 +6738,14 @@ t.test(df$marks, mu = 60, alternative = "greater")
           <li><b>Transform</b> — clean (deduplicate, fix types), enrich (lookups), aggregate (rollups), conform (common dimensions).</li>
           <li><b>Load</b> — bulk insert into the warehouse, usually as star schema (fact + dimension tables).</li>
         </ul>
-        <p><b>Why DS prefers DW</b>: historical depth · denormalised reads are fast · pre-computed aggregates · separation from transactional load · single source of truth across business units.</p>
+        <p><b>Why DS prefers DW</b>:</p>
+        <ul>
+          <li><mark>historical depth</mark></li>
+          <li>denormalised reads are fast</li>
+          <li>pre-computed aggregates</li>
+          <li>separation from transactional load</li>
+          <li><mark>single source of truth</mark> across business units</li>
+        </ul>
         <p>(Include Fig 1.7 architecture diagram.)</p>
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:repeat(2,auto) 1fr; gap:8px; align-items:center; justify-content:center; max-width:560px; margin:0 auto;">

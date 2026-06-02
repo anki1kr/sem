@@ -2286,28 +2286,44 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     <div class="qcard predicted">
       <div class="qbody"><b>(a) Define cumulative distribution function (CDF) of a random variable and state its range.</b></div>
       <div class="ans">
-        <mark>CDF</mark> (cumulative <mark>distribution function</mark>) is F(x) = P(X &lt;= x). It tells you the chance that X is at most x. The CDF range is always inside <mark>[0, 1]</mark> because it is a stack of probabilities.
+        <ul>
+          <li><b>Definition</b>: <mark>CDF</mark> (cumulative <mark>distribution function</mark>) is F(x) = P(X &lt;= x).</li>
+          <li><b>Meaning</b>: chance that X is at most x.</li>
+          <li><b>Range</b>: always inside <mark>[0, 1]</mark>, since it is a stack of probabilities.</li>
+        </ul>
       </div>
     </div>
 
     <div class="qcard predicted">
       <div class="qbody"><b>(b) A coin is tossed 3 times. What is the probability of getting at least 2 heads?</b></div>
       <div class="ans">
-        Total ways = 2^3 = 8. Good outcomes (2 or 3 heads): {HHT, HTH, THH, HHH} = 4. Probability = 4/8 = <mark><b>0.5</b></mark>.
+        <ul>
+          <li><b>Sample space</b>: total ways = 2^3 = <mark>8</mark>.</li>
+          <li><b>Favourable</b>: 2 or 3 heads {HHT, HTH, THH, HHH} = 4.</li>
+          <li><b>Probability</b>: 4/8 = <mark><b>0.5</b></mark>.</li>
+        </ul>
       </div>
     </div>
 
     <div class="qcard predicted">
       <div class="qbody"><b>(c) Find the mode of the dataset: 8, 12, 15, 12, 19, 23, 12, 8, 15.</b></div>
       <div class="ans">
-        The number 12 shows up most often (3 times). <mark>Mode</mark> = <mark><b>12</b></mark>.
+        <ul>
+          <li><b>Rule</b>: <mark>Mode</mark> = most frequent value.</li>
+          <li><b>Count</b>: 12 appears most often (3 times).</li>
+          <li><b>Answer</b>: Mode = <mark><b>12</b></mark>.</li>
+        </ul>
       </div>
     </div>
 
     <div class="qcard predicted">
       <div class="qbody"><b>(d) State the memoryless property of Exponential distribution.</b></div>
       <div class="ans">
-        For X ~ Exp(L), <mark>P(X &gt; s + t | X &gt; s) = P(X &gt; t)</mark>. The chance of waiting an extra time t does not depend on the time s already spent waiting. This is the <mark>memoryless property</mark>. Only the discrete Geometric and the Exponential have it (not <mark>uniform</mark> or <mark>normal</mark>).
+        <ul>
+          <li><b>Statement</b>: for X ~ Exp(L), <mark>P(X &gt; s + t | X &gt; s) = P(X &gt; t)</mark>.</li>
+          <li><b>Meaning</b>: extra waiting time t does not depend on time s already spent. This is the <mark>memoryless property</mark>.</li>
+          <li><b>Scope</b>: only discrete Geometric and Exponential have it (not <mark>uniform</mark> or <mark>normal</mark>).</li>
+        </ul>
       </div>
     </div>
 
@@ -2325,14 +2341,21 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     <div class="qcard predicted">
       <div class="qbody"><b>(f) If Cov(X,Y) = 15, SD(X) = 5, and SD(Y) = 6, find the correlation coefficient r.</b></div>
       <div class="ans">
-        <mark>Karl Pearson</mark> r = <mark>Cov(X,Y)</mark> / [ SD(X) · SD(Y) ] = 15 / (5 · 6) = 15 / 30 = <mark><b>r = 0.5</b></mark>. This shows a moderate positive link between X and Y.
+        <ul>
+          <li><b>Formula</b>: <mark>Karl Pearson</mark> r = <mark>Cov(X,Y)</mark> / [ SD(X) · SD(Y) ].</li>
+          <li><b>Substitute</b>: 15 / (5 · 6) = 15 / 30.</li>
+          <li><b>Answer</b>: <mark><b>r = 0.5</b></mark> — a moderate positive link between X and Y.</li>
+        </ul>
       </div>
     </div>
 
     <div class="qcard predicted">
       <div class="qbody"><b>(g) List any three differences between Correlation and Regression.</b></div>
       <div class="ans">
-        Correlation gives one number r. Regression gives a slope (<mark>regression coefficient</mark>) plus an intercept for each axis.
+        <ul>
+          <li><b>Correlation</b>: gives one number r.</li>
+          <li><b>Regression</b>: gives a slope (<mark>regression coefficient</mark>) plus an intercept for each axis.</li>
+        </ul>
         <div class="table-wrap">
           <table>
             <thead><tr><th>Parameter</th><th>Correlation</th><th>Regression</th></tr></thead>
@@ -2349,7 +2372,11 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     <div class="qcard predicted">
       <div class="qbody"><b>(h) What is a platykurtic distribution? State its β₂ (kurtosis) value.</b></div>
       <div class="ans">
-        A <mark>platykurtic distribution</mark> has a flat peak and thin tails — flatter than the normal curve. Its kurtosis is <mark><b>β₂ &lt; 3</b></mark>. Example: spread of daily Sensex returns in a calm month.
+        <ul>
+          <li><b>Definition</b>: <mark>platykurtic distribution</mark> has a flat peak and thin tails, flatter than the normal curve.</li>
+          <li><b>Kurtosis</b>: <mark><b>β₂ &lt; 3</b></mark>.</li>
+          <li><b>Example</b>: spread of daily Sensex returns in a calm month.</li>
+        </ul>
       </div>
     </div>
 
@@ -2366,7 +2393,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     <div class="qcard predicted">
       <div class="qbody"><b>(j) Write down the MGF of Poisson distribution.</b></div>
       <div class="ans">
-        The <mark>MGF</mark> is <mark>M_X(t) = exp( λ · (e^t − 1) )</mark>, where λ is the mean rate of the <mark>Poisson</mark>. For comparison, the <mark>binomial</mark> MGF is M_X(t) = (q + p·e^t)^n.
+        <ul>
+          <li><b>Poisson MGF</b>: <mark>M_X(t) = exp( λ · (e^t − 1) )</mark>, where λ is the mean rate of the <mark>Poisson</mark>.</li>
+          <li><b>Compare</b>: the <mark>binomial</mark> MGF is M_X(t) = (q + p·e^t)^n.</li>
+        </ul>
       </div>
     </div>
 

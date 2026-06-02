@@ -239,9 +239,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
 /* ── STEPS ── */
 .steps{ display:flex; flex-direction:column; gap:5px; margin:10px 0; }
-.step{ display:grid; grid-template-columns:32px 1fr; gap:8px; background:var(--paper-soft); border:1.5px solid var(--rule); border-radius:4px; padding:8px 10px; align-items:start; border-left:4px solid var(--brand); }
-.step .k{ font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; color:var(--brand); }
-.step .body{ font-size:13.5px; color:var(--ink-soft); }
+.step{ display:flex; gap:8px; align-items:flex-start; background:var(--paper-soft); border:1.5px solid var(--rule); border-radius:4px; padding:8px 10px; border-left:4px solid var(--brand); }
+.step .k{ flex:0 0 auto; min-width:30px; font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; color:var(--brand); }
+.step .body{ flex:1 1 auto; min-width:0; font-size:13.5px; color:var(--ink-soft); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:480px){
@@ -1245,7 +1245,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What is WLL (Wireless Local Loop)? What is its main advantage?</b></div>
       <div class="ans">
-        <mark>WLL</mark> is a system that links home phones to the local exchange using a short radio link instead of copper wires. Main advantage: very fast and cheap to set up in villages, like how BSNL rolled out fixed wireless in rural India.
+        <ul>
+          <li><b>Definition</b>: <mark>WLL</mark> links home phones to the local exchange using a short radio link instead of copper wires.</li>
+          <li><b>Main advantage</b>: very fast and cheap to set up in villages.</li>
+          <li><b>Example</b>: how BSNL rolled out fixed wireless in rural India.</li>
+        </ul>
       </div>
     </div>
 
@@ -1254,7 +1258,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Explain frequency reuse. Define co-channel cells.</b></div>
       <div class="ans">
-        <mark>Frequency reuse</mark> means the same radio channels are used again in cells that are far apart. Low-power antennas keep the signals from clashing. Cells that share the same channels are called <b><mark>co-channel cells</mark></b>. Example: Jio reuses the same 4G band across many Mumbai towers.
+        <ul>
+          <li><b>Frequency reuse</b>: the same <mark>radio channels</mark> are used again in cells that are far apart; low-power antennas keep the signals from clashing.</li>
+          <li><b>Co-channel cells</b>: cells that share the same channels are called <b><mark>co-channel cells</mark></b>.</li>
+          <li><b>Example</b>: Jio reuses the same 4G band across many Mumbai towers.</li>
+        </ul>
       </div>
     </div>
 
@@ -1276,7 +1284,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Explain Grade of Service (GoS) in cellular networks. What is the standard target?</b></div>
       <div class="ans">
-        <mark>GoS</mark> tells the chance that a call is blocked during the busy hour. The standard target is <b>GoS ≤ 2%</b> — out of 100 calls, no more than 2 should fail. Indian operators like Airtel and Jio plan tower count to stay below this 2% limit.
+        <ul>
+          <li><b>Definition</b>: <mark>GoS</mark> tells the chance that a call is blocked during the busy hour.</li>
+          <li><b>Standard target</b>: <b>GoS ≤ 2%</b> — out of 100 calls, no more than 2 should fail.</li>
+          <li><b>Use</b>: Indian operators like Airtel and Jio plan tower count to stay below this 2% limit.</li>
+        </ul>
       </div>
     </div>
 
@@ -1300,7 +1312,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Define CDMA. What is the processing gain formula?</b></div>
       <div class="ans">
-        <mark>CDMA</mark> lets many users share the same frequency band at the same time. Each user has a unique code that keeps signals apart, like every speaker in a noisy room using a different language. Processing Gain formula: <code>G_p = Chip Rate / Data Rate</code>.
+        <ul>
+          <li><b>Definition</b>: <mark>CDMA</mark> lets many users share the same frequency band at the same time.</li>
+          <li><b>Mechanism</b>: each user has a <mark>unique code</mark> that keeps signals apart, like every speaker in a noisy room using a different language.</li>
+          <li><b>Processing Gain</b>: <code>G_p = Chip Rate / Data Rate</code>.</li>
+        </ul>
       </div>
     </div>
 
@@ -1323,7 +1339,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Define scatternet in Bluetooth.</b></div>
       <div class="ans">
-        A <mark>scatternet</mark> is formed when two or more Bluetooth piconets are joined. One bridge device is a slave in one piconet and a master or slave in another. Example: your Bluetooth earbuds and smartwatch both connecting through your phone.
+        <ul>
+          <li><b>Definition</b>: a <mark>scatternet</mark> is formed when two or more Bluetooth piconets are joined.</li>
+          <li><b>Bridge device</b>: one device is a slave in one piconet and a master or slave in another.</li>
+          <li><b>Example</b>: your Bluetooth earbuds and smartwatch both connecting through your phone.</li>
+        </ul>
       </div>
     </div>
 
@@ -1332,7 +1352,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Explain the near-far problem in TDMA and CDMA systems.</b></div>
       <div class="ans">
-        The <mark>near-far effect</mark> happens when a phone close to the tower shouts so loud that it drowns out weak signals from far-away phones. In <mark>CDMA</mark>, the tower keeps sending power-control orders so every phone reaches it at the same strength. Like asking the front-row student to whisper so the back row can be heard.
+        <ul>
+          <li><b>Problem</b>: the <mark>near-far effect</mark> happens when a phone close to the tower shouts so loud that it drowns out weak signals from far-away phones.</li>
+          <li><b>CDMA fix</b>: the tower keeps sending <mark>power-control</mark> orders so every phone reaches it at the same strength.</li>
+          <li><b>Analogy</b>: like asking the front-row student to whisper so the back row can be heard.</li>
+        </ul>
       </div>
     </div>
 
@@ -1341,7 +1365,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What is the pure ALOHA maximum theoretical throughput and slotted ALOHA throughput?</b></div>
       <div class="ans">
-        Pure ALOHA top throughput = <b>18.4%</b> (when G = 0.5). Slotted ALOHA top throughput = <b>36.8%</b> (when G = 1.0). Slotted is double because fixed time slots cut the collision window in half.
+        <ul>
+          <li><b>Pure ALOHA</b>: top throughput = <mark><b>18.4%</b></mark> (when G = 0.5).</li>
+          <li><b>Slotted ALOHA</b>: top throughput = <mark><b>36.8%</b></mark> (when G = 1.0).</li>
+          <li><b>Why double</b>: fixed time slots cut the collision window in half.</li>
+        </ul>
       </div>
     </div>
 
@@ -1360,7 +1388,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>State the disadvantages of a cordless telephone system.</b></div>
       <div class="ans">
-        <mark>Very short range</mark> — the handset stays tied to its base unit (~50 m), so there is <mark>no handoff or mobility</mark> between base stations. It shares the unlicensed ISM band, so interference is common. Early analog cordless had <mark>poor security</mark> (calls easily eavesdropped). One base unit also serves only a limited number of handsets.
+        <ul>
+          <li><b>Very short range</b>: the <mark>handset stays tied to its base unit</mark> (~50 m), so there is <mark>no handoff or mobility</mark> between base stations.</li>
+          <li><b>Interference</b>: it shares the unlicensed ISM band, so interference is common.</li>
+          <li><b>Poor security</b>: early analog cordless calls were <mark>easily eavesdropped</mark>.</li>
+          <li><b>Limited capacity</b>: one base unit serves only a limited number of handsets.</li>
+        </ul>
       </div>
     </div>
 
@@ -1383,7 +1416,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Give the reasons for choosing hexagonal cells in a cellular system.</b></div>
       <div class="ans">
-        A <mark>hexagon</mark> best approximates the circular radio coverage of a tower while tiling the plane perfectly — <mark>no gaps and no overlap</mark>. It needs the fewest cells to cover a given area and gives <b>6 equidistant neighbours</b>, which simplifies frequency planning and reuse-distance calculation.
+        <ul>
+          <li><b>Best fit</b>: a <mark>hexagon</mark> best approximates the circular radio coverage of a tower.</li>
+          <li><b>Tiles perfectly</b>: covers the plane with <mark>no gaps and no overlap</mark>, using the fewest cells for a given area.</li>
+          <li><b>Simple planning</b>: gives <b>6 equidistant neighbours</b>, which simplifies frequency planning and reuse-distance calculation.</li>
+        </ul>
       </div>
     </div>
 
@@ -1392,7 +1429,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Is a directional antenna useful for mobile phones? Why?</b></div>
       <div class="ans">
-        For the <b>handset</b>, generally <mark>no</mark> — the user moves and rotates unpredictably, so an <mark>omnidirectional antenna</mark> is needed to receive from any direction. Directional antennas <b>are</b> useful at the <mark>base station</mark> (sectoring into 120°/60° sectors) to cut co-channel interference and boost capacity.
+        <ul>
+          <li><b>For the handset</b>: generally <mark>no</mark> — the user moves and rotates unpredictably, so an <mark>omnidirectional antenna</mark> is needed to receive from any direction.</li>
+          <li><b>For the base station</b>: directional antennas <b>are</b> useful (sectoring into 120°/60° sectors) to cut co-channel interference and boost capacity.</li>
+        </ul>
       </div>
     </div>
 
@@ -1401,7 +1441,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What is a scatternet?</b></div>
       <div class="ans">
-        A <mark>scatternet</mark> is two or more Bluetooth <mark>piconets</mark> joined by a shared <b>bridge node</b> — a device that is a slave in one piconet and master or slave in another. It extends coverage beyond a single 8-device piconet.
+        <ul>
+          <li><b>Definition</b>: a <mark>scatternet</mark> is two or more Bluetooth <mark>piconets</mark> joined by a shared <b>bridge node</b>.</li>
+          <li><b>Bridge node</b>: a device that is a slave in one piconet and master or slave in another.</li>
+          <li><b>Benefit</b>: extends coverage beyond a single 8-device piconet.</li>
+        </ul>
       </div>
     </div>
 
@@ -1423,7 +1467,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Draw the cell structure for frequency reuse factor N = 12.</b></div>
       <div class="ans">
-        <p>With shift parameters <b>i = 2, j = 2</b>: <code>N = i² + ij + j² = 4 + 4 + 4 = <mark>12</mark></code>. So one cluster has <b>12 cells</b>, each assigned a distinct channel group; the 12-cell pattern then repeats across the coverage area.</p>
+        <ul>
+          <li><b>Shift parameters</b>: <b>i = 2, j = 2</b> → <code>N = i² + ij + j² = 4 + 4 + 4 = <mark>12</mark></code>.</li>
+          <li><b>Cluster</b>: one cluster has <b>12 cells</b>, each assigned a distinct channel group.</li>
+          <li><b>Tiling</b>: the 12-cell pattern then repeats across the coverage area.</li>
+        </ul>
         <figure class="diagram-fig">
           <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-width:300px;margin:6px auto;">
             <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">1</div>
@@ -1449,7 +1497,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>How does the near-far effect influence TDMA systems?</b></div>
       <div class="ans">
-        A <mark>nearby strong mobile</mark> can swamp a distant weak one. In <mark>TDMA</mark> users are separated by <b>time slots</b>, so the effect is less severe than in CDMA, but <mark>power control</mark> and <mark>timing advance</mark> are still needed so every burst reaches the base station at similar power and timing.
+        <ul>
+          <li><b>Effect</b>: a <mark>nearby strong mobile</mark> can swamp a distant weak one.</li>
+          <li><b>Less severe in TDMA</b>: users are separated by <b>time slots</b>, so the effect is milder than in CDMA.</li>
+          <li><b>Still needed</b>: <mark>power control</mark> and <mark>timing advance</mark> so every burst reaches the base station at similar power and timing.</li>
+        </ul>
       </div>
     </div>
 
@@ -1458,7 +1510,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Write in brief about ISDN.</b></div>
       <div class="ans">
-        <mark>ISDN</mark> (Integrated Services Digital Network) is an all-digital telephone network that carries <mark>voice and data</mark> over the same lines. It uses <b>B-channels</b> (64 kbps bearer) and a <b>D-channel</b> (signalling): <code>BRI = 2B + D</code> and <code>PRI = 30B + D</code> (Europe/India).
+        <ul>
+          <li><b>Definition</b>: <mark>ISDN</mark> (Integrated Services Digital Network) is an all-digital telephone network that carries <mark>voice and data</mark> over the same lines.</li>
+          <li><b>Channels</b>: <b>B-channels</b> (64 kbps bearer) and a <b>D-channel</b> (signalling).</li>
+          <li><b>Interfaces</b>: <code>BRI = 2B + D</code> and <code>PRI = 30B + D</code> (Europe/India).</li>
+        </ul>
       </div>
     </div>
 

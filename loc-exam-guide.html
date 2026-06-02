@@ -308,7 +308,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <span class="stamp">Final Exam · 2026</span>
   <div class="meta-line">BCA(DS) IV · BCG-208-V · Logical Organisation of Computer</div>
   <h1>Logical<br>Organisation<em>of Computer · Exam Mastery</em></h1>
-  <div class="sub">CPU internals. Pipeline execution. Memory paging. 75-mark battle plan ✦</div>
+  <div class="sub">CPU internals. Pipeline execution. Cache organisation. 75-mark battle plan ✦</div>
   <div class="stats">
     <div class="stat"><div class="lbl">Units</div><div class="num">4</div></div>
     <div class="stat"><div class="lbl">Exam date</div><div class="num">08J</div></div>
@@ -325,7 +325,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <li><b>Unit I</b> — Functional Blocks &amp; Data Representation — RTL fetch/execute cycle, Addressing modes, x86 basics, Booth's multiplier, IEEE-754 conversions, division traces. <span class="priority">High-yield</span></li>
     <li><b>Unit II</b> — x86, Control Unit, Memory &amp; Peripherals — Hardwired vs Microprogrammed sequenced addresses, DMA controller modes, Programmed/Interrupt driven I/O. <span class="priority">⭐ Highest-yield</span></li>
     <li><b>Unit III</b> — Pipelining &amp; Parallel Processors — Speedup &amp; throughput formulas, hazards (structural, data, control), Flynn's MIMD classification. <span class="priority">Medium-yield</span></li>
-    <li><b>Unit IV</b> — Memory Organisation — Memory interleaving, Cache sizing &amp; mapping (direct, associative, set-associative), Paging replacement traces. <span class="priority">⭐ Highest-yield</span></li>
+    <li><b>Unit IV</b> — Memory Organisation — Memory interleaving, Cache sizing &amp; mapping (direct, associative, set-associative), Cache replacement traces. <span class="priority">⭐ Highest-yield</span></li>
   </ul>
 </section>
 
@@ -1227,8 +1227,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 <section class="unit" id="unit-4">
   <div class="unit-head">
     <div class="kicker">Unit IV</div>
-    <h2><span class="num">04</span>Memory Organisation,<br>Cache &amp; Paging</h2>
-    <p class="lede">Sizing cache mapping fields and tracking page replacement algorithms.</p>
+    <h2><span class="num">04</span>Memory Organisation<br>&amp; Cache</h2>
+    <p class="lede">Sizing cache mapping fields and tracking cache replacement algorithms.</p>
   </div>
 
   <!-- 4.1 Cache Mapping -->
@@ -1248,13 +1248,13 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
   </div>
 
-  <!-- 4.2 Page Replacement -->
+  <!-- 4.2 Cache Replacement -->
   <div class="topic" id="t-4-2">
-    <h3>Page Replacement Tracing</h3>
+    <h3>Cache Replacement (Block Eviction)</h3>
     <div class="box def"><span class="label">The Algorithms</span>
-      • <b>FIFO (First-In-First-Out):</b> Evicts oldest page. Suffers from Belady's Anomaly (faults can rise with frame count).<br>
-      • <b>LRU (Least-Recently-Used):</b> Evicts page untouched for longest time. Most realistic.<br>
-      • <b>Optimal:</b> Evicts page used farthest in future. Provides theoretical lower bound baseline.
+      • <b>FIFO (First-In-First-Out):</b> Evicts oldest cache block. Suffers from Belady's Anomaly (misses can rise with line count).<br>
+      • <b>LRU (Least-Recently-Used):</b> Evicts the block untouched for longest time. Most realistic.<br>
+      • <b>Optimal:</b> Evicts the block used farthest in future. Provides theoretical lower bound baseline.
     </div>
   </div>
 
@@ -1408,10 +1408,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       &bull; <b><mark>Optimal (OPT/MIN)</mark></b>: evict the block needed farthest in the future &mdash; theoretical minimum, not implementable (needs future knowledge).<br>
       &bull; <b><mark>Random</mark></b>: evict a random block. Cheapest hardware, surprisingly decent on average.
     </div>
-    <p><b>Trace LRU</b> &middot; reference string <code>7 0 1 2 0 3 0 4</code> &middot; <b>3 frames</b>. On a hit, mark the block most-recently-used; on a miss with a full cache, evict the least-recently-used block.</p>
+    <p><b>Trace LRU</b> &middot; reference string <code>7 0 1 2 0 3 0 4</code> &middot; <b>3 cache lines</b>. On a hit, mark the block most-recently-used; on a miss with a full cache, evict the least-recently-used block.</p>
     <div class="table-wrap">
       <table>
-        <tr><th>Ref</th><th>Frames (oldest &rarr; newest)</th><th>Result</th><th>Evicted</th></tr>
+        <tr><th>Ref</th><th>Lines (oldest &rarr; newest)</th><th>Result</th><th>Evicted</th></tr>
         <tr><td>7</td><td>7</td><td>Miss</td><td>&mdash;</td></tr>
         <tr><td>0</td><td>7, 0</td><td>Miss</td><td>&mdash;</td></tr>
         <tr><td>1</td><td>7, 0, 1</td><td>Miss</td><td>&mdash;</td></tr>
@@ -1427,7 +1427,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="step"><span class="k">Rates</span><div class="body">Hit ratio = 2/8 = <mark><b>0.25 (25%)</b></mark>; Miss ratio = 6/8 = <mark><b>0.75 (75%)</b></mark>.</div></div>
     </div>
     <div class="box tip"><span class="label">LRU bookkeeping</span>
-      Treat the frame list as recency order. Touching a block (hit OR fresh load) moves it to the <i>newest</i> end; the eviction victim is always whatever sits at the <i>oldest</i> end. Here 7 (oldest) goes first, then 1, then 2.
+      Treat the line list as recency order. Touching a block (hit OR fresh load) moves it to the <i>newest</i> end; the eviction victim is always whatever sits at the <i>oldest</i> end. Here 7 (oldest) goes first, then 1, then 2.
     </div>
   </div>
 
@@ -1512,7 +1512,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Explain the Stored-Program concept.</b></div>
       <div class="ans">
-        <mark>John von Neumann</mark> gave this idea in <mark>1945</mark>. The <mark>stored-program</mark> concept says program instructions and data sit together in the <mark>same read-write memory</mark>. So instructions can be treated like data too.
+        <ul>
+          <li><b>Origin</b>: <mark>John von Neumann</mark> gave this idea in <mark>1945</mark>.</li>
+          <li><b>Concept</b>: program instructions and data sit together in the <mark>same read-write memory</mark>.</li>
+          <li><b>Implication</b>: so instructions can be treated like data too.</li>
+        </ul>
       </div>
     </div>
 
@@ -1537,7 +1541,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Why does a DMA controller have priority over the CPU for bus control?</b></div>
       <div class="ans">
-        I/O device data is highly <b><mark>volatile</mark></b>. If fast incoming data is not read at once, the next byte overwrites it and the old data is lost. The CPU work, by contrast, can be paused safely. No data is lost. So DMA wins the bus.
+        <ul>
+          <li><b>Cause</b>: I/O device data is highly <b><mark>volatile</mark></b>.</li>
+          <li><b>Risk</b>: if fast incoming data is not read at once, the next byte overwrites it and the old data is lost.</li>
+          <li><b>CPU contrast</b>: CPU work can be paused safely. No data is lost.</li>
+          <li><b>Result</b>: so DMA wins the bus.</li>
+        </ul>
       </div>
     </div>
 
@@ -1559,7 +1568,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Define spatial and temporal locality of reference.</b></div>
       <div class="ans">
-        <b><mark>Temporal Locality</mark>:</b> If a memory cell is used once, it is very likely to be used again soon. Example: loop counter <code>i</code>. <b><mark>Spatial Locality</mark>:</b> Cells near a recently used cell are very likely to be used next. Example: walking through an array.
+        <ul>
+          <li><b><mark>Temporal Locality</mark></b>: if a memory cell is used once, it is very likely to be used again soon. Example: loop counter <code>i</code>.</li>
+          <li><b><mark>Spatial Locality</mark></b>: cells near a recently used cell are very likely to be used next. Example: walking through an array.</li>
+        </ul>
       </div>
     </div>
 
@@ -1568,7 +1580,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Write the formula for pipeline speedup S_p and define its variables.</b></div>
       <div class="ans">
-        Formula: <code>S_p = (n × k) / (k + n − 1)</code>. Here <code>n</code> = number of <mark>instructions</mark> and <code>k</code> = number of <mark>pipeline stages</mark>. As <code>n</code> gets big, speedup tends to <code>k</code>.
+        <ul>
+          <li><b>Formula</b>: <code>S_p = (n × k) / (k + n − 1)</code>.</li>
+          <li><b>Variables</b>: <code>n</code> = number of <mark>instructions</mark>, <code>k</code> = number of <mark>pipeline stages</mark>.</li>
+          <li><b>Limit</b>: as <code>n</code> gets big, speedup tends to <code>k</code>.</li>
+        </ul>
       </div>
     </div>
 
@@ -1603,7 +1619,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What is the function of the Instruction Register (IR) and Program Counter (PC)?</b></div>
       <div class="ans">
-        The <b><mark>Program Counter (PC)</mark></b> holds the address of the next instruction to fetch. The <b><mark>Instruction Register (IR)</mark></b> holds the actual opcode of the instruction being decoded and run right now.
+        <ul>
+          <li><b><mark>Program Counter (PC)</mark></b>: holds the address of the next instruction to fetch.</li>
+          <li><b><mark>Instruction Register (IR)</mark></b>: holds the actual opcode of the instruction being decoded and run right now.</li>
+        </ul>
       </div>
     </div>
 
@@ -1649,7 +1668,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>How many full adders are needed to form an n-bit parallel adder?</b></div>
       <div class="ans">
-        Exactly <mark><b>n full adders</b></mark> — one per bit position. The <mark>carry-out</mark> of stage <code>i</code> feeds the <mark>carry-in</mark> of stage <code>i+1</code> (ripple-carry chain). A half-adder may replace the LSB stage when there is no carry-in.
+        <ul>
+          <li><b>Count</b>: exactly <mark><b>n full adders</b></mark> — one per bit position.</li>
+          <li><b>Connection</b>: the <mark>carry-out</mark> of stage <code>i</code> feeds the <mark>carry-in</mark> of stage <code>i+1</code> (ripple-carry chain).</li>
+          <li><b>Exception</b>: a half-adder may replace the LSB stage when there is no carry-in.</li>
+        </ul>
       </div>
     </div>
 
@@ -1658,7 +1681,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Why is a floating-point number more difficult to represent and process than a fixed-point integer?</b></div>
       <div class="ans">
-        A floating-point value carries three separate fields — <mark>sign</mark>, <mark>exponent</mark>, <mark>mantissa</mark> — and must be kept <mark>normalized</mark>. Arithmetic therefore needs extra steps: <mark>exponent alignment</mark>, the mantissa operation, <mark>re-normalization</mark>, and <mark>rounding</mark>. A fixed-point integer add is a single binary addition, so it needs far less hardware and far fewer steps.
+        <ul>
+          <li><b>Fields</b>: a floating-point value carries three separate fields — <mark>sign</mark>, <mark>exponent</mark>, <mark>mantissa</mark> — and must be kept <mark>normalized</mark>.</li>
+          <li><b>Extra steps</b>: arithmetic needs <mark>exponent alignment</mark>, the mantissa operation, <mark>re-normalization</mark>, and <mark>rounding</mark>.</li>
+          <li><b>Contrast</b>: a fixed-point integer add is a single binary addition, so it needs far less hardware and far fewer steps.</li>
+        </ul>
       </div>
     </div>
 
@@ -1692,7 +1719,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>State the principle of locality of reference.</b></div>
       <div class="ans">
-        A program tends to access a small portion of its address space repeatedly. <b><mark>Temporal locality</mark>:</b> recently used data is reused soon (e.g. a loop counter). <b><mark>Spatial locality</mark>:</b> addresses near a recently used one are accessed next (e.g. walking an array). This principle is the basis of <mark>caching</mark>.
+        <ul>
+          <li><b>Principle</b>: a program tends to access a small portion of its address space repeatedly.</li>
+          <li><b><mark>Temporal locality</mark></b>: recently used data is reused soon (e.g. a loop counter).</li>
+          <li><b><mark>Spatial locality</mark></b>: addresses near a recently used one are accessed next (e.g. walking an array).</li>
+          <li><b>Use</b>: this principle is the basis of <mark>caching</mark>.</li>
+        </ul>
       </div>
     </div>
 
@@ -1717,7 +1749,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag year">Real Paper 311404</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Define throughput and speedup in pipelined processors.</b></div>
       <div class="ans">
-        <b><mark>Throughput</mark>:</b> number of instructions completed per unit time — ideally one per clock cycle once the pipeline is full. <b><mark>Speedup</mark>:</b> <code>S = T_nonpipe / T_pipe = (n × k) / (k + n − 1)</code>, where <code>k</code> = pipeline stages and <code>n</code> = instructions. As <code>n</code> grows, S approaches <mark>k</mark>.
+        <ul>
+          <li><b><mark>Throughput</mark></b>: number of instructions completed per unit time — ideally one per clock cycle once the pipeline is full.</li>
+          <li><b><mark>Speedup</mark></b>: <code>S = T_nonpipe / T_pipe = (n × k) / (k + n − 1)</code>, where <code>k</code> = pipeline stages and <code>n</code> = instructions.</li>
+          <li><b>Limit</b>: as <code>n</code> grows, S approaches <mark>k</mark>.</li>
+        </ul>
       </div>
     </div>
 
@@ -2335,7 +2371,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Unit 4 Numerical</span><span class="tag marks">15M</span></div>
       <div class="qbody"><b>Solve the following memory organisation problems step-by-step:
         <br>(a) A 2-way set-associative cache has size 64 KB, block size 16 bytes, and 32-bit physical addresses. Compute the bits in TAG, SET, and WORD fields.
-        <br>(b) Given the page reference string: 7, 5, 3, 2, 1, 0, 4, 7, 4, 2, 0, 1, 3, 5 with 4 page frames. Compute the total page faults for FIFO, LRU, and Optimal replacement algorithms.
+        <br>(b) Given the block-reference string: 7, 5, 3, 2, 1, 0, 4, 7, 4, 2, 0, 1, 3, 5 with 4 cache lines. Compute the total cache misses for FIFO, LRU, and Optimal replacement algorithms.
       </b></div>
       <div class="ans">
         <h5>Introduction — Cache Mapping</h5>
@@ -2375,50 +2411,50 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <figcaption><b>Fig 4.1</b> &middot; 32-bit physical address split for 2-way set-associative cache &mdash; TAG identifies block, SET picks the 2-way bucket, WORD picks byte inside 16-byte block.</figcaption>
         </figure>
 
-        <h5>(b) Page Replacement Tracing (4 Frames)</h5>
-        <p><b>Page string:</b> <code>7, 5, 3, 2, 1, 0, 4, 7, 4, 2, 0, 1, 3, 5</code>. Initial frames are empty.</p>
+        <h5>(b) Cache Replacement Tracing (4 Lines)</h5>
+        <p><b>Block-reference string:</b> <code>7, 5, 3, 2, 1, 0, 4, 7, 4, 2, 0, 1, 3, 5</code>. Initial cache lines are empty.</p>
         <ul>
           <li><b><mark>FIFO</mark> (First-In-First-Out) Trace:</b>
-            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 faults).
-            <br>• Ref 1: Miss. Evict 7 (oldest). Frames: <code>[1, 5, 3, 2]</code> (5 faults).
-            <br>• Ref 0: Miss. Evict 5. Frames: <code>[1, 0, 3, 2]</code> (6 faults).
-            <br>• Ref 4: Miss. Evict 3. Frames: <code>[1, 0, 4, 2]</code> (7 faults).
-            <br>• Ref 7: Miss. Evict 2. Frames: <code>[1, 0, 4, 7]</code> (8 faults).
+            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 misses).
+            <br>• Ref 1: Miss. Evict 7 (oldest). Lines: <code>[1, 5, 3, 2]</code> (5 misses).
+            <br>• Ref 0: Miss. Evict 5. Lines: <code>[1, 0, 3, 2]</code> (6 misses).
+            <br>• Ref 4: Miss. Evict 3. Lines: <code>[1, 0, 4, 2]</code> (7 misses).
+            <br>• Ref 7: Miss. Evict 2. Lines: <code>[1, 0, 4, 7]</code> (8 misses).
             <br>• Ref 4: Hit.
-            <br>• Ref 2: Miss. Evict 1. Frames: <code>[2, 0, 4, 7]</code> (9 faults).
+            <br>• Ref 2: Miss. Evict 1. Lines: <code>[2, 0, 4, 7]</code> (9 misses).
             <br>• Ref 0: Hit.
-            <br>• Ref 1: Miss. Evict 0. Frames: <code>[2, 1, 4, 7]</code> (10 faults).
-            <br>• Ref 3: Miss. Evict 4. Frames: <code>[2, 1, 3, 7]</code> (11 faults).
-            <br>• Ref 5: Miss. Evict 7. Frames: <code>[2, 1, 3, 5]</code> (12 faults).
-            <br><mark><b>FIFO Page Faults = 12</b></mark>.
+            <br>• Ref 1: Miss. Evict 0. Lines: <code>[2, 1, 4, 7]</code> (10 misses).
+            <br>• Ref 3: Miss. Evict 4. Lines: <code>[2, 1, 3, 7]</code> (11 misses).
+            <br>• Ref 5: Miss. Evict 7. Lines: <code>[2, 1, 3, 5]</code> (12 misses).
+            <br><mark><b>FIFO Cache Misses = 12</b></mark>.
           </li>
           <li><b><mark>LRU</mark> (Least-Recently-Used) Trace:</b>
-            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 faults).
-            <br>• Ref 1: Miss. Evict 7 (least recently used). Frames: <code>[5, 3, 2, 1]</code> (5 faults).
-            <br>• Ref 0: Miss. Evict 5. Frames: <code>[3, 2, 1, 0]</code> (6 faults).
-            <br>• Ref 4: Miss. Evict 3. Frames: <code>[2, 1, 0, 4]</code> (7 faults).
-            <br>• Ref 7: Miss. Evict 2 (least recently used). Frames: <code>[1, 0, 4, 7]</code> (8 faults).
+            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 misses).
+            <br>• Ref 1: Miss. Evict 7 (least recently used). Lines: <code>[5, 3, 2, 1]</code> (5 misses).
+            <br>• Ref 0: Miss. Evict 5. Lines: <code>[3, 2, 1, 0]</code> (6 misses).
+            <br>• Ref 4: Miss. Evict 3. Lines: <code>[2, 1, 0, 4]</code> (7 misses).
+            <br>• Ref 7: Miss. Evict 2 (least recently used). Lines: <code>[1, 0, 4, 7]</code> (8 misses).
             <br>• Ref 4: Hit.
-            <br>• Ref 2: Miss. Evict 1. Frames: <code>[0, 4, 7, 2]</code> (9 faults).
+            <br>• Ref 2: Miss. Evict 1. Lines: <code>[0, 4, 7, 2]</code> (9 misses).
             <br>• Ref 0: Hit.
-            <br>• Ref 1: Miss. Evict 4. Frames: <code>[7, 2, 0, 1]</code> (10 faults).
-            <br>• Ref 3: Miss. Evict 7. Frames: <code>[2, 0, 1, 3]</code> (11 faults).
-            <br>• Ref 5: Miss. Evict 2. Frames: <code>[0, 1, 3, 5]</code> (12 faults).
-            <br><mark><b>LRU Page Faults = 12</b></mark> (2 hits, hit rate 2/14 = 14.3%).
+            <br>• Ref 1: Miss. Evict 4. Lines: <code>[7, 2, 0, 1]</code> (10 misses).
+            <br>• Ref 3: Miss. Evict 7. Lines: <code>[2, 0, 1, 3]</code> (11 misses).
+            <br>• Ref 5: Miss. Evict 2. Lines: <code>[0, 1, 3, 5]</code> (12 misses).
+            <br><mark><b>LRU Cache Misses = 12</b></mark> (2 hits, hit rate 2/14 = 14.3%).
           </li>
-          <li><b><mark>Optimal</mark> Trace (Evict page needed farthest in future):</b>
-            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 faults).
-            <br>• Ref 1: Miss. Future refs: 7@8, 5@14, 3@13, 2@10. Evict 5 (farthest). Frames: <code>[7, 1, 3, 2]</code> (5 faults).
-            <br>• Ref 0: Miss. Future: 7@8, 1@12, 3@13, 2@10. Evict 3. Frames: <code>[7, 1, 0, 2]</code> (6 faults).
-            <br>• Ref 4: Miss. Future: 7@8, 1@12, 0@11, 2@10. Evict 1. Frames: <code>[7, 4, 0, 2]</code> (7 faults).
+          <li><b><mark>Optimal</mark> Trace (Evict block needed farthest in future):</b>
+            <br>• Initial 4 refs (7,5,3,2) miss: <code>[7, 5, 3, 2]</code> (4 misses).
+            <br>• Ref 1: Miss. Future refs: 7@8, 5@14, 3@13, 2@10. Evict 5 (farthest). Lines: <code>[7, 1, 3, 2]</code> (5 misses).
+            <br>• Ref 0: Miss. Future: 7@8, 1@12, 3@13, 2@10. Evict 3. Lines: <code>[7, 1, 0, 2]</code> (6 misses).
+            <br>• Ref 4: Miss. Future: 7@8, 1@12, 0@11, 2@10. Evict 1. Lines: <code>[7, 4, 0, 2]</code> (7 misses).
             <br>• Ref 7: Hit.
             <br>• Ref 4: Hit.
             <br>• Ref 2: Hit.
             <br>• Ref 0: Hit.
-            <br>• Ref 1: Miss. Future: 3@13, 5@14. Evict 7 (no future use). Frames: <code>[1, 4, 0, 2]</code> (8 faults).
-            <br>• Ref 3: Miss. Evict 4. Frames: <code>[1, 3, 0, 2]</code> (9 faults).
-            <br>• Ref 5: Miss. Evict 0. Frames: <code>[1, 3, 5, 2]</code> (10 faults).
-            <br><mark><b>Optimal Page Faults = 10</b></mark>.
+            <br>• Ref 1: Miss. Future: 3@13, 5@14. Evict 7 (no future use). Lines: <code>[1, 4, 0, 2]</code> (8 misses).
+            <br>• Ref 3: Miss. Evict 4. Lines: <code>[1, 3, 0, 2]</code> (9 misses).
+            <br>• Ref 5: Miss. Evict 0. Lines: <code>[1, 3, 5, 2]</code> (10 misses).
+            <br><mark><b>Optimal Cache Misses = 10</b></mark>.
           </li>
         </ul>
 
@@ -2427,7 +2463,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <table>
             <tr><th>Scheme</th><th>Address split</th><th>Tag compares per access</th><th>Replacement</th><th>Conflict misses</th><th>Used in</th></tr>
             <tr><td><b>Direct-mapped</b></td><td>TAG · LINE · WORD</td><td>1</td><td>None (forced)</td><td>High</td><td>L1 of older MIPS, simple embedded</td></tr>
-            <tr><td><b>Fully associative</b></td><td>TAG · WORD</td><td>N (entire cache)</td><td>LRU / FIFO / Random</td><td>Zero</td><td>TLB, victim caches</td></tr>
+            <tr><td><b>Fully associative</b></td><td>TAG · WORD</td><td>N (entire cache)</td><td>LRU / FIFO / Random</td><td>Zero</td><td>Small victim caches, fully-associative L1</td></tr>
             <tr><td><b>k-way set-associative</b></td><td>TAG · SET · WORD</td><td>k</td><td>LRU / Pseudo-LRU</td><td>Low</td><td>L1/L2/L3 of every modern CPU</td></tr>
           </table>
         </div>
@@ -2435,10 +2471,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <h5>FIFO vs LRU vs Optimal — Comparison Table</h5>
         <div class="table-wrap">
           <table>
-            <tr><th>Algorithm</th><th>Eviction policy</th><th>Faults (this ref-string)</th><th>Hit rate (14 refs)</th><th>Implementation cost</th><th>Practical use</th></tr>
-            <tr><td><b>FIFO</b></td><td>Evict the oldest-loaded page (queue order).</td><td>12</td><td>14.3%</td><td>Cheap — one FIFO queue.</td><td>Rare. Suffers Belady's anomaly (more frames → more faults).</td></tr>
-            <tr><td><b>LRU</b></td><td>Evict the least-recently-used page (timestamp).</td><td>12</td><td>14.3%</td><td>Expensive — timestamp every reference.</td><td>Ties FIFO on this string (12 faults); usually beats it on real workloads. Approximated by <b>CLOCK</b> / <b>Aging</b> in real OS kernels (Linux, Windows).</td></tr>
-            <tr><td><b>Optimal</b></td><td>Evict the page used farthest in future.</td><td>10</td><td>28.6%</td><td>Impossible online — needs future ref-string.</td><td>Theoretical lower bound — benchmark only.</td></tr>
+            <tr><th>Algorithm</th><th>Eviction policy</th><th>Misses (this ref-string)</th><th>Hit rate (14 refs)</th><th>Implementation cost</th><th>Practical use</th></tr>
+            <tr><td><b>FIFO</b></td><td>Evict the oldest-loaded block (queue order).</td><td>12</td><td>14.3%</td><td>Cheap — one FIFO queue.</td><td>Rare. Suffers Belady's anomaly (more lines → more misses).</td></tr>
+            <tr><td><b>LRU</b></td><td>Evict the least-recently-used block (timestamp).</td><td>12</td><td>14.3%</td><td>Expensive — timestamp every reference.</td><td>Ties FIFO on this string (12 misses); usually beats it on real workloads. Approximated by <b>tree-PLRU</b> in real CPU caches.</td></tr>
+            <tr><td><b>Optimal</b></td><td>Evict the block used farthest in future.</td><td>10</td><td>28.6%</td><td>Impossible online — needs future ref-string.</td><td>Theoretical lower bound — benchmark only.</td></tr>
           </table>
         </div>
 
@@ -2447,28 +2483,25 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <li><b>3-level cache hierarchy:</b> Intel Sapphire Rapids — L1 (48 KB/core, 5 cyc), L2 (2 MB/core, 14 cyc), L3 (shared, up to 105 MB, ~40 cyc), DRAM (~200 cyc). Apple M3 Pro: L1 (192 KB/perf-core), L2 (16 MB shared per cluster).</li>
           <li><b>Pseudo-LRU:</b> true LRU needs <code>log₂(k!)</code> bits per set. Too costly. Caches use <i>tree-PLRU</i> (one bit per node in a binary tree over the k ways) or <i>NRU</i> (Not-Recently-Used).</li>
           <li><b>Inclusive vs exclusive caches:</b> Intel uses inclusive (L3 holds every L1/L2 line) for easy coherence. AMD Zen uses victim/exclusive caching to grow total size.</li>
-          <li><b>CLOCK / Second-Chance:</b> Linux <code>mm/swap.c</code> and Windows <code>WorkingSet</code> manager both run a circular reference-bit scan. It approximates LRU at O(1) per page.</li>
-          <li><b>TLB hierarchy:</b> modern x86 has L1 ITLB (64 entries), L1 DTLB (64 entries), L2 STLB (~1500 entries). A page-walk after STLB miss takes ~100 cycles on a hot page-table cache, ~400+ cycles cold.</li>
-          <li><b>Huge pages:</b> 2 MB and 1 GB pages cut TLB pressure for big workloads (databases, JVM heaps). One 2 MB TLB entry covers what would otherwise need 512 entries.</li>
           <li><b>Unified memory (Apple M-series):</b> CPU and GPU share the same physical RAM and same caches. No PCIe DMA copies. This used to dominate ML inference delay.</li>
         </ul>
 
         <div class="box warn">
           <span class="label">Common pitfalls</span>
-          (1) <b>TLB miss ≠ cache miss:</b> a TLB miss means the virtual-to-physical map is missing (page-walk, ~100 cyc). A cache miss means the data line is missing from L1/L2/L3 (DRAM fetch, ~200 cyc). A single reference can be a TLB hit + cache miss, or the other way. (2) In a page-replacement trace, <b>count the compulsory misses</b>. The first 4 references all count as faults when frames start empty. (3) <b>Belady's anomaly</b>: FIFO can give <i>more</i> faults with <i>more</i> frames. Never assume "more frames is always better". (4) <b>SET ≠ LINE:</b> in direct-mapped the index picks a line. In set-associative the same field picks a set (group of k lines). (5) <b>Write policy:</b> write-through (every store hits memory; safe, slow) vs write-back (stores buffer in cache, flushed on eviction; fast, needs dirty bit and coherence like MESI).
+          (1) In a cache-replacement trace, <b>count the compulsory misses</b>. The first 4 references all count as misses when the cache lines start empty. (2) <b>Belady's anomaly</b>: FIFO can give <i>more</i> misses with <i>more</i> lines. Never assume "more lines is always better". (3) <b>SET ≠ LINE:</b> in direct-mapped the index picks a line. In set-associative the same field picks a set (group of k lines). (5) <b>Write policy:</b> write-through (every store hits memory; safe, slow) vs write-back (stores buffer in cache, flushed on eviction; fast, needs dirty bit and coherence like MESI).
         </div>
 
         <h5>Conclusion</h5>
-        <p>Cache mapping decides <i>where</i> a block can sit. Replacement decides <i>which</i> block leaves. The address split (<mark>TAG · SET · WORD</mark>) comes from power-of-two arithmetic on cache size, block size, and address width. FIFO, LRU, and Optimal trade cost for hit rate. <mark>Belady's Optimal</mark> is the theoretical floor. LRU (and its CLOCK approximation) gets within a few percent. FIFO survives only where simplicity wins over correctness. The OS kernel still solves this tradeoff inside <code>mm/swap.c</code> every day.</p>
+        <p>Cache mapping decides <i>where</i> a block can sit. Replacement decides <i>which</i> block leaves on a cache miss. The address split (<mark>TAG · SET · WORD</mark>) comes from power-of-two arithmetic on cache size, block size, and address width. FIFO, LRU, and Optimal trade cost for hit rate. <mark>Belady's Optimal</mark> is the theoretical floor. LRU (and its tree-PLRU approximation) gets within a few percent. FIFO survives only where simplicity wins over correctness. Every modern CPU cache resolves this tradeoff in hardware on each miss.</p>
 
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
             <li><span>Part (a): cache mapping intro + bits calc (2 worked configs)</span><span class="m">5.0M</span></li>
             <li><span>Part (a): address-split diagram + mapping schemes table</span><span class="m">2.0M</span></li>
-            <li><span>Part (b): FIFO trace + page-faults count</span><span class="m">2.0M</span></li>
-            <li><span>Part (b): LRU trace + page-faults count</span><span class="m">2.0M</span></li>
-            <li><span>Part (b): Optimal trace + page-faults count + comparison table</span><span class="m">2.5M</span></li>
+            <li><span>Part (b): FIFO trace + cache-misses count</span><span class="m">2.0M</span></li>
+            <li><span>Part (b): LRU trace + cache-misses count</span><span class="m">2.0M</span></li>
+            <li><span>Part (b): Optimal trace + cache-misses count + comparison table</span><span class="m">2.5M</span></li>
             <li><span>Modern relevance + pitfalls + conclusion</span><span class="m">1.5M</span></li>
           </ul>
         </div>
@@ -2480,7 +2513,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Real Paper 311404 · Q2(b)</span><span class="tag marks">5M</span></div>
       <div class="qbody"><b>Differentiate between RISC and CISC instruction set architectures.</b></div>
       <div class="ans">
-        <p><mark>RISC</mark> (Reduced Instruction Set Computer) keeps a <b>small set of simple, fixed-length</b> instructions that each run in one cycle, favouring a pipelined load-store design. <mark>CISC</mark> (Complex Instruction Set Computer) provides <b>many powerful, variable-length</b> instructions that can do multi-step work in a single instruction.</p>
+        <ul>
+          <li><b><mark>RISC</mark> (Reduced Instruction Set Computer):</b> keeps a <b>small set of simple, fixed-length</b> instructions that each run in one cycle, favouring a pipelined load-store design.</li>
+          <li><b><mark>CISC</mark> (Complex Instruction Set Computer):</b> provides <b>many powerful, variable-length</b> instructions that can do multi-step work in a single instruction.</li>
+        </ul>
 
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; max-width:560px; margin:0 auto; font-size:12px; text-align:center;">
@@ -2755,8 +2791,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <li><mark>Address split</mark>: TAG · SET · WORD. WORD = log₂(block); SET = log₂(lines/k); TAG = remainder.</li>
           <li><mark>Hit ratio</mark>: H = hits / (hits + misses). Effective access time <code>T = H·Tc + (1−H)·Tm</code>.</li>
           <li><mark>Memory interleaving</mark>: low-order vs high-order; banked DRAM for parallel access.</li>
-          <li><mark>Virtual memory</mark>: Paging, Page table, TLB. Page fault → OS swap.</li>
-          <li><mark>Page replacement</mark>: FIFO (Belady's anomaly), LRU, Optimal, CLOCK / Second-Chance.</li>
+          <li><mark>Cache replacement</mark>: FIFO (Belady's anomaly), LRU, Optimal — choose which block to evict on a cache miss.</li>
           <li><mark>Write policies</mark>: Write-through (RAM always synced) vs Write-back (lazy, dirty bit).</li>
         </ul>
       </div>
@@ -2823,11 +2858,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         </ul>
       </div>
       <div class="cheat-card">
-        <div class="cc-h">Page Replacement</div>
+        <div class="cc-h">Cache Replacement</div>
         <ul>
-          <li><b>FIFO:</b> Evict oldest. Belady's Anomaly risk</li>
-          <li><b>LRU:</b> Evict least recently touched page</li>
-          <li><b>Optimal:</b> Evict page needed latest in future</li>
+          <li><b>FIFO:</b> Evict oldest block. Belady's Anomaly risk</li>
+          <li><b>LRU:</b> Evict least recently touched block</li>
+          <li><b>Optimal:</b> Evict block needed latest in future</li>
           <li>Optimal provides strict theoretical baseline</li>
         </ul>
       </div>
@@ -2852,7 +2887,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <div class="hot-qs">
       <h4>🎯 Highest Exam Probability checklist</h4>
-      <div class="hot-item"><span class="hi-badge vhigh">★★ 15M</span><b>Cache field mapping &amp; replacement</b> — Compute TAG/SET/WORD sizes + Page Replacement Traces (FIFO, LRU, Optimal).</div>
+      <div class="hot-item"><span class="hi-badge vhigh">★★ 15M</span><b>Cache field mapping &amp; replacement</b> — Compute TAG/SET/WORD sizes + Cache Replacement Traces (FIFO, LRU, Optimal).</div>
       <div class="hot-item"><span class="hi-badge vhigh">★★ 15M</span><b>Addressing Modes numerical</b> — Trace Effective Addresses + list the 9 modes with their properties.</div>
       <div class="hot-item"><span class="hi-badge vhigh">★★ 15M</span><b>DMA Controller Block Diagram</b> — Draw block diagram and describe its 3 transfer modes and bus priorities.</div>
       <div class="hot-item"><span class="hi-badge high">★ 10M</span><b>Booth's recoding trace</b> — Signed Booth's trace numerical + flowchart.</div>
@@ -2913,7 +2948,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <li><b>Pipeline hazards + speedup.</b> Three hazards: <mark>Structural</mark> (HW clash, fix with Harvard split), <mark>Data</mark> (RAW/WAR/WAW, fix with forwarding + renaming), <mark>Control</mark> (branch delay, fix with prediction + BTB). Speedup formula: <code>S = nk/(k+n−1)</code>. For n=1000, k=5 → S ≈ 4.98×.</li>
       <li><b>Cache mapping bit-split.</b> Given cache size, block size, associativity, address width — compute <mark>TAG · SET · WORD</mark>. WORD = log₂(block). Lines = cache/block. Sets = lines/k. SET = log₂(sets). TAG = remainder. (64 KB, 16 B block, 2-way, 32-bit addr → TAG=17, SET=11, WORD=4.)</li>
       <li><b>DMA cycle-stealing + 3 modes.</b> DMA has bus priority because I/O data is volatile. Three modes: <mark>Burst</mark> (full block, CPU stalled), <mark>Cycle-stealing</mark> (1 cycle per word, CPU slows), <mark>Transparent</mark> (only on idle CPU cycles, zero impact). Block diagram: Address reg + Word count + Control reg.</li>
-      <li><b>FIFO / LRU / Optimal trace.</b> Practice the standard 14-ref string with 4 frames. FIFO = evict oldest (Belady's anomaly possible). LRU = evict least recently used. Optimal = evict page used farthest in future (theoretical floor). Always count the first 4 compulsory misses.</li>
+      <li><b>FIFO / LRU / Optimal trace.</b> Practice the standard 14-ref string with 4 cache lines. FIFO = evict oldest (Belady's anomaly possible). LRU = evict least recently used. Optimal = evict block used farthest in future (theoretical floor). Always count the first 4 compulsory misses.</li>
     </ol>
   </div>
 
