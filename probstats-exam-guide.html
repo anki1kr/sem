@@ -1418,7 +1418,7 @@ r-th Central Moment: u_r = E[(X - Mean)^r]</div>
         <b>Calculate Skewness (β₁) and Kurtosis (β₂):</b>
         - Skewness coefficient: β₁ = (u_3)^2 / (u_2)^3 = (39.75)^2 / (14.75)^3 = 1580.0625 / 3209.64 ≈ <b>0.492</b>.
         - Kurtosis coefficient: β₂ = u_4 / (u_2)^2 = 142.3125 / (14.75)^2 = 142.3125 / 217.5625 ≈ <b>0.654</b>.
-        <b>Interpretation:</b> Since β₁ &gt; 0, the distribution is positively skewed (right-skewed). Since β₂ &lt; 3, it is platykurtic (flatter than a normal distribution).
+        <b>Interpretation:</b> Since u_3 = +39.75 &gt; 0 (the third central moment is positive), the distribution is positively skewed (right-skewed) — β₁ itself is always ≥ 0, so the sign of u_3 is what fixes the direction. Since β₂ &lt; 3, it is platykurtic (flatter than a normal distribution).
       </div>
     </div>
   </div>
@@ -2197,6 +2197,71 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         - a = 10^A = 10^(-0.1662) ≈ <b>0.682</b>
         - b = 10^B = 10^(0.1408) ≈ <b>1.383</b>
         Final exponential model: <b>y = 0.682 * (1.383)^x</b>.
+      </div>
+    </div>
+
+    <h4>Worked Numerical Example: Fitting a Power Curve y = a·x<sup>b</sup> (University PYQ · 10 M)</h4>
+    <p>Fit a power curve of the form <mark>Y = a·X<sup>b</sup></mark> to the following data by the method of least squares:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>X</th>
+            <td>1</td>
+            <td>2</td>
+            <td>3</td>
+            <td>4</td>
+          </tr>
+          <tr>
+            <th>Y</th>
+            <td>3</td>
+            <td>12</td>
+            <td>27</td>
+            <td>48</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step k">
+        <b>Linearise by taking log<sub>10</sub> of both sides:</b>
+        Y = a·X<sup>b</sup> ⇒ log Y = log a + b·log X.
+        Put U = log X, V = log Y, A = log a. Then <mark>V = A + b·U</mark> — a straight line in log-log space, so we fit a least-squares line on (U, V).
+      </div>
+      <div class="step k">
+        <b>Tabulate U = log X and V = log Y (n = 4):</b>
+        <div class="table-wrap" style="margin-top:6px;">
+          <table>
+            <thead>
+              <tr><th>X</th><th>Y</th><th>U = log X</th><th>V = log Y</th><th>U·V</th><th>U²</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>1</td><td>3</td><td>0.0000</td><td>0.4771</td><td>0.0000</td><td>0.0000</td></tr>
+              <tr><td>2</td><td>12</td><td>0.3010</td><td>1.0792</td><td>0.3248</td><td>0.0906</td></tr>
+              <tr><td>3</td><td>27</td><td>0.4771</td><td>1.4314</td><td>0.6829</td><td>0.2276</td></tr>
+              <tr><td>4</td><td>48</td><td>0.6021</td><td>1.6812</td><td>1.0123</td><td>0.3625</td></tr>
+              <tr><td><b>Σ</b></td><td>—</td><td><b>1.3802</b></td><td><b>4.6689</b></td><td><b>2.0200</b></td><td><b>0.6807</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="step k">
+        <b>Two normal equations for the line V = A + b·U:</b>
+        1.  ΣV = n·A + b·ΣU  ⇒  4.6689 = 4A + 1.3802 b
+        2.  ΣUV = A·ΣU + b·ΣU²  ⇒  2.0200 = 1.3802 A + 0.6807 b
+      </div>
+      <div class="step k">
+        <b>Solve for b (slope) and A = log a (intercept):</b>
+        b = (n·ΣUV − ΣU·ΣV) / (n·ΣU² − (ΣU)²)
+        = (4·2.0200 − 1.3802·4.6689) / (4·0.6807 − 1.3802²)
+        = (8.0800 − 6.4440) / (2.7228 − 1.9050)
+        = 1.6360 / 0.8178 ≈ <b>b = 2.00</b>.
+        A = (ΣV − b·ΣU) / n = (4.6689 − 2.00·1.3802) / 4 = (4.6689 − 2.7604) / 4 = 1.9085 / 4 ≈ <b>A = 0.4771</b>.
+      </div>
+      <div class="step k">
+        <b>Recover a by antilog and write the final model:</b>
+        a = 10<sup>A</sup> = 10<sup>0.4771</sup> ≈ <b>3.00</b>.
+        <div class="formula" style="margin-top:8px;"><mark><b>Y = 3·X<sup>2</sup></b></mark></div>
       </div>
     </div>
   </div>
@@ -3428,7 +3493,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
       <div class="cheat-card" style="padding:10px 12px; border:1px solid var(--rule); border-left:3px solid var(--crimson); border-radius:4px; background:var(--paper-soft);">
         <b style="color:var(--crimson);">3. If mean + var of B(n=5) = 4.8, find p.</b>
-        <div style="font-size:13.5px; margin-top:4px;">np + npq = 4.8 ⇒ 5p + 5pq = 4.8 ⇒ 5p(1 + q) = 4.8 ⇒ p(1 + 1 − p) = 0.96 ⇒ p(2 − p) = 0.96 ⇒ p² − 2p + 0.96 = 0 ⇒ <mark><b>p = 0.4</b></mark> (rejecting p = 1.6 &gt; 1). Hence q = 0.6.</div>
+        <div style="font-size:13.5px; margin-top:4px;">np + npq = 4.8 ⇒ 5p + 5pq = 4.8 ⇒ 5p(1 + q) = 4.8 ⇒ p(1 + 1 − p) = 0.96 ⇒ p(2 − p) = 0.96 ⇒ p² − 2p + 0.96 = 0. Roots (sum 2, product 0.96): p = 0.8, 1.2; reject 1.2 (&gt; 1) ⇒ <mark><b>p = 0.8, q = 0.2</b></mark>. Check: mean = np = 4, var = npq = 5·0.8·0.2 = 0.8, mean + var = 4.8 ✓.</div>
       </div>
 
       <div class="cheat-card" style="padding:10px 12px; border:1px solid var(--rule); border-left:3px solid var(--crimson); border-radius:4px; background:var(--paper-soft);">

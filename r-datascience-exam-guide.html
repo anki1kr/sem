@@ -1752,6 +1752,51 @@ as.logical(1)      # TRUE
 # Implicit coercion hierarchy:
 # logical < integer < numeric < complex < character
 c(TRUE, 2L, 3.5, "x")   # all become "x" (character)</code></pre>
+
+    <div class="box def">
+      <span class="label">Coercion rule — the single most-tested trap</span>
+      A vector is <mark>homogeneous</mark>, so when you <code>c()</code> mixed types together R silently promotes <i>every</i> element up to the <b>most general</b> type present, following the fixed ladder <code>logical → integer → double → complex → character</code>. It never demotes — one string in the mix turns the whole vector into character.
+    </div>
+<pre><code># Watch each result climb the ladder
+c(TRUE, FALSE)        # logical
+c(TRUE, 5L)           # integer  -> c(1L, 5L)   (TRUE counts as 1)
+c(TRUE, 2.5)          # double   -> c(1.0, 2.5)
+c(2L, 4.5)            # double   -> c(2.0, 4.5)
+c(3.5, "x")           # character-> c("3.5", "x")
+
+# Explicit coercion can FAIL silently -> NA + warning
+as.numeric("hello")   # NA (with a warning) — not an error
+as.integer(3.9)       # 3   (truncates toward zero, does NOT round)</code></pre>
+
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-direction:row; align-items:stretch; gap:0; max-width:600px; margin:0 auto; flex-wrap:wrap;">
+        <div style="flex:1; min-width:90px; background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px 0 0 6px; padding:10px 6px; text-align:center;">
+          <div style="font-weight:700; font-size:12.5px;">logical</div>
+          <div style="font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace;">TRUE / FALSE</div>
+        </div>
+        <div style="display:flex; align-items:center; color:var(--brand); font-size:18px; padding:0 2px;">&#8594;</div>
+        <div style="flex:1; min-width:90px; background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); padding:10px 6px; text-align:center;">
+          <div style="font-weight:700; font-size:12.5px;">integer</div>
+          <div style="font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace;">5L</div>
+        </div>
+        <div style="display:flex; align-items:center; color:var(--brand); font-size:18px; padding:0 2px;">&#8594;</div>
+        <div style="flex:1; min-width:90px; background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); padding:10px 6px; text-align:center;">
+          <div style="font-weight:700; font-size:12.5px;">double</div>
+          <div style="font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace;">3.14</div>
+        </div>
+        <div style="display:flex; align-items:center; color:var(--brand); font-size:18px; padding:0 2px;">&#8594;</div>
+        <div style="flex:1; min-width:90px; background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); padding:10px 6px; text-align:center;">
+          <div style="font-weight:700; font-size:12.5px;">complex</div>
+          <div style="font-size:10px; color:var(--muted); font-family:'JetBrains Mono',monospace;">2+3i</div>
+        </div>
+        <div style="display:flex; align-items:center; color:var(--brand); font-size:18px; padding:0 2px;">&#8594;</div>
+        <div style="flex:1; min-width:90px; background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:0 6px 6px 0; padding:10px 6px; text-align:center;">
+          <div style="font-weight:700; font-size:12.5px;">character</div>
+          <div style="font-size:10px; opacity:.85; font-family:'JetBrains Mono',monospace;">"x"</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.7</b> · The atomic-type promotion ladder · <code>c()</code> lifts every element to the rightmost type present; the highest type "wins".</figcaption>
+    </figure>
   </div>
 
   <div class="topic" id="t-2-8">
@@ -1832,6 +1877,38 @@ names(v) <- c("a","b","c"); v["b"]  # named</code></pre>
       <span class="label">Recycling rule</span>
       Shorter vector is recycled to match longer: <code>c(1,2,3) + c(10,20)</code> → <code>c(11, 22, 13)</code> with a warning if not a multiple.
     </div>
+
+    <figure class="diagram-fig">
+      <div style="max-width:520px; margin:0 auto;">
+        <div style="display:grid; grid-template-columns:70px repeat(6,1fr); gap:5px; align-items:center;">
+          <div style="font-size:11px; font-weight:700; color:var(--brand-deep);">long</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">1</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">2</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">3</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">4</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">5</div>
+          <div style="background:var(--brand); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">6</div>
+
+          <div style="font-size:11px; font-weight:700; color:var(--brand-deep);">short</div>
+          <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">10</div>
+          <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">20</div>
+          <div style="background:#fef3c7; color:var(--brand-deep); border:1.5px dashed var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">10</div>
+          <div style="background:#fef3c7; color:var(--brand-deep); border:1.5px dashed var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">20</div>
+          <div style="background:#fef3c7; color:var(--brand-deep); border:1.5px dashed var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">10</div>
+          <div style="background:#fef3c7; color:var(--brand-deep); border:1.5px dashed var(--brand); border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">20</div>
+
+          <div style="font-size:11px; font-weight:700; color:var(--brand-deep);">sum</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">11</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">22</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">13</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">24</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">15</div>
+          <div style="background:var(--brand-deep); color:#fff; border-radius:5px; padding:7px 0; text-align:center; font-weight:700; font-size:12px;">26</div>
+        </div>
+        <div style="text-align:center; font-size:10.5px; color:var(--muted); margin-top:7px; font-family:'JetBrains Mono',monospace;">dashed cells = recycled copies of c(10, 20)</div>
+      </div>
+      <figcaption><b>Fig 2.10</b> · Recycling on <code>1:6 + c(10,20)</code> · the length-2 vector is repeated to fill length 6 before element-wise addition (no warning here — 6 is a multiple of 2).</figcaption>
+    </figure>
   </div>
 
   <div class="topic" id="t-2-11">
@@ -1891,6 +1968,30 @@ table(g)                     # frequency count
 o <- factor(c("L","H","M"),
   levels=c("L","M","H"), ordered=TRUE)
 o[1] < o[2]                  # TRUE</code></pre>
+
+<pre><code># More factor operations
+nlevels(g)                   # 2  — number of distinct levels
+as.integer(g)                # 1 2 1 2  — underlying integer codes
+levels(g) <- c("Male","Female")   # rename levels in place
+droplevels(g[g == "Male"])   # drop unused levels after subsetting
+
+# cut() turns a numeric vector INTO a factor (binning)
+marks <- c(45, 72, 88, 55, 91)
+grade <- cut(marks,
+             breaks = c(0, 50, 70, 100),
+             labels = c("Fail", "Pass", "Distinction"))
+grade        # Fail Distinction Distinction Pass Distinction
+table(grade) # frequency per bin</code></pre>
+
+    <div class="box warn">
+      <span class="label">The classic factor trap — as.numeric on a factor</span>
+      Converting a factor of numbers back to numbers needs <b>two</b> steps: <code>as.numeric(as.character(f))</code>. A direct <code>as.numeric(f)</code> returns the hidden <i>integer level codes</i> (1, 2, 3 …), <b>not</b> the original values — a guaranteed silent bug.
+    </div>
+
+    <div class="box why">
+      <span class="label">Why factors matter for modelling</span>
+      A factor tells R "this is categorical, not arithmetic". Functions like <code>lm()</code>, <code>aov()</code> and <code>ggplot()</code> use levels to build dummy variables, order axis labels, and group computations. An <b>ordered</b> factor additionally lets <code>&lt; &gt;</code> comparisons work (Low &lt; Medium &lt; High), which a plain character vector cannot.
+    </div>
   </div>
 
   <div class="topic" id="t-2-13">
@@ -2466,6 +2567,29 @@ mapply(function(a, b) a + b, 1:3, 4:6)    # 5 7 9</code></pre>
       <span class="label">How prof asks (10M, Jul-2025 Q5a · verbatim 3× across 2023/24/25)</span>
       <b>Highest-recurring topic in the paper</b> — never skip. At 10M, mention ALL 5 variants with one code line each + a comparison table. At 1.5M Part-A, just say "<code>lapply</code> returns a list, <code>sapply</code> simplifies to a vector". Mark allocation at 10M: definitions table <b>3M</b> · 5 code snippets <b>5M</b> · "why faster than for" point <b>2M</b>.
     </div>
+
+    <h4>Beyond the big five — vapply &amp; the functional helpers</h4>
+    <p>Examiners reward students who know the apply family extends past the five core members. Drop one of these for a bonus point in a 10-mark answer.</p>
+<pre><code># vapply — like sapply but you DECLARE the return type/length
+#   -> safer: errors loudly instead of silently changing shape
+vapply(1:3, function(x) x ^ 2, numeric(1))   # 1 4 9 (guaranteed double, length 1)
+
+# Map — element-wise over several lists/vectors, ALWAYS returns a list
+Map(function(a, b) a + b, 1:3, 4:6)           # list: 5, 7, 9
+
+# Reduce — fold a binary function across a vector (cumulative collapse)
+Reduce(`+`, 1:5)                              # 15  ((((1+2)+3)+4)+5)
+Reduce(`+`, 1:5, accumulate = TRUE)           # 1 3 6 10 15 (running total)
+
+# Filter — keep elements where the predicate is TRUE
+Filter(function(x) x %% 2 == 0, 1:10)         # 2 4 6 8 10
+
+# do.call — call a function with an argument LIST assembled at runtime
+do.call(rbind, list(c(1,2), c(3,4), c(5,6)))  # stacks rows into a 3x2 matrix</code></pre>
+    <div class="box tip">
+      <span class="label">vapply vs sapply — the safety point</span>
+      <code>sapply</code> guesses the output shape and can silently return a list when you expected a vector (e.g. when one element has a different length). <code>vapply</code> forces you to state the template (<code>numeric(1)</code>, <code>character(1)</code>…) so a shape mismatch throws an error at the point of failure — preferred in production code and worth a sentence in any apply-family answer.
+    </div>
   </div>
 
   <div class="topic" id="t-3-8">
@@ -2592,6 +2716,33 @@ sprintf("%.2f", 3.14159)    # "3.14"
 trimws("  hi  ")            # "hi"
 startsWith("hello","he")    # TRUE
 grepl("an", "banana")       # TRUE</code></pre>
+
+    <h4>Pattern matching &amp; vectorised string work</h4>
+    <p>All of R's string functions are <mark>vectorised</mark> — pass a whole character vector and get a vector back, no loop needed.</p>
+<pre><code>fruits <- c("apple", "banana", "cherry", "avocado")
+
+# grep / grepl — find matches (regex)
+grep("^a", fruits)          # 1 4   -> indices starting with "a"
+grep("^a", fruits, value=TRUE)   # "apple" "avocado"
+grepl("an", fruits)         # FALSE TRUE FALSE FALSE  (logical mask)
+
+# regmatches + regexpr — extract the matched part
+x <- "Order #4521 shipped"
+m <- regexpr("[0-9]+", x)
+regmatches(x, m)            # "4521"
+
+# paste vs paste0 (collapse joins a vector into ONE string)
+paste(fruits, collapse=", ")     # "apple, banana, cherry, avocado"
+paste0("ID_", 1:3)               # "ID_1" "ID_2" "ID_3"  (vectorised)
+
+# format / formatC — pad &amp; align for tabular output
+formatC(7, width=3, flag="0")    # "007"
+format(1234567, big.mark=",")    # "1,234,567"</code></pre>
+
+    <div class="box tip">
+      <span class="label">sub vs gsub · regex flavour</span>
+      <code>sub()</code> replaces only the <i>first</i> match; <code>gsub()</code> replaces <i>all</i>. Both take regular expressions by default — set <code>fixed=TRUE</code> to treat the pattern as a literal string (needed when matching characters like <code>.</code> or <code>*</code> that are otherwise regex metacharacters).
+    </div>
   </div>
 </section>
 
@@ -2905,6 +3056,79 @@ ggplot(df, aes(x = grade)) +
   geom_bar(fill = "#a16207") +
   labs(title = "Grade counts", x = "Grade", y = "Students")
 # Output: 3 bars showing how many students fall in each grade band</code></pre>
+
+    <h4>The common geoms — pick by data shape</h4>
+    <div class="table-wrap">
+    <table>
+      <caption>Which geom for which question</caption>
+      <thead><tr><th>Geom</th><th>Shows</th><th>Data needed</th></tr></thead>
+      <tbody>
+        <tr><td><code>geom_point()</code></td><td>Scatter — relationship of two numerics</td><td>x num, y num</td></tr>
+        <tr><td><code>geom_line()</code></td><td>Trend over an ordered axis (time series)</td><td>x ordered, y num</td></tr>
+        <tr><td><code>geom_bar()</code></td><td>Counts per category (auto-tallies rows)</td><td>x categorical</td></tr>
+        <tr><td><code>geom_col()</code></td><td>Bar of pre-computed values (no tally)</td><td>x cat, y num</td></tr>
+        <tr><td><code>geom_histogram()</code></td><td>Distribution of one numeric (bins)</td><td>x num</td></tr>
+        <tr><td><code>geom_boxplot()</code></td><td>Five-number summary per group</td><td>x cat, y num</td></tr>
+        <tr><td><code>geom_smooth()</code></td><td>Fitted trend + confidence band</td><td>x num, y num</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <h4>Aesthetics — mapped vs set (the #1 ggplot exam trap)</h4>
+<pre><code># MAPPED — colour driven BY a column -> goes INSIDE aes(), gets a legend
+ggplot(df, aes(x = hours, y = marks, colour = grade)) +
+  geom_point()
+
+# SET — one fixed colour for ALL points -> goes OUTSIDE aes(), no legend
+ggplot(df, aes(x = hours, y = marks)) +
+  geom_point(colour = "darkgreen")
+
+# Common aesthetic channels:
+#   x, y      position
+#   colour    outline / point / line colour   (a column -> legend)
+#   fill      interior colour of bars/boxes
+#   size      point size / line thickness
+#   shape     point symbol (factor only)
+#   alpha     transparency 0..1
+#   linetype  solid / dashed / dotted (factor)</code></pre>
+    <div class="box warn">
+      <span class="label">colour = "blue" inside vs outside aes()</span>
+      Putting a literal colour <i>inside</i> <code>aes()</code> — e.g. <code>aes(colour = "blue")</code> — does <b>not</b> paint points blue; it creates a one-level factor called "blue" and lets ggplot pick its own (usually red) colour plus a legend. To set a constant colour, place it <i>outside</i> <code>aes()</code> in the geom: <code>geom_point(colour = "blue")</code>.
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:8px; max-width:600px; margin:0 auto;">
+        <div style="border:1.5px solid var(--brand); border-radius:6px; padding:8px; text-align:center;">
+          <svg viewBox="0 0 60 40" width="100%" height="44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="14" cy="30" r="2.5" fill="var(--brand)"/><circle cx="24" cy="24" r="2.5" fill="var(--brand)"/><circle cx="34" cy="18" r="2.5" fill="var(--brand)"/><circle cx="44" cy="10" r="2.5" fill="var(--brand)"/>
+          </svg>
+          <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">geom_point</div>
+          <div style="font-size:9px; color:var(--muted);">scatter</div>
+        </div>
+        <div style="border:1.5px solid var(--brand); border-radius:6px; padding:8px; text-align:center;">
+          <svg viewBox="0 0 60 40" width="100%" height="44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <rect x="10" y="20" width="9" height="16" fill="var(--brand)"/><rect x="24" y="10" width="9" height="26" fill="var(--brand)"/><rect x="38" y="24" width="9" height="12" fill="var(--brand)"/>
+          </svg>
+          <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">geom_bar</div>
+          <div style="font-size:9px; color:var(--muted);">counts</div>
+        </div>
+        <div style="border:1.5px solid var(--brand); border-radius:6px; padding:8px; text-align:center;">
+          <svg viewBox="0 0 60 40" width="100%" height="44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <polyline points="10,32 22,20 34,26 46,8" fill="none" stroke="var(--brand)" stroke-width="2"/>
+          </svg>
+          <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">geom_line</div>
+          <div style="font-size:9px; color:var(--muted);">trend</div>
+        </div>
+        <div style="border:1.5px solid var(--brand); border-radius:6px; padding:8px; text-align:center;">
+          <svg viewBox="0 0 60 40" width="100%" height="44" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <line x1="28" y1="6" x2="28" y2="14" stroke="var(--brand)" stroke-width="1.5"/><rect x="16" y="14" width="24" height="16" fill="none" stroke="var(--brand)" stroke-width="1.5"/><line x1="16" y1="22" x2="40" y2="22" stroke="var(--brand)" stroke-width="2"/><line x1="28" y1="30" x2="28" y2="36" stroke="var(--brand)" stroke-width="1.5"/>
+          </svg>
+          <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">geom_boxplot</div>
+          <div style="font-size:9px; color:var(--muted);">spread</div>
+        </div>
+      </div>
+      <figcaption><b>Fig 4.10</b> · Geom gallery · the geom layer decides the visual mark — choose it from the shape of your data (two numerics &#8594; point, one categorical &#8594; bar, ordered axis &#8594; line, group spread &#8594; boxplot).</figcaption>
+    </figure>
   </div>
 
   <div class="topic" id="t-4-6">
@@ -2998,8 +3222,8 @@ x <- c(2, 4, 4, 4, 5, 5, 7, 9)
 
 mean(x)        # 5
 median(x)      # 4.5
-var(x)         # 4.286
-sd(x)          # 2.07
+var(x)         # 4.571
+sd(x)          # 2.138
 
 # Mode via UDF (no built-in)
 getMode <- function(v) {
@@ -3012,7 +3236,7 @@ summary(x)     # Min Q1 Median Mean Q3 Max</code></pre>
 
     <div class="numeric">
       <p class="q">Compute mean, median, mode, SD for: 2, 4, 4, 4, 5, 5, 7, 9</p>
-      <p class="a">Mean=<b>5</b> · Median=<b>4.5</b> · Mode=<b>4</b> (frequency 3) · SD≈<b>2.07</b></p>
+      <p class="a">Mean=<b>5</b> · Median=<b>4.5</b> · Mode=<b>4</b> (frequency 3) · SD≈<b>2.14</b></p>
     </div>
 
     <div class="box eli5">
@@ -3032,7 +3256,7 @@ summary(x)     # Min Q1 Median Mean Q3 Max</code></pre>
 
     <div class="numeric">
       <p class="q">For x = c(2, 4, 4, 4, 5, 5, 7, 9), compute variance step-by-step.</p>
-      <p class="a">mean=5 · deviations²: 9, 1, 1, 1, 0, 0, 4, 16 → sum=32 · R uses n−1 → var = 30/7 ≈ <b>4.286</b> (so var(x) = 4.286, sd ≈ 2.07)</p>
+      <p class="a">mean=5 · deviations²: 9, 1, 1, 1, 0, 0, 4, 16 → sum=32 · R uses n−1 → var = 32/7 ≈ <b>4.571</b> (so var(x) = 4.571, sd ≈ 2.138)</p>
     </div>
 
     <figure class="diagram-fig">
@@ -3168,8 +3392,8 @@ summary(x)     # Min Q1 Median Mean Q3 Max</code></pre>
 weights <- c(48, 52, 49, 51, 53, 47, 50, 51, 49, 52)
 
 t.test(weights, mu = 50)
-# t = 0.395, df = 9, p-value = 0.702
-# 95% CI: [49.0, 51.6]
+# t = 0.327, df = 9, p-value = 0.751
+# 95% CI: [48.8, 51.6]
 # Since p > 0.05  →  fail to reject H₀
 # Conclusion: insufficient evidence to claim mean ≠ 50.</code></pre>
 
@@ -3194,16 +3418,60 @@ t.test(scores, mu = 70, conf.level = 0.95)
 #
 # One Sample t-test
 # data:  scores
-# t = 0.452, df = 9, p-value = 0.6622
+# t = 0.522, df = 9, p-value = 0.6141
 # alternative hypothesis: true mean is not equal to 70
 # 95 percent confidence interval:
-#  68.69  72.51
+#  68.33  72.67
 # sample estimates:
 # mean of x
 #      70.5
 #
-# Step 5: Decision rule — p (0.6622) > alpha (0.05)  ->  FAIL TO REJECT H0
+# Step 5: Decision rule — p (0.6141) > alpha (0.05)  ->  FAIL TO REJECT H0
 # Step 6: Conclusion — no evidence the class mean differs from 70.</code></pre>
+
+    <h4>One-tailed vs two-tailed</h4>
+    <ul>
+      <li><b>Two-tailed</b> (default) — H₁ says the parameter is simply <i>different</i> (≠). The α is split into both tails (2.5% each at α = 0.05). Use when you have no prior direction.</li>
+      <li><b>One-tailed</b> — H₁ claims a <i>direction</i> (&gt; or &lt;). All of α sits in one tail, giving more power to detect an effect in that direction. In R: <code>t.test(x, mu=50, alternative="greater")</code> or <code>"less"</code>.</li>
+    </ul>
+
+    <h4>Type I &amp; Type II errors — the decision matrix</h4>
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Decision \ Reality</th><th>H&#8320; is TRUE</th><th>H&#8320; is FALSE</th></tr></thead>
+      <tbody>
+        <tr><td><b>Reject H&#8320;</b></td><td>Type I error (&alpha;) &mdash; false positive</td><td>Correct (power = 1 &minus; &beta;)</td></tr>
+        <tr><td><b>Fail to reject H&#8320;</b></td><td>Correct decision</td><td>Type II error (&beta;) &mdash; false negative</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul>
+      <li><b>Type I (&alpha;)</b> — rejecting a true null. "Convicting the innocent." Controlled directly by the chosen significance level.</li>
+      <li><b>Type II (&beta;)</b> — failing to reject a false null. "Acquitting the guilty." Reduced by larger samples or bigger effect sizes.</li>
+      <li><b>Power = 1 &minus; &beta;</b> — the probability of correctly detecting a real effect. Increasing n raises power without inflating &alpha;.</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:120px 1fr 1fr; gap:0; max-width:540px; margin:0 auto; border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+        <div style="background:var(--brand); color:#fff; font-weight:700; font-size:10.5px; padding:8px 6px; display:flex; align-items:center;">decision &#8595; / truth &#8594;</div>
+        <div style="background:var(--brand); color:#fff; font-weight:700; font-size:11px; padding:8px 6px; text-align:center; border-left:1px solid var(--brand-deep);">H&#8320; TRUE</div>
+        <div style="background:var(--brand); color:#fff; font-weight:700; font-size:11px; padding:8px 6px; text-align:center; border-left:1px solid var(--brand-deep);">H&#8320; FALSE</div>
+
+        <div style="background:var(--brand-soft); color:var(--brand-deep); font-weight:700; font-size:10.5px; padding:8px 6px; border-top:1px solid var(--brand);">Reject H&#8320;</div>
+        <div style="background:#fee2e2; color:#7c2d12; font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Type I</b><br>&alpha; · false +</div>
+        <div style="background:#dcfce7; color:var(--brand-deep); font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Correct</b><br>power 1&minus;&beta;</div>
+
+        <div style="background:var(--brand-soft); color:var(--brand-deep); font-weight:700; font-size:10.5px; padding:8px 6px; border-top:1px solid var(--brand);">Fail to reject</div>
+        <div style="background:#dcfce7; color:var(--brand-deep); font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Correct</b><br>1&minus;&alpha;</div>
+        <div style="background:#fef3c7; color:#7c2d12; font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Type II</b><br>&beta; · false &minus;</div>
+      </div>
+      <figcaption><b>Fig 4.11</b> · The error matrix &middot; the two diagonal cells are correct decisions; the off-diagonal cells are the two error types (&alpha; = false positive, &beta; = false negative).</figcaption>
+    </figure>
+
+    <div class="box tip">
+      <span class="label">Reading any t.test() / cor.test() output</span>
+      Every base test prints the same anatomy: the <b>test statistic</b> (t, &chi;&sup2;, z), the <b>degrees of freedom</b>, the <b>p-value</b>, the <b>confidence interval</b>, and a <b>sample estimate</b>. Decision is always the same rule: reject H&#8320; when <code>p &lt; &alpha;</code>; for a mean-difference test, a CI that <i>excludes</i> the null value corroborates rejection.
+    </div>
   </div>
 
   <div class="topic" id="t-4-9">
@@ -3223,7 +3491,7 @@ cor(x, y)                       # 0.775 (Pearson)
 cor(x, y, method="spearman")    # rank-based
 cor.test(x, y)                  # also reports p-value
 
-cov(x, y)                       # 1.25 (covariance)</code></pre>
+cov(x, y)                       # 1.5 (covariance)</code></pre>
 
     <div class="box tip">
       <span class="label">Covariance vs Correlation (2024 Part-A h)</span>
@@ -3245,7 +3513,7 @@ cor(hours, marks, method = "spearman")     # 1.000  (rank-based)
 
 cor.test(hours, marks)
 #         Pearson's product-moment correlation
-# t = 17.5, df = 5, p-value = 1.2e-05
+# t = 19.0, df = 5, p-value = 7.4e-06
 # alternative hypothesis: true correlation is not equal to 0
 # 95 percent confidence interval:
 #  0.949 0.999
@@ -3386,7 +3654,7 @@ qnorm(0.975, mean = 0, sd = 1)
 
 set.seed(1)
 rnorm(5, mean = 50, sd = 10)
-# [1] 43.7  51.8  41.6  65.9  53.3  — 5 random samples
+# [1] 43.7  51.8  41.6  66.0  53.3  — 5 random samples
 
 # ---- Binomial goodness-of-fit (May-2024 Q4b verbatim) ----
 # Observed: x = 0..5; freq = 2, 16, 28, 12, 9, 3 ; N = 70 families of n = 5
@@ -3394,11 +3662,11 @@ x <- 0:5
 f <- c(2, 16, 28, 12, 9, 3)
 N <- sum(f)                       # 70
 n <- 5
-mean_obs <- sum(x * f) / N        # 2.214
-p_hat    <- mean_obs / n          # 0.443 — estimated success prob
+mean_obs <- sum(x * f) / N        # 2.271
+p_hat    <- mean_obs / n          # 0.454 — estimated success prob
 expected <- N * dbinom(x, size = n, prob = p_hat)
 round(expected, 1)
-# [1]  6.4  25.4  40.4  32.1  12.8  2.0
+# [1]  3.4  14.1  23.5  19.5  8.1  1.4
 # Compare with observed (2 16 28 12 9 3) — fit roughly right, tail too thin.</code></pre>
 
     <div class="box prof">
@@ -4491,8 +4759,8 @@ checkPos(c(1, -2, 3))</code></pre></li>
 mean(x)        # 5.0
 median(x)      # 4.5
 getMode(x)     # 4
-sd(x)          # 2.07
-var(x)         # 4.286
+sd(x)          # 2.138
+var(x)         # 4.571
 
 summary(x)
 # Min. 1st Qu.  Median  Mean 3rd Qu. Max.
@@ -4552,10 +4820,10 @@ summary(x)
 
 # Step 3–4:
 t.test(weights, mu = 50)
-# t = 0.395, df = 9, p-value = 0.7022
-# 95% CI: [49.0, 51.6]
+# t = 0.327, df = 9, p-value = 0.751
+# 95% CI: [48.8, 51.6]
 
-# Step 5: p (0.70) > alpha (0.05) → fail to reject H0
+# Step 5: p (0.75) > alpha (0.05) → fail to reject H0
 # Step 6: Insufficient evidence to claim the mean differs from 50 g.</code></pre>
         <p>(See Fig 4.8 for the pipeline view.) Common variants: two-sample <code>t.test(x, y)</code>, paired <code>t.test(x, y, paired=TRUE)</code>, proportions <code>prop.test()</code>, chi-square <code>chisq.test()</code>.</p>
         <div class="box warn">
@@ -4722,7 +4990,7 @@ xbar <- sum(x*f) / N
 p <- xbar / n
 expected <- N * dbinom(x, size=n, prob=p)
 round(expected, 2)
-# 2.13 , 8.89 , 14.81 , 12.34 , 5.14 , 0.86 (approx)</code></pre>
+# 3.39 , 14.10 , 23.48 , 19.54 , 8.14 , 1.35  (sum = 70 = N)</code></pre>
         <p><b>Step 4 — Interpret.</b> The fitted Binomial(5, 0.4543) approximates the observed frequencies; goodness-of-fit can be tested via <code>chisq.test(f, p = dbinom(x,n,p))</code>.</p>
       </div>
     </div>
@@ -5793,7 +6061,7 @@ rpois(100, lambda=4)         # simulate</code></pre>
         <h5>R example — one-sample t-test</h5>
         <pre><code>x <- c(48,52,49,51,53,47,50,51,49,52)
 t.test(x, mu = 50)
-# t = 0.395, df = 9, p-value = 0.7022
+# t = 0.327, df = 9, p-value = 0.751
 # Since p > 0.05, fail to reject H0.</code></pre>
         <div class="box tip">
           <span class="label">Compression for 8 M</span>
@@ -5843,7 +6111,7 @@ t.test(x, mu = 50)
       <p class="q">Explain various measures of central tendency with examples and R syntax.</p>
       <p style="font-family:'JetBrains Mono'; font-size:11px; color:var(--muted);">Appeared: 2023 Q7(b) 7.5M, 2025 Q5(b) 10M · <a href="#t-4-7" style="color:var(--brand);">↗ Sec. 4.7</a></p>
       <div class="ans">
-        <p>Mean (Σx/n), median (middle value), mode (most frequent) — plus spread companions variance and SD. R: <code>mean</code>, <code>median</code>, UDF for mode, <code>var</code>, <code>sd</code>. (Full answer at Sec. 4.7 / May-2025 Q5(b).) Worked example: <code>c(2,4,4,4,5,5,7,9)</code> → mean 5, median 4.5, mode 4, SD ≈ 2.07.</p>
+        <p>Mean (Σx/n), median (middle value), mode (most frequent) — plus spread companions variance and SD. R: <code>mean</code>, <code>median</code>, UDF for mode, <code>var</code>, <code>sd</code>. (Full answer at Sec. 4.7 / May-2025 Q5(b).) Worked example: <code>c(2,4,4,4,5,5,7,9)</code> → mean 5, median 4.5, mode 4, SD ≈ 2.14.</p>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6053,8 +6321,8 @@ A <- c(78, 85, 90, 72, 88, 91, 76)
 B <- c(70, 75, 68, 80, 72, 74, 69)
 
 t.test(A, B, var.equal = FALSE)
-# Welch t = 4.93, df = 9.8, p-value = 0.0006
-# 95% CI of mean diff: [6.4, 17.6]
+# Welch t = 3.18, df = 9.4, p-value = 0.011
+# 95% CI of mean diff: [3.0, 17.6]
 # p < 0.05  →  reject H0.
 # Conclusion: section means differ significantly.</code></pre>
         <p>Mention: paired version uses <code>paired=TRUE</code>; variance equality testable with <code>var.test()</code>.</p>
@@ -6334,8 +6602,8 @@ mean(x); median(x)                # 5, 4.5
 
 # Dispersion
 diff(range(x))                    # 7
-var(x); sd(x); IQR(x)             # 4.29, 2.07, 1.0
-sd(x) / mean(x)                   # 0.41 = CV
+var(x); sd(x); IQR(x)             # 4.571, 2.138, 1.5
+sd(x) / mean(x)                   # 0.43 = CV
 
 summary(x)                        # 5-number summary</code></pre>
         <p><b>Interpretation:</b> tendency tells you "where the centre is", dispersion tells you "how spread out the data is". Together they characterise a distribution at first glance.</p>
@@ -6504,6 +6772,152 @@ t.test(df$marks, mu = 60, alternative = "greater")
             <li><b>ETL pipeline:</b> Extract from heterogeneous OLTP sources → Transform (clean, conform, aggregate) → Load into warehouse fact + dimension tables.</li>
             <li><b>Latency profile:</b> DB answers in milliseconds; DW answers in seconds to minutes — but on terabytes of history.</li>
             <li><b>Why DS chooses DW:</b> historical depth, pre-computed aggregates, no contention with live transactions, single source of truth across business units.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P8 -->
+  <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P8</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qbody">
+      <p class="q">Explain the grammar of graphics. Describe the layers of a ggplot2 plot and build a complete chart with R code.</p>
+      <div class="ans">
+        <div class="box prof">
+          <span class="label">Why this is predicted (signals)</span>
+          <b>Signal 1 (freq × recency)</b>: graphics appeared 2023 Q5(a) and 2025 Q6(b) — a recurring viz slot.
+          <b>Signal 4 (format rotation)</b>: past asks targeted base graphics or one ggplot chart; the natural escalation is the conceptual "grammar of graphics + layers" framing at 10 M.
+          <b>Signal 5 (prof signature)</b>: ggplot2 is the headline plotting library in the syllabus and the layered model is the standard theory question.
+        </div>
+        <h5>Model answer</h5>
+        <p>The <mark>grammar of graphics</mark> (Wilkinson, popularised by ggplot2) treats every statistical plot as a <b>stack of independent layers</b> combined with the <code>+</code> operator. Instead of one monolithic plotting call, you declare the data, map columns to visual channels, then add geometric marks and optional refinements. (Full layer-stack diagram at Sec. 4.5, Fig 4.5.)</p>
+        <ul>
+          <li><b>1 · Data</b> — the data frame supplying every value: <code>ggplot(data = df)</code>.</li>
+          <li><b>2 · Aesthetics</b> — <code>aes()</code> maps columns to channels (x, y, colour, fill, size, shape).</li>
+          <li><b>3 · Geometries</b> — <code>geom_*()</code> draws the marks (points, bars, lines, boxes). <i>Mandatory trio: Data + Aes + Geom.</i></li>
+          <li><b>4 · Statistics</b> — optional <code>stat_*()</code> transforms (binning, smoothing, density).</li>
+          <li><b>5 · Facets</b> — <code>facet_wrap()</code> / <code>facet_grid()</code> split into small multiples.</li>
+          <li><b>6 · Themes</b> — <code>theme_*()</code> styles non-data ink (fonts, gridlines, legend).</li>
+        </ul>
+<pre><code>library(ggplot2)
+
+# Complete plot — all six layers visible
+ggplot(data = mpg, aes(x = displ, y = hwy, colour = drv)) +  # 1 data + 2 aes
+  geom_point(size = 2, alpha = 0.7) +                        # 3 geometry
+  geom_smooth(method = "lm", se = FALSE) +                   # 4 statistic (lm fit)
+  facet_wrap(~ drv) +                                        # 5 facets
+  labs(title = "Engine size vs highway mpg",
+       x = "Displacement (L)", y = "Highway mpg") +
+  theme_minimal()                                            # 6 theme</code></pre>
+        <figure class="diagram-fig">
+          <div style="display:flex; flex-direction:column; gap:0; max-width:420px; margin:0 auto;">
+            <div style="background:#fef3c7; color:var(--brand-deep); border:1.5px solid var(--brand); border-bottom:none; border-radius:6px 6px 0 0; padding:7px 12px; font-size:11px;"><b>6 · Themes</b> <span style="font-family:'JetBrains Mono',monospace; color:var(--muted);">theme_minimal()</span></div>
+            <div style="background:#fde68a; color:var(--brand-deep); border:1.5px solid var(--brand); border-bottom:none; padding:7px 12px; font-size:11px;"><b>5 · Facets</b> <span style="font-family:'JetBrains Mono',monospace; color:var(--muted);">facet_wrap(~drv)</span></div>
+            <div style="background:#fcd34d; color:var(--brand-deep); border:1.5px solid var(--brand); border-bottom:none; padding:7px 12px; font-size:11px;"><b>4 · Statistics</b> <span style="font-family:'JetBrains Mono',monospace; color:var(--muted);">geom_smooth(lm)</span></div>
+            <div style="background:#86efac; color:var(--brand-deep); border:1.5px solid var(--brand); border-bottom:none; padding:7px 12px; font-size:11px;"><b>3 · Geometries</b> <span style="font-family:'JetBrains Mono',monospace; color:var(--muted);">geom_point()</span></div>
+            <div style="background:#4ade80; color:var(--brand-deep); border:1.5px solid var(--brand); border-bottom:none; padding:7px 12px; font-size:11px;"><b>2 · Aesthetics</b> <span style="font-family:'JetBrains Mono',monospace; color:var(--brand-deep);">aes(x,y,colour)</span></div>
+            <div style="background:var(--brand); color:#fff; border:1.5px solid var(--brand-deep); border-radius:0 0 6px 6px; padding:7px 12px; font-size:11px;"><b>1 · Data</b> <span style="font-family:'JetBrains Mono',monospace; opacity:.85;">ggplot(mpg)</span></div>
+          </div>
+          <figcaption><b>Fig P8.1</b> · A ggplot is built bottom-up — Data &#8594; Aesthetics &#8594; Geometries are mandatory; Statistics, Facets, Themes are optional layers glued with <code>+</code>.</figcaption>
+        </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Grammar-of-graphics concept</span><span>2 M</span></li>
+            <li><span>Six layers explained</span><span>4 M</span></li>
+            <li><span>Complete R code with layers labelled</span><span>3 M</span></li>
+            <li><span>Diagram / mapped-vs-set note</span><span>1 M</span></li>
+          </ul>
+        </div>
+        <div class="box tip" style="margin-top:14px">
+          <span class="label">Key takeaways · revise these 5</span>
+          <ul style="margin:6px 0 0 18px">
+            <li><b>Grammar = layers + <code>+</code></b>: a plot is composed, not drawn in one call — swap any layer to reshape the chart.</li>
+            <li><b>Mandatory trio:</b> Data, Aesthetics, Geometry. Statistics, Facets and Themes are optional refinements.</li>
+            <li><b><code>aes()</code> maps columns to channels</b> (x, y, colour, fill, size, shape) — never raw values.</li>
+            <li><b>Mapped vs set colour:</b> a column-driven colour goes <i>inside</i> <code>aes()</code> (gets a legend); a fixed colour goes <i>outside</i> in the geom.</li>
+            <li><b>Faceting</b> replaces base-R's <code>par(mfrow=)</code> with one line: <code>facet_wrap(~ var)</code> builds small multiples.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P9 -->
+  <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P9</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qbody">
+      <p class="q">Compare vector, list, matrix and data frame in R. Give the creation syntax and one access example for each, and state when to use which.</p>
+      <div class="ans">
+        <div class="box prof">
+          <span class="label">Why this is predicted (signals)</span>
+          <b>Signal 1 (freq × recency)</b>: vector vs list appeared as a 2023 Part-A short, and lists + data frames recur every year (2023 Q2a, 2024 Q3a, 2025 Q3a).
+          <b>Signal 4 (format rotation)</b>: the individual structures have been asked separately at 5–6 M; a unified 4-way "compare all structures" 10-marker is the natural escalation.
+          <b>Signal 5 (prof signature)</b>: data structures are the spine of Units 2–3 — a guaranteed conceptual anchor.
+        </div>
+        <h5>Model answer</h5>
+        <p>R's four core containers differ on two axes: <mark>dimensionality</mark> (1-D vs 2-D) and <mark>type-homogeneity</mark> (same type vs mixed). (Master 2×3 map at Sec. 3.0, Fig 3.0.)</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Structure</th><th>Dim</th><th>Types</th><th>Create</th><th>When to use</th></tr></thead>
+          <tbody>
+            <tr><td><b>Vector</b></td><td>1-D</td><td>Homogeneous</td><td><code>c(1,2,3)</code></td><td>A single column of same-type values</td></tr>
+            <tr><td><b>List</b></td><td>1-D</td><td>Heterogeneous</td><td><code>list(a=1, b="x")</code></td><td>Mixed / nested data; function returns</td></tr>
+            <tr><td><b>Matrix</b></td><td>2-D</td><td>Homogeneous</td><td><code>matrix(1:6, 2, 3)</code></td><td>Numeric tables, linear algebra</td></tr>
+            <tr><td><b>Data frame</b></td><td>2-D</td><td>Heterogeneous</td><td><code>data.frame(...)</code></td><td>Tabular datasets (rows = observations)</td></tr>
+          </tbody>
+        </table></div>
+<pre><code># 1. Vector — homogeneous, 1-D
+v <- c(10, 20, 30)
+v[2]                       # 20
+
+# 2. List — heterogeneous, 1-D, nestable
+L <- list(name = "Ankit", marks = c(80, 90), pass = TRUE)
+L$marks                    # 80 90    ($ or [[ ]] for the element itself)
+
+# 3. Matrix — homogeneous, 2-D
+m <- matrix(1:6, nrow = 2)  # fills column-wise
+m[1, 3]                    # 5        ([row, col])
+
+# 4. Data frame — heterogeneous, 2-D (a list of equal-length columns)
+df <- data.frame(name = c("A","B"), marks = c(80, 90),
+                 stringsAsFactors = FALSE)
+df$marks                   # 80 90    (column access)
+df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
+        <figure class="diagram-fig">
+          <div style="max-width:440px; margin:0 auto;">
+            <div style="display:grid; grid-template-columns:60px 1fr 1fr; gap:6px; align-items:center;">
+              <div></div>
+              <div style="text-align:center; font-size:10.5px; font-weight:700; color:var(--brand);">SAME TYPE</div>
+              <div style="text-align:center; font-size:10.5px; font-weight:700; color:#7c2d12;">MIXED TYPE</div>
+
+              <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">1-D</div>
+              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:9px 6px; text-align:center;"><b style="font-size:12px;">Vector</b><br><span style="font-family:'JetBrains Mono',monospace; font-size:9px;">c(1,2,3)</span></div>
+              <div style="background:#fde6d6; color:#7c2d12; border:1.5px solid #7c2d12; border-radius:6px; padding:9px 6px; text-align:center;"><b style="font-size:12px;">List</b><br><span style="font-family:'JetBrains Mono',monospace; font-size:9px;">list(a=1,b="x")</span></div>
+
+              <div style="font-size:10.5px; font-weight:700; color:var(--brand-deep);">2-D</div>
+              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:9px 6px; text-align:center;"><b style="font-size:12px;">Matrix</b><br><span style="font-family:'JetBrains Mono',monospace; font-size:9px;">matrix(...)</span></div>
+              <div style="background:#fde6d6; color:#7c2d12; border:1.5px solid #7c2d12; border-radius:6px; padding:9px 6px; text-align:center;"><b style="font-size:12px;">Data frame</b><br><span style="font-family:'JetBrains Mono',monospace; font-size:9px;">data.frame(...)</span></div>
+            </div>
+          </div>
+          <figcaption><b>Fig P9.1</b> · The 2&times;2 container map · rows = dimensionality, columns = type-homogeneity. A data frame is the heterogeneous 2-D case (technically a list of equal-length column vectors).</figcaption>
+        </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Comparison table (4 structures)</span><span>4 M</span></li>
+            <li><span>Creation + access code for each</span><span>4 M</span></li>
+            <li><span>Diagram + "when to use" reasoning</span><span>2 M</span></li>
+          </ul>
+        </div>
+        <div class="box tip" style="margin-top:14px">
+          <span class="label">Key takeaways · revise these 5</span>
+          <ul style="margin:6px 0 0 18px">
+            <li><b>Two axes decide the structure:</b> dimensionality (1-D vs 2-D) and homogeneity (same vs mixed type).</li>
+            <li><b>Vector</b> = same-type 1-D; coercion promotes mixed inputs to one type.</li>
+            <li><b>List</b> = mixed-type, nestable 1-D; access elements with <code>[[ ]]</code> or <code>$</code>, sub-lists with <code>[ ]</code>.</li>
+            <li><b>Matrix</b> = same-type 2-D filled column-wise by default; indexed <code>m[row, col]</code>.</li>
+            <li><b>Data frame</b> = mixed-type 2-D, internally a list of equal-length column vectors — the workhorse for datasets.</li>
           </ul>
         </div>
       </div>

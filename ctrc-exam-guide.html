@@ -273,9 +273,9 @@ tbody tr:nth-child(odd){ background:rgba(235,226,204,.35); }
 
 .hot-qs{ margin-top:14px; }
 .hot-qs h4{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.22em; text-transform:uppercase; color:var(--crimson); margin-bottom:10px; font-weight:700; }
-.hot-item{ display:flex; align-items:flex-start; gap:10px; padding:7px 0; border-bottom:1px solid var(--rule); font-size:14px; }
+.hot-item{ display:block; padding:7px 0; border-bottom:1px solid var(--rule); font-size:14px; }
 .hot-item:last-child{ border:none; }
-.hi-badge{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; padding:2px 8px; text-transform:uppercase; font-weight:700; white-space:nowrap; border-radius:2px; flex-shrink:0; }
+.hi-badge{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.1em; padding:2px 8px; text-transform:uppercase; font-weight:700; white-space:nowrap; border-radius:2px; display:inline-block; margin-right:10px; vertical-align:middle; }
 .hi-badge.vhigh{ background:var(--crimson); color:#fff; }
 .hi-badge.high{ background:var(--brand); color:#fff; }
 .hi-badge.med{ background:var(--highlighter); color:var(--ink); }
@@ -312,6 +312,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   .diagram-fig [style*="repeat(3, 1fr)"],
   .diagram-fig [style*="repeat(2,1fr)"],
   .diagram-fig [style*="repeat(2, 1fr)"]{ grid-template-columns:1fr !important; }
+  .diagram-fig [style*="repeat(5,1fr)"],
+  .diagram-fig [style*="repeat(4,1fr)"]{ grid-template-columns:1fr 1fr !important; }
   .diagram-fig [style*="gap:14px"]{ gap:8px !important; }
   .diagram-fig [style*="gap:16px"]{ gap:8px !important; }
   .diagram-fig [style*="gap:18px"]{ gap:9px !important; }
