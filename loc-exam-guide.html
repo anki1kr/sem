@@ -164,6 +164,7 @@ tbody tr:nth-child(odd){ background:rgba(235,226,204,.35); }
 
 /* ── DIAGRAM-FIG (CSS diagrams) ── */
 .diagram-fig{ margin:14px -2px; padding:10px 6px 8px; background:#fffefb; border:1.5px solid var(--ink); border-radius:4px; text-align:center; }
+.diagram-fig img{ max-width:100%; height:auto; background:#fff; border-radius:3px; display:block; margin:0 auto; }
 .diagram-fig figcaption{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.12em; color:var(--muted); text-transform:uppercase; margin-top:6px; padding:0 4px; line-height:1.4; }
 .diagram-fig figcaption b{ color:var(--brand); font-weight:700; }
 
@@ -451,15 +452,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="step"><span class="k">Execute</span><div class="body">Operands fetched (per addressing mode), ALU performs the operation, e.g. <code>AC &larr; AC + MBR</code>. Then loop back to fetch.</div></div>
     </div>
     <figure class="diagram-fig">
-      <div style="display:flex;flex-direction:column;gap:0;align-items:center;max-width:300px;margin:0 auto;">
-        <div style="border:2px solid var(--brand);border-radius:6px;padding:9px 16px;background:var(--brand-soft);font-weight:700;font-size:12px;color:var(--brand-deep);width:200px;">FETCH<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">MAR&larr;PC; MBR&larr;M[MAR]; IR&larr;MBR</span></div>
-        <div style="height:12px;border-left:2px solid var(--muted);"></div>
-        <div style="border:2px solid var(--ink);border-radius:6px;padding:9px 16px;background:#fffefb;font-weight:700;font-size:12px;width:200px;">DECODE<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">CU reads opcode in IR</span></div>
-        <div style="height:12px;border-left:2px solid var(--muted);"></div>
-        <div style="border:2px solid var(--ink);border-radius:6px;padding:9px 16px;background:#fffefb;font-weight:700;font-size:12px;width:200px;">EXECUTE<br><span style="font-weight:400;font-size:10px;color:var(--ink-soft);">ALU operates; result &rarr; AC</span></div>
-        <div style="font-size:18px;color:var(--brand);margin-top:4px;">&#8635;</div>
-        <div style="font-size:10px;color:var(--muted);">loop to next instruction</div>
-      </div>
+      <img src="img/loc-instr-cycle.webp" alt="Instruction cycle: Fetch → Decode → (Indirect) → Execute → (Interrupt) → repeat">
       <figcaption><b>Fig 1.2</b> · The instruction execution cycle — Fetch, Decode, Execute, repeat</figcaption>
     </figure>
   </div>
@@ -566,6 +559,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <span class="label">Definition</span>
       <b><mark>Booth's algorithm</mark></b> multiplies two <b>signed</b> 2's-complement numbers directly (no sign correction). It scans the multiplier's bit pair <code>(Q₀, Q₋₁)</code> and acts on <mark>runs of 1's</mark>, replacing many additions with one add + one subtract per run.
     </div>
+    <figure class="diagram-fig">
+      <img src="img/loc-booth.webp" alt="Booth's algorithm flowchart">
+      <figcaption><b>Fig 1.9</b> · Booth's algorithm flowchart — init (AC=0, SC=n, Q₋₁=0) → test Q₀Q₋₁ (01:+M, 10:−M, 00/11:none) → arithmetic shift right → loop until SC=0</figcaption>
+    </figure>
     <h4>Recoding Rule (examine Q₀ Q₋₁)</h4>
     <ul>
       <li><code>0 0</code> or <code>1 1</code> → no arithmetic, just <b>arithmetic shift right</b> (ASR) of A·Q·Q₋₁.</li>
@@ -947,49 +944,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <p>In an ideal pipeline, once it is "full", <b>one instruction completes every clock cycle</b> even though each individual instruction still takes 5 cycles to traverse the pipe. The pipeline does not make a single instruction faster — it improves <b><mark>throughput</mark></b> (instructions finished per unit time).</p>
 
     <figure class="diagram-fig">
-      <div style="display:flex;flex-direction:column;gap:6px;min-width:340px;text-align:left;">
-        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;">
-          <div></div><div style="text-align:center;">C1</div><div style="text-align:center;">C2</div><div style="text-align:center;">C3</div><div style="text-align:center;">C4</div><div style="text-align:center;">C5</div><div style="text-align:center;">C6</div><div style="text-align:center;">C7</div><div style="text-align:center;">C8</div>
-        </div>
-        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 1</div>
-          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
-          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
-          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
-          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
-          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
-          <div></div><div></div><div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 2</div>
-          <div></div>
-          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
-          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
-          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
-          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
-          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
-          <div></div><div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 3</div>
-          <div></div><div></div>
-          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
-          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
-          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
-          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
-          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
-          <div></div>
-        </div>
-        <div style="display:grid;grid-template-columns:90px repeat(8,1fr);gap:3px;align-items:center;">
-          <div style="font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;color:var(--ink);">Instr 4</div>
-          <div></div><div></div><div></div>
-          <div style="background:var(--brand);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">IF</div>
-          <div style="background:var(--brand-2);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">ID</div>
-          <div style="background:var(--gold);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">EX</div>
-          <div style="background:var(--forest,#166534);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">MEM</div>
-          <div style="background:var(--auburn,#7c2d12);color:#fff;font-size:9px;text-align:center;padding:5px 0;border-radius:3px;">WB</div>
-        </div>
-      </div>
+      <img src="img/loc-pipeline.jpg" alt="Instruction pipeline space-time diagram: stages FI/DA/FO/EX across clock cycles">
       <figcaption><b>Fig 3.1</b> · Space-time diagram of a 5-stage pipeline. Each row = one instruction, each column = one clock cycle. After cycle 5 the pipe is full and one instruction completes every cycle.</figcaption>
     </figure>
 
@@ -1052,21 +1007,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
 
     <figure class="diagram-fig">
-      <div style="display:flex;flex-direction:column;gap:5px;min-width:300px;">
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;">
-          <div></div><div style="text-align:center;">Single Data</div><div style="text-align:center;">Multiple Data</div>
-        </div>
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;align-items:stretch;">
-          <div style="display:flex;align-items:center;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;padding-right:6px;text-align:right;">Single<br>Instruction</div>
-          <div style="background:var(--brand);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">SISD</b><br><span style="font-size:9.5px;">Single-core PC</span></div>
-          <div style="background:var(--brand-2);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">SIMD</b><br><span style="font-size:9.5px;">Vector / GPU</span></div>
-        </div>
-        <div style="display:grid;grid-template-columns:130px 1fr 1fr;gap:5px;align-items:stretch;">
-          <div style="display:flex;align-items:center;justify-content:flex-end;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;color:var(--muted);text-transform:uppercase;padding-right:6px;text-align:right;">Multiple<br>Instruction</div>
-          <div style="background:var(--auburn,#7c2d12);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">MISD</b><br><span style="font-size:9.5px;">Fault-tolerant</span></div>
-          <div style="background:var(--forest,#166534);color:#fff;padding:10px 6px;border-radius:4px;text-align:center;"><b style="font-size:13px;">MIMD</b><br><span style="font-size:9.5px;">Multicore CPU</span></div>
-        </div>
-      </div>
+      <img src="img/loc-flynn.webp" alt="Flynn's taxonomy: SISD, SIMD, MISD, MIMD by instruction-stream × data-stream">
       <figcaption><b>Fig 3.2</b> · Flynn's taxonomy 2×2 grid — instruction streams (rows) × data streams (columns).</figcaption>
     </figure>
 
@@ -1167,15 +1108,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <p>Climbing <b>up</b> the pyramid: <mark>speed &uarr;</mark>, <mark>cost-per-bit &uarr;</mark>, <mark>capacity &darr;</mark>. Climbing <b>down</b>: cheaper, slower, bigger.</p>
 
     <figure class="diagram-fig">
-      <div style="display:flex; flex-direction:column; align-items:center; gap:6px; max-width:420px; margin:4px auto;">
-        <div style="width:46%; background:var(--brand); color:var(--paper); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Registers</b><br>&lt;1 ns &middot; ~B&ndash;KB &middot; fastest</div>
-        <div style="width:60%; background:var(--brand-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Cache</b> (L1 / L2 / L3)<br>1&ndash;20 ns &middot; KB&ndash;MB &middot; SRAM</div>
-        <div style="width:78%; background:var(--auburn-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Main Memory</b> (RAM)<br>50&ndash;100 ns &middot; GB &middot; DRAM</div>
-        <div style="width:96%; background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:4px; padding:7px 8px; font-size:11px; line-height:1.3;"><b>Secondary Storage</b> (SSD / HDD)<br>&micro;s&ndash;ms &middot; TB &middot; cheapest, slowest</div>
-        <div style="display:flex; justify-content:space-between; width:96%; font-family:'JetBrains Mono',monospace; font-size:8.5px; letter-spacing:.1em; color:var(--muted); margin-top:2px; text-transform:uppercase;">
-          <span>&uarr; Speed &middot; Cost</span><span>Size &darr; at top</span>
-        </div>
-      </div>
+      <img src="img/loc-mem-hierarchy.webp" alt="Memory hierarchy pyramid: registers, cache (SRAM), main memory (DRAM), disk, tape — cost/speed vs capacity">
       <figcaption><b>Fig 4.1</b> &middot; Memory hierarchy &mdash; widening toward the bottom (bigger, cheaper, slower)</figcaption>
     </figure>
 
@@ -1888,23 +1821,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <p>Inside the microprogrammed CU, the <b><mark>CAR</mark> (Control Address Register)</b> (also called μPC) holds the address of the microinstruction being read from Control Memory. After every microcycle, the <b>Address Sequencer</b> updates the CAR. It picks from four next-address sources. The <b><mark>CDR</mark> (Control Data Register)</b> latches the fetched microinstruction so its bits can drive control lines in the same clock cycle.</p>
 
         <figure class="diagram-fig">
-          <div style="display:flex; flex-direction:column; gap:8px; max-width:520px; margin:0 auto; align-items:stretch;">
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-              <div style="background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:4px; padding:10px; font-weight:700; text-align:center; font-size:13px;">Instruction Opcode</div>
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:10px; font-weight:700; text-align:center; font-size:13px;">Opcode Mapping Logic</div>
-            </div>
-            <div style="text-align:center; font-family:monospace; color:var(--muted);">&#x2193;</div>
-            <div style="background:#fffbe5; border:1.5px solid var(--gold); border-radius:4px; padding:12px; font-weight:700; text-align:center; font-size:14px;">Next-Address Generator (MUX over 4 sources)</div>
-            <div style="text-align:center; font-family:monospace; color:var(--muted);">&#x2193;</div>
-            <div style="background:var(--brand-soft); border:2px solid var(--brand); border-radius:4px; padding:12px; font-weight:700; text-align:center; font-size:14px; color:var(--brand-deep);">CAR &middot; Control Address Register</div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; align-items:start;">
-              <div style="background:var(--paper-soft); border:1.5px dashed var(--muted); border-radius:4px; padding:8px; font-size:12px; text-align:center;">&#x2191; feedback from Branch Logic</div>
-              <div style="text-align:center; font-family:monospace; color:var(--muted); padding-top:8px;">&#x2193;</div>
-            </div>
-            <div style="background:var(--paper-soft); border:1.5px solid var(--ink); border-radius:4px; padding:10px; font-weight:700; text-align:center; font-size:13px;">Control Memory (ROM) &mdash; stores micro-instructions</div>
-            <div style="text-align:center; font-family:monospace; color:var(--muted);">&#x2193;</div>
-            <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:10px; font-weight:700; text-align:center; font-size:13px; color:var(--forest);">Control Word &rarr; ALU / Bus / Register signals</div>
-          </div>
+          <img src="img/loc-microprog-cu.png" alt="Microprogrammed control unit: Control Memory → Control Data Register → control signals; Control Address Register ← Next-Address Generator">
           <figcaption><b>Fig 2.5</b> &middot; Microprogrammed control address sequencer &mdash; opcode mapping feeds the next-address MUX; CAR drives Control ROM; output is the active control word.</figcaption>
         </figure>
 
@@ -2023,20 +1940,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
         <h5>DMA Controller Block Diagram</h5>
         <figure class="diagram-fig">
-          <div style="display:flex; flex-direction:column; gap:8px; max-width:520px; margin:0 auto;">
-            <div style="background:var(--ink); color:var(--paper); border-radius:4px; padding:8px; font-weight:700; text-align:center; font-size:12px; letter-spacing:.08em; text-transform:uppercase;">System Address &amp; Data Buses</div>
-            <div style="text-align:center; font-family:monospace; color:var(--muted);">&#x2195;</div>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px;">
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:10px 6px; text-align:center; font-weight:700; font-size:12px;">Address<br>Register</div>
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:10px 6px; text-align:center; font-weight:700; font-size:12px;">Word Count<br>Register</div>
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:10px 6px; text-align:center; font-weight:700; font-size:12px;">Control<br>Register</div>
-            </div>
-            <div style="display:flex; align-items:center; justify-content:center; gap:8px; font-size:12px; color:var(--muted);"><span style="font-family:monospace;">&#x2193;</span><i>(Count == 0?)</i></div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-              <div style="background:var(--crimson-soft); border:1.5px solid var(--crimson); border-radius:4px; padding:10px; text-align:center; font-weight:700; font-size:12px; color:var(--crimson);">Interrupt to CPU<br><span style="font-weight:400; color:var(--ink);">(transfer complete)</span></div>
-              <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:10px; text-align:center; font-weight:700; font-size:12px; color:var(--forest);">DMA REQ / ACK<br><span style="font-weight:400; color:var(--ink);">(to peripheral)</span></div>
-            </div>
-          </div>
+          <img src="img/loc-dma.png" alt="DMA controller block diagram: address register, word-count register, control logic, data/address bus buffers, DMA request/acknowledge">
           <figcaption><b>Fig 2.6</b> &middot; DMA controller registers &mdash; address + word-count + control words sit between system buses and peripheral handshake.</figcaption>
         </figure>
 
@@ -2119,13 +2023,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         </ul>
 
         <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:5px; max-width:560px; margin:0 auto; font-size:11.5px; text-align:center;">
-            <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:3px; padding:8px 4px;"><b style="color:var(--brand-deep)">IF</b><br>Fetch</div>
-            <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:3px; padding:8px 4px;"><b style="color:var(--brand-deep)">ID</b><br>Decode</div>
-            <div style="background:#fffbe5; border:1.5px solid var(--gold); border-radius:3px; padding:8px 4px;"><b style="color:var(--gold)">EX</b><br>Execute</div>
-            <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:3px; padding:8px 4px;"><b style="color:var(--forest)">MEM</b><br>Memory</div>
-            <div style="background:var(--auburn-soft); border:1.5px solid var(--auburn); border-radius:3px; padding:8px 4px;"><b style="color:var(--auburn)">WB</b><br>Write-Back</div>
-          </div>
+          <img src="img/loc-pipeline.jpg" alt="Instruction pipeline space-time diagram: stages FI/DA/FO/EX across clock cycles">
           <figcaption><b>Fig 3.1</b> &middot; Classic 5-stage RISC pipeline (MIPS). Each clock advances every instruction one stage right; hazards interrupt this clean flow.</figcaption>
         </figure>
 

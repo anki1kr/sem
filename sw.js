@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v32';
+const CACHE_VERSION = 'bca-prep-v33';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -19,6 +19,20 @@ const PRECACHE_URLS = [
   './iks-exam-guide.html',
   './cn-exam-guide.html',
   './de-exam-guide.html',
+  './img/loc-booth.webp',
+  './img/loc-dma.png',
+  './img/loc-flynn.webp',
+  './img/loc-instr-cycle.webp',
+  './img/loc-mem-hierarchy.webp',
+  './img/loc-microprog-cu.png',
+  './img/loc-pipeline.jpg',
+  './img/wc-bluetooth.webp',
+  './img/wc-cell-split-sector.jpg',
+  './img/wc-cellular-arch.png',
+  './img/wc-fdma-tdma-cdma.png',
+  './img/wc-freq-reuse.jpg',
+  './img/wc-handoff.png',
+  './img/wc-spread-spectrum.png',
   './manifest.json',
   './icon-192.svg',
   './icon-512.svg'
