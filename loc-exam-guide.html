@@ -292,6 +292,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 <header class="topbar">
   <nav class="chips" id="navChips">
     <a href="#cover">📌 Cover</a>
+    <a href="#imp-topics" class="hot">★ IMP</a>
     <a href="#unit-1">U1 · CPU &amp; Data</a>
     <a href="#unit-2">U2 · CU &amp; Memory</a>
     <a href="#unit-3">U3 · Pipelines</a>
@@ -327,6 +328,48 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <li><b>Unit III</b> — Pipelining &amp; Parallel Processors — Speedup &amp; throughput formulas, hazards (structural, data, control), Flynn's MIMD classification. <span class="priority">Medium-yield</span></li>
     <li><b>Unit IV</b> — Memory Organisation — Memory interleaving, Cache sizing &amp; mapping (direct, associative, set-associative), Cache replacement traces. <span class="priority">⭐ Highest-yield</span></li>
   </ul>
+</section>
+
+<!-- ── IMPORTANT TOPICS JUMP INDEX ── -->
+<section class="howto" id="imp-topics" style="border-color:var(--brand);">
+  <h4>⭐ Important Topics — tap to jump</h4>
+  <p style="margin:0 0 12px;color:var(--muted);font-size:13px;">Click any topic to jump straight to it.</p>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit I · CPU &amp; Data Representation</div>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
+    <a href="#t-1-1" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.1 Instruction Addressing Modes</a>
+    <a href="#t-1-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.3 Functional Blocks of a Computer</a>
+    <a href="#t-1-4" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.4 Instruction Execution Cycle &amp; RTL</a>
+    <a href="#t-1-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.5 Signed Number Representation</a>
+    <a href="#t-1-5b" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2's-Complement Add/Subtract &amp; Overflow</a>
+    <a href="#t-1-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.6 Ripple Carry vs Carry Look-Ahead Adder</a>
+    <a href="#t-1-7" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.7 Booth's Signed Multiplier</a>
+    <a href="#t-1-8" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.8 Restoring vs Non-Restoring Division</a>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit II · Control Unit, Memory &amp; Peripherals</div>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
+    <a href="#t-2-1" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.1 Hardwired vs Microprogrammed Control</a>
+    <a href="#t-2-2" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.2 DMA Controllers &amp; I/O Transfer Modes</a>
+    <a href="#t-2-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.3 Semiconductor Memory Technologies</a>
+    <a href="#t-2-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.5 Programmed vs Interrupt vs DMA I/O</a>
+    <a href="#t-2-9" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.9 8086 — Registers, Segmentation &amp; Flags</a>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit III · Pipelining &amp; Parallel Processors</div>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
+    <a href="#t-3-2" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.2 Pipelining &amp; 5-Stage RISC Pipeline</a>
+    <a href="#t-3-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.3 Throughput &amp; Speedup</a>
+    <a href="#t-3-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.5 Parallel Processors &amp; Flynn's Taxonomy</a>
+    <a href="#t-3-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.6 Concurrent Access &amp; Cache Coherency</a>
+  </div>
+
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit IV · Memory Organisation</div>
+  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0;">
+    <a href="#t-4-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.3 Memory Hierarchy</a>
+    <a href="#t-4-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.5 Cache Mapping — Direct/Associative/Set</a>
+    <a href="#t-4-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.6 Replacement Algorithms — LRU Trace</a>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════ -->

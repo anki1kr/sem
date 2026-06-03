@@ -105,6 +105,12 @@ nav.chips a.live, nav.chips a.live.hot{ background:var(--brand); color:var(--pap
 .howto ol,.howto ul{ margin:0; padding-left:22px; }
 .howto li{ margin:6px 0; }
 .priority{ display:inline-block; background:var(--highlighter); color:var(--ink); font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; padding:3px 8px; text-transform:uppercase; margin-left:6px; box-shadow:2px 2px 0 var(--ink); transform:rotate(-1deg); }
+#imp-topics .imp-grp{ font-family:"JetBrains Mono",monospace; font-size:10.5px; letter-spacing:.18em; color:var(--brand); text-transform:uppercase; font-weight:700; margin:14px 0 8px; }
+#imp-topics .imp-links{ display:flex; flex-wrap:wrap; gap:7px; }
+#imp-topics .imp-links a{ display:inline-block; padding:5px 11px; background:var(--paper); border:1.5px solid var(--rule); border-radius:4px; color:var(--ink); text-decoration:none; font-size:13px; line-height:1.3; }
+#imp-topics .imp-links a:hover{ background:var(--brand); color:var(--paper-soft); border-color:var(--brand); }
+#imp-topics .imp-links a b{ color:var(--brand); margin-right:5px; }
+#imp-topics .imp-links a:hover b{ color:var(--paper-soft); }
 
 /* ── UNITS & TOPICS ── */
 section.unit{ margin:0 0 36px; scroll-margin-top:100px; }
@@ -289,6 +295,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 <header class="topbar">
   <nav class="chips" id="navChips">
     <a href="#cover">📌 Cover</a>
+    <a href="#imp-topics" class="hot">★ IMP</a>
     <a href="#unit-1">U1 · Intro &amp; GSM</a>
     <a href="#unit-2">U2 · Cellular Systems</a>
     <a href="#unit-3">U3 · Multiple Access</a>
@@ -324,6 +331,42 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <li><b>Unit III</b> — Multiple Access — FDMA, TDMA (near-far), CDMA code arithmetic, SDMA spatial antennas, Spread Spectrum (DSSS vs FHSS). <span class="priority">Medium-yield</span></li>
     <li><b>Unit IV</b> — Wireless Networking — Traffic routing flows, ISDN architectural channels, Advanced Intelligent Networks (AIN). <span class="priority">Low-yield</span></li>
   </ul>
+</section>
+
+<!-- ── IMPORTANT TOPICS · JUMP INDEX ── -->
+<section class="howto" id="imp-topics">
+  <h4>⭐ Important Topics — tap to jump</h4>
+  <p style="margin:0 0 4px;font-size:13.5px;color:var(--muted);">Click any topic to jump straight to it.</p>
+
+  <div class="imp-grp">Unit I · Introduction &amp; GSM</div>
+  <div class="imp-links">
+    <a href="#t-1-1"><b>1.1</b>GSM System Architecture</a>
+    <a href="#t-1-3"><b>1.3</b>Evolution of Wireless (1G→5G)</a>
+    <a href="#t-1-2"><b>1.2</b>Bluetooth, Piconets &amp; Scatternets</a>
+  </div>
+
+  <div class="imp-grp">Unit II · Cellular Design Fundamentals</div>
+  <div class="imp-links">
+    <a href="#t-2-0"><b>2.0</b>Basic Cellular System &amp; Operation</a>
+    <a href="#t-2-1"><b>2.1</b>Frequency Reuse &amp; Cluster Math</a>
+    <a href="#t-2-1b"><b>2.2</b>Channel Assignment — FCA vs DCA</a>
+    <a href="#t-2-1c"><b>2.3</b>Interference &amp; System Capacity</a>
+    <a href="#t-2-1d2"><b>2.4</b>Trunking &amp; the Erlang-B Formula</a>
+    <a href="#t-2-1e"><b>2.5</b>Analog vs Digital Cellular Systems</a>
+    <a href="#t-2-2"><b>2.6</b>Cellular Handoff MAHO / MCHO / NCHO</a>
+  </div>
+
+  <div class="imp-grp">Unit III · Multiple Access</div>
+  <div class="imp-links">
+    <a href="#t-3-1"><b>3.1</b>Multiple Access: FDMA, TDMA, CDMA, SDMA</a>
+    <a href="#t-3-2"><b>3.2</b>Spread Spectrum: DSSS vs FHSS</a>
+    <a href="#t-3-4"><b>3.4</b>FDMA vs TDMA — Detail &amp; Frame Structure</a>
+  </div>
+
+  <div class="imp-grp">Unit IV · Wireless Networking</div>
+  <div class="imp-links">
+    <a href="#t-4-3"><b>4.3</b>Traffic Routing in a Wireless Network</a>
+  </div>
 </section>
 
 <!-- ══════════════════════════════════════════════════════════ -->
