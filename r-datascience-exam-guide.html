@@ -131,8 +131,8 @@ nav.chips a{
   text-transform:uppercase;
 }
 nav.chips a:hover{ background:var(--brand); color:var(--paper); }
-nav.chips a.live{ background:var(--brand); color:var(--paper); }
 nav.chips a.hot{ background:var(--highlighter); border-color:var(--ink); }
+nav.chips a.live, nav.chips a.live.hot{ background:var(--brand); color:var(--paper); border-color:var(--ink); }
 
 /* ---------- LAYOUT ---------- */
 .wrap{
@@ -369,6 +369,7 @@ mark{
   background: linear-gradient(180deg, transparent 55%, var(--highlighter) 55%);
   padding:0 1px;
 }
+th mark, thead mark{ background:transparent !important; color:inherit !important; padding:0 !important; }
 mark.pink{ background: linear-gradient(180deg, transparent 55%, var(--highlight-pink) 55%); }
 mark.mint{ background: linear-gradient(180deg, transparent 55%, var(--highlight-mint) 55%); }
 strong{ color:var(--ink); font-weight:700; }
@@ -672,6 +673,7 @@ td code{ font-size:11.5px; }
 .qcard.predicted{ border-color:var(--gold); border-width:2px; box-shadow:3px 3px 0 var(--gold); }
 .qcard.predicted .qhead{ background:var(--gold-soft); color:var(--gold); }
 .qcard.predicted .qhead .freq{ background:var(--gold); }
+.qcard .qhead .src{ background:var(--brand-soft); color:var(--brand-deep); border:1px solid var(--brand); padding:1px 6px; border-radius:2px; font-weight:700; opacity:.85; }
 
 .numeric{
   margin:14px 0;
@@ -992,7 +994,6 @@ input,textarea,select{ font-size:16px; }
 @media(hover:none) and (pointer:coarse){
   a,button{ -webkit-tap-highlight-color:rgba(22,101,52,.08); }
   .qcard,.pyq,.viva-card{ min-height:44px; }
-  nav.chips a{ min-height:44px; display:inline-flex; align-items:center; }
 }
 
 /* ---------- PRINT ---------- */
@@ -1070,6 +1071,7 @@ input,textarea,select{ font-size:16px; }
     <a href="#pyq" class="hot">📜 PYQ</a>
     <a href="#repeated-qs" class="hot">⭐ Repeated</a>
     <a href="#predicted-qs" class="hot">🔮 Predicted</a>
+    <a href="#cheatsheet" class="hot">🎯 Cheat</a>
     <a href="#drill">Drill</a>
     <a href="#revision-plan">Plan</a>
   </nav>
@@ -1114,7 +1116,7 @@ input,textarea,select{ font-size:16px; }
     <li><b>Unit I · Introduction to Data Science</b> <span class="priority">High-yield · 12/75 M</span><br>
       Data science: definition of data, data types, meaning of variables, wholeness of data analytics, data processing chain, data distributions, paths to data science, data mining, data warehousing, difference between database and data warehouse, advices for new data scientists, introduction to cloud, artificial intelligence, Machine learning, applications in real world, learning approaches: supervised, unsupervised.</li>
 
-    <li><b>Unit II · Introduction to R</b> <span class="priority med">Foundation · 10/75 M</span><br>
+    <li><b>Unit II · Introduction to R</b> <span class="priority med">Foundation · ~22/75 M</span><br>
       What is R, History of R, Installing R, Package installation, choosing IDE, first program, help in R, some information about R commands, special values, Objects, Functions, Simple Manipulations: Vectors and numbers, Matrices and arrays, Factors, List, data Frames.</li>
 
     <li><b>Unit III · Programming using R</b> <span class="priority">High-yield · 22/75 M</span><br>
@@ -1153,7 +1155,8 @@ input,textarea,select{ font-size:16px; }
     <li><a href="#unit-4">Unit 4 · Data Handling &amp; Statistics ⭐</a><span class="d">14 t</span></li>
     <li><a href="#pyq">PYQ Vault (2023 · 2024 · 2025)</a><span class="d">42 Q</span></li>
     <li><a href="#repeated-qs">⭐ Most-repeated Questions</a><span class="d">12 Q</span></li>
-    <li><a href="#predicted-qs">🔮 Predicted for next exam</a><span class="d">7 Q</span></li>
+    <li><a href="#predicted-qs">🔮 Predicted for next exam</a><span class="d">Part-A + 10 Q</span></li>
+    <li><a href="#cheatsheet">🎯 Single-screen cheat sheet</a><span class="d">6 panels</span></li>
     <li><a href="#drill">Self-test drill</a><span class="d">14 Q</span></li>
     <li><a href="#revision-plan">3-hour revision plan</a><span class="d">4 slots</span></li>
   </ol>
@@ -1233,6 +1236,59 @@ input,textarea,select{ font-size:16px; }
     </div>
   </div>
 
+  <!-- 1.2b — gap-fill: Meaning of Variables -->
+  <div class="topic" id="t-1-2b">
+    <h3>1.2b Meaning of Variables <span class="tag fav">Part-A repeat</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      A <b>variable</b> is a <mark>measurable characteristic or attribute that varies across observations</mark> (units, people, rows). It "varies" — if every unit had the same value it would be a <mark>constant</mark>, not a variable. In a dataset, every <mark>column is a variable</mark> and every row is an observation.
+    </div>
+
+    <ul>
+      <li><b>By value type</b> — <mark>Continuous</mark>: any value in a range, infinitely divisible (<i>height, weight, temperature, time</i>). <mark>Discrete</mark>: countable whole values only (<i>number of children, defects, dice roll</i>).</li>
+      <li><b>By measurement (categorical)</b> — <mark>Nominal</mark>: named categories with <i>no order</i> (<i>colour, gender, blood group</i>). <mark>Ordinal</mark>: categories with a <i>natural rank</i> but unequal gaps (<i>grade A/B/C, satisfaction Low/Med/High</i>).</li>
+      <li><b>By role in a model</b> — <mark>Independent (X)</mark>: the input / predictor / cause, controlled or observed. <mark>Dependent (y)</mark>: the output / response, whose value <i>depends on</i> X. Example: <i>y = exam-score depends on X = hours-studied</i>.</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;max-width:540px;margin:0 auto;">
+        <div style="border:2px solid var(--brand);border-radius:8px;padding:10px 12px;background:var(--paper-soft);">
+          <b style="color:var(--brand);">Numeric</b>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;">Continuous — height, time<br>Discrete — count of items</div>
+        </div>
+        <div style="border:2px solid var(--gold);border-radius:8px;padding:10px 12px;background:var(--paper-soft);">
+          <b style="color:var(--gold);">Categorical</b>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;">Nominal — colour, ID<br>Ordinal — grade, rank</div>
+        </div>
+        <div style="border:2px solid var(--ink);border-radius:8px;padding:10px 12px;">
+          <b>Independent (X)</b>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;">Input / predictor<br><i>hours studied</i></div>
+        </div>
+        <div style="border:2px dashed var(--ink);border-radius:8px;padding:10px 12px;">
+          <b>Dependent (y)</b>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px;">Output / response<br><i>exam score</i></div>
+        </div>
+      </div>
+      <figcaption><b>Fig 1.2b</b> · One characteristic, three ways to classify it — value type · measurement scale · model role</figcaption>
+    </figure>
+
+    <div class="box eli5">
+      <span class="label">Plain English</span>
+      A variable is just <b>"the thing you're recording that can be different for each person"</b>. <i>Continuous</i> = you measure it on a ruler (can be 1.71 m). <i>Discrete</i> = you count it (2 cars, never 2.3). <i>Nominal</i> = names with no winner (red vs blue). <i>Ordinal</i> = names that line up (Gold &gt; Silver &gt; Bronze). <i>X</i> is what you change, <i>y</i> is what you watch happen.
+    </div>
+
+    <div class="numeric">
+      <div class="q">R link — how is a variable stored? (1.5M Part-A)</div>
+      <div class="a">In a <code>data.frame</code>, <mark>each column IS a variable</mark>. Build one and read off its columns:
+        <pre><code>df &lt;- data.frame(
+  hours = c(2, 4, 6),   # numeric (continuous) → X
+  grade = c("C","B","A"),  # categorical (ordinal)
+  score = c(50, 65, 82))   # numeric → y
+str(df)   # shows each variable's type</code></pre>
+        Here <mark>hours</mark> and <mark>score</mark> are numeric variables, <mark>grade</mark> is a categorical (factor) variable; <code>hours</code> is the independent <b>X</b> and <code>score</code> the dependent <b>y</b>.</div>
+    </div>
+  </div>
+
   <!-- 1.3 -->
   <div class="topic" id="t-1-3">
     <h3>1.3 Data Processing Chain <span class="tag fav">5M dropper</span></h3>
@@ -1276,6 +1332,71 @@ input,textarea,select{ font-size:16px; }
     <span class="scribble">Mnemonic — "CC PA VD" → Collect, Clean, Process, Analyse, Visualise, Decide</span>
   </div>
 
+  <!-- 1.3b -->
+  <div class="topic" id="t-1-3b">
+    <h3>1.3b Wholeness of Data Analytics <span class="tag fav">5M dropper</span></h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      The <mark>wholeness of data analytics</mark> is the idea that analytics is a single connected <mark>maturity ladder</mark> of four climbing types — each answers a harder business question and adds more value than the one below it. The standard order is <mark>Descriptive → Diagnostic → Predictive → Prescriptive</mark>; you cannot trust the higher rungs until the lower ones are solid.
+    </div>
+
+    <figure class="diagram-fig">
+      <svg viewBox="0 0 600 250" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+        <defs>
+          <marker id="arrW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#166534"/>
+          </marker>
+        </defs>
+        <text x="300" y="20" text-anchor="middle" class="svg-text title">Analytics maturity ladder — value &amp; difficulty rise together</text>
+        <!-- diagonal value axis -->
+        <line x1="36" y1="222" x2="566" y2="58" stroke="#166534" stroke-width="2" marker-end="url(#arrW)"/>
+        <text x="40" y="240" class="svg-text label" fill="#166534">low value · easy</text>
+        <text x="470" y="48" class="svg-text label" fill="#166534">high value · hard</text>
+        <!-- rung 1 Descriptive -->
+        <rect x="36" y="170" width="120" height="44" rx="8" fill="#dcfce7" stroke="#166534" stroke-width="2"/>
+        <text x="96" y="190" text-anchor="middle" class="svg-text" font-weight="700">Descriptive</text>
+        <text x="96" y="206" text-anchor="middle" class="svg-text mono" fill="#6b5d47">what happened?</text>
+        <!-- rung 2 Diagnostic -->
+        <rect x="172" y="132" width="120" height="44" rx="8" fill="#fff8e7" stroke="#a16207" stroke-width="2"/>
+        <text x="232" y="152" text-anchor="middle" class="svg-text" font-weight="700">Diagnostic</text>
+        <text x="232" y="168" text-anchor="middle" class="svg-text mono" fill="#6b5d47">why did it happen?</text>
+        <!-- rung 3 Predictive -->
+        <rect x="308" y="94" width="120" height="44" rx="8" fill="#fbe4d6" stroke="#7c2d12" stroke-width="2"/>
+        <text x="368" y="114" text-anchor="middle" class="svg-text" font-weight="700">Predictive</text>
+        <text x="368" y="130" text-anchor="middle" class="svg-text mono" fill="#6b5d47">what will happen?</text>
+        <!-- rung 4 Prescriptive -->
+        <rect x="444" y="56" width="122" height="44" rx="8" fill="#fde0e6" stroke="#9f1239" stroke-width="2"/>
+        <text x="505" y="76" text-anchor="middle" class="svg-text" font-weight="700">Prescriptive</text>
+        <text x="505" y="92" text-anchor="middle" class="svg-text mono" fill="#6b5d47">what should we do?</text>
+      </svg>
+      <figcaption><b>Fig 1.3b</b> · Four analytics types as one maturity ladder — hindsight → insight → foresight → action</figcaption>
+    </figure>
+
+    <div class="table-wrap">
+    <table>
+      <thead><tr><th>Type</th><th>Question it answers</th><th>R / example</th></tr></thead>
+      <tbody>
+        <tr><td><b>Descriptive</b></td><td>What happened? (summarise the past — <mark>hindsight</mark>)</td><td><code>summary(sales)</code> → monthly revenue dashboard</td></tr>
+        <tr><td><b>Diagnostic</b></td><td>Why did it happen? (drill into causes — <mark>insight</mark>)</td><td><code>cor(spend, churn)</code> → root-cause of a sales drop</td></tr>
+        <tr><td><b>Predictive</b></td><td>What will happen? (forecast — <mark>foresight</mark>)</td><td><code>lm(sales ~ ad)</code> / <code>predict()</code> → fraud / demand score</td></tr>
+        <tr><td><b>Prescriptive</b></td><td>What should we do? (recommend action)</td><td><code>optim()</code> / rules → Amazon next-best-action</td></tr>
+      </tbody>
+    </table>
+    </div>
+
+    <p class="mnem"><b>Mnemonic:</b> <i>Dogs Don't Predict Prescriptions</i> — <b>D</b>escriptive, <b>D</b>iagnostic, <b>P</b>redictive, <b>P</b>rescriptive (easy → hard).</p>
+
+    <div class="box tip">
+      <span class="label">Exam hook</span>
+      Examiner loves "<i>explain the four types of analytics</i>" as a <b>5M</b> Part-B short. Draw the ladder, give <mark>one R verb + one company example per rung</mark>, and state the punch-line: value and difficulty <b>rise together</b>, and each rung depends on the one below. <code>summary()</code> = descriptive, <code>cor()</code> = diagnostic, <code>lm()/predict()</code> = predictive, <code>optim()</code>/rules = prescriptive.
+    </div>
+
+    <div class="box warn">
+      <span class="label">Common trap</span>
+      Don't call these "stages of the data-processing chain" — that is a <i>different</i> Unit-I topic (Fig 1.3: Collect → Clean → … → Decide). The four <b>analytics types</b> describe <mark>what kind of question</mark> you ask of clean data; the <b>processing chain</b> describes <mark>how raw data flows</mark> to a decision. Mixing them loses marks.
+    </div>
+  </div>
+
   <!-- 1.4 -->
   <div class="topic" id="t-1-4">
     <h3>1.4 Data Distributions <span class="tag fav">syllabus + Part-A repeat</span></h3>
@@ -1287,7 +1408,7 @@ input,textarea,select{ font-size:16px; }
       <tbody>
         <tr><td>Normal</td><td>Continuous</td><td>f(x)=(1/σ√(2π))·e^(−(x−μ)²/2σ²)</td><td>Heights, errors, IQ</td><td><code>dnorm</code></td></tr>
         <tr><td>Binomial</td><td>Discrete</td><td>P(X=k)=ᶜⁿₖ pᵏ(1−p)ⁿ⁻ᵏ</td><td>Coin flips, defects</td><td><code>dbinom</code></td></tr>
-        <tr><td>Poisson</td><td>Discrete</td><td>P(X=k)=(λᵏe⁻ᵏ)/k!</td><td>Calls/hour, rare events</td><td><code>dpois</code></td></tr>
+        <tr><td>Poisson</td><td>Discrete</td><td>P(X=k)=(λᵏe^(−λ))/k!</td><td>Calls/hour, rare events</td><td><code>dpois</code></td></tr>
         <tr><td>Uniform</td><td>Cont./Disc.</td><td>f(x)=1/(b−a)</td><td>Dice, random sampling</td><td><code>dunif</code></td></tr>
       </tbody>
     </table>
@@ -1425,6 +1546,68 @@ input,textarea,select{ font-size:16px; }
     <div class="box prof">
       <span class="label">How prof asks (5M, May-2025 Q7a)</span>
       At <b>5M</b>: a 4-row contrast (Purpose · Data · Operations · Users) is enough — don't waste time writing all 7 rows. At <b>10M</b>: full 7-row table + one ETL line. The phrase <b>ETL = extract, transform, load</b> is a 1-mark bonus the prof always rewards if you spell it out.
+    </div>
+
+    <h5 style="margin:16px 0 4px; font-size:14px; color:var(--brand-deep);">What exactly IS a data warehouse? (Inmon's 4 properties + schema)</h5>
+    <div class="box def">
+      <span class="label">Definition · Data Warehouse</span>
+      <p>A <b>Data Warehouse</b> is a <mark>subject-oriented, integrated, time-variant, non-volatile</mark> collection of data built to support management decision-making (the four properties from <mark>W.&nbsp;H. Inmon</mark>, the "father of the data warehouse").</p>
+      <ul>
+        <li><b><mark>Subject-oriented</mark></b> — organised around business subjects (Sales, Customer, Product), not around an application's day-to-day process.</li>
+        <li><b><mark>Integrated</mark></b> — data from many source DBs is cleaned and conformed to one consistent format (same units, codes, naming) during ETL.</li>
+        <li><b><mark>Time-variant</mark></b> — stores a long history with a time dimension, so trends across years can be analysed (an OLTP DB keeps only the current value).</li>
+        <li><b><mark>Non-volatile</mark></b> — data is loaded then read; it is not updated or deleted in place, so analytical results stay reproducible.</li>
+      </ul>
+    </div>
+
+    <div class="mnem"><b>SITN</b> &mdash; <b>S</b>ubject-oriented · <b>I</b>ntegrated · <b>T</b>ime-variant · <b>N</b>on-volatile (Inmon's 4)</div>
+
+    <p>A warehouse is modelled as a <b>dimensional schema</b>: one central <mark>fact table</mark> holding numeric, additive <i>measures</i> (e.g. <code>units_sold</code>, <code>revenue</code>) plus foreign keys, surrounded by <mark>dimension tables</mark> giving the descriptive context (<i>who, what, where, when</i> — Customer, Product, Store, Date).</p>
+
+    <figure class="diagram-fig">
+    <svg viewBox="0 0 560 220" xmlns="http://www.w3.org/2000/svg" style="width:100%; height:auto;">
+      <text x="150" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Star schema</text>
+      <text x="420" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Snowflake schema</text>
+      <!-- STAR: central fact + 4 direct dimensions -->
+      <line x1="150" y1="110" x2="150" y2="55"  stroke="var(--muted)" stroke-width="1.5"/>
+      <line x1="150" y1="110" x2="150" y2="175" stroke="var(--muted)" stroke-width="1.5"/>
+      <line x1="150" y1="110" x2="60"  y2="110" stroke="var(--muted)" stroke-width="1.5"/>
+      <line x1="150" y1="110" x2="240" y2="110" stroke="var(--muted)" stroke-width="1.5"/>
+      <rect x="110" y="90" width="80" height="40" rx="6" fill="#fff8e7" stroke="#a16207" stroke-width="2"/>
+      <text x="150" y="108" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">FACT</text>
+      <text x="150" y="121" text-anchor="middle" font-size="8" fill="var(--muted)">measures</text>
+      <rect x="118" y="38"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="150" y="53"  text-anchor="middle" font-size="8.5" fill="var(--ink)">Date</text>
+      <rect x="118" y="160" width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="150" y="175" text-anchor="middle" font-size="8.5" fill="var(--ink)">Store</text>
+      <rect x="14"  y="99"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="46"  y="114" text-anchor="middle" font-size="8.5" fill="var(--ink)">Customer</text>
+      <rect x="222" y="99"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="254" y="114" text-anchor="middle" font-size="8.5" fill="var(--ink)">Product</text>
+      <!-- SNOWFLAKE: fact + dimension + normalised sub-dimension -->
+      <line x1="420" y1="110" x2="420" y2="55"  stroke="var(--muted)" stroke-width="1.5"/>
+      <line x1="420" y1="110" x2="330" y2="110" stroke="var(--muted)" stroke-width="1.5"/>
+      <line x1="420" y1="110" x2="510" y2="110" stroke="var(--muted)" stroke-width="1.5"/>
+      <rect x="380" y="90" width="80" height="40" rx="6" fill="#fff8e7" stroke="#a16207" stroke-width="2"/>
+      <text x="420" y="108" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">FACT</text>
+      <text x="420" y="121" text-anchor="middle" font-size="8" fill="var(--muted)">measures</text>
+      <rect x="388" y="38"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="420" y="53"  text-anchor="middle" font-size="8.5" fill="var(--ink)">Product</text>
+      <rect x="284" y="99"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="316" y="114" text-anchor="middle" font-size="8.5" fill="var(--ink)">Date</text>
+      <rect x="492" y="99"  width="64" height="22" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
+      <text x="524" y="114" text-anchor="middle" font-size="8.5" fill="var(--ink)">Store</text>
+      <!-- normalised sub-dimension branching off Product -->
+      <line x1="420" y1="38" x2="420" y2="15" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="3 2"/>
+      <rect x="388" y="-2" width="64" height="20" rx="4" fill="#f0f7e4" stroke="#365314" stroke-width="1.5"/>
+      <text x="420" y="12" text-anchor="middle" font-size="8" fill="var(--ink)">Category</text>
+    </svg>
+    <figcaption><b>Fig 1.7b</b> · Star = one fact + flat (denormalised) dimensions; Snowflake = same fact but dimensions split into normalised sub-tables (Product&#8594;Category).</figcaption>
+    </figure>
+
+    <div class="box tip">
+      <span class="label">Star vs Snowflake in one line</span>
+      <b>Star schema</b> keeps each dimension as a single flat (denormalised) table &mdash; fewer joins, faster reads, slight redundancy. <b>Snowflake schema</b> normalises a dimension into sub-dimensions (Product &#8594; Category &#8594; Department) &mdash; saves space, but more joins slow queries. Warehouses usually prefer <mark>star</mark> for analytical speed.
     </div>
   </div>
 
@@ -2182,6 +2365,62 @@ ifelse(v >= 0, "non-neg", "neg")
     </div>
   </div>
 
+  <div class="topic" id="t-3-2b">
+    <h3>3.2b Logical Operators — Behaviour Cheat-Table <span class="tag fav">Part-A · Unit III</span></h3>
+    <div class="box def">
+      <span class="label">In plain English</span>
+      Two families look identical but behave differently. The <b>single</b> forms (<code>&amp;</code> <code>|</code>) are <mark>element-wise</mark> — they line up two vectors and compare position-by-position, returning a <mark>logical vector</mark>. The <b>double</b> forms (<code>&amp;&amp;</code> <code>||</code>) are <mark>scalar</mark> — they look at <i>one</i> value, <mark>short-circuit</mark> (stop early once the answer is known), and are what you put inside <code>if()</code>.
+    </div>
+    <div class="table-wrap">
+    <table>
+      <caption>R logical / set operators — one-line behaviour each</caption>
+      <thead><tr><th>Operator</th><th>Name</th><th>Behaviour (one line)</th><th>Example → result</th></tr></thead>
+      <tbody>
+        <tr><td><code>&amp;</code></td><td>AND (vector)</td><td><b>Element-wise</b> AND over whole vectors; evaluates both sides; returns a logical vector.</td><td><code>c(T,F) &amp; c(T,T)</code> → <code>T F</code></td></tr>
+        <tr><td><code>&amp;&amp;</code></td><td>AND (scalar)</td><td><b>Scalar, short-circuit</b>: tests only the first element; stops at first <code>FALSE</code>. Length &gt; 1 errors in R ≥ 4.3.</td><td><code>TRUE &amp;&amp; FALSE</code> → <code>FALSE</code></td></tr>
+        <tr><td><code>|</code></td><td>OR (vector)</td><td><b>Element-wise</b> OR over whole vectors; evaluates both sides; returns a logical vector.</td><td><code>c(T,F) | c(F,F)</code> → <code>T F</code></td></tr>
+        <tr><td><code>||</code></td><td>OR (scalar)</td><td><b>Scalar, short-circuit</b>: tests only the first element; stops at first <code>TRUE</code>.</td><td><code>FALSE || TRUE</code> → <code>TRUE</code></td></tr>
+        <tr><td><code>!</code></td><td>NOT</td><td><b>Element-wise negation</b>: flips every <code>TRUE</code>↔<code>FALSE</code> in the vector.</td><td><code>!c(T,F)</code> → <code>F T</code></td></tr>
+        <tr><td><code>xor()</code></td><td>exclusive OR</td><td>Element-wise: <code>TRUE</code> only when the two differ (exactly one is <code>TRUE</code>).</td><td><code>xor(T,T)</code> → <code>FALSE</code></td></tr>
+        <tr><td><code>isTRUE()</code></td><td>safe single test</td><td>NA-safe: <code>TRUE</code> only if argument is a length-1 logical equal to <code>TRUE</code>; <code>NA</code>/non-logical → <code>FALSE</code>.</td><td><code>isTRUE(NA)</code> → <code>FALSE</code></td></tr>
+        <tr><td><code>isFALSE()</code></td><td>safe single test</td><td>NA-safe mirror: <code>TRUE</code> only if argument is a length-1 logical equal to <code>FALSE</code>.</td><td><code>isFALSE(0)</code> → <code>FALSE</code></td></tr>
+        <tr><td><code>any()</code></td><td>vector reduce</td><td>Collapses a logical vector to one value: <code>TRUE</code> if <i>at least one</i> element is <code>TRUE</code>.</td><td><code>any(c(F,F,T))</code> → <code>TRUE</code></td></tr>
+        <tr><td><code>all()</code></td><td>vector reduce</td><td>Collapses a logical vector to one value: <code>TRUE</code> only if <i>every</i> element is <code>TRUE</code>.</td><td><code>all(c(T,T,F))</code> → <code>FALSE</code></td></tr>
+        <tr><td><code>%in%</code></td><td>set membership</td><td>Element-wise "is each left value present in the right set?"; returns logical vector, <b>never</b> <code>NA</code>.</td><td><code>2 %in% c(1,2,3)</code> → <code>TRUE</code></td></tr>
+        <tr><td><code>NA</code> propagation</td><td>unknown logic</td><td><code>NA</code> spreads <i>unless</i> the other operand decides the result: <code>FALSE</code> wins under <code>&amp;</code>, <code>TRUE</code> wins under <code>|</code>.</td><td><code>NA &amp; FALSE</code> → <code>FALSE</code>; <code>NA | TRUE</code> → <code>TRUE</code></td></tr>
+      </tbody>
+    </table>
+    </div>
+<pre><code># Element-wise (&amp;) vs scalar short-circuit (&amp;&amp;) — the classic trap
+a &lt;- c(TRUE, FALSE, TRUE)
+b &lt;- c(TRUE, TRUE,  FALSE)
+a &amp; b            # TRUE FALSE FALSE   (compares all 3 positions)
+a &amp;&amp; b           # tests only a[1] &amp; b[1] -> in R >= 4.3 this ERRORS (length > 1)
+
+# Short-circuit avoids the costly / unsafe right side
+x &lt;- 0
+if (x != 0 &amp;&amp; 10 / x > 1) print("safe")   # 10/x never runs when x == 0
+
+# NA propagation — TRUE/FALSE can override an unknown
+NA &amp; FALSE        # FALSE  (one FALSE forces AND false)
+NA &amp; TRUE         # NA     (still unknown)
+NA | TRUE         # TRUE   (one TRUE forces OR true)
+NA | FALSE        # NA     (still unknown)
+
+# Reducers + membership
+all(c(TRUE, TRUE, NA), na.rm = TRUE)   # TRUE
+2 %in% c(1, 2, 3)                      # TRUE
+xor(TRUE, FALSE)                       # TRUE</code></pre>
+    <div class="box warn">
+      <span class="label">Examiner traps</span>
+      <ul style="margin:6px 0 0; padding-left:18px;">
+        <li>Using <code>&amp;&amp;</code> on a multi-element vector inside <code>if()</code> — only the first element is read (and <mark>errors in R ≥ 4.3</mark>). Use single <code>&amp;</code> for vectors.</li>
+        <li>Testing <code>if (x == NA)</code> — always yields <code>NA</code>, never <code>TRUE</code>. Use <code>is.na(x)</code>, or <code>isTRUE()</code> to fold an <code>NA</code> condition to <code>FALSE</code>.</li>
+        <li>Expecting <code>any()</code>/<code>all()</code> to ignore <code>NA</code> — they return <code>NA</code> by default; pass <code>na.rm = TRUE</code>.</li>
+      </ul>
+    </div>
+  </div>
+
   <div class="topic" id="t-3-3">
     <h3>3.3 Loops in R — 3 types <span class="tag hot">⭐ 2023 Q3a · 2025 Q4</span></h3>
     <div class="table-wrap">
@@ -2359,6 +2598,33 @@ class_list$s1$marks</code></pre>
     <div class="box tip">
       <span class="label">Vector vs List — Part-A 2023(d)</span>
       <b>Vector</b> = homogeneous, 1-D, accessed with single <code>[ ]</code>. <b>List</b> = heterogeneous + nestable, 1-D, accessed with <code>[[ ]]</code> for elements and <code>[ ]</code> for sub-lists.
+    </div>
+
+    <div class="box def">
+      <span class="label">The term: "recursive list" (recursive vector)</span>
+      A <mark>recursive list</mark> is a list whose elements can themselves be lists — to <b>any depth</b> (a list of lists of lists…). Because of this nesting power, R officially calls a list a <mark>recursive vector</mark>, in contrast to an <mark>atomic vector</mark> (a flat <code>c()</code> of one type that <b>cannot</b> hold another vector inside it).
+      <ul>
+        <li><b>Test it:</b> <code>is.recursive(L)</code> → <mark><b>TRUE</b></mark> for any list; <code>is.recursive(c(1,2,3))</code> → <mark><b>FALSE</b></mark> for an atomic vector. Mirror: <code>is.atomic()</code> is <code>TRUE</code> for the atomic vector, <code>FALSE</code> for the list.</li>
+        <li><b>Inspect depth:</b> <code>str(L)</code> prints the nested tree with indented <code>$</code> levels — the fastest way to read how deep a recursive list goes.</li>
+        <li><b>Flatten it:</b> <code>unlist(L)</code> collapses every nested level into a single atomic vector (and coerces to one common type via the promotion ladder).</li>
+      </ul>
+<pre><code>nested &lt;- list(a = 1,
+               b = list(x = 2, y = list(z = 3)))   # list inside list inside list
+
+is.recursive(nested)   # TRUE  — a list is a recursive vector
+is.recursive(1:3)      # FALSE — an atomic vector is flat
+is.atomic(nested)      # FALSE
+nested$b$y$z           # 3     — reach into the deepest level
+unlist(nested)         # a=1, b.x=2, b.y.z=3  — flattened, names joined by "."
+str(nested)            # shows the indented nesting tree</code></pre>
+    </div>
+
+    <div class="box tip">
+      <span class="label">Quick anatomy of a function (full UDF treatment in Unit 3)</span>
+      Lists can even store a function as an element (see the <code>passed</code> pocket above), so a one-line reminder of the shape helps: a function is built as <code><mark>name &lt;- function(args) { body }</mark></code> — the <b>last expression in the body is auto-returned</b> (no explicit <code>return()</code> needed).
+<pre><code>area &lt;- function(l, b) { l * b }   # last expression is auto-returned
+area(4, 3)                         # 12</code></pre>
+      The complete user-defined-function treatment — default args, lazy evaluation, lexical scoping, anonymous lambdas — is in <a href="#t-3-1"><b>Unit 3 · §3.1 Function Creation</b></a>. (Listed here only so a Unit-2 revision isn't blindsided.)
     </div>
   </div>
 
@@ -3465,7 +3731,7 @@ t.test(scores, mu = 70, conf.level = 0.95)
         <div style="background:#dcfce7; color:var(--brand-deep); font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Correct</b><br>1&minus;&alpha;</div>
         <div style="background:#fef3c7; color:#7c2d12; font-size:10.5px; padding:8px 6px; text-align:center; border-top:1px solid var(--brand); border-left:1px solid var(--brand);"><b>Type II</b><br>&beta; · false &minus;</div>
       </div>
-      <figcaption><b>Fig 4.11</b> · The error matrix &middot; the two diagonal cells are correct decisions; the off-diagonal cells are the two error types (&alpha; = false positive, &beta; = false negative).</figcaption>
+      <figcaption><b>Fig 4.11</b> · The error matrix &middot; the two green off-diagonal cells are correct decisions; the two diagonal cells (top-left, bottom-right) are the error types (&alpha; = false positive, &beta; = false negative).</figcaption>
     </figure>
 
     <div class="box tip">
@@ -3508,7 +3774,7 @@ cov(x, y)                       # 1.5 (covariance)</code></pre>
 hours <- c(2, 3, 4, 5, 6, 7, 8)
 marks <- c(45, 55, 60, 70, 72, 80, 88)
 
-cor(hours, marks)                          # 0.992  (Pearson, default)
+cor(hours, marks)                          # 0.993  (Pearson, default)
 cor(hours, marks, method = "spearman")     # 1.000  (rank-based)
 
 cor.test(hours, marks)
@@ -3516,14 +3782,14 @@ cor.test(hours, marks)
 # t = 19.0, df = 5, p-value = 7.4e-06
 # alternative hypothesis: true correlation is not equal to 0
 # 95 percent confidence interval:
-#  0.949 0.999
+#  0.953 0.999
 # sample estimates:
 #       cor
-# 0.992
+# 0.993
 # -> p < 0.05  =>  reject H0 (correlation IS non-zero)
 
 # Manual relation: cor = cov / (sd_x * sd_y)
-cov(hours, marks) / (sd(hours) * sd(marks))   # 0.992 (matches cor())</code></pre>
+cov(hours, marks) / (sd(hours) * sd(marks))   # 0.993 (matches cor())</code></pre>
 
     <figure class="diagram-fig">
     <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg">
@@ -3742,7 +4008,6 @@ round(expected, 1)
         <p><b>Supervised learning:</b> the algorithm learns a mapping f(X) → y from <i>labelled</i> training data (X, y). Goal — predict y for unseen X.</p>
         <p><b>Unsupervised learning:</b> the algorithm discovers hidden structure in <i>unlabelled</i> data X. Goal — find natural groupings or dimensions.</p>
         <h5>Six-row contrast</h5>
-        <p>(See full table Sec. 1.12 above — Input · Goal · Tasks · Algorithms · Evaluation · Example.) Inline summary below for quick recall:</p>
         <div class="table-wrap"><table>
           <thead><tr><th>Aspect</th><th>Supervised</th><th>Unsupervised</th></tr></thead>
           <tbody>
@@ -4134,8 +4399,23 @@ show2(s)</code></pre>
   ))
 a <- Account$new(balance=100)
 a$deposit(50); a$balance     # 150 — modified in place</code></pre>
-        <h5>Contrast</h5>
-        <p>(Full 7-row contrast at Sec. 3.8 — S3 is informal &amp; fastest; S4 enforces slots &amp; validation; R5 is mutable &amp; method-encapsulated.)</p>
+        <h5>Contrast — S3 vs S4 vs R5</h5>
+        <div class="table-wrap">
+        <table>
+          <caption>The 7-row OOP contrast — the marks-earning matrix</caption>
+          <thead><tr><th>Parameter</th><th>S3</th><th>S4</th><th>Reference (R5)</th></tr></thead>
+          <tbody>
+            <tr><td>Definition</td><td>Informal class: tag a list with <code>class(x)&lt;-"X"</code></td><td>Formal class with typed slots via <code>setClass()</code></td><td>Mutable, encapsulated class via <code>setRefClass()</code></td></tr>
+            <tr><td>Slot syntax</td><td><code>$</code> (e.g. <code>x$name</code>)</td><td><code>@</code> (e.g. <code>s@name</code>)</td><td><code>$</code> (e.g. <code>a$balance</code>)</td></tr>
+            <tr><td>Validation</td><td>None — any list passes</td><td>Built-in slot type-check at <code>new()</code></td><td>Built-in field validation</td></tr>
+            <tr><td>Dispatch</td><td>Name lookup: <code>fn.cls()</code></td><td>Generic dispatch: <code>setGeneric/setMethod</code></td><td>Methods defined inside the class</td></tr>
+            <tr><td>Mutability</td><td>Copy-on-modify</td><td>Copy-on-modify</td><td><b>Mutable</b> in place (<code>&lt;&lt;-</code>)</td></tr>
+            <tr><td>Speed</td><td>Fastest (no checks)</td><td>Slower (validation overhead)</td><td>Slowest (env-backed)</td></tr>
+            <tr><td>Best use-case</td><td>Quick prototypes, base R + tidyverse</td><td>Validated packages (Bioconductor, Matrix)</td><td>Stateful objects: DB handle, Shiny, GUI</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p>One line to remember: <mark><b>S3 = informal · S4 = formal · R5 = mutable</b></mark>.</p>
         <div class="box warn">
           <span class="label">Pitfall</span>
           S3 and S4 follow R's copy-on-modify default — assigning to a slot creates a copy. Reference classes use <code>&lt;&lt;-</code> for true mutation; remember this when wrapping stateful resources (DB connections, GUIs).
@@ -4596,7 +4876,7 @@ identical(df, df2)        # TRUE</code></pre>
     <div class="qbody">
       <p class="q">Write a short note on Object Oriented Programming with R, S3 and reference classes.</p>
       <div class="ans">
-        <p>(Cross-reference: full answer at <b>2025 Q3(b)</b> above; see Sec. 3.8.) Key beats: R has three OOP systems — S3 (informal, name-lookup dispatch via <code>fn.class()</code>), S4 (formal slots with <code>setClass</code>/<code>setMethod</code>, validated, accessed with <code>@</code>), and Reference Classes/R5 (mutable, method-encapsulated, Java-like). Include the 7-row contrast and one code snippet per system.</p>
+        <p>R has three OOP systems: <mark>S3</mark> (informal, name-lookup dispatch via <code>fn.class()</code>), <mark>S4</mark> (formal slots with <code>setClass</code>/<code>setMethod</code>, validated, accessed with <code>@</code>), and <mark>Reference Classes (R5)</mark> (mutable, method-encapsulated, Java-like).</p>
         <div class="box tip refsum">
           <span class="label">Inline summary · Sec. 3.8 — S3 vs S4 vs Reference Classes</span>
           <ul style="margin:6px 0 0 18px">
@@ -4990,7 +5270,7 @@ xbar <- sum(x*f) / N
 p <- xbar / n
 expected <- N * dbinom(x, size=n, prob=p)
 round(expected, 2)
-# 3.39 , 14.10 , 23.48 , 19.54 , 8.14 , 1.35  (sum = 70 = N)</code></pre>
+# 3.39 , 14.10 , 23.48 , 19.54 , 8.13 , 1.35  (sum = 70 = N)</code></pre>
         <p><b>Step 4 — Interpret.</b> The fitted Binomial(5, 0.4543) approximates the observed frequencies; goodness-of-fit can be tested via <code>chisq.test(f, p = dbinom(x,n,p))</code>.</p>
       </div>
     </div>
@@ -5032,8 +5312,8 @@ mean(sim); var(sim)         # both ≈ 4</code></pre>
         <pre><code>loaves <- c(498, 503, 497, 505, 499, 502, 501, 500)
 
 t.test(loaves, mu = 500)
-# t = 0.451, df = 7, p-value = 0.6657
-# 95% CI: [498.6, 502.4]
+# t = 0.662, df = 7, p-value = 0.5290
+# 95% CI: [498.4, 502.9]
 # Conclusion: p > 0.05 → fail to reject H0.
 # No evidence that mean weight differs from 500 g.</code></pre>
       </div>
@@ -5188,7 +5468,28 @@ rbinom(100, size=10, prob=0.4)# 100 simulations</code></pre>
     <div class="qbody">
       <p class="q">Explain the term Hypothesis. Describe different types of Statistical Hypothesis Testing. Also explain steps involved in hypothesis testing.</p>
       <div class="ans">
-        <p>(Cross-reference: full answer at May-2025 Q6(a) above; see Sec. 4.8.) Key beats: define hypothesis as a testable statement; classify into <b>simple/composite, one-sided/two-sided, parametric/non-parametric</b>; list the 6 steps (H₀/H₁ → α → test stat → p-value → decision → interpret); illustrate with a one-sample t-test in R.</p>
+        <p>A <mark>hypothesis</mark> is a testable statement about a population parameter. <mark>Hypothesis testing</mark> is the formal procedure that uses sample data and a significance level α to decide between two competing claims.</p>
+        <h5>Types of statistical hypothesis</h5>
+        <ul>
+          <li><b>Simple vs composite</b> — a simple hypothesis fixes the parameter exactly (μ = 50); a composite leaves a range (μ &gt; 50).</li>
+          <li><b>One-sided vs two-sided</b> — one-sided H₁ claims a direction (μ &gt; μ₀); two-sided claims only difference (μ ≠ μ₀).</li>
+          <li><b>Parametric vs non-parametric</b> — parametric (z, t, F, χ²) assume a distribution; non-parametric (Wilcoxon, Kruskal–Wallis) do not.</li>
+        </ul>
+        <h5>Six steps</h5>
+        <ol>
+          <li><b>State H₀ &amp; H₁</b> — null (no effect) and alternative.</li>
+          <li><b>Choose α</b> — typically 0.05, fixed before seeing data.</li>
+          <li><b>Select the test statistic</b> — z, t, χ², F.</li>
+          <li><b>Compute the statistic &amp; p-value.</b></li>
+          <li><b>Decision rule</b> — <mark>reject H₀ if p &lt; α</mark>.</li>
+          <li><b>Interpret in context.</b></li>
+        </ol>
+        <h5>R example — one-sample t-test</h5>
+        <pre><code>weights <- c(48,52,49,51,53,47,50,51,49,52)
+t.test(weights, mu = 50)
+# t = 0.327, df = 9, p-value = 0.751
+# p > 0.05  ->  fail to reject H0
+# Conclusion: no evidence mean weight differs from 50.</code></pre>
       </div>
     </div>
   </div>
@@ -5225,7 +5526,7 @@ rbinom(100, size=10, prob=0.4)# 100 simulations</code></pre>
     <div class="qbody">
       <p class="q">Differentiate between base graphics and ggplot2 graphics. What do col and pch attributes represent?</p>
       <div class="ans">
-        <p>(See Sec. 4.5 for the full 7-row contrast.) Base R uses an imperative paradigm — successive function calls (<code>plot()</code>, <code>lines()</code>, <code>points()</code>) draw on a canvas. ggplot2 implements the declarative <i>grammar of graphics</i> — plots are composed of layers added with <code>+</code>, with aesthetics (<code>aes()</code>) separated from geoms.</p>
+        <p>Base R uses an imperative paradigm — successive function calls (<code>plot()</code>, <code>lines()</code>, <code>points()</code>) draw on a canvas. ggplot2 implements the declarative <i>grammar of graphics</i> — plots are composed of layers added with <code>+</code>, with aesthetics (<code>aes()</code>) separated from geoms.</p>
         <div class="table-wrap"><table>
           <thead><tr><th>Aspect</th><th>Base graphics</th><th>ggplot2</th></tr></thead>
           <tbody>
@@ -5247,7 +5548,18 @@ rbinom(100, size=10, prob=0.4)# 100 simulations</code></pre>
     <div class="qbody">
       <p class="q">Explain the debugging techniques in R programming.</p>
       <div class="ans">
-        <p>(Full answer at May-2025 Q5(a) above + Sec. 4.4 table.) Major techniques: <code>traceback()</code>, <code>debug(fn)</code> / <code>undebug</code>, <code>browser()</code>, <code>tryCatch()</code>, <code>warning</code>/<code>stop</code>/<code>message</code>, and RStudio's clickable breakpoints. Use <code>browser()</code> for fine-grained inspection, <code>tryCatch()</code> for graceful production-grade error handling.</p>
+        <p><mark>Debugging</mark> is the systematic location and correction of defects. R offers a layered toolkit:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Tool</th><th>What it does</th></tr></thead>
+          <tbody>
+            <tr><td><code>traceback()</code></td><td>Prints the call stack after an error — the cheapest first move.</td></tr>
+            <tr><td><code>debug(fn)</code> / <code>undebug(fn)</code></td><td>Steps through a function line-by-line (<code>n</code> next, <code>c</code> continue, <code>Q</code> quit).</td></tr>
+            <tr><td><code>browser()</code></td><td>Inline breakpoint — pause anywhere, even conditionally (<code>if (x&lt;0) browser()</code>).</td></tr>
+            <tr><td><code>tryCatch()</code></td><td>Graceful production-grade handling so failures degrade rather than crash.</td></tr>
+            <tr><td><code>options(error=recover)</code></td><td>Post-mortem mode — drops into any frame after a crash; pairs with RStudio breakpoints.</td></tr>
+          </tbody>
+        </table></div>
+        <p>Use <code>browser()</code> for fine-grained inspection and <code>tryCatch()</code> for graceful error handling; complement with <code>print()</code>/<code>cat()</code> probes.</p>
       </div>
     </div>
   </div>
@@ -5257,7 +5569,17 @@ rbinom(100, size=10, prob=0.4)# 100 simulations</code></pre>
     <div class="qbody">
       <p class="q">Explain different measures of central tendency with the help of examples.</p>
       <div class="ans">
-        <p>(Full 10-mark version at May-2025 Q5(b) above; compress to mean + median + mode + worked example for 7.5 M.)</p>
+        <p>The three <mark>measures of central tendency</mark> summarise "where the centre of the data sits":</p>
+        <ul>
+          <li><b>Mean</b> = Σx/n — arithmetic average; best for symmetric data, sensitive to outliers. R: <code>mean(x)</code>.</li>
+          <li><b>Median</b> = middle value after sorting — robust to outliers; preferred for skewed data (income, prices). R: <code>median(x)</code>.</li>
+          <li><b>Mode</b> = most frequent value — the only measure valid for categorical data; no R built-in, use <code>u[which.max(tabulate(match(x,u)))]</code>.</li>
+        </ul>
+        <pre><code>x <- c(2, 4, 4, 4, 5, 5, 7, 9)
+mean(x)     # 5
+median(x)   # 4.5
+# mode = 4 (appears 3 times)</code></pre>
+        <p>Skewness fingerprint: right-skewed → mean &gt; median &gt; mode; symmetric → all three coincide.</p>
       </div>
     </div>
   </div>
@@ -5673,7 +5995,7 @@ ggplot(df, aes(x = hours, y = marks, color = grade)) +
     <div class="qbody">
       <p class="q">Compare <code>apply</code>, <code>lapply</code>, <code>sapply</code>, and <code>tapply</code> with examples. <a href="#t-3-7" style="font-family:'JetBrains Mono'; font-size:11px; color:var(--brand);">↗ Sec. 3.7</a></p>
       <div class="ans">
-        <p>This is the exact format predicted at <a href="#predicted-qs">P2</a> for BCD-204-V — full 4-function comparison table + <code>mapply</code> bonus is at Sec. 3.7. CSE25's appearance at 10 M validates the prediction.</p>
+        <p>This is the exact format predicted at <a href="#predicted-qs">P2</a> for BCD-204-V; CSE25's appearance at 10 M validates the prediction. The five-function comparison and a <code>mapply</code> bonus follow below.</p>
         <div class="box tip refsum">
           <span class="label">Inline summary · Sec. 3.7 — apply family (5 variants)</span>
           <ul style="margin:6px 0 0 18px">
@@ -5770,7 +6092,22 @@ predict(model, newdata = data.frame(hours = 5),
     <div class="qbody">
       <p class="q">Write short notes on: (I) Clustering and Decision trees · (II) Probability distributions in R · (III) Residual analysis.</p>
       <div class="ans">
-        <p><b>(II) Probability distributions in R</b> — fully in DSUR syllabus → see Sec. 4.10 + Repeated-Q #3.</p>
+        <p><b>(II) Probability distributions in R</b> — fully in DSUR syllabus. R exposes every standard distribution through the <mark>d / p / q / r</mark> family: prefix picks <i>what</i> (<code>d</code>=density PMF/PDF, <code>p</code>=cumulative CDF, <code>q</code>=quantile, <code>r</code>=random sample) and the suffix picks <i>which</i> distribution.</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Distribution</th><th>R suffix</th><th>PMF / PDF</th><th>Mean · Variance</th></tr></thead>
+          <tbody>
+            <tr><td>Normal(μ, σ²)</td><td><code>norm</code></td><td>(1/σ√2π)·e<sup>−(x−μ)²/2σ²</sup></td><td>μ · σ²</td></tr>
+            <tr><td>Binomial(n, p)</td><td><code>binom</code></td><td><sup>n</sup>C<sub>k</sub> p<sup>k</sup>(1−p)<sup>n−k</sup></td><td>np · np(1−p)</td></tr>
+            <tr><td>Poisson(λ)</td><td><code>pois</code></td><td>e<sup>−λ</sup>λ<sup>k</sup>/k!</td><td>λ · λ</td></tr>
+          </tbody>
+        </table></div>
+<pre><code>dnorm(0)              # PDF of N(0,1) at 0  = 0.3989
+pnorm(1.96)           # CDF, P(Z <= 1.96)   = 0.975
+qnorm(0.975)          # inverse CDF         = 1.96
+dbinom(3, 5, 0.5)     # Binomial PMF        = 0.3125
+dpois(2, lambda = 3)  # Poisson  PMF        = 0.224
+rnorm(5, 50, 10)      # 5 random N(50,100) draws</code></pre>
+        <p>The same prefix works for every suffix, so <code>dbinom / pbinom / qbinom / rbinom</code> and <code>dpois / ppois / qpois / rpois</code> follow the identical pattern. A fitted distribution's expected frequencies are <code>N * dpois(x, lambda)</code> (or <code>dbinom</code>), and the fit is checked with <code>chisq.test()</code>.</p>
         <div class="box warn">
           <span class="label">OUT-OF-SYLLABUS for parts I &amp; III</span>
           Clustering / decision trees are ML topics (covered in BCA syllabus only as a brief mention under "supervised vs unsupervised" Sec. 1.12). Residual analysis is regression-diagnostic — touched in DSUR only if a paper asks for <code>lm()</code> interpretation. Both flagged for awareness, not exam priority.
@@ -6057,7 +6394,14 @@ rpois(100, lambda=4)         # simulate</code></pre>
           <li><b>By sample count:</b> one-sample, two-sample (independent), paired</li>
         </ul>
         <h5>Six steps</h5>
-        <p>(See Sec. 4.8 and Fig 4.8.) State H₀/H₁ → choose α → select test statistic → compute p-value → decide (reject if p&lt;α) → interpret.</p>
+        <ol>
+          <li><b>State H₀ &amp; H₁</b> — null (no effect / equality) and alternative.</li>
+          <li><b>Choose α</b> — significance level, typically 0.05, fixed before seeing data.</li>
+          <li><b>Select the test statistic</b> — z, t, χ², F per the data.</li>
+          <li><b>Compute the statistic &amp; p-value</b> from the sample.</li>
+          <li><b>Decision rule</b> — <mark>reject H₀ if p &lt; α</mark>.</li>
+          <li><b>Interpret in context.</b></li>
+        </ol>
         <h5>R example — one-sample t-test</h5>
         <pre><code>x <- c(48,52,49,51,53,47,50,51,49,52)
 t.test(x, mu = 50)
@@ -6089,7 +6433,37 @@ t.test(x, mu = 50)
       <p style="font-family:'JetBrains Mono'; font-size:11px; color:var(--muted);">Appeared: 2023 Q6(a) 7.5M, 2025 Q3(b) 10M · <a href="#t-3-8" style="color:var(--brand);">↗ Sec. 3.8</a></p>
       <div class="ans">
         <p>R supports three OOP systems of increasing formality: <b>S3</b> (informal, name-lookup), <b>S4</b> (formal, slot-based), and <b>Reference (R5)</b> (mutable, method-encapsulated).</p>
-        <p>(See Sec. 3.8 for the full 7-row contrast table and code samples for all three systems. Locks 10 M with: definition + S3 code + S4 code + R5 code + 7-row table + mutability pitfall + Fig 3.8 diagram.)</p>
+        <pre><code># S3 — informal: tag a list, dispatch by name
+x <- list(name="A", marks=85)
+class(x) <- "Student"
+print.Student <- function(o, ...) cat("Student:", o$name, "\n")
+print(x)                       # dispatches to print.Student
+
+# S4 — formal: typed slots, @ access, validated
+setClass("Student", representation(name="character", marks="numeric"))
+s <- new("Student", name="A", marks=85)
+setGeneric("greet", function(x) standardGeneric("greet"))
+setMethod("greet", "Student", function(x) cat("Hi", x@name))
+greet(s)                       # "Hi A"
+
+# R5 — mutable: fields + methods, <<- mutates in place
+Account <- setRefClass("Account",
+  fields  = list(balance="numeric"),
+  methods = list(deposit=function(x) balance <<- balance + x))
+a <- Account$new(balance=100)
+a$deposit(50); a$balance       # 150 — MUTATED</code></pre>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>S3</th><th>S4</th><th>Reference (R5)</th></tr></thead>
+          <tbody>
+            <tr><td>Class definition</td><td><code>class(x)&lt;-"X"</code></td><td><code>setClass()</code></td><td><code>setRefClass()</code></td></tr>
+            <tr><td>Slot access</td><td><code>$</code></td><td><code>@</code></td><td><code>$</code></td></tr>
+            <tr><td>Type validation</td><td>None</td><td>Built-in</td><td>Built-in</td></tr>
+            <tr><td>Mutability</td><td>Copy-on-modify</td><td>Copy-on-modify</td><td><mark><b>Mutable</b></mark> (<code>&lt;&lt;-</code>)</td></tr>
+            <tr><td>Dispatch</td><td>Name lookup <code>fn.cls</code></td><td><code>setMethod()</code></td><td>Method inside class</td></tr>
+            <tr><td>Speed</td><td>Fastest</td><td>Slower (validation)</td><td>Slowest</td></tr>
+            <tr><td>Used in</td><td>Base R + tidyverse</td><td>Bioconductor, Matrix</td><td>R6 packages, Shiny</td></tr>
+          </tbody>
+        </table></div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6111,7 +6485,16 @@ t.test(x, mu = 50)
       <p class="q">Explain various measures of central tendency with examples and R syntax.</p>
       <p style="font-family:'JetBrains Mono'; font-size:11px; color:var(--muted);">Appeared: 2023 Q7(b) 7.5M, 2025 Q5(b) 10M · <a href="#t-4-7" style="color:var(--brand);">↗ Sec. 4.7</a></p>
       <div class="ans">
-        <p>Mean (Σx/n), median (middle value), mode (most frequent) — plus spread companions variance and SD. R: <code>mean</code>, <code>median</code>, UDF for mode, <code>var</code>, <code>sd</code>. (Full answer at Sec. 4.7 / May-2025 Q5(b).) Worked example: <code>c(2,4,4,4,5,5,7,9)</code> → mean 5, median 4.5, mode 4, SD ≈ 2.14.</p>
+        <p>Mean (Σx/n), median (middle value), mode (most frequent) — plus spread companions variance and SD. R: <code>mean</code>, <code>median</code>, UDF for mode, <code>var</code>, <code>sd</code>.</p>
+        <pre><code>x <- c(2, 4, 4, 4, 5, 5, 7, 9)        # n = 8, sum = 40
+mean(x)        # 40 / 8            = 5
+median(x)      # mean of 4th,5th  = (4+5)/2 = 4.5
+# mode — no built-in; write a one-liner UDF
+mode_fn <- function(v) { u <- unique(v); u[which.max(tabulate(match(v, u)))] }
+mode_fn(x)     # 4  (appears 3 times)
+sd(x)          # 2.138   (sample SD, divides by n-1)
+var(x)         # 4.571</code></pre>
+        <p>Result: <mark><b>mean 5 · median 4.5 · mode 4 · SD ≈ 2.14</b></mark>. Because mean &gt; median &gt; mode, the data is slightly right-skewed.</p>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6133,7 +6516,7 @@ t.test(x, mu = 50)
       <p class="q">Explain debugging techniques in R programming.</p>
       <p style="font-family:'JetBrains Mono'; font-size:11px; color:var(--muted);">Appeared: 2023 Q7(a) 7.5M, 2025 Q5(a) 5M · <a href="#t-4-4" style="color:var(--brand);">↗ Sec. 4.4</a></p>
       <div class="ans">
-        <p>Debugging = systematic location and correction of defects. R tools: <code>traceback()</code> for call-stack inspection, <code>debug(fn)</code> / <code>undebug()</code> to step through, <code>browser()</code> as inline breakpoint, <code>tryCatch()</code> for graceful handling, and RStudio's clickable breakpoints. Combine with <code>print()</code> / <code>cat()</code> probes and <code>options(error = recover)</code> for post-mortem inspection. (Full table at Sec. 4.4.)</p>
+        <p>Debugging = systematic location and correction of defects. R tools: <code>traceback()</code> for call-stack inspection, <code>debug(fn)</code> / <code>undebug()</code> to step through, <code>browser()</code> as inline breakpoint, <code>tryCatch()</code> for graceful handling, and RStudio's clickable breakpoints. Combine with <code>print()</code> / <code>cat()</code> probes and <code>options(error = recover)</code> for post-mortem inspection.</p>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6163,8 +6546,14 @@ t.test(x, mu = 50)
   f = function(x) x^2
 )
 names(mixed) <- c("vec","str","mat","fn")
-mixed$fn(5)              # 25</code></pre>
-        <p>(Full operations &amp; pitfalls at Sec. 3.5.)</p>
+mixed$fn(5)              # 25
+
+# Access three ways · update · delete
+mixed$str                # "Hello R"   (by name)
+mixed[[1]]               # extract — strips one level
+mixed["mat"]             # sub-list — keeps wrapper
+mixed$new <- TRUE        # insert / update
+mixed$vec <- NULL        # delete the element</code></pre>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6186,7 +6575,28 @@ mixed$fn(5)              # 25</code></pre>
       <p class="q">How many types of loops does R support? Explain with programs.</p>
       <p style="font-family:'JetBrains Mono'; font-size:11px; color:var(--muted);">Appeared: 2023 Q3(a) 7M, 2025 Q4 15M (uses loops) · <a href="#t-3-3" style="color:var(--brand);">↗ Sec. 3.3</a></p>
       <div class="ans">
-        <p>R supports three loop constructs — <code>for</code>, <code>while</code>, <code>repeat</code> — plus loop-control keywords <code>break</code> (exit) and <code>next</code> (skip iteration). All three can produce identical output; choice depends on whether the iteration count is known up-front (<code>for</code>), depends on a condition (<code>while</code>), or requires conditional exit from within the body (<code>repeat</code>). See Sec. 3.3 for full code + Fig 3.3 flow diagrams.</p>
+        <p>R supports three loop constructs — <code>for</code>, <code>while</code>, <code>repeat</code> — plus loop-control keywords <code>break</code> (exit) and <code>next</code> (skip iteration). All three can produce identical output; choice depends on whether the iteration count is known up-front (<code>for</code>), depends on a condition (<code>while</code>), or requires conditional exit from within the body (<code>repeat</code>).</p>
+        <pre><code># for — known count: print squares 1..5
+for (i in 1:5) print(i^2)            # 1 4 9 16 25
+
+# while — condition-driven: same output
+i <- 1
+while (i <= 5) { print(i^2); i <- i + 1 }
+
+# repeat — exit manually with break (do-while style)
+i <- 1
+repeat {
+  if (i > 5) break                   # exit test inside body
+  print(i^2)
+  i <- i + 1
+}
+
+# break vs next inside a loop
+for (i in 1:10) {
+  if (i == 8) break                  # stop the loop at 8
+  if (i %% 2 == 0) next              # skip even numbers
+  print(i)                           # 1 3 5 7
+}</code></pre>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6272,7 +6682,16 @@ mixed$fn(5)              # 25</code></pre>
     "Unknown")                    # default
 }
 dayName("sat")    # "Weekend"</code></pre>
-        <p>(Full if vs ifelse contrast at Sec. 3.2.)</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Aspect</th><th>if / else</th><th>ifelse()</th><th>switch()</th></tr></thead>
+          <tbody>
+            <tr><td>Works on</td><td>single scalar condition</td><td><mark>vectorised</mark> — whole vector</td><td>single key (string/int)</td></tr>
+            <tr><td>Branches</td><td>2 (or chained else-if)</td><td>exactly 2 (TRUE / FALSE)</td><td>many, one per key</td></tr>
+            <tr><td>Returns</td><td>last evaluated value</td><td>vector same length as test</td><td>matched value; <code>NULL</code> if no match</td></tr>
+            <tr><td>Best for</td><td>complex multi-line logic</td><td>element-wise recode of a column</td><td>flat dispatch on one key</td></tr>
+            <tr><td>Example</td><td><code>if (x&gt;0) "pos" else "neg"</code></td><td><code>ifelse(v&gt;0,"pos","neg")</code></td><td><code>switch(d, mon="Mon", ...)</code></td></tr>
+          </tbody>
+        </table></div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6302,9 +6721,137 @@ dayName("sat")    # "Weekend"</code></pre>
     Predictions are derived from five signals (full methodology in build prompt Sec. 8): (1) <b>frequency × recency</b> — high freq, last 2+ yrs ago; (2) <b>cyclic pattern</b> — 2-year gaps; (3) <b>syllabus gap</b> — high-yield topic missing recent; (4) <b>format rotation</b> — appeared at one mark tier, due at another; (5) <b>prof signature topic</b> — concepts with rich application angles. <b>Confidence:</b> Very Likely (3+ signals), Likely (2 signals), Possible (1 signal). No fabrication — every prediction maps to a measurable PYQ pattern.
   </div>
 
+  <!-- Q1 — Part-A (compulsory) -->
+  <div class="qcard predicted">
+    <div class="qhead"><span class="yr">Q1</span> · <span class="u">Part-A</span> · <span class="mk">10 × 1.5 M = 15 M</span> <span class="freq">🔮 Compulsory · Guaranteed 15</span></div>
+    <div class="qbody">
+      <p style="font-family:'Spectral',serif; font-size:14px; color:var(--muted); margin:0 0 4px;">Ten one-shot shorts drawn from the highest-frequency R fundamentals. Each answer below is the full mark-earning version.</p>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(a) Name any three mathematical functions in R with their use.</b> <span class="src">⟲ BCA May-23 Q1(a) · 2×</span></div>
+      <div class="ans">
+        <ul>
+          <li><code>sqrt(x)</code> — square root, e.g. <code>sqrt(16)</code> returns <mark>4</mark>.</li>
+          <li><code>abs(x)</code> — absolute value, e.g. <code>abs(-7)</code> returns <mark>7</mark>.</li>
+          <li><code>log(x)</code> — natural logarithm (base <i>e</i>); <code>log(x, base=10)</code> gives log&#8321;&#8320;. Also <code>exp()</code>, <code>round()</code>, <code>ceiling()</code>, <code>factorial()</code>.</li>
+        </ul>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(b) What are the basic (atomic) data types in R?</b> <span class="src">⟲ BCA May-23 Q1(c) · 2×</span></div>
+      <div class="ans">
+        <p>R has <mark>five atomic data types</mark>:</p>
+        <ul>
+          <li><b>numeric</b> (double) — <code>3.14</code></li>
+          <li><b>integer</b> — <code>5L</code> (the <code>L</code> suffix)</li>
+          <li><b>character</b> — <code>"data"</code></li>
+          <li><b>logical</b> — <code>TRUE</code> / <code>FALSE</code></li>
+          <li><b>complex</b> — <code>2+3i</code></li>
+        </ul>
+        <p>Check a value's type with <mark><code>class(x)</code></mark> or <code>typeof(x)</code>.</p>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(c) Differentiate between a vector and a list in R.</b> <span class="src">BCA May-23 Q1(d)</span></div>
+      <div class="ans">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>Vector</th><th>List</th></tr></thead>
+          <tbody>
+            <tr><td>Element type</td><td><mark>Homogeneous</mark> (all same type)</td><td><mark>Heterogeneous</mark> (mixed types)</td></tr>
+            <tr><td>Created with</td><td><code>c(1, 2, 3)</code></td><td><code>list(1, "a", TRUE)</code></td></tr>
+            <tr><td>Indexing</td><td><code>v[2]</code></td><td><code>l[[2]]</code> (double bracket)</td></tr>
+            <tr><td>Use</td><td>numeric / single-type data</td><td>nested / mixed structures</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(d) How do you install an external package in R? What is CRAN?</b> <span class="src">⟲ BCA May-25 Q1(c) · 2×</span></div>
+      <div class="ans">
+        <ul>
+          <li>Install once: <mark><code>install.packages("ggplot2")</code></mark> (downloads from the repository).</li>
+          <li>Load it in each session before use: <code>library(ggplot2)</code>.</li>
+          <li><b>CRAN</b> = <mark>Comprehensive R Archive Network</mark> — the official, mirrored repository of R packages that <code>install.packages()</code> pulls from by default.</li>
+        </ul>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(e) Differentiate between lapply() and sapply().</b> <span class="src">⟲ BCA May-23 Q1(h) · 3×</span></div>
+      <div class="ans">
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>lapply()</th><th>sapply()</th></tr></thead>
+          <tbody>
+            <tr><td>Returns</td><td>always a <mark>list</mark></td><td><mark>simplified</mark> vector / matrix when possible</td></tr>
+            <tr><td>Use when</td><td>results differ in length / type</td><td>results are uniform scalars</td></tr>
+            <tr><td>Example</td><td><code>lapply(1:3, sqrt)</code> &rarr; list of 3</td><td><code>sapply(1:3, sqrt)</code> &rarr; vector</td></tr>
+          </tbody>
+        </table></div>
+        <p><code>sapply</code> is a user-friendly wrapper around <code>lapply</code> that simplifies the output.</p>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(f) Which R function computes correlation? Give its syntax.</b> <span class="src">⟲ BCA May-25 Q1(i) · 3×</span></div>
+      <div class="ans">
+        <ul>
+          <li>Function: <mark><code>cor(x, y)</code></mark> — returns the <b>Pearson</b> correlation coefficient <i>r</i> (range &minus;1 to +1).</li>
+          <li>Choose a method: <code>cor(x, y, method = "pearson")</code> &middot; also <code>"spearman"</code> or <code>"kendall"</code>.</li>
+          <li>For a matrix / data frame, <code>cor(df)</code> returns the full correlation matrix.</li>
+        </ul>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(g) Explain the switch() function in R with syntax.</b> <span class="src">⟲ BCA May-25 Q1(g) · 2×</span></div>
+      <div class="ans">
+        <p><mark><code>switch()</code></mark> selects one of several branches by matching an expression against named cases — a clean alternative to a long <code>if-else</code> chain.</p>
+        <pre><code>switch(EXPR,
+       case1 = result1,
+       case2 = result2,
+       default_result)
+
+day &lt;- "Mon"
+switch(day, Mon = "Work", Sun = "Rest")   # "Work"</code></pre>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(h) Write the syntax of a for-loop in R with an example.</b> <span class="src">⟲ BCA May-25 Q1(e) · 2×</span></div>
+      <div class="ans">
+        <pre><code>for (variable in sequence) {
+  # body
+}
+
+for (i in 1:5) {
+  print(i^2)        # 1 4 9 16 25
+}</code></pre>
+        <p>The loop variable <code>i</code> takes each value of the <mark>sequence</mark> in turn; <code>1:5</code> generates <code>c(1,2,3,4,5)</code>.</p>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(i) How do you create a frequency distribution in R?</b> <span class="src">BCA May-25 Q1(j)</span></div>
+      <div class="ans">
+        <ul>
+          <li>For a categorical / discrete vector use <mark><code>table(x)</code></mark> — counts each distinct value.</li>
+          <li>For continuous data, bin first with <code>cut()</code> then tabulate: <code>table(cut(x, breaks = 5))</code>.</li>
+          <li>Visualise with <code>barplot(table(x))</code> or <code>hist(x)</code>.</li>
+        </ul>
+        <pre><code>marks &lt;- c("A","B","A","C","A","B")
+table(marks)        # A:3  B:2  C:1</code></pre>
+      </div>
+
+      <div class="qbody" style="padding:0; margin-top:14px;"><b>Q1(j) Write the basic syntax to draw a scatter plot using ggplot2.</b> <span class="src">⟲ BCA May-23 Q1(b) · 2×</span></div>
+      <div class="ans">
+        <pre><code>library(ggplot2)
+ggplot(data = df, aes(x = height, y = weight)) +
+  geom_point()</code></pre>
+        <ul>
+          <li><mark><code>ggplot(data, aes(...))</code></mark> sets the data and the <b>aesthetic mappings</b> (which columns map to x / y).</li>
+          <li><b>Geoms</b> are added with <code>+</code>: <code>geom_point()</code> (scatter), <code>geom_line()</code>, <code>geom_bar()</code>, <code>geom_histogram()</code>.</li>
+        </ul>
+      </div>
+
+      <div class="score">
+        <b>Mark allocation (Part-A)</b>
+        <ul>
+          <li><span>Each sub-part (a)&ndash;(j), correct definition / syntax</span><span>1.5 M ea</span></li>
+          <li><span>Total compulsory</span><span>15 M</span></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <!-- P1 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P1</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="freq">🔮 Very Likely</span></div>
+    <div class="qhead"><span class="yr">P1</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(a) · 2×</span> <span class="freq">🔮 Very Likely</span></div>
     <div class="qbody">
       <p class="q">Explain hypothesis testing with steps, types, and an R worked example using a two-sample t-test (or chi-square).</p>
       <div class="ans">
@@ -6314,8 +6861,30 @@ dayName("sat")    # "Weekend"</code></pre>
           <b>Signal 2 (cyclic)</b>: 2023 → 2025 → likely 2026/27 next.
           <b>Signal 5 (prof signature)</b>: hypothesis testing is the highest-yield Unit-4 topic with multiple sub-variants (t, z, χ², ANOVA). Past appearances used only one-sample t — the next paper may rotate to a <b>two-sample</b> or <b>chi-square independence</b> test (signal 4 — format rotation).
         </div>
-        <h5>Model 10-mark answer</h5>
-        <p>(Full definition + 6 steps + diagram from Sec. 4.8.) For the rotation variant — two-sample t-test:</p>
+        <h5>Definition</h5>
+        <p><mark><b>Hypothesis testing</b></mark> is a formal statistical procedure to decide between two competing claims about a population parameter using sample data and a chosen significance level <mark>&alpha;</mark>.</p>
+        <h5>The six steps (in order)</h5>
+        <ol>
+          <li><b>State H&#8320; &amp; H&#8321;</b> — null (<mark>no effect / equality</mark>) and alternative (the claim to test).</li>
+          <li><b>Choose &alpha;</b> — significance level, typically <mark>0.05</mark> (5%), fixed <i>before</i> seeing data.</li>
+          <li><b>Select the test statistic</b> — z, t, &chi;&sup2;, F, depending on the data.</li>
+          <li><b>Compute the statistic &amp; p-value</b> from the sample.</li>
+          <li><b>Decision rule</b> — <mark>reject H&#8320; if p &lt; &alpha;</mark> (or |stat| &gt; critical value).</li>
+          <li><b>Interpret in context</b> — translate the result back to the original problem.</li>
+        </ol>
+        <h5>Types of test (pick by data)</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Test</th><th>Use when</th><th>R call</th></tr></thead>
+          <tbody>
+            <tr><td>One-sample t</td><td>Sample mean vs a known value (n &lt; 30)</td><td><code>t.test(x, mu=50)</code></td></tr>
+            <tr><td>Two-sample t</td><td>Compare means of two independent groups</td><td><code>t.test(x, y)</code></td></tr>
+            <tr><td>Paired t</td><td>Before/after on the same units</td><td><code>t.test(x, y, paired=TRUE)</code></td></tr>
+            <tr><td>Z-test</td><td>n &#8805; 30 and &sigma; known</td><td><code>BSDA::z.test()</code></td></tr>
+            <tr><td>Chi-square</td><td>Independence / goodness-of-fit</td><td><code>chisq.test(tbl)</code></td></tr>
+            <tr><td>ANOVA</td><td>Compare 3+ group means</td><td><code>aov(y ~ group)</code></td></tr>
+          </tbody>
+        </table></div>
+        <h5>R worked example — two-sample (rotation variant)</h5>
         <pre><code># Are the mean marks of Section A and Section B different?
 A <- c(78, 85, 90, 72, 88, 91, 76)
 B <- c(70, 75, 68, 80, 72, 74, 69)
@@ -6343,6 +6912,15 @@ t.test(A, B, var.equal = FALSE)
           </div>
           <figcaption><b>Fig P1.1</b> · Six-step hypothesis-testing decision flow with the p-vs-&alpha; branch</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Definition + state H&#8320; / H&#8321;</span><span>2 M</span></li>
+            <li><span>Six steps + significance level &amp; p-value</span><span>3 M</span></li>
+            <li><span>Test types (t / z / &chi;&sup2;) + two-sample vs paired</span><span>2 M</span></li>
+            <li><span>R worked example (<code>t.test</code> output &amp; decision)</span><span>3 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6359,7 +6937,7 @@ t.test(A, B, var.equal = FALSE)
 
   <!-- P2 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P2</span> · <span class="u">U3</span> · <span class="mk">5–10 M</span> <span class="freq">🔮 Very Likely</span></div>
+    <div class="qhead"><span class="yr">P2</span> · <span class="u">U3</span> · <span class="mk">5–10 M</span> <span class="src">⟲ BTech Jul-25 Q5(a) · 3×</span> <span class="freq">🔮 Very Likely</span></div>
     <div class="qbody">
       <p class="q">Compare apply, lapply, sapply, tapply and mapply with examples. When would you pick each?</p>
       <div class="ans">
@@ -6369,8 +6947,18 @@ t.test(A, B, var.equal = FALSE)
           <b>Signal 4 (format rotation)</b>: 2023/24 hit it at 1.5 M, 2025 at 5 M — the next escalation is a full apply-family 10-marker comparing all 5 members.
           <b>Signal 5</b>: prof signature — apply family is canonical idiomatic R.
         </div>
-        <h5>Model answer</h5>
-        <p>(Full 5-function table at Sec. 3.7. Add: when results are uniform scalars use <code>sapply</code>; when results differ in length use <code>lapply</code>; matrices/dfs use <code>apply</code> with MARGIN 1 (rows) or 2 (cols); group-wise summaries use <code>tapply</code>; multi-arg parallel application uses <code>mapply</code>.)</p>
+        <h5>The five members compared</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Pick it when…</th></tr></thead>
+          <tbody>
+            <tr><td><code>apply(X, M, FN)</code></td><td>matrix / data frame</td><td>vector / matrix</td><td>row-wise (<mark>M=1</mark>) or col-wise (<mark>M=2</mark>) over 2-D data</td></tr>
+            <tr><td><code>lapply(X, FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>results <mark>differ in length / type</mark> — keep structure</td></tr>
+            <tr><td><code>sapply(X, FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>results are <mark>uniform scalars</mark> — cleaner lapply</td></tr>
+            <tr><td><code>tapply(X, INDEX, FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td><mark>group-wise summary</mark> (e.g. mean by dept)</td></tr>
+            <tr><td><code>mapply(FN, ...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td><mark>multi-arg parallel</mark> apply over N streams</td></tr>
+          </tbody>
+        </table></div>
+        <h5>Worked comparison — same task on small data</h5>
         <pre><code># Worked comparison on the same task — square root
 nums <- 1:4
 sapply(nums, sqrt)              # vector  c(1,1.41,1.73,2)
@@ -6406,6 +6994,14 @@ mapply(function(a,b) a*b,
           </div>
           <figcaption><b>Fig P2.1</b> · The apply family by input &#8594; output type</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Role of each: apply / lapply / sapply / tapply / mapply</span><span>4 M</span></li>
+            <li><span>Comparison by input &#8594; output type</span><span>3 M</span></li>
+            <li><span>Worked R examples + "when to pick each"</span><span>3 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6422,7 +7018,7 @@ mapply(function(a,b) a*b,
 
   <!-- P3 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P3</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="freq">🔮 Very Likely</span></div>
+    <div class="qhead"><span class="yr">P3</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q5(b) · 3×</span> <span class="freq">🔮 Very Likely</span></div>
     <div class="qbody">
       <p class="q">Write an R program to create a data frame of employees (name, dept, salary, joining_year). Perform: add a "bonus" column equal to 10% of salary; filter employees in "IT" with salary &gt; 50000; export to CSV; read it back and verify.</p>
       <div class="ans">
@@ -6499,7 +7095,7 @@ aggregate(salary ~ dept, data = emp, mean)</code></pre>
 
   <!-- P4 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P4</span> · <span class="u">U3</span> · <span class="mk">10–15 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qhead"><span class="yr">P4</span> · <span class="u">U3</span> · <span class="mk">10–15 M</span> <span class="src">⟲ BCA May-25 Q3(b) · 2×</span> <span class="freq">🔮 Likely</span></div>
     <div class="qbody">
       <p class="q">Compare S3, S4 and Reference Classes (R5) in R. Build a "Bank Account" example in all three systems.</p>
       <div class="ans">
@@ -6509,8 +7105,22 @@ aggregate(salary ~ dept, data = emp, mean)</code></pre>
           <b>Signal 5</b>: prof signature — OOP rewards depth (3 systems × 7 contrast rows) and is the only Unit-3 topic that hasn't yet appeared as a 15-marker.
           <b>Signal 4</b>: marks have been climbing 7.5 → 10 → expect 10–15 next.
         </div>
-        <h5>Model answer outline</h5>
-        <p>(Use the full 7-row contrast + 3 code snippets from Sec. 3.8.) The "BankAccount" rotation idea — implement the same class three ways to highlight that <b>S3 is informal and copy-on-modify</b>, <b>S4 enforces typed slots</b>, and <b>R5 alone supports true mutation</b> via <code>&lt;&lt;-</code>:</p>
+        <h5>S3 vs S4 vs R5 — full contrast</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>S3</th><th>S4</th><th>Reference (R5)</th></tr></thead>
+          <tbody>
+            <tr><td>Formality</td><td>Informal</td><td>Formal</td><td>Formal</td></tr>
+            <tr><td>Class definition</td><td><code>class(x)&lt;-"X"</code></td><td><code>setClass()</code></td><td><code>setRefClass()</code></td></tr>
+            <tr><td>Slot access</td><td><code>$</code></td><td><code>@</code></td><td><code>$</code></td></tr>
+            <tr><td>Type validation</td><td>None</td><td>Built-in</td><td>Built-in</td></tr>
+            <tr><td>Mutability</td><td>Copy-on-modify</td><td>Copy-on-modify</td><td><mark><b>Mutable</b></mark> (<code>&lt;&lt;-</code>)</td></tr>
+            <tr><td>Dispatch</td><td>Name lookup <code>fn.cls</code></td><td><code>setMethod()</code></td><td>Method inside class</td></tr>
+            <tr><td>Speed</td><td>Fastest</td><td>Slower (validation)</td><td>Slowest</td></tr>
+            <tr><td>Used in</td><td>Base R + tidyverse</td><td>Bioconductor, Matrix</td><td>R6 packages, Shiny</td></tr>
+          </tbody>
+        </table></div>
+        <h5>"BankAccount" built three ways</h5>
+        <p>Implementing the same class in all three systems shows that <mark>S3 is informal and copy-on-modify</mark>, <mark>S4 enforces typed slots</mark>, and <mark>R5 alone supports true mutation</mark> via <code>&lt;&lt;-</code>:</p>
         <pre><code># --- S3 (immutable) ---
 deposit_s3 <- function(acc, x) { acc$bal <- acc$bal + x; acc }
 acc1 <- structure(list(bal=100), class="acc")
@@ -6559,6 +7169,14 @@ acc3$deposit(50); acc3$bal          # 150 — mutated</code></pre>
           </div>
           <figcaption><b>Fig P4.1</b> · Three R OOP systems: S3 informal &#183; S4 typed &amp; validated &#183; R5 mutable in place</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (15 M)</b>
+          <ul>
+            <li><span>S3 vs S4 vs R5 contrast (7 rows)</span><span>5 M</span></li>
+            <li><span>BankAccount built in all three systems</span><span>6 M</span></li>
+            <li><span>Diagram + method dispatch + pick-by-need</span><span>4 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6575,7 +7193,7 @@ acc3$deposit(50); acc3$bal          # 150 — mutated</code></pre>
 
   <!-- P5 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P5</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qhead"><span class="yr">P5</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q5(b) · 3×</span> <span class="freq">🔮 Likely</span></div>
     <div class="qbody">
       <p class="q">Explain measures of dispersion (range, variance, SD, IQR) along with measures of central tendency. Apply all on a real dataset in R.</p>
       <div class="ans">
@@ -6586,8 +7204,13 @@ acc3$deposit(50); acc3$bal          # 150 — mutated</code></pre>
           <b>Signal 5</b>: prof signature — descriptive statistics is a teaching anchor.
         </div>
         <h5>Model answer</h5>
-        <p><b>Central tendency:</b> mean, median, mode (Sec. 4.7).</p>
-        <p><b>Dispersion:</b></p>
+        <p><b>Central tendency</b> (where the centre sits):</p>
+        <ul>
+          <li><b>Mean</b> = Σx/n · R: <code>mean(x)</code></li>
+          <li><b>Median</b> = middle value after sorting · R: <code>median(x)</code></li>
+          <li><b>Mode</b> = most frequent value · R: UDF <code>u[which.max(tabulate(match(x,u)))]</code></li>
+        </ul>
+        <p><b>Dispersion</b> (how wide the spread is):</p>
         <ul>
           <li><b>Range</b> = max − min · R: <code>diff(range(x))</code></li>
           <li><b>Variance</b> = Σ(x − x̄)²/(n−1) · R: <code>var(x)</code></li>
@@ -6607,6 +7230,20 @@ sd(x) / mean(x)                   # 0.43 = CV
 
 summary(x)                        # 5-number summary</code></pre>
         <p><b>Interpretation:</b> tendency tells you "where the centre is", dispersion tells you "how spread out the data is". Together they characterise a distribution at first glance.</p>
+        <h5>Central tendency vs dispersion — at a glance</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Parameter</th><th>Central tendency</th><th>Dispersion</th></tr></thead>
+          <tbody>
+            <tr><td>What it answers</td><td>Where is the centre of the data?</td><td>How spread out is the data?</td></tr>
+            <tr><td>Measures</td><td><mark>Mean</mark>, median, mode</td><td><mark>Range</mark>, variance, SD, IQR, CV</td></tr>
+            <tr><td>Core formula</td><td>Mean = Σx/n</td><td>Variance = Σ(x − x̄)²/(n−1)</td></tr>
+            <tr><td>R function</td><td><code>mean()</code> · <code>median()</code></td><td><code>var()</code> · <code>sd()</code> · <code>IQR()</code></td></tr>
+            <tr><td>Units</td><td>Same units as x</td><td>SD same as x; variance = x²; CV unit-free</td></tr>
+            <tr><td>Robust to outliers?</td><td><mark>Median</mark> yes; mean no</td><td><mark>IQR</mark> yes; range &amp; SD no</td></tr>
+            <tr><td>On the sample</td><td>mean = 5, median = 4.5</td><td>range = 7, var = 4.571, sd = 2.138, IQR = 1.5</td></tr>
+            <tr><td>Pairs with</td><td>Mean ↔ SD; median ↔ IQR</td><td>SD ↔ mean; IQR ↔ median</td></tr>
+          </tbody>
+        </table></div>
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:520px; margin:0 auto;">
             <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
@@ -6631,6 +7268,15 @@ summary(x)                        # 5-number summary</code></pre>
           </div>
           <figcaption><b>Fig P5.1</b> · Two pillars of a descriptive summary: centre (tendency) plus spread (dispersion)</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Central tendency: mean / median / mode</span><span>2 M</span></li>
+            <li><span>Dispersion: range / variance / SD / IQR / CV</span><span>4 M</span></li>
+            <li><span>R application on the dataset</span><span>3 M</span></li>
+            <li><span>Interpretation (centre vs spread)</span><span>1 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6647,7 +7293,7 @@ summary(x)                        # 5-number summary</code></pre>
 
   <!-- P6 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P6</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qhead"><span class="yr">P6</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">BTech Jul-25 Q4</span> <span class="freq">🔮 Likely</span></div>
     <div class="qbody">
       <p class="q">Build a complete data-science pipeline in R: read a CSV, clean missing values, compute summary statistics, visualise with ggplot2, and run a hypothesis test.</p>
       <div class="ans">
@@ -6681,6 +7327,18 @@ ggplot(df, aes(x = marks)) +
 t.test(df$marks, mu = 60, alternative = "greater")
 # Decide based on p-value vs alpha = 0.05</code></pre>
         <p>Highlight the full pipeline (read → clean → summarise → visualise → test → decide) maps to the Unit-1 data processing chain (Fig 1.3) — circling back to first principles is a 1-mark bonus.</p>
+        <h5>Pipeline stages — function and purpose</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Stage</th><th>R function</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><mark>Read</mark></td><td><code>read.csv(na.strings=c("","NA"))</code></td><td>Import raw data; convert empties to NA on entry</td></tr>
+            <tr><td><mark>Clean</mark></td><td><code>df[!is.na(df$col),]</code> · <code>as.numeric()</code></td><td>Drop or impute missing values; fix types &amp; sentinels</td></tr>
+            <tr><td>Summarise</td><td><code>summary()</code> · <code>sd()</code></td><td>Describe centre &amp; spread before any modelling</td></tr>
+            <tr><td>Visualise</td><td><code>ggplot() + geom_histogram</code></td><td>Inspect distribution shape &amp; relationships visually</td></tr>
+            <tr><td>Model / Test</td><td><code>t.test()</code> · <code>lm()</code></td><td>Infer or model; produce p-value, 95% CI</td></tr>
+            <tr><td>Communicate</td><td>report / decision</td><td>Compare p-value vs <mark>α = 0.05</mark>; state conclusion</td></tr>
+          </tbody>
+        </table></div>
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:6px; align-items:stretch; max-width:580px; margin:0 auto;">
             <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Import<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">read.csv</span></div>
@@ -6693,6 +7351,15 @@ t.test(df$marks, mu = 60, alternative = "greater")
           <div style="font-size:13px; color:var(--brand); letter-spacing:.45em; margin-top:4px;">&#8594; &#8594; &#8594; &#8594; &#8594;</div>
           <figcaption><b>Fig P6.1</b> · The canonical data-science pipeline: import &#8594; clean &#8594; explore &#8594; visualise &#8594; model &#8594; communicate</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Read CSV + clean missing values</span><span>3 M</span></li>
+            <li><span>Summary statistics</span><span>2 M</span></li>
+            <li><span>Visualise with ggplot2</span><span>2 M</span></li>
+            <li><span>Hypothesis test + decision</span><span>3 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6709,7 +7376,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
 
   <!-- P7 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P7</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="freq">🔮 Possible</span></div>
+    <div class="qhead"><span class="yr">P7</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">BCA May-25 Q7(a)</span> <span class="freq">🔮 Possible</span></div>
     <div class="qbody">
       <p class="q">Differentiate Database vs Data Warehouse. Discuss the ETL process and explain why data scientists prefer warehouses for analytics.</p>
       <div class="ans">
@@ -6720,7 +7387,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
           <b>Signal 5</b>: prof signature — DB ↔ DW is a teaching anchor where students consistently underperform on ETL details.
         </div>
         <h5>Model answer</h5>
-        <p>Inline DB vs DW contrast for the differentiator (full 7-row table at Sec. 1.7):</p>
+        <p>DB vs DW contrast for the differentiator:</p>
         <div class="table-wrap"><table>
           <thead><tr><th>Aspect</th><th>Database (OLTP)</th><th>Data Warehouse (OLAP)</th></tr></thead>
           <tbody>
@@ -6771,6 +7438,14 @@ t.test(df$marks, mu = 60, alternative = "greater")
           </div>
           <figcaption><b>Fig P7.1</b> · ETL flow: OLTP sources &#8594; Extract-Transform-Load &#8594; warehouse &#8594; BI / analytics</figcaption>
         </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Database vs Data Warehouse comparison table</span><span>4 M</span></li>
+            <li><span>ETL process (Extract / Transform / Load)</span><span>3 M</span></li>
+            <li><span>Why data scientists prefer warehouses</span><span>3 M</span></li>
+          </ul>
+        </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
@@ -6787,7 +7462,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
 
   <!-- P8 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P8</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qhead"><span class="yr">P8</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q6(b) · 2×</span> <span class="freq">🔮 Likely</span></div>
     <div class="qbody">
       <p class="q">Explain the grammar of graphics. Describe the layers of a ggplot2 plot and build a complete chart with R code.</p>
       <div class="ans">
@@ -6798,7 +7473,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
           <b>Signal 5 (prof signature)</b>: ggplot2 is the headline plotting library in the syllabus and the layered model is the standard theory question.
         </div>
         <h5>Model answer</h5>
-        <p>The <mark>grammar of graphics</mark> (Wilkinson, popularised by ggplot2) treats every statistical plot as a <b>stack of independent layers</b> combined with the <code>+</code> operator. Instead of one monolithic plotting call, you declare the data, map columns to visual channels, then add geometric marks and optional refinements. (Full layer-stack diagram at Sec. 4.5, Fig 4.5.)</p>
+        <p>The <mark>grammar of graphics</mark> (Wilkinson, popularised by ggplot2) treats every statistical plot as a <b>stack of independent layers</b> combined with the <code>+</code> operator. Instead of one monolithic plotting call, you declare the data, map columns to visual channels, then add geometric marks and optional refinements (see the layer stack in Fig P8.1 below).</p>
         <ul>
           <li><b>1 · Data</b> — the data frame supplying every value: <code>ggplot(data = df)</code>.</li>
           <li><b>2 · Aesthetics</b> — <code>aes()</code> maps columns to channels (x, y, colour, fill, size, shape).</li>
@@ -6853,7 +7528,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy, colour = drv)) +  # 1 data + 2 aes
 
   <!-- P9 -->
   <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P9</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="freq">🔮 Likely</span></div>
+    <div class="qhead"><span class="yr">P9</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-24 Q2(b) · 2×</span> <span class="freq">🔮 Likely</span></div>
     <div class="qbody">
       <p class="q">Compare vector, list, matrix and data frame in R. Give the creation syntax and one access example for each, and state when to use which.</p>
       <div class="ans">
@@ -6864,7 +7539,7 @@ ggplot(data = mpg, aes(x = displ, y = hwy, colour = drv)) +  # 1 data + 2 aes
           <b>Signal 5 (prof signature)</b>: data structures are the spine of Units 2–3 — a guaranteed conceptual anchor.
         </div>
         <h5>Model answer</h5>
-        <p>R's four core containers differ on two axes: <mark>dimensionality</mark> (1-D vs 2-D) and <mark>type-homogeneity</mark> (same type vs mixed). (Master 2×3 map at Sec. 3.0, Fig 3.0.)</p>
+        <p>R's four core containers differ on two axes: <mark>dimensionality</mark> (1-D vs 2-D) and <mark>type-homogeneity</mark> (same type vs mixed), as the 2×2 map in Fig P9.1 below shows.</p>
         <div class="table-wrap"><table>
           <thead><tr><th>Structure</th><th>Dim</th><th>Types</th><th>Create</th><th>When to use</th></tr></thead>
           <tbody>
@@ -6925,6 +7600,121 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
             <li><b>List</b> = mixed-type, nestable 1-D; access elements with <code>[[ ]]</code> or <code>$</code>, sub-lists with <code>[ ]</code>.</li>
             <li><b>Matrix</b> = same-type 2-D filled column-wise by default; indexed <code>m[row, col]</code>.</li>
             <li><b>Data frame</b> = mixed-type 2-D, internally a list of equal-length column vectors — the workhorse for datasets.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- P10 -->
+  <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P10</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(b) · 2×</span> <span class="freq">🔮 Very Likely</span></div>
+    <div class="qbody">
+      <p class="q">Explain the d / p / q / r function family in R (<code>dnorm</code>, <code>pnorm</code>, <code>qnorm</code>, <code>rnorm</code>). Hence fit a Poisson distribution to the data x = 0,1,2,3,4 with frequencies f = 18, 22, 16, 10, 4 and compute the expected frequencies.</p>
+      <div class="ans">
+        <div class="box prof">
+          <span class="label">Why this is predicted (signals)</span>
+          <b>Signal 1 (freq × recency)</b>: a "fit a distribution to frequency data" numerical appeared 2024 Q4(b) (Binomial). Distribution theory + the d/p/q/r API recur every year.
+          <b>Signal 4 (format rotation)</b>: the Binomial fit has been seen; the natural rotation is the <b>Poisson</b> fit, paired with the conceptual d/p/q/r explanation at 10 M.
+          <b>Signal 5 (prof signature)</b>: distributions are the highest-yield Unit-4 anchor, and the d/p/q/r naming scheme is a guaranteed conceptual short.
+        </div>
+        <h5>Part 1 · The d / p / q / r family</h5>
+        <p>Every R distribution ships <mark>four sibling functions</mark> built from a <b>prefix</b> (what to return) + a <b>suffix</b> (which distribution). The prefix is the same for all distributions:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Prefix</th><th>Returns</th><th>Meaning</th><th>Normal example → value</th></tr></thead>
+          <tbody>
+            <tr><td><code>d</code></td><td><mark>Density</mark> (PDF / PMF)</td><td>height of the curve at x</td><td><code>dnorm(0)</code> → <mark>0.3989</mark></td></tr>
+            <tr><td><code>p</code></td><td><mark>Probability</mark> (CDF)</td><td>cumulative area P(X ≤ x)</td><td><code>pnorm(1.96)</code> → <mark>0.975</mark></td></tr>
+            <tr><td><code>q</code></td><td><mark>Quantile</mark> (inverse CDF)</td><td>the x where P(X ≤ x) = p</td><td><code>qnorm(0.975)</code> → <mark>1.96</mark></td></tr>
+            <tr><td><code>r</code></td><td><mark>Random</mark> sample</td><td>n random draws</td><td><code>rnorm(5, 50, 10)</code> → 5 values</td></tr>
+          </tbody>
+        </table></div>
+        <p>Swap the suffix to change the distribution: <code>norm</code> (Normal), <code>binom</code> (Binomial), <code>pois</code> (Poisson), <code>unif</code> (Uniform), <code>exp</code> (Exponential). So <code>dpois(2, lambda=4)</code> is the Poisson PMF at x = 2, and <code>ppois</code>, <code>qpois</code>, <code>rpois</code> follow the same pattern.</p>
+
+        <h5>Part 2 · Fit a Poisson distribution (worked numerical)</h5>
+        <p><b>Step 1 — Total frequency N and sample mean x̄.</b></p>
+        <div class="steps">
+          <div class="step k">N = 18 + 22 + 16 + 10 + 4 = <b>70</b></div>
+          <div class="step k">Σfx = 0·18 + 1·22 + 2·16 + 3·10 + 4·4 = 0 + 22 + 32 + 30 + 16 = <b>100</b></div>
+          <div class="step k">x̄ = Σfx / N = 100 / 70 = <mark><b>1.4286</b></mark></div>
+        </div>
+        <p><b>Step 2 — Estimate the parameter λ̂.</b> For a Poisson distribution the mean equals λ, so the method-of-moments estimate is simply the sample mean:</p>
+        <span class="formula">λ̂ = x̄ = 1.4286 ,  e<sup>−λ̂</sup> = e<sup>−1.4286</sup> = 0.23965</span>
+        <p><b>Step 3 — Expected frequencies via the PMF.</b></p>
+        <span class="formula">P(X = r) = e<sup>−λ</sup> · λ<sup>r</sup> / r! ,  then E<sub>r</sub> = N · P(X = r)</span>
+        <div class="table-wrap"><table>
+          <thead><tr><th>x (r)</th><th>Observed f</th><th>P(X = r)</th><th>Expected E<sub>r</sub> = N·P</th></tr></thead>
+          <tbody>
+            <tr><td>0</td><td>18</td><td>0.23965</td><td>16.78</td></tr>
+            <tr><td>1</td><td>22</td><td>0.34236</td><td>23.97</td></tr>
+            <tr><td>2</td><td>16</td><td>0.24454</td><td>17.12</td></tr>
+            <tr><td>3</td><td>10</td><td>0.11645</td><td>8.15</td></tr>
+            <tr><td>4 (or more)</td><td>4</td><td>0.05700</td><td>3.99</td></tr>
+            <tr><td><b>Total</b></td><td><b>70</b></td><td><b>1.000</b></td><td><mark><b>70.00</b></mark></td></tr>
+          </tbody>
+        </table></div>
+        <p>The last cell folds the small <code>x ≥ 4</code> tail into the final class so that <mark><b>Σ expected = N = 70</b></mark> exactly (it must always equal the observed total).</p>
+<pre><code># R verification
+x &lt;- 0:4
+f &lt;- c(18, 22, 16, 10, 4)
+N &lt;- sum(f)                    # 70
+lambda &lt;- sum(x * f) / N       # 1.4286
+expected &lt;- N * dpois(x, lambda)
+round(expected, 2)
+# 16.78  23.97  17.12  8.15  2.91   (open tail x>=5 holds the rest)
+# fold the tail so the column sums to N:
+expected[5] &lt;- N - sum(expected[1:4])   # 3.99
+sum(expected)                 # 70  == N</code></pre>
+
+        <figure class="diagram-fig">
+          <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; max-width:520px; margin:0 auto;">
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px;">Observed f</div>
+              <div style="display:flex; gap:4px; align-items:flex-end; height:90px; padding:8px;">
+                <div style="flex:1; background:var(--brand-soft); border:1px solid var(--brand); height:64%;" title="18"></div>
+                <div style="flex:1; background:var(--brand-soft); border:1px solid var(--brand); height:79%;" title="22"></div>
+                <div style="flex:1; background:var(--brand-soft); border:1px solid var(--brand); height:57%;" title="16"></div>
+                <div style="flex:1; background:var(--brand-soft); border:1px solid var(--brand); height:36%;" title="10"></div>
+                <div style="flex:1; background:var(--brand-soft); border:1px solid var(--brand); height:14%;" title="4"></div>
+              </div>
+              <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">x = 0 · 1 · 2 · 3 · 4</div>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand-deep); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px;">Fitted Poisson E<sub>r</sub></div>
+              <div style="display:flex; gap:4px; align-items:flex-end; height:90px; padding:8px;">
+                <div style="flex:1; background:#fde0e6; border:1px solid #9f1239; height:60%;" title="16.78"></div>
+                <div style="flex:1; background:#fde0e6; border:1px solid #9f1239; height:86%;" title="23.97"></div>
+                <div style="flex:1; background:#fde0e6; border:1px solid #9f1239; height:61%;" title="17.12"></div>
+                <div style="flex:1; background:#fde0e6; border:1px solid #9f1239; height:29%;" title="8.15"></div>
+                <div style="flex:1; background:#fde0e6; border:1px solid #9f1239; height:14%;" title="3.99"></div>
+              </div>
+              <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">λ̂ = 1.43 · Σ E = 70</div>
+            </div>
+          </div>
+          <figcaption><b>Fig P10.1</b> · Observed vs Poisson-fitted frequencies — the bars track closely, confirming λ̂ = 1.43 is a good fit (formal check: <code>chisq.test</code>).</figcaption>
+        </figure>
+
+        <div class="box warn">
+          <span class="label">Examiner traps</span>
+          <ul style="margin:6px 0 0; padding-left:18px;">
+            <li>Forgetting to fold the open tail — the expected column <b>must</b> sum to N; a column summing to 68.9 loses the final mark.</li>
+            <li>Using <code>dnorm</code> / <code>dbinom</code> by reflex — Poisson count data needs <mark><code>dpois</code></mark> with a single parameter <code>lambda</code>, not <code>size</code> + <code>prob</code>.</li>
+            <li>Quoting variance ≠ mean — Poisson is <mark>equi-dispersed</mark> (mean = variance = λ); a large gap between observed mean and variance hints Poisson is the wrong model.</li>
+          </ul>
+        </div>
+
+        <h5>Modern relevance</h5>
+        <p>Poisson fitting underlies <mark>call-centre staffing</mark> (calls/hour), <mark>insurance claim counts</mark>, web-server request modelling, and defect-rate quality control — anywhere rare independent events are counted per fixed interval.</p>
+        <h5>Conclusion</h5>
+        <p>The d/p/q/r scheme gives one consistent API across every distribution; for the given data the fitted <mark>Poisson(λ̂ = 1.43)</mark> reproduces the observed frequencies closely, with the expected counts summing exactly to N = 70.</p>
+
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>d / p / q / r meaning + Normal examples table</span><span>3 M</span></li>
+            <li><span>N, Σfx, x̄ and λ̂ estimation</span><span>2 M</span></li>
+            <li><span>Expected frequencies via PMF (Σ E = N)</span><span>3 M</span></li>
+            <li><span>R code + diagram / interpretation</span><span>2 M</span></li>
           </ul>
         </div>
       </div>
@@ -7011,7 +7801,7 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
     <tbody>
       <tr><td>0:00 – 0:30</td><td>TL;DR + master diagrams</td><td>Re-read <a href="#tldr">Sec. TL;DR</a> · sketch Fig 1.1 (3-pillar Venn) and Fig 3.0 (data-structure 2×3 grid) on rough paper. Recite the dpqr mnemonic and the hypothesis-testing 6 steps aloud.</td></tr>
       <tr><td>0:30 – 1:30</td><td>Unit highlights</td><td>Scan each unit's <code>.box.def</code> and code snippets — 15 min/unit. Don't read paragraphs; just absorb the boxed material + tables.</td></tr>
-      <tr><td>1:30 – 2:30</td><td>PYQ + repeated + predicted</td><td>Re-attempt the top 6 <a href="#repeated-qs">repeated</a> questions and all 7 <a href="#predicted-qs">predicted</a> questions on paper. If a code snippet is unfamiliar, re-write it from memory.</td></tr>
+      <tr><td>1:30 – 2:30</td><td>PYQ + repeated + predicted</td><td>Re-attempt the top 6 <a href="#repeated-qs">repeated</a> questions and the <a href="#predicted-qs">predicted</a> Part-A + long-form set on paper. If a code snippet is unfamiliar, re-write it from memory.</td></tr>
       <tr><td>2:30 – 3:00</td><td>Drill + last polish</td><td>Time-box 25 min for <a href="#drill">Sec. Drill</a>. Last 5 min — re-read formula sheet (mean, variance, SD, Bayes', Binomial PMF) and the 4 dpqr prefixes. Sleep early.</td></tr>
     </tbody>
   </table>
@@ -7021,6 +7811,186 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
   <div class="box tip">
     <span class="label">Day-of strategy</span>
     Part-I (15 M) — answer Q1 in 25 min, two-three lines per sub-question. Part-II (60 M) — pick the four <i>strongest</i> long questions (15 M each, 30 min each). Always lead with a definition, follow with the diagram/formula, include one worked example, and end with the application/limitation paragraph. <b>Diagrams are non-negotiable</b> on every 10+ mark answer.
+  </div>
+</section>
+
+<!-- ============== CHEAT SHEET ============== -->
+<section id="cheatsheet" style="margin:48px 0 36px; scroll-margin-top:100px;">
+  <div class="unit-head">
+    <div class="kicker">Last-hour · single screen</div>
+    <h2><span class="num">🎯</span>One-screen Cheat Sheet</h2>
+    <p class="lede">Everything that drops free marks, consolidated. Six panels — read top to bottom in the exam corridor.</p>
+  </div>
+
+  <!-- Panel 1: d/p/q/r distribution-function grid -->
+  <div class="box def">
+    <span class="label">Panel 1 · the d/p/q/r family</span>
+    <p style="margin:2px 0 0;">Every distribution ships four sibling functions: <code>{prefix}{suffix}</code>. Prefix picks <i>what</i>, suffix picks <i>which</i>.</p>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <caption>d/p/q/r × distribution suffix</caption>
+    <thead><tr><th>Prefix</th><th>Returns</th><th>Meaning</th><th>Example (Normal)</th></tr></thead>
+    <tbody>
+      <tr><td><code>d</code></td><td>Density (PDF/PMF)</td><td>height of curve at x</td><td><code>dnorm(0)</code> → <mark>0.3989</mark></td></tr>
+      <tr><td><code>p</code></td><td>Cumulative (CDF)</td><td>area P(X ≤ x)</td><td><code>pnorm(1.96)</code> → <mark>0.975</mark></td></tr>
+      <tr><td><code>q</code></td><td>Quantile (inverse CDF)</td><td>x where P(X ≤ x)=p</td><td><code>qnorm(0.975)</code> → <mark>1.96</mark></td></tr>
+      <tr><td><code>r</code></td><td>Random sample</td><td>n random draws</td><td><code>rnorm(5, 50, 10)</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="mnem"><b>Recall:</b> <i>d</i>ensity · <i>p</i>robability · <i>q</i>uantile · <i>r</i>andom — alphabetical d·p·q·r. Suffixes: <code>norm · binom · pois · unif · exp</code>.</p>
+
+  <!-- Panel 2: 6-distribution mean/variance table -->
+  <div class="box def">
+    <span class="label">Panel 2 · mean &amp; variance at a glance</span>
+    <p style="margin:2px 0 0;">If a Part-A asks "mean/variance of Binomial(n,p)" — answer from memory, no derivation needed.</p>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <caption>Six distributions — mean / variance / R suffix</caption>
+    <thead><tr><th>Distribution</th><th>Mean</th><th>Variance</th><th>R suffix</th></tr></thead>
+    <tbody>
+      <tr><td>Normal(μ, σ²)</td><td>μ</td><td>σ²</td><td><code>norm</code></td></tr>
+      <tr><td>Binomial(n, p)</td><td>np</td><td>np(1−p)</td><td><code>binom</code></td></tr>
+      <tr><td>Poisson(λ)</td><td>λ</td><td>λ</td><td><code>pois</code></td></tr>
+      <tr><td>Uniform(a, b)</td><td>(a+b)/2</td><td>(b−a)²/12</td><td><code>unif</code></td></tr>
+      <tr><td>Exponential(λ)</td><td>1/λ</td><td>1/λ²</td><td><code>exp</code></td></tr>
+      <tr><td>Chi-square(k)</td><td>k</td><td>2k</td><td><code>chisq</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <!-- Panel 3: 2×3 S3/S4/R5 structure map -->
+  <div class="box def">
+    <span class="label">Panel 3 · the three OOP systems</span>
+    <p style="margin:2px 0 0;">One line to remember: <mark><b>S3 = informal · S4 = formal · R5 = mutable</b></mark>.</p>
+  </div>
+  <figure class="diagram-fig">
+    <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:8px; padding:4px;">
+      <div style="border:1.5px solid var(--ink); border-radius:4px; background:var(--brand-soft); padding:10px 8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--brand-deep);">S3</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">Informal</div>
+      </div>
+      <div style="border:1.5px solid var(--ink); border-radius:4px; background:var(--gold-soft); padding:10px 8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--gold);">S4</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">Formal</div>
+      </div>
+      <div style="border:1.5px solid var(--ink); border-radius:4px; background:var(--auburn-soft); padding:10px 8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-weight:700; font-size:13px; color:var(--auburn);">R5 (Reference)</div>
+        <div style="font-size:11px; color:var(--muted); margin-top:2px;">Mutable</div>
+      </div>
+      <div style="border:1px solid var(--rule); border-radius:4px; background:#fffefb; padding:9px 8px; text-align:left;">
+        <code style="font-size:10.5px;">class(x)&lt;-"X"</code><br>
+        <span style="font-size:11px;">name-dispatch · <b>$</b> · no validation · copy-on-modify · fastest</span>
+      </div>
+      <div style="border:1px solid var(--rule); border-radius:4px; background:#fffefb; padding:9px 8px; text-align:left;">
+        <code style="font-size:10.5px;">setClass()</code><br>
+        <span style="font-size:11px;">typed slots · <b>@</b> · validated at <code>new()</code> · copy-on-modify</span>
+      </div>
+      <div style="border:1px solid var(--rule); border-radius:4px; background:#fffefb; padding:9px 8px; text-align:left;">
+        <code style="font-size:10.5px;">setRefClass()</code><br>
+        <span style="font-size:11px;">fields+methods · <b>&lt;&lt;-</b> in-place mutation · Java-like · stateful</span>
+      </div>
+    </div>
+    <figcaption><b>Fig 5.1</b> · S3 / S4 / R5 — top row = formality label, bottom row = constructor + defining trait</figcaption>
+  </figure>
+
+  <!-- Panel 4: hypothesis-testing 6-step flow -->
+  <div class="box def">
+    <span class="label">Panel 4 · hypothesis testing — the 6 steps</span>
+    <p style="margin:2px 0 0;">Memorise the order; works for z, t, χ², F.</p>
+  </div>
+  <figure class="diagram-fig">
+    <div style="display:flex; flex-wrap:wrap; gap:6px; align-items:stretch; padding:4px; justify-content:center;">
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 1</div>
+        <div style="font-size:12px; margin-top:3px;">State <b>H₀ &amp; H₁</b> (null = no effect; alt = claim)</div>
+      </div>
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 2</div>
+        <div style="font-size:12px; margin-top:3px;">Choose <b>α</b> (usually 0.05)</div>
+      </div>
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 3</div>
+        <div style="font-size:12px; margin-top:3px;">Select <b>test statistic</b> (z / t / χ² / F)</div>
+      </div>
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 4</div>
+        <div style="font-size:12px; margin-top:3px;">Compute <b>stat &amp; p-value</b> from sample</div>
+      </div>
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 5</div>
+        <div style="font-size:12px; margin-top:3px;">Decision: reject H₀ if <b>p &lt; α</b></div>
+      </div>
+      <div style="flex:1 1 120px; min-width:110px; border:1.5px solid var(--brand); border-radius:4px; background:var(--brand-soft); padding:8px;">
+        <div style="font-family:'JetBrains Mono',monospace; font-size:9px; letter-spacing:.18em; color:var(--brand-deep);">STEP 6</div>
+        <div style="font-size:12px; margin-top:3px;"><b>Interpret</b> back in context</div>
+      </div>
+    </div>
+    <figcaption><b>Fig 5.2</b> · Six-step flow · R one-liner: <code>t.test(x, mu=50)</code> covers steps 3–4</figcaption>
+  </figure>
+
+  <!-- Panel 5: apply-family input→output table -->
+  <div class="box def">
+    <span class="label">Panel 5 · apply-family — input → output</span>
+    <p style="margin:2px 0 0;"><mark>lapply vs sapply</mark> appears every year: same input, list vs vector output.</p>
+  </div>
+  <div class="table-wrap">
+  <table>
+    <caption>apply-family — shape in, shape out</caption>
+    <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Behaviour</th></tr></thead>
+    <tbody>
+      <tr><td><code>apply(X,M,FN)</code></td><td>matrix / df</td><td>vector / matrix</td><td>row-wise (M=1) or col-wise (M=2)</td></tr>
+      <tr><td><code>lapply(X,FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>element-wise, structure preserved</td></tr>
+      <tr><td><code>sapply(X,FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>cleaner lapply when output uniform</td></tr>
+      <tr><td><code>mapply(FN,...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td>multivariate sapply</td></tr>
+      <tr><td><code>tapply(X,INDEX,FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td>group-wise summary</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p class="mnem"><b>Recall:</b> A-L-S-M-T — apply · lapply · sapply · mapply · tapply.</p>
+
+  <!-- Panel 6: 10-snippet R-syntax quick reference -->
+  <div class="box def">
+    <span class="label">Panel 6 · 10-line R syntax quick-ref</span>
+    <p style="margin:2px 0 0;">The lines worth writing verbatim — structures, stats, OOP, distributions.</p>
+  </div>
+<pre><code># 1 · vector + named access
+v &lt;- c(a=1, b=2, c=3);  v["b"]            # 2
+
+# 2 · matrix (fill by column) + transpose
+m &lt;- matrix(1:6, nrow=2);  t(m)
+
+# 3 · data frame + filter rows
+df &lt;- data.frame(name=c("A","B"), marks=c(90,72))
+df[df$marks &gt; 80, ]                       # rows with marks &gt; 80
+
+# 4 · list — heterogeneous, $ / [[ ]] access
+L &lt;- list(id=1, scores=c(8,9));  L$scores
+
+# 5 · sapply vs lapply (same input)
+sapply(1:3, sqrt)        # vector 1.00 1.41 1.73
+lapply(1:3, sqrt)        # list of 3
+
+# 6 · central tendency + spread
+mean(x); median(x); var(x); sd(x)
+
+# 7 · frequency table of a factor
+table(factor(c("F","M","F")))             # F:2  M:1
+
+# 8 · one-sample t-test (hypothesis testing)
+t.test(scores, mu = 70)                   # reports t, df, p-value
+
+# 9 · S4 class with typed slot
+setClass("Student", representation(name="character", marks="numeric"))
+
+# 10 · distribution four-faces (Normal)
+dnorm(0); pnorm(1.96); qnorm(0.975); rnorm(5, 50, 10)</code></pre>
+
+  <div class="box tip">
+    <span class="label">Formula sheet (one line)</span>
+    Mean = Σx/n · Variance = Σ(x−x̄)²/(n−1) · SD = √var · Bayes' P(A|B)=P(B|A)P(A)/P(B) · Binomial PMF = ᶜⁿₖ pᵏ(1−p)ⁿ⁻ᵏ.
   </div>
 </section>
 

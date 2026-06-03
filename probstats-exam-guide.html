@@ -435,9 +435,12 @@ pre code{ background:none; border:none; padding:0; font-size:inherit; white-spac
 .mnem b{
   font-family:"JetBrains Mono",monospace;
   font-size:10px; letter-spacing:.18em;
-  color:var(--gold); display:block;
-  text-transform:uppercase; margin-bottom:4px;
+  color:var(--gold); display:inline;
+  text-transform:uppercase;
   font-weight:700;
+}
+.mnem > b:first-child{
+  display:block; margin-bottom:4px;
 }
 .scribble{
   display:block; font-family:"Spectral",Georgia,serif;
@@ -820,7 +823,6 @@ footer.end .offline-status.ok{
 }
 @media(hover:none) and (pointer:coarse){
   a,button{ -webkit-tap-highlight-color:rgba(159,18,57,.08); }
-  nav.chips a{ min-height:44px; padding-top:10px; padding-bottom:10px; }
   .drill-q summary{ min-height:32px; padding:8px 0; }
 }
 input,textarea,select{ font-size:16px; }
@@ -1416,7 +1418,7 @@ r-th Central Moment: u_r = E[(X - Mean)^r]</div>
       </div>
       <div class="step k">
         <b>Calculate Skewness (β₁) and Kurtosis (β₂):</b>
-        - Skewness coefficient: β₁ = (u_3)^2 / (u_2)^3 = (39.75)^2 / (14.75)^3 = 1580.0625 / 3209.64 ≈ <b>0.492</b>.
+        - Skewness coefficient: β₁ = (u_3)^2 / (u_2)^3 = (39.75)^2 / (14.75)^3 = 1580.0625 / 3209.05 ≈ <b>0.492</b>.
         - Kurtosis coefficient: β₂ = u_4 / (u_2)^2 = 142.3125 / (14.75)^2 = 142.3125 / 217.5625 ≈ <b>0.654</b>.
         <b>Interpretation:</b> Since u_3 = +39.75 &gt; 0 (the third central moment is positive), the distribution is positively skewed (right-skewed) — β₁ itself is always ≥ 0, so the sign of u_3 is what fixes the direction. Since β₂ &lt; 3, it is platykurtic (flatter than a normal distribution).
       </div>
@@ -1592,7 +1594,10 @@ E(XY) = ∑∑ x * y * P(X=x, Y=y)</div>
       Central tendency represents the "center of gravity" of your dataset. Mean is the algebraic center, Median is the physical middle point, and Mode is the most popular value.
     </div>
     <div class="formula">Grouped Mean: Mean = Sum(f * x) / Sum(f)
-Combined Mean: Mean_c = (n1*Mean1 + n2*Mean2) / (n1 + n2)</div>
+Combined Mean: Mean_c = (n1*Mean1 + n2*Mean2) / (n1 + n2)
+Grouped Median: Median = L + [ (N/2 − cf) / f ] * h
+Grouped Mode:   Mode   = L + [ (f1 − f0) / (2*f1 − f0 − f2) ] * h</div>
+    <p style="font-size:13.5px; margin:8px 0 0 0; color:var(--ink-soft);">For the grouped <mark>median</mark>: <b>L</b> = lower boundary of the median class (the class where the <mark>N/2</mark>-th item lies), <b>cf</b> = cumulative frequency <i>before</i> that class, <b>f</b> = frequency of the median class, <b>h</b> = class width. For the grouped <mark>mode</mark>: <b>L</b> = lower boundary of the modal class (highest-frequency class), <b>f1</b> = modal frequency, <b>f0</b>/<b>f2</b> = frequencies of the classes just before/after it, <b>h</b> = class width.</p>
 
     <h4>Worked Numerical Example: Combined Mean (May-2025 Q3b · 5 M)</h4>
     <p>A branch has 50 workers earning an average of ₹3000/day, and another branch has 70 workers earning an average of ₹3500/day. Find the combined mean daily wage.</p>
@@ -1608,6 +1613,64 @@ Combined Mean: Mean_c = (n1*Mean1 + n2*Mean2) / (n1 + n2)</div>
         Mean_c = ( 50 * 3000 + 70 * 3500 ) / ( 50 + 70 )
         Mean_c = ( 150000 + 245000 ) / 120
         Mean_c = 395000 / 120 = <b>₹3291.67</b>.
+      </div>
+    </div>
+
+    <h4>Worked Numerical Example: Grouped Mean, Median &amp; Mode (5 M)</h4>
+    <p>Compute the <mark>mean</mark>, <mark>median</mark> and <mark>mode</mark> of the following grouped frequency distribution:</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <td>0–10</td>
+            <td>10–20</td>
+            <td>20–30</td>
+            <td>30–40</td>
+            <td>40–50</td>
+            <td>50–60</td>
+          </tr>
+          <tr>
+            <th>Freq (f)</th>
+            <td>5</td>
+            <td>8</td>
+            <td>15</td>
+            <td>12</td>
+            <td>7</td>
+            <td>3</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step k">
+        <b>Build the working table (midpoint x, f·x, cumulative cf):</b>
+        N = 5 + 8 + 15 + 12 + 7 + 3 = <b>50</b>.
+        f·x: 5(5)+15(8)+25(15)+35(12)+45(7)+55(3) = 25 + 120 + 375 + 420 + 315 + 165 = <b>1420</b>.
+        cf running: 5, 13, 28, 40, 47, 50.
+      </div>
+      <div class="step k">
+        <b>Mean = Σ(f·x) / N:</b>
+        Mean = 1420 / 50 = <mark><b>28.4</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Median — locate the median class:</b>
+        N/2 = 50/2 = 25. The cf first reaches/exceeds 25 in class <b>20–30</b> (cf jumps 13 → 28), so the median class is 20–30.
+        L = 20, cf (before) = 13, f = 15, h = 10.
+        Median = L + [ (N/2 − cf) / f ] · h = 20 + [ (25 − 13) / 15 ] · 10
+        Median = 20 + (12/15)·10 = 20 + 0.8·10 = 20 + 8 = <mark><b>28</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Mode — locate the modal class:</b>
+        Highest frequency is 15, in class <b>20–30</b>, so the modal class is 20–30.
+        L = 20, f1 = 15 (modal), f0 = 8 (before), f2 = 12 (after), h = 10.
+        Mode = L + [ (f1 − f0) / (2f1 − f0 − f2) ] · h = 20 + [ (15 − 8) / (30 − 8 − 12) ] · 10
+        Mode = 20 + (7/10)·10 = 20 + 7 = <mark><b>27</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Cross-check with the empirical relation (Mode ≈ 3·Median − 2·Mean):</b>
+        3(28) − 2(28.4) = 84 − 56.8 = 27.2 ≈ 27 ✓.
+        Ordering <b>Mean (28.4) &gt; Median (28) &gt; Mode (27)</b> confirms a mild <mark>positive (right) skew</mark>.
       </div>
     </div>
   </div>
@@ -1694,6 +1757,65 @@ Alternative: Sk_p = 3 * (Mean - Median) / SD</div>
         Mean = (2+4+6+8+10)/5 = 30/5 = 6.
         Median = Middle term = 6.
         Since Mean = Median for any symmetric AP sequence, the skewness <code>Sk_p = 3 * (Mean - Median) / SD = 3 * (0) / SD = 0</code>.
+      </div>
+    </div>
+
+    <h4>Worked Numerical Example: Karl Pearson Skewness from Grouped Data (5 M)</h4>
+    <p>Compute <mark>Karl Pearson's coefficient of skewness</mark> <code>Sk_p = (Mean − Mode) / SD</code> for the following frequency distribution. Comment on the direction of skew.</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <td>0–10</td>
+            <td>10–20</td>
+            <td>20–30</td>
+            <td>30–40</td>
+            <td>40–50</td>
+          </tr>
+          <tr>
+            <th>Freq (f)</th>
+            <td>6</td>
+            <td>16</td>
+            <td>14</td>
+            <td>9</td>
+            <td>5</td>
+          </tr>
+        </thead>
+      </table>
+    </div>
+    <div class="steps">
+      <div class="step k">
+        <b>Build the working row (midpoint x, f·x, f·x²):</b>
+        Midpoints x = 5, 15, 25, 35, 45.
+        N = 6 + 16 + 14 + 9 + 5 = <b>50</b>.
+        Σ(f·x) = 6(5) + 16(15) + 14(25) + 9(35) + 5(45) = 30 + 240 + 350 + 315 + 225 = <b>1160</b>.
+        Σ(f·x²) = 6(25) + 16(225) + 14(625) + 9(1225) + 5(2025) = 150 + 3600 + 8750 + 11025 + 10125 = <b>33650</b>.
+      </div>
+      <div class="step k">
+        <b>Mean = Σ(f·x) / N:</b>
+        Mean = 1160 / 50 = <mark><b>23.2</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Mode — interpolate within the modal class:</b>
+        Highest frequency is 16, in class <b>10–20</b>, so the modal class is 10–20.
+        L = 10, f1 = 16 (modal), f0 = 6 (before), f2 = 14 (after), h = 10.
+        Mode = L + [ (f1 − f0) / (2f1 − f0 − f2) ] · h = 10 + [ (16 − 6) / (32 − 6 − 14) ] · 10
+        Mode = 10 + (10/12)·10 = 10 + 8.33 = <mark><b>18.33</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Standard Deviation (s = √[ Σ(f·x²)/N − Mean² ]):</b>
+        s² = (33650 / 50) − (23.2)² = 673 − 538.24 = 134.76.
+        SD = √134.76 = <mark><b>11.61</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Karl Pearson coefficient of skewness:</b>
+        Sk_p = (Mean − Mode) / SD = (23.2 − 18.33) / 11.61 = 4.87 / 11.61.
+        <mark><b>Sk_p ≈ +0.42</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Interpretation:</b>
+        Sk_p is <b>positive</b> (Mean 23.2 &gt; Mode 18.33), so the distribution is <mark>positively (right) skewed</mark> — a long tail of higher values pulls the mean above the mode.
       </div>
     </div>
 
@@ -2284,6 +2406,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     <div class="part-head">SECTION A (COMPULSORY · 15 MARKS)</div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(a) ×3</span></div>
       <div class="qbody"><b>(a) Define cumulative distribution function (CDF) of a random variable and state its range.</b></div>
       <div class="ans">
         <ul>
@@ -2295,6 +2418,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">★ high-freq topic · classical probability</span></div>
       <div class="qbody"><b>(b) A coin is tossed 3 times. What is the probability of getting at least 2 heads?</b></div>
       <div class="ans">
         <ul>
@@ -2306,6 +2430,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">★ high-freq topic · central tendency (cf. ⟲ median Q1(g) ×3)</span></div>
       <div class="qbody"><b>(c) Find the mode of the dataset: 8, 12, 15, 12, 19, 23, 12, 8, 15.</b></div>
       <div class="ans">
         <ul>
@@ -2317,6 +2442,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential</span></div>
       <div class="qbody"><b>(d) State the memoryless property of Exponential distribution.</b></div>
       <div class="ans">
         <ul>
@@ -2328,6 +2454,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(e) · also Q6(a) 3M</span></div>
       <div class="qbody"><b>(e) Write down the relation between raw moments and central moments for the first three moments.</b></div>
       <div class="ans">
         <ul>
@@ -2339,6 +2466,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(f) · covariance</span></div>
       <div class="qbody"><b>(f) If Cov(X,Y) = 15, SD(X) = 5, and SD(Y) = 6, find the correlation coefficient r.</b></div>
       <div class="ans">
         <ul>
@@ -2350,6 +2478,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(i) ×2</span></div>
       <div class="qbody"><b>(g) List any three differences between Correlation and Regression.</b></div>
       <div class="ans">
         <ul>
@@ -2370,6 +2499,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(h) ×3</span></div>
       <div class="qbody"><b>(h) What is a platykurtic distribution? State its β₂ (kurtosis) value.</b></div>
       <div class="ans">
         <ul>
@@ -2381,6 +2511,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q1(j) · least-square line</span></div>
       <div class="qbody"><b>(i) State the normal equations for fitting a straight line y = a + bx.</b></div>
       <div class="ans">
         <ul>
@@ -2391,6 +2522,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">★ high-freq topic · MGF + Poisson (cf. ⟲ Dec-24 Q1(d) MGF)</span></div>
       <div class="qbody"><b>(j) Write down the MGF of Poisson distribution.</b></div>
       <div class="ans">
         <ul>
@@ -2408,9 +2540,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q2 [15 M]</span>
         <span class="tag fav">Unit 1</span>
         <span class="tag hot">⭐ Binomial · MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q3 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q2 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 22 · Q4 · 10M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q5(a) · MGF+SD Binomial 5M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
       </div>
       <div class="qbody">
         <b>(a) Derive Mean E(X) = np, Variance Var(X) = npq, and the Mode of a Binomial distribution X ~ B(n, p). [8 M]</b><br>
@@ -2567,9 +2699,8 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q3 [15 M]</span>
         <span class="tag fav">Unit 1</span>
         <span class="tag hot">⭐ Normal · Poisson</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q4 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q3 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 23 · Q3 · 10M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(b) · Normal mean-120 SD-40 ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q6(a) · Fit Poisson ×3</span>
       </div>
       <div class="qbody">
         <b>(a) The lifetime X of an electric bulb follows N(μ = 120, σ = 40) hours. Find: (i) P(X &lt; 100), (ii) P(100 &lt; X &lt; 180), (iii) P(X &gt; 200). Use the Z-table. [8 M]</b><br>
@@ -2728,9 +2859,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q4 [15 M]</span>
         <span class="tag fav">Unit 2</span>
         <span class="tag hot">⭐ Joint Distribution · Cov · ρ</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q5 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q4 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 23 · Q5 · 10M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q4(a) · joint table marginal/cond ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q4(a) · Cov · ρ</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q4 · joint pdf k(x+y) 15M</span>
       </div>
       <div class="qbody">
         <b>(a) For the joint discrete distribution below, find: (i) marginal P(X), P(Y); (ii) E(X), E(Y), Var(X), Var(Y); (iii) Cov(X, Y) and correlation ρ(X, Y). [8 M]</b><br>
@@ -2897,10 +3028,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q5 [15 M]</span>
         <span class="tag fav">Unit 4</span>
         <span class="tag hot">⭐ Karl Pearson · Regression</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q6 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q5 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 23 · Q6 · 10M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 22 · Q7 · 12M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(c) · Karl Pearson r (10 pairs) ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech Dec-23 Q4(a)/Q5(a) · fathers-sons</span>
       </div>
       <div class="qbody">
         <b>(a) Compute the Karl Pearson correlation coefficient for the following ten pairs. [8 M]</b><br>
@@ -3082,15 +3212,170 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
+    <!-- Q5B (Unit 4 — Partially destroyed records: reconstruct from two regression lines) -->
+    <div class="qcard predicted">
+      <div class="qhead">
+        <span class="qnum">Q5(b) ALT [12 M]</span>
+        <span class="tag fav">Unit 4</span>
+        <span class="tag hot">⭐ Partially Destroyed Records</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q6(b) · partially destroyed</span>
+      </div>
+      <div class="qbody">
+        <b>In a partially destroyed laboratory record, only the two regression lines survive: <mark>8X − 10Y + 66 = 0</mark> and <mark>40X − 18Y = 214</mark>. The variance of X is 9. Find: (a) the mean values X̄ and Ȳ; (b) which line is Y on X and which is X on Y, and the regression coefficients b<sub>yx</sub> and b<sub>xy</sub>; (c) the correlation coefficient r; (d) the standard deviation of Y. [12 M]</b>
+      </div>
+      <div class="ans">
+        <h5>Introduction</h5>
+        <p>Each pair of variables has <mark>two regression lines</mark> — <mark>Y on X</mark> (predicts Y from X) and <mark>X on Y</mark> (predicts X from Y). They always cross at the <mark>mean point (X̄, Ȳ)</mark>, so solving the two equations <i>simultaneously</i> recovers the means even when the raw data is lost. The slopes satisfy b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> and b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>, hence the key identity <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark>. The slope assignment is fixed by the rule <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>: only the assignment whose product does not exceed 1 is admissible, because r² can never exceed 1.</p>
+
+        <figure class="diagram-fig">
+          <svg viewBox="0 0 380 230" style="width:100%;height:auto;max-width:420px;" role="img" aria-label="Two regression lines crossing at the mean point (13, 17)">
+            <line x1="40" y1="190" x2="350" y2="190" stroke="var(--svg-ink)" stroke-width="1.4"/>
+            <line x1="40" y1="20" x2="40" y2="190" stroke="var(--svg-ink)" stroke-width="1.4"/>
+            <text x="195" y="218" text-anchor="middle" fill="var(--ink)" font-size="11">X</text>
+            <text x="18" y="105" text-anchor="middle" fill="var(--ink)" font-size="11" transform="rotate(-90 18 105)">Y</text>
+            <line x1="70" y1="175" x2="330" y2="40" stroke="var(--svg-brand)" stroke-width="2.2"/>
+            <line x1="80" y1="150" x2="330" y2="78" stroke="var(--svg-good)" stroke-width="2.2"/>
+            <line x1="195" y1="105" x2="195" y2="190" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3,3"/>
+            <line x1="40" y1="105" x2="195" y2="105" stroke="var(--muted)" stroke-width="0.9" stroke-dasharray="3,3"/>
+            <circle cx="195" cy="105" r="4" fill="var(--svg-ink)"/>
+            <text x="206" y="100" fill="var(--svg-ink)" font-size="10" font-weight="700">(X̄, Ȳ) = (13, 17)</text>
+            <text x="195" y="204" text-anchor="middle" fill="var(--muted)" font-size="9">X̄ = 13</text>
+            <text x="32" y="108" text-anchor="end" fill="var(--muted)" font-size="9">Ȳ = 17</text>
+            <text x="324" y="34" text-anchor="end" fill="var(--svg-brand)" font-size="10" font-weight="700">Y on X · b_yx = 0.8</text>
+            <text x="324" y="92" text-anchor="end" fill="var(--svg-good)" font-size="10" font-weight="700">X on Y · b_xy = 0.45</text>
+            <path d="M 222 95 A 28 28 0 0 1 222 116" fill="none" stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="246" y="110" fill="var(--svg-ink)" font-size="9">θ</text>
+          </svg>
+          <figcaption><b>Fig 5.5</b> · The two surviving regression lines intersect at the recovered mean point (X̄, Ȳ) = (13, 17). The acute angle θ between them shrinks as r → ±1; here r = 0.6 gives a moderate gap.</figcaption>
+        </figure>
+
+        <h5>(a) Means — Intersection of the Two Lines</h5>
+        <div class="steps">
+          <div class="step k">
+            <b>Set up the system:</b>
+            Eq 1: 8X − 10Y = −66
+            Eq 2: 40X − 18Y = 214
+          </div>
+          <div class="step k">
+            <b>Eliminate X — multiply Eq 1 by 5:</b>
+            40X − 50Y = −330.
+            Subtract from Eq 2: (40X − 18Y) − (40X − 50Y) = 214 − (−330)
+            32Y = 544  ⇒  <mark><b>Ȳ = 17</b></mark>.
+          </div>
+          <div class="step k">
+            <b>Back-substitute into Eq 1:</b>
+            8X − 10(17) = −66  ⇒  8X = 170 − 66 = 104  ⇒  <mark><b>X̄ = 13</b></mark>.
+          </div>
+        </div>
+
+        <h5>(b) Identify the Lines and the Coefficients</h5>
+        <p>Use the admissibility test <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>. Try both assignments and keep the one whose product stays at or below 1:</p>
+        <div class="table-wrap">
+          <table>
+            <caption>Slope-assignment test — only one option is admissible</caption>
+            <thead><tr><th>Assignment</th><th>b<sub>yx</sub></th><th>b<sub>xy</sub></th><th>Product</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Eq 1 = Y on X, Eq 2 = X on Y</td>
+                <td>0.8</td><td>0.45</td>
+                <td>0.36 ≤ 1</td>
+                <td><b>Admissible ✓</b></td>
+              </tr>
+              <tr>
+                <td>Eq 2 = Y on X, Eq 1 = X on Y</td>
+                <td>2.2222</td><td>1.25</td>
+                <td>2.778 &gt; 1</td>
+                <td>Rejected ✗</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="steps">
+          <div class="step k">
+            <b>Read the slopes from the admissible assignment:</b>
+            Eq 1 as Y on X: 10Y = 8X + 66 ⇒ Y = 0.8X + 6.6 ⇒ <mark><b>b<sub>yx</sub> = 0.8</b></mark>.
+            Eq 2 as X on Y: 40X = 18Y + 214 ⇒ X = 0.45Y + 5.35 ⇒ <mark><b>b<sub>xy</sub> = 0.45</b></mark>.
+          </div>
+        </div>
+
+        <h5>(c) Correlation Coefficient r</h5>
+        <div class="steps">
+          <div class="step k">
+            <b>Apply r² = b<sub>yx</sub>·b<sub>xy</sub>:</b>
+            r = √(b<sub>yx</sub> · b<sub>xy</sub>) = √(0.8 × 0.45) = √0.36 = <mark><b>r = +0.6</b></mark>.
+            Sign is positive because both regression slopes are positive.
+          </div>
+        </div>
+
+        <h5>(d) Standard Deviation of Y</h5>
+        <div class="steps">
+          <div class="step k">
+            <b>From the variance of X:</b>
+            Var(X) = 9 ⇒ σ<sub>x</sub> = √9 = 3.
+          </div>
+          <div class="step k">
+            <b>Use b<sub>yx</sub> = r · σ<sub>y</sub>/σ<sub>x</sub>:</b>
+            0.8 = 0.6 × (σ<sub>y</sub> / 3)
+            0.8 = 0.2 × σ<sub>y</sub>  ⇒  σ<sub>y</sub> = 0.8 / 0.2 = <mark><b>σ<sub>y</sub> = 4</b></mark>.
+            Cross-check with b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>: 0.45 = 0.6 × 3 / σ<sub>y</sub> ⇒ σ<sub>y</sub> = 1.8 / 0.45 = 4 ✓.
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Recovered Quantities — Partially Destroyed Records</caption>
+            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Mean X̄</td><td><b>13</b></td></tr>
+              <tr><td>Mean Ȳ</td><td><b>17</b></td></tr>
+              <tr><td>b<sub>yx</sub> (Y on X)</td><td>0.8</td></tr>
+              <tr><td>b<sub>xy</sub> (X on Y)</td><td>0.45</td></tr>
+              <tr><td>Correlation r</td><td><b>+0.6</b></td></tr>
+              <tr><td>σ<sub>x</sub> (given Var X = 9)</td><td>3</td></tr>
+              <tr><td>σ<sub>y</sub></td><td><b>4</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <b>Pitfalls:</b>
+          <ul style="margin:6px 0 0 18px;">
+            <li>Guessing the slope assignment without the <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark> test. The wrong choice gives a product &gt; 1, i.e. r² &gt; 1, which is impossible.</li>
+            <li>Forgetting that both lines pass through (X̄, Ȳ). Solving them simultaneously <i>is</i> the means step.</li>
+            <li>Taking r = b<sub>yx</sub>·b<sub>xy</sub> = 0.36 instead of its square root 0.6. That confuses r² with r — a 2-mark slip.</li>
+            <li>Using σ<sub>x</sub> = 9 instead of σ<sub>x</sub> = √9 = 3. Var(X) is given, not the SD.</li>
+          </ul>
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>The "recover parameters from the fitted model" move is everyday data science. When only a trained <code>sklearn.linear_model.LinearRegression</code> object survives (raw data purged for privacy or storage), its coefficients still let you reconstruct means, the correlation, and the spread — exactly this algebra. The <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark> identity is the 2-variable seed of the R² score reported by every regression library.</p>
+
+        <h5>Conclusion</h5>
+        <p>From only the two regression lines and Var(X) = 9, the full bivariate summary is rebuilt: <mark>X̄ = 13, Ȳ = 17, r = 0.6, σ<sub>y</sub> = 4</mark>. The admissibility test |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 uniquely fixed which line was Y on X, and the intersection point recovered the means — the two facts an examiner rewards most in this question type.</p>
+
+        <div class="score">
+          <b>Marks Allocation:</b>
+          <ul>
+            <li>(a) Means via simultaneous solution (X̄, Ȳ): <span class="m">4 M</span></li>
+            <li>(b) Slope assignment via |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 + both coefficients: <span class="m">4 M</span></li>
+            <li>(c) Correlation r = √(b<sub>yx</sub>·b<sub>xy</sub>): <span class="m">2 M</span></li>
+            <li>(d) σ<sub>y</sub> from b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub>: <span class="m">2 M</span></li>
+            <li>Total: <span class="m">12 M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Q6 (Unit 4 + Unit 1 — Parabola curve fitting + Bayes conditional) -->
     <div class="qcard predicted">
       <div class="qhead">
         <span class="qnum">Q6 [15 M]</span>
         <span class="tag fav">Unit 4 · Unit 1</span>
         <span class="tag hot">⭐ Curve Fit · Bayes</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q7 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q6 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 22 · Q5 · 10M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q7(b) · parabola fit ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech Dec-23 Q7(a) · Bayes</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q6(a) · Bayes lost-card</span>
       </div>
       <div class="qbody">
         <b>(a) Fit a second-degree parabola Y = a + bX + cX² to the following data by the method of least squares. [8 M]</b><br>
@@ -3127,7 +3412,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
               <text x="220" y="22" fill="var(--brand-deep)" font-size="11" font-weight="700">Y = 1.42 − 1.07X + 0.55X²</text>
             </svg>
           </div>
-          <figcaption><b>Fig 5.5</b> · Five data points with fitted parabola curve. Parabola opens upward (c &gt; 0).</figcaption>
+          <figcaption><b>Fig 5.6</b> · Five data points with fitted parabola curve. Parabola opens upward (c &gt; 0).</figcaption>
         </figure>
 
         <div class="steps">
@@ -3246,9 +3531,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q7 [15 M]</span>
         <span class="tag fav">Unit 4 · Unit 2</span>
         <span class="tag hot">⭐ Spearman · Joint Integral</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 25 · Q8 · 15M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC 23 · Q7 · 12M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA 22 · Q6 · 8M</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q7(a) · Spearman rank (judges) ×2</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q4(a) · joint pdf integral</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(a) · P(X&lt;a ∩ Y&lt;b)</span>
       </div>
       <div class="qbody">
         <b>(a) Two judges award ranks to 10 candidates as follows. Compute Spearman's rank correlation coefficient. [8 M]</b><br>
@@ -3307,7 +3592,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
             <div style="background:var(--brand-2);height:60px;border-radius:3px;"></div>
             <div style="background:var(--brand-2);height:54px;border-radius:3px;"></div>
           </div>
-          <figcaption><b>Fig 5.6</b> · Judge 1 (deep crimson) vs Judge 2 (lighter) rank bars per candidate; pairs swap in adjacent positions — small D<sup>2</sup>.</figcaption>
+          <figcaption><b>Fig 5.7</b> · Judge 1 (deep crimson) vs Judge 2 (lighter) rank bars per candidate; pairs swap in adjacent positions — small D<sup>2</sup>.</figcaption>
         </figure>
 
         <div class="steps">
@@ -3487,6 +3772,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 - Kurtosis: β₂ = u₄ / u₂²
 
 <b>4. Central Tendency &amp; Stats:</b>
+- Grouped Mean: ∑(f*x) / N
+- Grouped Median: L + [ (N/2 − cf) / f ] * h   (median class = where N/2-th item lies)
+- Grouped Mode: L + [ (f1 − f0) / (2*f1 − f0 − f2) ] * h   (modal class = max freq)
 - Empirical Relation: Mode ≈ 3*Median - 2*Mean
 - Combined Mean: (n1*M1 + n2*M2) / (n1+n2)
 - Grouped Variance: s² = [ ∑f(x²) / N ] - Mean²
@@ -3505,10 +3793,39 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </pre>
   </div>
 
+  <!-- ===== Z-table snippet + procedural mnemonics ===== -->
+  <div class="cheat-section" style="margin-top:24px; margin-bottom:18px; padding:14px; border:1.5px solid var(--ink); border-radius:6px; background:#fffefb;">
+    <div class="cs-head" style="margin-bottom:10px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson);">📊 Z-table Snippet + Procedural Mnemonics</div>
+    <p style="font-size:13px; color:var(--muted); margin:0 0 12px 0;">The seven Φ(z) values you must carry into the hall for any Normal question, plus three step-chains for the procedures the brain forgets first.</p>
+
+    <div class="table-wrap" style="margin:0 0 14px 0;">
+      <table>
+        <caption>Standard Normal Z-table snippet — Φ(z) = P(Z ≤ z) for z ≥ 0; use Φ(−z) = 1 − Φ(z) for negatives</caption>
+        <thead><tr><th>z</th><th>0.00</th><th>0.50</th><th>1.00</th><th>1.50</th><th>2.00</th><th>2.50</th><th>3.00</th></tr></thead>
+        <tbody><tr><th>Φ(z)</th><td>0.5000</td><td>0.6915</td><td>0.8413</td><td>0.9332</td><td>0.9772</td><td>0.9938</td><td>0.9987</td></tr></tbody>
+      </table>
+    </div>
+
+    <div class="mnem">
+      <b>Mnemonic 1 · Normal-Probability Lookup 5 Steps — "SCABS"</b>
+      <b>S</b>tandardise: Z = (X − μ)/σ → <b>C</b>onvert the question to a Φ form: P(X &lt; a) = Φ(z<sub>a</sub>), P(X &gt; a) = 1 − Φ(z<sub>a</sub>), P(a &lt; X &lt; b) = Φ(z<sub>b</sub>) − Φ(z<sub>a</sub>) → <b>A</b>djust negatives by symmetry Φ(−z) = 1 − Φ(z) → <b>B</b>ring values from the Φ(z) table above → <b>S</b>ubtract / combine to the final probability. Worked: P(X &gt; 200) with N(120, 40) → z = (200−120)/40 = 2 → 1 − Φ(2) = 1 − 0.9772 = <mark>0.0228</mark>.
+    </div>
+
+    <div class="mnem">
+      <b>Mnemonic 2 · Moment → Skewness Chain — "Raw, Centre, Shape"</b>
+      Raw moments μ′ₖ about A → centralise: μ₂ = μ′₂ − (μ′₁)², μ₃ = μ′₃ − 3μ′₂μ′₁ + 2(μ′₁)³ → shape: β₁ = μ₃² / μ₂³ (skewness), γ₁ = +√β₁ with sign of μ₃ ; then β₂ = μ₄ / μ₂² (kurtosis). Read it as "first centre the moments, then take the ratio for shape".
+    </div>
+
+    <div class="mnem">
+      <b>Mnemonic 3 · Distribution Mean/Var Recall — "Bin-Pois-Norm-Exp-Uni"</b>
+      <b>Bin</b>omial: mean np, var npq · <b>Pois</b>son: mean = var = λ · <b>Norm</b>al: mean μ, var σ² · <b>Exp</b>onential: mean 1/λ, var 1/λ² · <b>Uni</b>form(a,b): mean (a+b)/2, var (b−a)²/12. Memory hook: "Poisson is the lazy one — mean and variance are the same number".
+    </div>
+  </div>
+
   <!-- ===== Part-A 1.5M Quick-Fire Drill ===== -->
   <div class="cheat-section" style="margin-top:24px; margin-bottom:18px; padding:14px; border:1.5px solid var(--ink); border-radius:6px; background:#fffefb;">
-    <div class="cs-head" style="margin-bottom:10px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson);">🎯 Part-A 1.5M Quick-Fire Drill — 10 One-Line Hits</div>
-    <p style="font-size:13px; color:var(--muted); margin:0 0 12px 0;">Ten Part-A sub-questions, each answered in 2–4 lines. Memorise the structure; in the exam, copy the bullet and add one example.</p>
+    <div class="cs-head" style="margin-bottom:10px; font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson);">🎯 Part-A 1.5M Quick-Fire Drill — 11 One-Line Hits</div>
+    <p style="font-size:13px; color:var(--muted); margin:0 0 12px 0;">Eleven Part-A sub-questions, each answered in 2–4 lines. Memorise the structure; in the exam, copy the bullet and add one example.</p>
     <div style="display:grid; grid-template-columns:1fr; gap:8px;">
 
       <div class="cheat-card" style="padding:10px 12px; border:1px solid var(--rule); border-left:3px solid var(--crimson); border-radius:4px; background:var(--paper-soft);">
@@ -3559,6 +3876,11 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       <div class="cheat-card" style="padding:10px 12px; border:1px solid var(--rule); border-left:3px solid var(--crimson); border-radius:4px; background:var(--paper-soft);">
         <b style="color:var(--crimson);">10. Three properties of regression coefficient.</b>
         <div style="font-size:13.5px; margin-top:4px;">(i) <mark>b<sub>yx</sub> · b<sub>xy</sub> = r²</mark>, so r = ±√(b<sub>yx</sub>·b<sub>xy</sub>) with sign of either b; (ii) both b<sub>yx</sub>, b<sub>xy</sub> have the <mark>same sign</mark> as r; (iii) <b>AM(b<sub>yx</sub>, b<sub>xy</sub>) ≥ |r|</b>; (iv) regression coefficients are <mark>independent of origin</mark> but not of scale.</div>
+      </div>
+
+      <div class="cheat-card" style="padding:10px 12px; border:1px solid var(--rule); border-left:3px solid var(--crimson); border-radius:4px; background:var(--paper-soft);">
+        <b style="color:var(--crimson);">11. Grouped Median &amp; Mode interpolation formulas.</b>
+        <div style="font-size:13.5px; margin-top:4px;"><b>Median</b> = <mark>L + [(N/2 − cf)/f]·h</mark> (median class = where the N/2-th item lies; cf = cum. freq. before it). <b>Mode</b> = <mark>L + [(f1 − f0)/(2f1 − f0 − f2)]·h</mark> (modal class = max freq; f1 modal, f0/f2 just before/after). Sanity: <b>Mode ≈ 3·Median − 2·Mean</b>.</div>
       </div>
 
     </div>

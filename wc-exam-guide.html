@@ -532,6 +532,108 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
   </div>
 
+  <!-- 1.6b 3G / UMTS deep-dive -->
+  <div class="topic" id="t-1-6b">
+    <h3>3G / UMTS Architecture (UTRAN + Core)</h3>
+    <div class="box def">
+      <span class="label">Definition</span>
+      <mark>3G UMTS</mark> (Universal Mobile Telecommunications System) is the 3GPP third-generation standard that pairs a brand-new radio access network, <mark>UTRAN</mark> (UMTS Terrestrial Radio Access Network), with a <mark>reused GSM/GPRS core</mark>. The air interface is <mark>W-CDMA</mark> (Wideband CDMA) over a <mark>5 MHz</mark> carrier, delivering true mobile internet, video calls and, via HSPA, broadband speeds.
+    </div>
+
+    <figure class="diagram-fig">
+      <div style="display:flex;gap:0;align-items:center;flex-wrap:wrap;justify-content:center;margin:6px 0;">
+        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
+          <div style="font-weight:700;color:var(--brand-deep);">UE</div>
+          <div style="font-size:11px;color:var(--muted);">Handset + USIM</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>W-CDMA</span><span>Uu &rarr;</span></div>
+        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
+          <div style="font-weight:700;color:var(--brand-deep);">Node-B</div>
+          <div style="font-size:11px;color:var(--muted);">Base station (radio)</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>Iub</span><span>&rarr;</span></div>
+        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
+          <div style="font-weight:700;color:var(--brand-deep);">RNC</div>
+          <div style="font-size:11px;color:var(--muted);">Radio Network Controller</div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>Iu</span><span>&rarr;</span></div>
+        <div style="flex:1;min-width:96px;border:2px solid var(--brand-deep);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand);color:var(--paper);">
+          <div style="font-weight:700;">Core Network</div>
+          <div style="font-size:11px;opacity:.9;">MSC/HLR (CS) + SGSN/GGSN (PS)</div>
+        </div>
+      </div>
+      <div style="margin-top:8px;font-size:11px;color:var(--muted);">
+        <b style="color:var(--brand-2);">UTRAN</b> = Node-B + RNC &nbsp;&middot;&nbsp; reused-GSM core = HLR / AuC / MSC (CS) + SGSN / GGSN (PS)
+      </div>
+      <figcaption><b>Fig 1.2b</b> &middot; UMTS chain UE &rarr; Node-B &rarr; RNC &rarr; Core. The Node-B + RNC form the new UTRAN radio side; the packet (SGSN/GGSN) and circuit (MSC/HLR/AuC) core is reused from GSM/GPRS.</figcaption>
+    </figure>
+
+    <h5>UTRAN &mdash; the radio side</h5>
+    <ul>
+      <li><b><mark>Node-B</mark>:</b> the 3G base station. Handles the W-CDMA physical layer, spreading/despreading, and inner-loop power control. The GSM equivalent is the BTS.</li>
+      <li><b><mark>RNC</mark> (Radio Network Controller):</b> manages many Node-Bs over the <mark>Iub</mark> interface; owns radio-resource control, the soft-handover combining decision, and outer-loop power control. Equivalent of GSM's BSC.</li>
+      <li><b>Interfaces:</b> <mark>Uu</mark> (UE&ndash;Node-B air interface), <mark>Iub</mark> (Node-B&ndash;RNC), <mark>Iur</mark> (RNC&ndash;RNC, enables soft handover across RNCs), <mark>Iu</mark> (RNC&ndash;core).</li>
+    </ul>
+
+    <h5>Core network &mdash; reused from GSM/GPRS</h5>
+    <ul>
+      <li><b>Circuit-switched (CS) domain:</b> <mark>MSC</mark> for voice, with the same <mark>HLR / VLR / AuC</mark> databases inherited from GSM &mdash; no need to re-engineer subscriber/authentication management.</li>
+      <li><b>Packet-switched (PS) domain:</b> <mark>SGSN</mark> + <mark>GGSN</mark> carried over from GPRS, giving always-on IP data and the gateway to the internet.</li>
+      <li><b>Why reuse:</b> operators protected their GSM investment &mdash; only the radio access network (UTRAN) was new, so 2G&rarr;3G upgrades were incremental, not a forklift replacement.</li>
+    </ul>
+
+    <h5>W-CDMA air interface &amp; soft handover</h5>
+    <ul>
+      <li><b><mark>5 MHz wideband carrier</mark>:</b> all users share one 5 MHz band, separated by orthogonal codes &mdash; contrast GSM's narrow 200 kHz FDMA/TDMA slots.</li>
+      <li><b>Chip rate <mark>3.84 Mcps</mark>:</b> the fast spreading rate; the ratio chip-rate&divide;data-rate is the processing gain <code>G<sub>p</sub></code> (cross-link below).</li>
+      <li><b><mark>Soft handover</mark> ("make-before-break"):</b> because every cell uses the <em>same</em> frequency (reuse-1), the UE links to two or more Node-Bs at once and the RNC combines the strongest. No audible gap + diversity gain, unlike GSM's hard handover.</li>
+      <li><b>Frequency reuse-1:</b> CDMA tolerates co-channel interference, so neighbouring cells reuse the same 5 MHz &mdash; simpler planning than GSM's reuse-7.</li>
+    </ul>
+
+    <h5>HSPA evolution (3.5G)</h5>
+    <ul>
+      <li><b><mark>HSDPA</mark> (downlink):</b> adds fast scheduling, 16-QAM and HARQ at the Node-B for peaks up to <mark>~14 Mbps</mark>.</li>
+      <li><b><mark>HSUPA</mark> (uplink):</b> faster uplink (~5.7 Mbps) for symmetric apps like video calling and uploads.</li>
+      <li><b><mark>HSPA+</mark>:</b> 64-QAM + MIMO push peaks to <mark>~42 Mbps</mark>, bridging the gap to early 4G.</li>
+    </ul>
+
+    <div class="mnem">
+      <b>UMTS chain</b>
+      &ldquo;<b>U</b>se <b>N</b>ew <b>R</b>adio, <b>C</b>ore stays&rdquo; &mdash; <b>U</b>E &rarr; <b>N</b>ode-B &rarr; <b>R</b>NC &rarr; <b>C</b>ore. First two are the new UTRAN; the Core is recycled GSM.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>GSM (2G)</th><th>UMTS (3G)</th></tr>
+        <tr><td><b>Base station</b></td><td>BTS</td><td><mark>Node-B</mark></td></tr>
+        <tr><td><b>Controller</b></td><td>BSC</td><td><mark>RNC</mark></td></tr>
+        <tr><td><b>Radio access net</b></td><td>BSS / GERAN</td><td><mark>UTRAN</mark></td></tr>
+        <tr><td><b>Access scheme</b></td><td>FDMA/TDMA (200 kHz)</td><td>W-CDMA (5 MHz)</td></tr>
+        <tr><td><b>Frequency reuse</b></td><td>Reuse-7 (clusters)</td><td>Reuse-1 (codes)</td></tr>
+        <tr><td><b>Handover</b></td><td>Hard (break-before-make)</td><td>Soft (make-before-break)</td></tr>
+        <tr><td><b>Peak data</b></td><td>GPRS ~64 kbps</td><td>~2 Mbps &rarr; HSPA ~14&ndash;42 Mbps</td></tr>
+      </table>
+    </div>
+
+    <h5>Worked Example &mdash; W-CDMA processing gain (cross-link)</h5>
+    <p>Processing gain ties UMTS straight back to CDMA: <code>G<sub>p</sub> = chip rate &divide; data rate</code>. Using the UMTS chip rate <b>W = 3.84 Mcps</b>:</p>
+    <div class="steps">
+      <div class="step"><span class="k">Step 1</span><div class="body"><b>12.2 kbps AMR voice call.</b> <code>G<sub>p</sub> = 3.84 &times; 10&#8310; &divide; 12.2 &times; 10&#179; = 314.75</code>.</div></div>
+      <div class="step"><span class="k">Step 2</span><div class="body">In dB: <code>10 &middot; log&#8321;&#8320;(314.75) = 24.98 dB</code> &rarr; <mark><b>G<sub>p</sub> &asymp; 25 dB</b></mark> of spreading gain &mdash; voice rides ~25 dB below the wide-band noise floor and is still recovered.</div></div>
+      <div class="step"><span class="k">Step 3</span><div class="body"><b>384 kbps data call.</b> <code>G<sub>p</sub> = 3.84 &times; 10&#8310; &divide; 384 &times; 10&#179; = 10</code> &rarr; <code>10 &middot; log&#8321;&#8320;(10) =</code> <mark><b>10 dB</b></mark>. Faster data &rarr; less spreading per bit, so it needs more power / a cleaner cell.</div></div>
+    </div>
+
+    <div class="box warn">
+      <span class="label">Examiner Trap</span>
+      Do not confuse the <mark>chip rate (3.84 Mcps)</mark> with the user <mark>data rate</mark> &mdash; the gain is their ratio, not either one alone. Also note 3G's <mark>5 MHz</mark> carrier vs GSM's 200 kHz, and that UTRAN = <b>Node-B + RNC only</b> (the core is reused GSM, not part of UTRAN).
+    </div>
+
+    <div class="box tip">
+      <span class="label">Exam Line</span>
+      3G UMTS = <mark>new UTRAN (Node-B + RNC)</mark> bolted onto a <mark>reused GSM core</mark>, W-CDMA on a 5 MHz carrier with soft handover, evolving via HSPA to ~14&ndash;42 Mbps. Name the chain <mark>UE &rarr; Node-B &rarr; RNC &rarr; Core</mark> and you have the answer.
+    </div>
+  </div>
+
   <!-- 1.7 WLL & WLAN -->
   <div class="topic" id="t-1-7">
     <h3>Wireless in Local Loop (WLL) &amp; WLAN</h3>
@@ -587,7 +689,75 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
 
     <figure class="diagram-fig">
-      <img src="img/wc-bluetooth.webp" alt="Bluetooth piconets joined into a scatternet via a bridge node (master/slave)">
+<svg viewBox="0 0 540 372" role="img" aria-label="Two Bluetooth piconets joined into a scatternet by a shared bridge slave that belongs to both piconets" style="width:100%;height:auto;max-width:540px;display:block;margin:0 auto;font-family:inherit">
+  <!-- Title band -->
+  <rect x="160" y="4" width="220" height="26" rx="13" fill="var(--brand)"/>
+  <text x="270" y="22" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="2" fill="var(--paper)">SCATTERNET</text>
+
+  <!-- Piconet 1 zone (left) -->
+  <ellipse cx="150" cy="210" rx="138" ry="120" fill="var(--brand-soft)" fill-opacity="0.5" stroke="var(--brand)" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text x="70" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="var(--brand-2)">Piconet 1</text>
+  <text x="70" y="107" text-anchor="middle" font-size="9.5" fill="var(--muted)">(1 master + 3 slaves)</text>
+
+  <!-- Piconet 2 zone (right) -->
+  <ellipse cx="390" cy="210" rx="138" ry="120" fill="var(--gold-soft)" fill-opacity="0.55" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="6 5"/>
+  <text x="470" y="92" text-anchor="middle" font-size="13" font-weight="700" fill="var(--brand-2)">Piconet 2</text>
+  <text x="470" y="107" text-anchor="middle" font-size="9.5" fill="var(--muted)">(1 master + 2 slaves)</text>
+
+  <!-- Piconet 1 star links (M1 hub to its slaves + to bridge) -->
+  <line x1="150" y1="210" x2="66" y2="160" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="150" y1="210" x2="58" y2="248" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="150" y1="210" x2="132" y2="305" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="150" y1="210" x2="270" y2="218" stroke="var(--brand)" stroke-width="2.4"/>
+  <!-- Piconet 2 star links (M2 hub to its slaves + to bridge) -->
+  <line x1="390" y1="210" x2="476" y2="162" stroke="var(--gold)" stroke-width="2"/>
+  <line x1="390" y1="210" x2="468" y2="270" stroke="var(--gold)" stroke-width="2"/>
+  <line x1="390" y1="210" x2="270" y2="218" stroke="var(--gold)" stroke-width="2.4"/>
+
+  <!-- Piconet 1 slaves -->
+  <circle cx="66" cy="160" r="18" fill="var(--paper-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="66" y="165" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">S1</text>
+  <circle cx="58" cy="248" r="18" fill="var(--paper-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="58" y="253" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">S2</text>
+  <circle cx="132" cy="305" r="18" fill="var(--paper-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="132" y="310" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">S3</text>
+
+  <!-- Piconet 2 slaves -->
+  <circle cx="476" cy="162" r="18" fill="var(--paper-soft)" stroke="var(--gold)" stroke-width="2"/>
+  <text x="476" y="167" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">S4</text>
+  <circle cx="468" cy="270" r="18" fill="var(--paper-soft)" stroke="var(--gold)" stroke-width="2"/>
+  <text x="468" y="275" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">S5</text>
+
+  <!-- Master 1 hub -->
+  <circle cx="150" cy="210" r="25" fill="var(--brand)" stroke="var(--brand-deep)" stroke-width="2"/>
+  <text x="150" y="207" text-anchor="middle" font-size="13" font-weight="700" fill="var(--paper)">M1</text>
+  <text x="150" y="220" text-anchor="middle" font-size="8.5" fill="var(--paper)">MASTER</text>
+
+  <!-- Master 2 hub -->
+  <circle cx="390" cy="210" r="25" fill="var(--brand)" stroke="var(--brand-deep)" stroke-width="2"/>
+  <text x="390" y="207" text-anchor="middle" font-size="13" font-weight="700" fill="var(--paper)">M2</text>
+  <text x="390" y="220" text-anchor="middle" font-size="8.5" fill="var(--paper)">MASTER</text>
+
+  <!-- Bridge node: straddles both ellipses (overlap region), slave in BOTH piconets -->
+  <circle cx="270" cy="218" r="24" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="2.4" stroke-dasharray="5 3"/>
+  <text x="270" y="215" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">BRIDGE</text>
+  <text x="270" y="227" text-anchor="middle" font-size="9" fill="var(--muted)">slave</text>
+
+  <!-- Bridge callout -->
+  <rect x="186" y="276" width="168" height="40" rx="6" fill="var(--paper-soft)" stroke="var(--brand-deep)" stroke-width="1.2"/>
+  <text x="270" y="291" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">Bridge = slave in P1 AND P2</text>
+  <text x="270" y="305" text-anchor="middle" font-size="9" fill="var(--muted)">time-shares both, links the piconets</text>
+
+  <!-- Legend -->
+  <circle cx="40" cy="352" r="8" fill="var(--brand)"/>
+  <text x="54" y="356" font-size="10" fill="var(--ink)">Master</text>
+  <circle cx="124" cy="352" r="8" fill="var(--paper-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="138" y="356" font-size="10" fill="var(--ink)">Slave</text>
+  <circle cx="200" cy="352" r="8" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="2" stroke-dasharray="5 3"/>
+  <text x="214" y="356" font-size="10" fill="var(--ink)">Bridge (in both)</text>
+  <line x1="332" y1="352" x2="364" y2="352" stroke="var(--ink-soft)" stroke-width="2"/>
+  <text x="372" y="356" font-size="10" fill="var(--ink)">intra-piconet link</text>
+</svg>
       <figcaption><b>Fig 1.4</b> &middot; Scatternet, two piconets (each 1 Master + Slaves) linked by a shared bridge node that participates in both.</figcaption>
     </figure>
 
@@ -615,6 +785,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="box def"><span class="label">Cellular Concept</span>
       Instead of one high-power transmitter covering a whole city, the area is split into small <b><mark>cells</mark></b>, each served by a low-power base station. This lets the same frequencies be reused in distant cells, giving a small fixed spectrum the capacity to serve millions of users.
     </div>
+    <div class="box def"><span class="label">Spectrum Allocation</span>
+      <mark>Spectrum allocation</mark> is the regulator (in India the <mark>WPC wing of DoT</mark>, advised by <mark>TRAI</mark>) <b>licensing fixed MHz radio bands</b> to each operator. The licensed band is split into paired <mark>uplink &amp; downlink channels</mark> for two-way calls (<mark>FDD</mark> &mdash; frequency-division duplex), and small <mark>guard bands</mark> are left empty between operators and between adjacent channels to stop interference leakage.
+    </div>
     <p>A cellular network has four core hardware components:</p>
     <ul>
       <li><b><mark>Mobile Station (MS)</mark></b> — the subscriber handset. Contains the transceiver, control unit and (in 2G) the SIM that holds identity keys.</li>
@@ -624,7 +797,92 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </ul>
 
     <figure class="diagram-fig">
-      <img src="img/wc-cellular-arch.png" alt="GSM / cellular system architecture: MS, BTS, BSC, MSC, HLR/VLR/AUC/EIR, PSTN">
+<div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:560px;margin:0 auto;font-family:'JetBrains Mono',monospace;">
+
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
+
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;">
+      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">MS</span>
+      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">Mobile<br>Station</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;">
+      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
+      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;letter-spacing:.04em;text-align:center;">U<sub>m</sub><br>air</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">BSS &middot; Base Station Subsystem</span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BTS</span>
+          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">radio<br>tower</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);">
+          <span style="font-size:13px;font-weight:700;line-height:1;">&#9656;</span>
+          <span style="font-size:7px;color:var(--muted);margin-top:1px;">Abis</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BSC</span>
+          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">base st.<br>controller</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;justify-content:center;align-items:center;gap:8px;color:var(--brand);margin:7px 0;">
+    <span style="font-size:18px;font-weight:700;line-height:1;">&#9662;</span>
+    <span style="font-size:8px;color:var(--muted);letter-spacing:.06em;">A-interface</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
+
+    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;flex:1 1 300px;min-width:250px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">NSS &middot; Network &amp; Switching Subsystem</span>
+
+      <div style="display:flex;justify-content:center;margin-bottom:7px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;padding:9px 12px;background:var(--ink);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:12.5px;font-weight:700;color:var(--paper);">MSC</span>
+          <span style="font-size:8.5px;color:var(--paper-soft);margin-top:2px;text-align:center;line-height:1.2;">Mobile Switching<br>Centre &mdash; the &quot;brain&quot;</span>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:8px;color:var(--brand-deep);font-weight:700;letter-spacing:.04em;margin-bottom:5px;">&#8597; MSC queries 4 databases &#8597;</div>
+
+      <div style="border-top:2px solid var(--brand);padding-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">HLR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">home loc.<br>register</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">VLR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">visitor loc.<br>register</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">AUC</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">authent.<br>centre</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">EIR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">equip. id.<br>register</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;align-self:center;">
+      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
+      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;">trunk</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;align-self:center;">
+      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">PSTN</span>
+      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">wired phone<br>network</span>
+    </div>
+
+  </div>
+
+</div>
       <figcaption><b>Fig 2.1</b> · Cellular system hierarchy — one MSC controls many base stations (BS), each BS serves the mobiles (MS) in its cell; MSC bridges the radio network to the PSTN</figcaption>
     </figure>
 
@@ -661,7 +919,70 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
 
     <figure class="diagram-fig">
-      <img src="img/wc-freq-reuse.jpg" alt="Hexagonal frequency-reuse cluster N=7, cells A–G, co-channel pattern repeats">
+<svg viewBox="0 0 345 276" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" font-family="inherit" role="img" aria-label="Two tessellating 7-cell frequency-reuse clusters with channel sets A to G. The two A-cells are nearest co-channel neighbours one cluster apart, separated by the co-channel reuse distance D = root(3N) times R, which is about 4.58 R for cluster size N = 7. The cell radius R is the centre-to-vertex distance of one hexagon.">
+  <!-- ===== CLUSTER 1 (left) and CLUSTER 2 (right): non-A cells at low brand opacity ===== -->
+  <g stroke="var(--svg-brand)" stroke-width="1.5" stroke-linejoin="round">
+    <polygon points="157.8,57.0 187.2,74.0 187.2,108.0 157.8,125.0 128.3,108.0 128.3,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,108.0 157.8,125.0 157.8,159.0 128.3,176.0 98.9,159.0 98.9,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,108.0 98.9,125.0 98.9,159.0 69.4,176.0 40.0,159.0 40.0,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="40.0,57.0 69.4,74.0 69.4,108.0 40.0,125.0 10.6,108.0 10.6,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,6.0 98.9,23.0 98.9,57.0 69.4,74.0 40.0,57.0 40.0,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,6.0 157.8,23.0 157.8,57.0 128.3,74.0 98.9,57.0 98.9,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="305.0,108.0 334.4,125.0 334.4,159.0 305.0,176.0 275.6,159.0 275.6,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,159.0 305.0,176.0 305.0,210.0 275.6,227.0 246.1,210.0 246.1,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,159.0 246.1,176.0 246.1,210.0 216.7,227.0 187.2,210.0 187.2,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="187.2,108.0 216.7,125.0 216.7,159.0 187.2,176.0 157.8,159.0 157.8,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,57.0 246.1,74.0 246.1,108.0 216.7,125.0 187.2,108.0 187.2,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,57.0 305.0,74.0 305.0,108.0 275.6,125.0 246.1,108.0 246.1,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+  </g>
+  <!-- ===== Two co-channel A-cells highlighted (solid brand) ===== -->
+  <g stroke="var(--brand-deep)" stroke-width="2" stroke-linejoin="round">
+    <polygon points="98.9,57.0 128.3,74.0 128.3,108.0 98.9,125.0 69.4,108.0 69.4,74.0" fill="var(--brand)" fill-opacity="0.60"/>
+    <polygon points="246.1,108.0 275.6,125.0 275.6,159.0 246.1,176.0 216.7,159.0 216.7,125.0" fill="var(--brand)" fill-opacity="0.60"/>
+  </g>
+  <!-- ===== Cluster boundary labels ===== -->
+  <g font-size="9.5" font-weight="700" fill="var(--muted)" text-anchor="middle" letter-spacing="0.5">
+    <text x="84" y="200">CLUSTER 1</text>
+    <text x="261" y="246">CLUSTER 2</text>
+  </g>
+  <!-- ===== Cell labels A-G (both clusters) ===== -->
+  <g text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">
+    <text x="98.9" y="95.6" fill="var(--paper)">A</text>
+    <text x="157.8" y="95.6">B</text>
+    <text x="128.3" y="146.6">C</text>
+    <text x="69.4" y="146.6">D</text>
+    <text x="40.0" y="95.6">E</text>
+    <text x="69.4" y="44.6">F</text>
+    <text x="128.3" y="44.6">G</text>
+    <text x="246.1" y="146.6" fill="var(--paper)">A</text>
+    <text x="305.0" y="146.6">B</text>
+    <text x="275.6" y="197.6">C</text>
+    <text x="216.7" y="197.6">D</text>
+    <text x="187.2" y="146.6">E</text>
+    <text x="216.7" y="95.6">F</text>
+    <text x="275.6" y="95.6">G</text>
+  </g>
+  <!-- ===== Cell radius R: centre to vertex of cluster-1 A-cell ===== -->
+  <line x1="98.9" y1="91.0" x2="128.3" y2="74.0" stroke="var(--gold)" stroke-width="2.2"/>
+  <circle cx="98.9" cy="91.0" r="2.6" fill="var(--gold)"/>
+  <text x="122" y="66.5" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">R</text>
+  <!-- ===== Reuse distance D between the two A-cell centres ===== -->
+  <line x1="98.9" y1="91.0" x2="246.1" y2="142.0" stroke="var(--brand-deep)" stroke-width="2.2" stroke-dasharray="7 4"/>
+  <circle cx="246.1" cy="142.0" r="2.6" fill="var(--brand-deep)"/>
+  <g text-anchor="middle">
+    <rect x="133" y="98" width="80" height="20" rx="4" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="1.2"/>
+    <text x="173" y="112" font-size="12" font-weight="700" fill="var(--ink)">D = &#8730;(3N)&#183;R</text>
+  </g>
+  <!-- ===== Legend block: each token its own positioned <text> so nothing overflows 345px ===== -->
+  <line x1="8" y1="232" x2="337" y2="232" stroke="var(--rule)" stroke-width="1"/>
+  <g font-size="10.5">
+    <text x="8" y="248" fill="var(--muted)">Cluster size <tspan font-weight="700" fill="var(--ink)">N = 7</tspan></text>
+    <text x="120" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">R</tspan> = cell radius</text>
+    <text x="216" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">D</tspan> = reuse distance</text>
+    <text x="8" y="266" fill="var(--muted)">Reuse ratio <tspan font-weight="700" fill="var(--ink)">Q = D/R = &#8730;21 &#8776; 4.58</tspan></text>
+    <text x="195" y="266" fill="var(--muted)">channel-set <tspan font-weight="700" fill="var(--ink)">A</tspan> repeats one cluster away</text>
+  </g>
+</svg>
       <figcaption><b>Fig 2.2</b> · N = 7 frequency-reuse cluster — seven cells A–G each use a distinct channel set; the pattern repeats so cell A reappears at reuse distance D = √(3N)·R ≈ 4.58 R</figcaption>
     </figure>
   </div>
@@ -718,6 +1039,63 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </ul>
   </div>
 
+  <!-- 2.1d-2 Trunking & Erlang-B (gap-fill: wc-trunking-erlang) -->
+  <div class="topic" id="t-2-1d2">
+    <h3>Trunking &amp; the Erlang-B Formula <span class="tag hot">⭐ 5M numerical</span></h3>
+    <div class="box def"><span class="label">Trunking &amp; Grade of Service</span>
+      <b><mark>Trunking</mark></b> lets a large pool of users share a small number of channels on demand — a user grabs a free channel only for the duration of a call, then releases it back to the pool. Because not everyone talks at once, far fewer channels are needed than users. The price is occasional <b>blocking</b>: at the busy hour every channel may be in use, so a new call is refused. The fraction of calls refused is the <b><mark>Grade of Service (GoS)</mark></b>, with the cellular industry target fixed at <b><mark>GoS = 0.02 (2%)</mark></b>. Offered traffic is measured in <b><mark>Erlangs</mark></b>: <code>A = λ · H</code> (call-arrival rate × mean holding time). One Erlang = one channel held busy 100% of the time.
+    </div>
+    <ul>
+      <li><b><mark>Offered load A</mark></b> (Erlangs) — total traffic users want to place; e.g. 200 calls/hr × 120 s = 200 × (120/3600) = <mark><b>6.67 E</b></mark>.</li>
+      <li><b><mark>C channels (trunks)</mark></b> — the shared pool serving that load.</li>
+      <li><b><mark>Erlang-B model</mark></b> — assumes <b>blocked calls are cleared</b> (the caller hangs up and does not queue), infinite user population, random Poisson arrivals. This is the standard cellular trunking model.</li>
+      <li><b>Trunking efficiency</b> — large channel groups carry far more load per channel than several small groups at the same GoS, so splitting channels (e.g. sectoring) lowers efficiency.</li>
+    </ul>
+
+    <div class="box def"><span class="label">Erlang-B recursion (calculator-friendly)</span>
+      The blocking probability for <code>C</code> channels offered <code>A</code> Erlangs is built up channel-by-channel from <code>B(0,A) = 1</code>:
+      <div class="formula" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;">
+        <code>B(C, A) = A · B(C−1, A) / ( C + A · B(C−1, A) )</code>
+      </div>
+      Iterate from <code>c = 1</code> up to <code>C</code>; the last value is the answer. No factorials, no overflow — exam-safe on a basic calculator.
+    </div>
+
+    <h5>Worked Example — A = 4 E, C = 6 channels</h5>
+    <p>A cell carries an offered load of <b>A = 4 Erlangs</b> on <b>C = 6</b> voice channels. Find the blocking probability and check it against the 2% GoS target.</p>
+    <div class="steps">
+      <div class="step"><span class="k">c=1</span><div class="body">B(1,4) = 4·1 / (1 + 4·1) = 4 / 5 = <b>0.80000</b></div></div>
+      <div class="step"><span class="k">c=2</span><div class="body">B(2,4) = 4·0.80000 / (2 + 4·0.80000) = 3.20000 / 5.20000 = <b>0.61538</b></div></div>
+      <div class="step"><span class="k">c=3</span><div class="body">B(3,4) = 4·0.61538 / (3 + 4·0.61538) = 2.46154 / 5.46154 = <b>0.45070</b></div></div>
+      <div class="step"><span class="k">c=4</span><div class="body">B(4,4) = 4·0.45070 / (4 + 4·0.45070) = 1.80282 / 5.80282 = <b>0.31068</b></div></div>
+      <div class="step"><span class="k">c=5</span><div class="body">B(5,4) = 4·0.31068 / (5 + 4·0.31068) = 1.24272 / 6.24272 = <b>0.19907</b></div></div>
+      <div class="step"><span class="k">c=6</span><div class="body">B(6,4) = 4·0.19907 / (6 + 4·0.19907) = 0.79627 / 6.79627 = <mark><b>0.11716</b></mark></div></div>
+      <div class="step"><span class="k">⇒</span><div class="body"><b>Blocking probability</b> B = <mark><b>0.1172 ≈ 11.7%</b></mark>. Since 11.7% ≫ 2%, this cell <b>fails the GoS target</b> — it is badly under-provisioned and needs more channels.</div></div>
+      <div class="step"><span class="k">fix</span><div class="body">Re-running the recursion for the same A = 4 E shows C = 9 channels gives B ≈ 1.33% (the first value ≤ 2%). So <mark><b>9 channels</b></mark> are needed to meet a 2% GoS for 4 Erlangs of load.</div></div>
+    </div>
+
+    <p>This matches the standard Erlang-B table: read the row for <b>GoS = 0.02</b> and the maximum load A each channel count can carry.</p>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Channels C</th><th>Max load A (E) @ GoS = 2%</th><th>Carried load A·(1−B)</th><th>Efficiency A·(1−B)/C</th></tr>
+        <tr><td><b>1</b></td><td>0.020</td><td>0.020</td><td>2.0%</td></tr>
+        <tr><td><b>2</b></td><td>0.223</td><td>0.219</td><td>10.9%</td></tr>
+        <tr><td><b>5</b></td><td>1.657</td><td>1.624</td><td>32.5%</td></tr>
+        <tr><td><b>10</b></td><td>5.084</td><td>4.982</td><td>49.8%</td></tr>
+        <tr><td><b>20</b></td><td>13.182</td><td>12.918</td><td>64.6%</td></tr>
+      </table>
+    </div>
+    <p>Notice the efficiency column climbing from 2% (1 channel) to 65% (20 channels): bigger trunk groups pack more load per channel at the same GoS. Our worked cell (A = 4 E) sits between the C = 5 row (max 1.66 E) and the C = 10 row (max 5.08 E), so 6 channels are far too few — consistent with the 11.7% blocking found above.</p>
+
+    <div class="box warn"><span class="label">Examiner traps</span>
+      <ul style="margin:6px 0 0;padding-left:20px;">
+        <li>Convert holding time to <b>hours</b> before computing A in Erlangs: 120 s = 120/3600 h, not 120.</li>
+        <li>Erlang-B answers the question <b>"what fraction of calls are blocked?"</b> — it is a probability (0–1), never an Erlang value.</li>
+        <li>Use <b>Erlang-B</b> (blocked-calls-cleared) for cellular; <b>Erlang-C</b> (blocked-calls-queued) is for call-centre hold queues — do not mix them.</li>
+        <li>Always iterate the recursion from <code>B(0,A) = 1</code>; starting from <code>B(1,A)</code> skips the base case and gives a wrong answer.</li>
+      </ul>
+    </div>
+  </div>
+
   <!-- 2.1e Analog vs Digital Cellular -->
   <div class="topic" id="t-2-1e">
     <h3>Analog vs Digital Cellular Systems <span class="tag hot">⭐ BCA-25 Q7(i)</span></h3>
@@ -768,7 +1146,77 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
 
     <figure class="diagram-fig">
-      <img src="img/wc-cell-split-sector.jpg" alt="Cell splitting and cell sectoring (120° / 60° sectors)">
+<svg viewBox="0 0 520 300" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,system-ui,sans-serif">
+  <!-- ============ LEFT PANEL : CELL SPLITTING ============ -->
+  <text x="128" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">CELL SPLITTING</text>
+  <text x="128" y="36" text-anchor="middle" font-size="10.5" fill="var(--muted)">1 macro cell &#8594; 4 micro cells</text>
+
+  <!-- Original macro cell footprint (dashed outline, retained for comparison) -->
+  <polygon points="128,56 201,98 201,182 128,224 55,182 55,98" fill="var(--brand-soft)" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/>
+
+  <!-- 4 non-overlapping micro hexagons tessellated inside (honeycomb) -->
+  <polygon points="135,114 120,88 90,88 75,114 90,140 120,140" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.3" opacity="0.88"/>
+  <polygon points="135,166 120,140 90,140 75,166 90,192 120,192" fill="var(--brand-2)" stroke="var(--ink)" stroke-width="1.3" opacity="0.88"/>
+  <polygon points="180,88 165,62 135,62 120,88 135,114 165,114" fill="var(--brand-2)" stroke="var(--ink)" stroke-width="1.3" opacity="0.72"/>
+  <polygon points="180,140 165,114 135,114 120,140 135,166 165,166" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.3" opacity="0.72"/>
+
+  <!-- low-power base station per micro cell -->
+  <circle cx="105" cy="114" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="105" cy="166" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="150" cy="88" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="150" cy="140" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+
+  <text x="128" y="248" text-anchor="middle" font-size="11" font-weight="700" fill="var(--brand-deep)">&#8776; 4&#215; capacity</text>
+  <text x="128" y="263" text-anchor="middle" font-size="9.5" fill="var(--muted)">smaller radius &#183; lower Tx power</text>
+  <text x="128" y="277" text-anchor="middle" font-size="9.5" fill="var(--muted)">same channels reused 4&#215;</text>
+
+  <!-- panel divider -->
+  <line x1="260" y1="40" x2="260" y2="282" stroke="var(--rule)" stroke-width="1.5"/>
+
+  <!-- ============ RIGHT PANEL : CELL SECTORING ============ -->
+  <text x="390" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">CELL SECTORING</text>
+  <text x="390" y="36" text-anchor="middle" font-size="10.5" fill="var(--muted)">3 &#215; 120&#176; directional antennas</text>
+
+  <!-- sector tints (each EXACTLY one 120 deg wedge, aligned to the dividers) -->
+  <!-- alpha = right wedge -->
+  <path d="M390,140 L390,58 L461,99 L461,181 Z" fill="var(--brand)" opacity="0.30"/>
+  <!-- beta = left wedge -->
+  <path d="M390,140 L390,58 L319,99 L319,181 Z" fill="var(--brand-2)" opacity="0.30"/>
+  <!-- gamma = bottom wedge -->
+  <path d="M390,140 L461,181 L390,222 L319,181 Z" fill="var(--brand)" opacity="0.15"/>
+
+  <!-- hexagon outline -->
+  <polygon points="390,58 461,99 461,181 390,222 319,181 319,99" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+
+  <!-- three 120 deg divider lines from centre to alternate vertices -->
+  <line x1="390" y1="140" x2="390" y2="58" stroke="var(--ink)" stroke-width="1.3"/>
+  <line x1="390" y1="140" x2="461" y2="181" stroke="var(--ink)" stroke-width="1.3"/>
+  <line x1="390" y1="140" x2="319" y2="181" stroke="var(--ink)" stroke-width="1.3"/>
+
+  <!-- directional antenna arrows bisecting each 120 deg sector -->
+  <line x1="390" y1="140" x2="434" y2="115" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="434,115 423,114 428,123" fill="var(--brand-deep)"/>
+  <line x1="390" y1="140" x2="346" y2="115" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="346,115 352,123 357,114" fill="var(--brand-deep)"/>
+  <line x1="390" y1="140" x2="390" y2="191" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="390,191 384,182 396,182" fill="var(--brand-deep)"/>
+
+  <!-- co-located base station at centre -->
+  <circle cx="390" cy="140" r="4" fill="var(--ink)"/>
+
+  <!-- sector labels alpha beta gamma at wedge midpoints -->
+  <text x="441" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#945;</text>
+  <text x="339" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#946;</text>
+  <text x="390" y="207" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#947;</text>
+
+  <!-- 120 deg angle arc + label -->
+  <path d="M404,124 A22,22 0 0,1 412,148" fill="none" stroke="var(--muted)" stroke-width="1.1"/>
+  <text x="424" y="142" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">120&#176;</text>
+
+  <text x="390" y="248" text-anchor="middle" font-size="11" font-weight="700" fill="var(--brand-deep)">&#8595; co-channel interference</text>
+  <text x="390" y="263" text-anchor="middle" font-size="9.5" fill="var(--muted)">same BS, 3 beamwidths</text>
+  <text x="390" y="277" text-anchor="middle" font-size="9.5" fill="var(--muted)">6-sector variant = 6 &#215; 60&#176;</text>
+</svg>
       <figcaption><b>Fig 2.3</b> · Capacity techniques — <b>splitting</b> subdivides one congested cell into four smaller low-power cells (≈4× capacity); <b>sectoring</b> replaces the omni antenna with three 120° directional antennas (α, β, γ) to cut co-channel interference</figcaption>
     </figure>
   </div>
@@ -822,7 +1270,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <div style="font-size:10.5px;color:var(--muted);text-align:center;margin-top:5px;">8 users take turns on one 200 kHz carrier; frame repeats every 4.615 ms.</div>
         </div>
       </div>
-      <figcaption><b>Fig 3.4</b> · FDMA gives each user a private frequency lane for the whole call; TDMA puts up to 8 users on one carrier, each firing in its own 577 μs time slot.</figcaption>
+      <figcaption><b>Fig 3.1</b> · FDMA gives each user a private frequency lane for the whole call; TDMA puts up to 8 users on one carrier, each firing in its own 577 μs time slot.</figcaption>
     </figure>
 
     <h4>CDMA Walsh Codes &amp; Soft Handoff</h4>
@@ -849,8 +1297,93 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       Spreading buys three things: <b><mark>anti-jamming</mark></b> (a narrow jammer hits only a sliver of the wide band), <b><mark>security / low probability of intercept</mark></b> (without the code the signal looks like noise), and <b><mark>multipath resistance</mark></b> (delayed echoes decorrelate from the code). DSSS spreads by multiplying with a fast chip code; FHSS spreads by hopping the carrier frequency.
     </div>
     <figure class="diagram-fig">
-      <img src="img/wc-spread-spectrum.png" alt="FHSS spread spectrum: original signal → spreading (PN code + frequency synthesizer) → spread signal">
-      <figcaption><b>Fig 3.2</b> &middot; FHSS &mdash; the carrier hops to a different frequency band each time interval following the PN hop sequence; a narrowband jammer or fade affects at most one hop</figcaption>
+<svg viewBox="0 0 560 340" style="width:100%;height:auto;max-width:540px;display:block;margin:0 auto" font-family="inherit" role="img" aria-label="DSSS spread spectrum transmit and receive chain with shared PN code generator">
+  <defs>
+    <marker id="ss-arr" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 z" fill="var(--ink)"/>
+    </marker>
+    <marker id="ss-arr-g" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto">
+      <path d="M0,0 L8,4.5 L0,9 z" fill="var(--gold)"/>
+    </marker>
+  </defs>
+
+  <!-- ============ TRANSMITTER ROW (centre y=70) ============ -->
+  <text x="14" y="24" font-size="12.5" font-weight="700" fill="var(--brand)">TRANSMITTER &#9656; spreading</text>
+
+  <!-- narrowband data block -->
+  <rect x="14" y="48" width="92" height="48" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.6"/>
+  <text x="60" y="69" text-anchor="middle" font-size="11" fill="var(--ink)">Narrowband</text>
+  <text x="60" y="84" text-anchor="middle" font-size="11" fill="var(--ink)">data d(t)</text>
+  <!-- narrow spectrum glyph: tall thin spike -->
+  <line x1="20" y1="120" x2="100" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="54" y="104" width="12" height="16" fill="var(--brand)" opacity="0.85"/>
+  <text x="60" y="133" text-anchor="middle" font-size="9" fill="var(--muted)">narrow BW</text>
+
+  <!-- arrow data -> spreader -->
+  <line x1="106" y1="72" x2="143" y2="72" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ss-arr)"/>
+
+  <!-- multiplier 1 (spreader) -->
+  <circle cx="165" cy="72" r="18" fill="var(--paper-soft)" stroke="var(--ink)" stroke-width="1.7"/>
+  <text x="165" y="78" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">&#215;</text>
+  <text x="165" y="40" text-anchor="middle" font-size="9.5" fill="var(--muted)">multiply (spread)</text>
+
+  <!-- arrow spreader -> wideband block -->
+  <line x1="183" y1="72" x2="218" y2="72" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ss-arr)"/>
+
+  <!-- wideband spread block -->
+  <rect x="220" y="48" width="100" height="48" rx="6" fill="var(--brand)" stroke="var(--brand-deep)" stroke-width="1.6"/>
+  <text x="270" y="69" text-anchor="middle" font-size="11" fill="var(--paper)">Wideband</text>
+  <text x="270" y="84" text-anchor="middle" font-size="11" fill="var(--paper)">spread s(t)</text>
+  <!-- wide spectrum glyph: low flat slab -->
+  <line x1="224" y1="120" x2="316" y2="120" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="232" y="111" width="76" height="9" fill="var(--brand)" opacity="0.55"/>
+  <text x="270" y="133" text-anchor="middle" font-size="9" fill="var(--muted)">wide BW (low power density)</text>
+
+  <!-- arrow wideband -> channel -->
+  <line x1="320" y1="72" x2="358" y2="72" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ss-arr)"/>
+
+  <!-- channel block -->
+  <rect x="360" y="48" width="88" height="48" rx="6" fill="var(--paper-deep)" stroke="var(--ink-soft)" stroke-width="1.6" stroke-dasharray="5 3"/>
+  <text x="404" y="69" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">Channel</text>
+  <text x="404" y="84" text-anchor="middle" font-size="9.5" fill="var(--muted)">+ noise / jamming</text>
+
+  <!-- channel right rail down to receiver row, into despreader right edge -->
+  <path d="M448 72 L482 72 L482 262 L286 262" fill="none" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ss-arr)"/>
+
+  <!-- ============ PN CODE GENERATOR (centre) ============ -->
+  <rect x="178" y="150" width="170" height="46" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.9"/>
+  <text x="263" y="170" text-anchor="middle" font-size="11" font-weight="700" fill="var(--ink)">PN code generator</text>
+  <text x="263" y="187" text-anchor="middle" font-size="9.5" fill="var(--muted)">chip sequence c(t) &#183; same seed both ends</text>
+
+  <!-- feed UP into spreader (enters from below the circle) -->
+  <path d="M200 150 L200 118 L165 118 L165 92" fill="none" stroke="var(--gold)" stroke-width="1.6" marker-end="url(#ss-arr-g)"/>
+  <!-- feed DOWN into despreader (enters from above the circle) -->
+  <path d="M243 196 L243 226 L248 226 L248 246" fill="none" stroke="var(--gold)" stroke-width="1.6" marker-end="url(#ss-arr-g)"/>
+
+  <!-- ============ RECEIVER ROW (centre y=262) ============ -->
+  <text x="14" y="234" font-size="12.5" font-weight="700" fill="var(--brand)">RECEIVER &#9656; despreading</text>
+
+  <!-- multiplier 2 (despreader) -->
+  <circle cx="248" cy="262" r="18" fill="var(--paper-soft)" stroke="var(--ink)" stroke-width="1.7"/>
+  <text x="248" y="268" text-anchor="middle" font-size="17" font-weight="700" fill="var(--ink)">&#215;</text>
+  <text x="248" y="300" text-anchor="middle" font-size="9.5" fill="var(--muted)">multiply (despread)</text>
+
+  <!-- arrow despreader -> recovered data -->
+  <line x1="230" y1="262" x2="192" y2="262" stroke="var(--ink)" stroke-width="1.6" marker-end="url(#ss-arr)"/>
+
+  <!-- recovered narrowband data block -->
+  <rect x="84" y="238" width="106" height="48" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.6"/>
+  <text x="137" y="259" text-anchor="middle" font-size="11" fill="var(--ink)">Recovered</text>
+  <text x="137" y="274" text-anchor="middle" font-size="11" fill="var(--ink)">data d(t)</text>
+  <!-- narrow spectrum glyph again: tall thin spike -->
+  <line x1="92" y1="310" x2="182" y2="310" stroke="var(--muted)" stroke-width="1"/>
+  <rect x="131" y="294" width="12" height="16" fill="var(--brand)" opacity="0.85"/>
+  <text x="137" y="323" text-anchor="middle" font-size="9" fill="var(--muted)">narrow BW again</text>
+
+  <!-- bandwidth journey caption -->
+  <text x="548" y="324" text-anchor="end" font-size="9.5" fill="var(--muted)">BW: narrow &#8594; wide (spread) &#8594; narrow (despread)</text>
+</svg>
+      <figcaption><b>Fig 3.2</b> &middot; DSSS &mdash; the narrowband data is multiplied by a high-rate PN <mark>chip code</mark> to spread it across a wide bandwidth; the receiver re-multiplies by the same code to despread and recover the data, while any narrowband interference is spread thin and rejected</figcaption>
     </figure>
   </div>
 
@@ -861,7 +1394,89 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       The radio spectrum is a single shared resource. A multiple-access scheme decides <i>which dimension</i> users are kept apart in so they do not collide: <mark>frequency</mark> (FDMA), <mark>time</mark> (TDMA), or <mark>code</mark> (CDMA). The dimensions are <b>orthogonal</b> &mdash; users separated cleanly in one dimension may fully overlap in the others.
     </div>
     <figure class="diagram-fig">
-      <img src="img/wc-fdma-tdma-cdma.png" alt="FDMA / TDMA / CDMA multiple-access division of the shared channel">
+<div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-start;max-width:580px;margin:0 auto">
+
+  <!-- ===================== FDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="FDMA: frequency axis split into stacked bands, each user keeps one frequency band across all time">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- frequency bands (each user = a horizontal slab across full time) -->
+      <rect x="35" y="18"  width="132" height="22" fill="var(--brand)"   opacity="0.85"/>
+      <rect x="35" y="42"  width="132" height="22" fill="var(--brand-2)" opacity="0.85"/>
+      <rect x="35" y="66"  width="132" height="22" fill="var(--gold)"    opacity="0.80"/>
+      <rect x="35" y="90"  width="132" height="22" fill="var(--brand)"   opacity="0.55"/>
+      <rect x="35" y="114" width="132" height="22" fill="var(--brand-2)" opacity="0.55"/>
+      <!-- band labels -->
+      <text x="101" y="33"  text-anchor="middle" font-size="11" fill="var(--paper)" font-weight="700">User 1</text>
+      <text x="101" y="57"  text-anchor="middle" font-size="11" fill="var(--paper)" font-weight="700">User 2</text>
+      <text x="101" y="81"  text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 3</text>
+      <text x="101" y="105" text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 4</text>
+      <text x="101" y="129" text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 5</text>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">FDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Split by <b style="color:var(--brand)">frequency</b><br>all time, own band</div>
+  </div>
+
+  <!-- ===================== TDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="TDMA: time axis split into slots, each user keeps the full frequency band during its own time slot">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- time slots (each user = a vertical slab across full frequency) -->
+      <rect x="35"  y="18" width="25" height="118" fill="var(--brand)"   opacity="0.85"/>
+      <rect x="61"  y="18" width="25" height="118" fill="var(--brand-2)" opacity="0.85"/>
+      <rect x="87"  y="18" width="25" height="118" fill="var(--gold)"    opacity="0.80"/>
+      <rect x="113" y="18" width="25" height="118" fill="var(--brand)"   opacity="0.55"/>
+      <rect x="139" y="18" width="28" height="118" fill="var(--brand-2)" opacity="0.55"/>
+      <!-- slot labels (vertical so they fit narrow columns) -->
+      <text x="47"  y="77" text-anchor="middle" font-size="10" fill="var(--paper)" font-weight="700" transform="rotate(-90 47 77)">User 1</text>
+      <text x="73"  y="77" text-anchor="middle" font-size="10" fill="var(--paper)" font-weight="700" transform="rotate(-90 73 77)">User 2</text>
+      <text x="99"  y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 99 77)">User 3</text>
+      <text x="125" y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 125 77)">User 4</text>
+      <text x="152" y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 152 77)">User 5</text>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">TDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Split by <b style="color:var(--brand)">time</b><br>all band, own slot</div>
+  </div>
+
+  <!-- ===================== CDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="CDMA: all users share the full frequency-time block simultaneously, separated only by unique spreading codes C1 to C4">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- one shared block: every user fills whole freq+time, separated by code -->
+      <rect x="35" y="18" width="132" height="118" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.2"/>
+      <text x="101" y="32" text-anchor="middle" font-size="9.5" fill="var(--brand-2)" font-weight="700">all share freq + time</text>
+      <!-- code chips overlapping in the same block -->
+      <g font-size="10.5" font-weight="700">
+        <rect x="44" y="44"  width="74" height="17" rx="3" fill="var(--brand)"   opacity="0.9"/>
+        <text x="81"  y="56"  text-anchor="middle" fill="var(--paper)">User 1 &#183; C&#8321;</text>
+        <rect x="76" y="66"  width="74" height="17" rx="3" fill="var(--brand-2)" opacity="0.9"/>
+        <text x="113" y="78"  text-anchor="middle" fill="var(--paper)">User 2 &#183; C&#8322;</text>
+        <rect x="44" y="88"  width="74" height="17" rx="3" fill="var(--gold)"    opacity="0.92"/>
+        <text x="81"  y="100" text-anchor="middle" fill="var(--ink)">User 3 &#183; C&#8323;</text>
+        <rect x="76" y="110" width="74" height="17" rx="3" fill="var(--ink-soft)"/>
+        <text x="113" y="122" text-anchor="middle" fill="var(--paper)">User 4 &#183; C&#8324;</text>
+      </g>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">CDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Share <b style="color:var(--brand)">both</b><br>split by code C&#8345;</div>
+  </div>
+
+</div>
       <figcaption><b>Fig 3.3</b> &middot; Same shared medium, three orthogonal partitions &mdash; FDMA splits frequency, TDMA splits time, CDMA overlaps both and separates by code</figcaption>
     </figure>
   </div>
@@ -1118,6 +1733,47 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <li><b>Circuit-switched data:</b> a dedicated channel is held for the whole session (like a voice call) — wasteful for bursty data.</li>
       <li><b>Packet-switched data:</b> data split into packets sharing the channel on demand — efficient for bursty traffic, the basis of GPRS/3G/4G.</li>
     </ul>
+
+    <h4>Early Dedicated Wireless-Data Networks — CDPD, ARDIS, RAM (Mobitex)</h4>
+    <div class="box def"><span class="label">In plain words</span>
+      Before GPRS, mobile data rode on <b>separate packet-data networks</b> built either on top of the analog cellular system (<mark>CDPD</mark>) or as standalone two-way radio-data networks (<mark>ARDIS</mark>, <mark>RAM/Mobitex</mark>). They served fleet dispatch, point-of-sale terminals, email pagers and field-force devices, and are the conceptual ancestors of today's packet data.
+    </div>
+    <ul>
+      <li><b><mark>CDPD</mark> (Cellular Digital Packet Data):</b> overlays <mark>packet data on idle AMPS voice channels</mark>. It "hops" onto a 30 kHz channel only while it sits unused, giving up to <mark>19.2 kbps</mark>. Connectionless, IP-based, billed by volume — no separate spectrum needed because it scavenges the existing cellular network.</li>
+      <li><b><mark>ARDIS</mark> (Advanced Radio Data Information Service):</b> a Motorola/IBM <b>private two-way radio-data</b> network optimised for short, bursty messages and <b>excellent in-building penetration</b> (high-power base stations). Used for field-service / dispatch; ~4.8–19.2 kbps.</li>
+      <li><b><mark>RAM Mobitex</mark>:</b> an Ericsson-designed open <mark>packet-switched</mark> radio-data standard (run by RAM Mobile Data). Connectionless, store-and-forward, ~8–9.6 kbps; famous as the network behind early <b>BlackBerry</b> two-way paging and email.</li>
+    </ul>
+    <figure class="diagram-fig">
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;max-width:600px;margin:6px auto;font-size:12px;">
+        <div style="background:#fff;border:1.5px solid var(--ink);padding:6px 10px;border-radius:4px;font-weight:700;text-align:center;">📱 MES<br><span style="font-weight:400;font-size:10.5px;">Mobile End<br>System</span></div>
+        <div style="color:var(--brand);font-weight:700;">↔</div>
+        <div style="background:var(--brand-soft);border:1.5px solid var(--brand);padding:6px 10px;border-radius:4px;font-weight:700;text-align:center;">📡 MDBS<br><span style="font-weight:400;font-size:10.5px;">Mobile Data<br>Base Station</span></div>
+        <div style="color:var(--brand);font-weight:700;">→</div>
+        <div style="background:var(--brand);color:var(--paper);padding:6px 10px;border-radius:4px;font-weight:700;text-align:center;">MD-IS<br><span style="font-weight:400;font-size:10.5px;">Mobile Data<br>Intermediate Sys</span></div>
+        <div style="color:var(--brand);font-weight:700;">→</div>
+        <div style="background:var(--paper-deep);border:1.5px solid var(--ink);padding:6px 10px;border-radius:4px;font-weight:700;text-align:center;">🌐 Internet /<br>Fixed Host</div>
+      </div>
+      <figcaption><b>Fig 4.6</b> · CDPD network — the <b>MES</b> (subscriber device) talks over the air to the <b>MDBS</b> (the radio relay that scavenges idle AMPS channels), which feeds the <b>MD-IS</b> (the packet router doing mobility management and routing) onward to the wired IP backbone.</figcaption>
+    </figure>
+    <ul>
+      <li><b>MES (Mobile End System):</b> the user's CDPD modem/terminal — the host that originates and receives IP packets over the air.</li>
+      <li><b>MDBS (Mobile Data Base Station):</b> the cell-site radio that detects idle voice channels and relays packets between the MES and the fixed side (channel-hopping is managed here).</li>
+      <li><b>MD-IS (Mobile Data Intermediate System):</b> the CDPD router that performs <mark>mobility management</mark> (registration, handoff) and forwards packets to the fixed Internet/host — the brain of the network.</li>
+    </ul>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>CDPD</th><th>ARDIS</th><th>RAM (Mobitex)</th></tr>
+        <tr><td><b>Basis</b></td><td>Overlay on <mark>analog AMPS</mark> cellular</td><td>Private dedicated radio network</td><td>Dedicated open standard (Ericsson)</td></tr>
+        <tr><td><b>Switching</b></td><td>Packet, connectionless IP</td><td>Packet, message-oriented</td><td>Packet, store-and-forward</td></tr>
+        <tr><td><b>Peak rate</b></td><td>Up to <mark>19.2 kbps</mark></td><td>~4.8–19.2 kbps</td><td>~8–9.6 kbps</td></tr>
+        <tr><td><b>Strength</b></td><td>Reuses idle voice channels — no extra spectrum</td><td>Strong <mark>in-building</mark> coverage</td><td>Reliable bursty messaging</td></tr>
+        <tr><td><b>Typical use</b></td><td>Mobile IP, fleet/POS, field data</td><td>Field service, dispatch</td><td>Two-way paging, early BlackBerry email</td></tr>
+      </table>
+    </div>
+    <div class="box tip"><span class="label">Exam hook</span>
+      CDPD's one-line definition: <mark>packet data on idle/unused AMPS voice channels at up to 19.2 kbps</mark>. Name its three nodes — <mark>MES → MDBS → MD-IS</mark> — and remember ARDIS = in-building strength, RAM/Mobitex = the BlackBerry-era network.
+    </div>
+
     <div class="table-wrap">
       <table>
         <tr><th>Parameter</th><th>Circuit-Switched</th><th>Packet-Switched</th></tr>
@@ -1155,7 +1811,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <div style="font-size:11px;color:var(--muted);margin-top:6px;">3-sector cell — three 120° beams<br>only <b>2 interferers</b>, S/I up ~4.7 dB</div>
         </div>
       </div>
-      <figcaption><b>Fig 4.5</b> · Replacing one omni antenna with three 120° directional beams cuts the count of strong first-tier co-channel interferers from 6 down to 2, raising S/I without changing cluster size N.</figcaption>
+      <figcaption><b>Fig 4.4</b> · Replacing one omni antenna with three 120° directional beams cuts the count of strong first-tier co-channel interferers from 6 down to 2, raising S/I without changing cluster size N.</figcaption>
     </figure>
   </div>
 
@@ -1178,7 +1834,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <div style="width:78px;"></div>
         </div>
       </div>
-      <figcaption><b>Fig 4.4</b> · CCS/SS7 — signalling rides a dedicated network (dashed) separate from the voice trunks (solid).</figcaption>
+      <figcaption><b>Fig 4.5</b> · CCS/SS7 — signalling rides a dedicated network (dashed) separate from the voice trunks (solid).</figcaption>
     </figure>
     <h4>Why CCS/SS7 is efficient</h4>
     <ul>
@@ -1242,7 +1898,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 a -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>What is WLL (Wireless Local Loop)? What is its main advantage?</b></div>
       <div class="ans">
         <ul>
@@ -1255,7 +1911,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 b -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(h)</span></div>
       <div class="qbody"><b>Explain frequency reuse. Define co-channel cells.</b></div>
       <div class="ans">
         <ul>
@@ -1268,7 +1924,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 c -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g)</span></div>
       <div class="qbody"><b>List three advantages of digital cellular systems (2G) over analog (1G).</b></div>
       <div class="ans">
         <ul>
@@ -1281,7 +1937,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 d -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g) · 3×</span></div>
       <div class="qbody"><b>Explain Grade of Service (GoS) in cellular networks. What is the standard target?</b></div>
       <div class="ans">
         <ul>
@@ -1294,7 +1950,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 e -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(d)</span></div>
       <div class="qbody"><b>Differentiate hard handoff and soft handoff.</b></div>
       <div class="ans">
         <div class="table-wrap">
@@ -1309,7 +1965,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 f -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>Define CDMA. What is the processing gain formula?</b></div>
       <div class="ans">
         <ul>
@@ -1322,7 +1978,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 g -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>List the three GSM security authentication triplets generated by the AuC.</b></div>
       <div class="ans">
         <p>The <mark>AuC</mark> triplet has three parts:</p>
@@ -1336,7 +1992,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 h -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(e)</span></div>
       <div class="qbody"><b>Define scatternet in Bluetooth.</b></div>
       <div class="ans">
         <ul>
@@ -1349,7 +2005,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 i -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(h)</span></div>
       <div class="qbody"><b>Explain the near-far problem in TDMA and CDMA systems.</b></div>
       <div class="ans">
         <ul>
@@ -1362,7 +2018,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 j -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(e)</span></div>
       <div class="qbody"><b>What is the pure ALOHA maximum theoretical throughput and slotted ALOHA throughput?</b></div>
       <div class="ans">
         <ul>
@@ -1385,7 +2041,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 a -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag year">⟲ BCA May-25 Q1(a)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>State the disadvantages of a cordless telephone system.</b></div>
       <div class="ans">
         <ul>
@@ -1399,7 +2055,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 b -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag year">⟲ BCA May-25 Q1(b) · 2×</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>List any four advantages of 4G (fourth-generation) mobile networks.</b></div>
       <div class="ans">
         <ul>
@@ -1413,7 +2069,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 c -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag year">⟲ BCA May-25 Q1(c)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Give the reasons for choosing hexagonal cells in a cellular system.</b></div>
       <div class="ans">
         <ul>
@@ -1426,7 +2082,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 d -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag year">⟲ BCA May-25 Q1(d)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Is a directional antenna useful for mobile phones? Why?</b></div>
       <div class="ans">
         <ul>
@@ -1438,7 +2094,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 e -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag year">⟲ BCA May-25 Q1(e)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What is a scatternet?</b></div>
       <div class="ans">
         <ul>
@@ -1451,7 +2107,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 f -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag year">⟲ BCA May-25 Q1(f)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Explain interference in the space, time and frequency domains.</b></div>
       <div class="ans">
         <ul>
@@ -1464,7 +2120,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 g -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag year">⟲ BCA May-25 Q1(g)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Draw the cell structure for frequency reuse factor N = 12.</b></div>
       <div class="ans">
         <ul>
@@ -1494,7 +2150,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 h -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag year">⟲ BCA May-25 Q1(h)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>How does the near-far effect influence TDMA systems?</b></div>
       <div class="ans">
         <ul>
@@ -1507,7 +2163,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 i -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag year">⟲ BCA May-25 Q1(i)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>Write in brief about ISDN.</b></div>
       <div class="ans">
         <ul>
@@ -1520,7 +2176,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Real Q1 j -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag year">⟲ BCA · May-2025</span><span class="tag marks">1.5M</span></div>
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag year">⟲ BCA May-25 Q1(j)</span><span class="tag marks">1.5M</span></div>
       <div class="qbody"><b>What are the main problems of signal propagation?</b></div>
       <div class="ans">
         <ul>
@@ -1539,7 +2195,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q2 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q2</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q2</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q4 · 3×</span></div>
       <div class="qbody"><b>Describe the GSM System Architecture in detail with a neat block diagram. Detail the role of Mobile Station (MS), Base Station Subsystem (BSS), and Network Switching Subsystem (NSS) with a table.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -1552,8 +2208,93 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <p>Each carrier is 200 kHz wide and carries 8 TDMA voice slots.</p>
 
         <figure class="diagram-fig">
-          <img src="img/wc-cellular-arch.png" alt="GSM architecture: MS, BSS (BTS+BSC), NSS (MSC+HLR+VLR+AUC+EIR), interfaces">
-          <figcaption><b>Fig 2.4</b> · GSM four-subsystem architecture — MS · BSS · NSS · OSS connected by Um (radio), Abis (BSS internal), A (BSS↔NSS), and SS7-family interfaces (E, D, F, G inside NSS)</figcaption>
+<div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:560px;margin:0 auto;font-family:'JetBrains Mono',monospace;">
+
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
+
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;">
+      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">MS</span>
+      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">Mobile<br>Station</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;">
+      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
+      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;letter-spacing:.04em;text-align:center;">U<sub>m</sub><br>air</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">BSS &middot; Base Station Subsystem</span>
+      <div style="display:flex;align-items:center;gap:6px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BTS</span>
+          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">radio<br>tower</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);">
+          <span style="font-size:13px;font-weight:700;line-height:1;">&#9656;</span>
+          <span style="font-size:7px;color:var(--muted);margin-top:1px;">Abis</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BSC</span>
+          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">base st.<br>controller</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display:flex;justify-content:center;align-items:center;gap:8px;color:var(--brand);margin:7px 0;">
+    <span style="font-size:18px;font-weight:700;line-height:1;">&#9662;</span>
+    <span style="font-size:8px;color:var(--muted);letter-spacing:.06em;">A-interface</span>
+  </div>
+
+  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
+
+    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;flex:1 1 300px;min-width:250px;">
+      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">NSS &middot; Network &amp; Switching Subsystem</span>
+
+      <div style="display:flex;justify-content:center;margin-bottom:7px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;padding:9px 12px;background:var(--ink);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:12.5px;font-weight:700;color:var(--paper);">MSC</span>
+          <span style="font-size:8.5px;color:var(--paper-soft);margin-top:2px;text-align:center;line-height:1.2;">Mobile Switching<br>Centre &mdash; the &quot;brain&quot;</span>
+        </div>
+      </div>
+
+      <div style="text-align:center;font-size:8px;color:var(--brand-deep);font-weight:700;letter-spacing:.04em;margin-bottom:5px;">&#8597; MSC queries 4 databases &#8597;</div>
+
+      <div style="border-top:2px solid var(--brand);padding-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">HLR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">home loc.<br>register</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">VLR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">visitor loc.<br>register</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">AUC</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">authent.<br>centre</span>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
+          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">EIR</span>
+          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">equip. id.<br>register</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;align-self:center;">
+      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
+      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;">trunk</span>
+    </div>
+
+    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;align-self:center;">
+      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">PSTN</span>
+      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">wired phone<br>network</span>
+    </div>
+
+  </div>
+
+</div>
+          <figcaption><b>Fig Q2.4</b> · GSM four-subsystem architecture — MS · BSS · NSS · OSS connected by Um (radio), Abis (BSS internal), A (BSS↔NSS), and SS7-family interfaces (E, D, F, G inside NSS)</figcaption>
         </figure>
 
         <h5>1 · Mobile Station (MS) — the user end</h5>
@@ -1626,7 +2367,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
-            <li><span>Introduction + frequency bands + Fig 2.4 (4 subsystems + 4 interfaces)</span><span class="m">2.5M</span></li>
+            <li><span>Introduction + frequency bands + Fig Q2.4 (4 subsystems + 4 interfaces)</span><span class="m">2.5M</span></li>
             <li><span>MS expanded (ME + SIM + identifiers + power classes)</span><span class="m">2.5M</span></li>
             <li><span>BSS expanded (BTS + BSC + TRAU + cell types)</span><span class="m">2.5M</span></li>
             <li><span>NSS expanded (MSC, HLR, VLR, AuC, EIR)</span><span class="m">3.0M</span></li>
@@ -1639,7 +2380,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q3 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q3</span><span class="tag year">Unit 2 Numerical</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q3</span><span class="tag year">Unit 2 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(b) · 2×</span></div>
       <div class="qbody"><b>A total bandwidth of 25 MHz is allocated to a cellular system with N=7 frequency reuse cluster. If each simplex channel is 25 kHz (duplex pair = 50 kHz), and 1 MHz is reserved for control channels:
         <br>(a) Find the total duplex channels in the system.
         <br>(b) Compute voice &amp; control channels per cell.
@@ -1655,8 +2396,71 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         </div>
 
         <figure class="diagram-fig">
-          <img src="img/wc-freq-reuse.jpg" alt="Hexagonal frequency-reuse cluster N=7, cells A–G, co-channel pattern repeats">
-          <figcaption><b>Fig 3.1</b> · N=7 frequency-reuse cluster — distinct channel sets A–G; co-channel cells (A, A') separated by reuse distance D</figcaption>
+<svg viewBox="0 0 345 276" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" font-family="inherit" role="img" aria-label="Two tessellating 7-cell frequency-reuse clusters with channel sets A to G. The two A-cells are nearest co-channel neighbours one cluster apart, separated by the co-channel reuse distance D = root(3N) times R, which is about 4.58 R for cluster size N = 7. The cell radius R is the centre-to-vertex distance of one hexagon.">
+  <!-- ===== CLUSTER 1 (left) and CLUSTER 2 (right): non-A cells at low brand opacity ===== -->
+  <g stroke="var(--svg-brand)" stroke-width="1.5" stroke-linejoin="round">
+    <polygon points="157.8,57.0 187.2,74.0 187.2,108.0 157.8,125.0 128.3,108.0 128.3,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,108.0 157.8,125.0 157.8,159.0 128.3,176.0 98.9,159.0 98.9,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,108.0 98.9,125.0 98.9,159.0 69.4,176.0 40.0,159.0 40.0,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="40.0,57.0 69.4,74.0 69.4,108.0 40.0,125.0 10.6,108.0 10.6,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,6.0 98.9,23.0 98.9,57.0 69.4,74.0 40.0,57.0 40.0,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,6.0 157.8,23.0 157.8,57.0 128.3,74.0 98.9,57.0 98.9,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="305.0,108.0 334.4,125.0 334.4,159.0 305.0,176.0 275.6,159.0 275.6,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,159.0 305.0,176.0 305.0,210.0 275.6,227.0 246.1,210.0 246.1,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,159.0 246.1,176.0 246.1,210.0 216.7,227.0 187.2,210.0 187.2,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="187.2,108.0 216.7,125.0 216.7,159.0 187.2,176.0 157.8,159.0 157.8,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,57.0 246.1,74.0 246.1,108.0 216.7,125.0 187.2,108.0 187.2,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,57.0 305.0,74.0 305.0,108.0 275.6,125.0 246.1,108.0 246.1,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+  </g>
+  <!-- ===== Two co-channel A-cells highlighted (solid brand) ===== -->
+  <g stroke="var(--brand-deep)" stroke-width="2" stroke-linejoin="round">
+    <polygon points="98.9,57.0 128.3,74.0 128.3,108.0 98.9,125.0 69.4,108.0 69.4,74.0" fill="var(--brand)" fill-opacity="0.60"/>
+    <polygon points="246.1,108.0 275.6,125.0 275.6,159.0 246.1,176.0 216.7,159.0 216.7,125.0" fill="var(--brand)" fill-opacity="0.60"/>
+  </g>
+  <!-- ===== Cluster boundary labels ===== -->
+  <g font-size="9.5" font-weight="700" fill="var(--muted)" text-anchor="middle" letter-spacing="0.5">
+    <text x="84" y="200">CLUSTER 1</text>
+    <text x="261" y="246">CLUSTER 2</text>
+  </g>
+  <!-- ===== Cell labels A-G (both clusters) ===== -->
+  <g text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">
+    <text x="98.9" y="95.6" fill="var(--paper)">A</text>
+    <text x="157.8" y="95.6">B</text>
+    <text x="128.3" y="146.6">C</text>
+    <text x="69.4" y="146.6">D</text>
+    <text x="40.0" y="95.6">E</text>
+    <text x="69.4" y="44.6">F</text>
+    <text x="128.3" y="44.6">G</text>
+    <text x="246.1" y="146.6" fill="var(--paper)">A</text>
+    <text x="305.0" y="146.6">B</text>
+    <text x="275.6" y="197.6">C</text>
+    <text x="216.7" y="197.6">D</text>
+    <text x="187.2" y="146.6">E</text>
+    <text x="216.7" y="95.6">F</text>
+    <text x="275.6" y="95.6">G</text>
+  </g>
+  <!-- ===== Cell radius R: centre to vertex of cluster-1 A-cell ===== -->
+  <line x1="98.9" y1="91.0" x2="128.3" y2="74.0" stroke="var(--gold)" stroke-width="2.2"/>
+  <circle cx="98.9" cy="91.0" r="2.6" fill="var(--gold)"/>
+  <text x="122" y="66.5" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">R</text>
+  <!-- ===== Reuse distance D between the two A-cell centres ===== -->
+  <line x1="98.9" y1="91.0" x2="246.1" y2="142.0" stroke="var(--brand-deep)" stroke-width="2.2" stroke-dasharray="7 4"/>
+  <circle cx="246.1" cy="142.0" r="2.6" fill="var(--brand-deep)"/>
+  <g text-anchor="middle">
+    <rect x="133" y="98" width="80" height="20" rx="4" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="1.2"/>
+    <text x="173" y="112" font-size="12" font-weight="700" fill="var(--ink)">D = &#8730;(3N)&#183;R</text>
+  </g>
+  <!-- ===== Legend block: each token its own positioned <text> so nothing overflows 345px ===== -->
+  <line x1="8" y1="232" x2="337" y2="232" stroke="var(--rule)" stroke-width="1"/>
+  <g font-size="10.5">
+    <text x="8" y="248" fill="var(--muted)">Cluster size <tspan font-weight="700" fill="var(--ink)">N = 7</tspan></text>
+    <text x="120" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">R</tspan> = cell radius</text>
+    <text x="216" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">D</tspan> = reuse distance</text>
+    <text x="8" y="266" fill="var(--muted)">Reuse ratio <tspan font-weight="700" fill="var(--ink)">Q = D/R = &#8730;21 &#8776; 4.58</tspan></text>
+    <text x="195" y="266" fill="var(--muted)">channel-set <tspan font-weight="700" fill="var(--ink)">A</tspan> repeats one cluster away</text>
+  </g>
+</svg>
+          <figcaption><b>Fig Q3.1</b> · N=7 frequency-reuse cluster — distinct channel sets A–G; co-channel cells (A, A') separated by reuse distance D</figcaption>
         </figure>
 
         <h5>(a) Total Duplex Channels</h5>
@@ -1698,7 +2502,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="table-wrap">
           <table>
             <tr><th>Parameter</th><th>N = 4</th><th>N = 7</th><th>Interpretation</th></tr>
-            <tr><td><b>Channels per cell (same total)</b></td><td>500 / 4 = 125</td><td>500 / 7 ≈ 71</td><td>Smaller N gives ~1.75× more channels per cell, so more capacity per km²</td></tr>
+            <tr><td><b>Voice channels per cell (480 voice ÷ N)</b></td><td>480 / 4 = 120</td><td>480 / 7 ≈ 68</td><td>Smaller N gives ~1.75× more voice channels per cell, so more capacity per km². N = 7 figure matches Part (b) above</td></tr>
             <tr><td><b>Co-channel reuse ratio Q = √(3N)</b></td><td>3.46</td><td>4.58</td><td>Bigger Q (N = 7) keeps co-channel cells farther apart</td></tr>
             <tr><td><b>S/I (6 first-tier interferers, n = 4)</b></td><td>≈ 13.8 dB</td><td>≈ 18.7 dB</td><td>S/I = (1/6)·Q<sup>n</sup>. N = 7 comfortably above the 18 dB GSM threshold</td></tr>
             <tr><td><b>Verdict</b></td><td>More capacity but only just meets S/I</td><td>Standard balance for analog and 2G GSM</td><td>Pick N to trade capacity against link quality</td></tr>
@@ -1719,7 +2523,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
-            <li><span>Introduction + D = R√(3N) derivation + Fig 3.1 (N=7 cluster)</span><span class="m">2.5M</span></li>
+            <li><span>Introduction + D = R√(3N) derivation + Fig Q3.1 (N=7 cluster)</span><span class="m">2.5M</span></li>
             <li><span>Part (a) — duplex conversion and total channel calculation</span><span class="m">2.5M</span></li>
             <li><span>Part (b) — voice and control channels per cell</span><span class="m">3.0M</span></li>
             <li><span>Part (c) — Q reuse ratio &amp; D co-channel distance</span><span class="m">2.5M</span></li>
@@ -1733,15 +2537,88 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q4 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(a) · 5×</span></div>
       <div class="qbody"><b>Compare MAHO, MCHO, and NCHO handoff strategies. Discuss the practical handoff considerations: hysteresis, dwell time, guard channels, and the ping-pong effect. Trace the 4-stage handoff sequence.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
         <p>A <b>handoff</b> (handover) moves an active call from one radio channel or one tower to another without dropping the call. It kicks in when the user walks across a cell edge or the signal gets weak. Without handoff, every cell crossing would cut the call. The control logic grew through three steps (<b><mark>NCHO</mark> → <mark>MAHO</mark> → <mark>MCHO</mark></b>). The split is about <em>who measures the link</em> and <em>who picks the new tower</em>. The radio-side split is into <b><mark>hard</mark>, <mark>soft</mark>, and <mark>softer</mark></b> handoffs based on how the switch happens over the air. A common scene: you walk out of a Mumbai Metro station and your call jumps from the indoor tower to the street tower without breaking.</p>
 
         <figure class="diagram-fig">
-          <img src="img/wc-handoff.png" alt="Handoff: mobile crossing the boundary between cells BS1 and BS2">
-          <figcaption><b>Fig 4.1</b> · Handoff control evolution — decision authority shifts from network → mobile as latency tightens</figcaption>
+<svg viewBox="0 0 520 470" role="img" aria-label="Handoff: mobile crossing the cell boundary from BS1 to BS2 with received signal strength falling from BS1 and rising from BS2, switching at the handoff threshold" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto;font-family:'JetBrains Mono',monospace;">
+  <!-- ===== TOP: two adjacent cells ===== -->
+  <!-- Cell 1 hexagon -->
+  <polygon points="70,42 135,42 167,97 135,152 70,152 38,97" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <!-- Cell 2 hexagon -->
+  <polygon points="290,42 355,42 387,97 355,152 290,152 258,97" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="2"/>
+
+  <!-- Base station 1 tower -->
+  <line x1="102" y1="97" x2="102" y2="70" stroke="var(--brand)" stroke-width="2.5"/>
+  <polygon points="102,64 96,74 108,74" fill="var(--brand)"/>
+  <circle cx="102" cy="97" r="4.5" fill="var(--brand)"/>
+  <text x="102" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">BS1</text>
+
+  <!-- Base station 2 tower -->
+  <line x1="322" y1="97" x2="322" y2="70" stroke="var(--gold)" stroke-width="2.5"/>
+  <polygon points="322,64 316,74 328,74" fill="var(--gold)"/>
+  <circle cx="322" cy="97" r="4.5" fill="var(--gold)"/>
+  <text x="322" y="122" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">BS2</text>
+
+  <!-- cell boundary marker between the two cells -->
+  <line x1="212" y1="36" x2="212" y2="158" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="4 4"/>
+  <text x="212" y="30" text-anchor="middle" font-size="10" fill="var(--muted)">cell boundary</text>
+
+  <!-- MS movement arrow across boundary -->
+  <line x1="118" y1="97" x2="306" y2="97" stroke="var(--ink)" stroke-width="2"/>
+  <polygon points="312,97 302,92 302,102" fill="var(--ink)"/>
+  <!-- mobile handset glyph -->
+  <rect x="150" y="86" width="13" height="22" rx="2.5" fill="var(--paper)" stroke="var(--ink)" stroke-width="1.5"/>
+  <line x1="153" y1="103" x2="160" y2="103" stroke="var(--ink)" stroke-width="1"/>
+  <text x="156" y="80" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">MS</text>
+  <text x="240" y="146" text-anchor="middle" font-size="10" fill="var(--muted)">mobile moves BS1 &#8594; BS2</text>
+
+  <!-- ===== BOTTOM: RSS vs position plot ===== -->
+  <!-- axes -->
+  <line x1="62" y1="208" x2="62" y2="428" stroke="var(--ink)" stroke-width="1.5"/>
+  <line x1="62" y1="428" x2="478" y2="428" stroke="var(--ink)" stroke-width="1.5"/>
+  <polygon points="62,202 58,212 66,212" fill="var(--ink)"/>
+  <polygon points="484,428 474,424 474,432" fill="var(--ink)"/>
+  <text x="50" y="216" text-anchor="end" font-size="11" fill="var(--ink)">RSS</text>
+  <text x="50" y="230" text-anchor="end" font-size="9" fill="var(--muted)">(dBm)</text>
+  <text x="470" y="446" text-anchor="end" font-size="10" fill="var(--ink)">distance / time &#8594;</text>
+
+  <!-- handoff threshold line -->
+  <line x1="62" y1="330" x2="478" y2="330" stroke="var(--svg-bad)" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="474" y="324" text-anchor="end" font-size="9.5" fill="var(--svg-bad)" font-weight="700">handoff threshold P<tspan font-size="7" dy="2">th</tspan></text>
+
+  <!-- BS1 RSS falling curve: starts high (close to BS1) and decays as MS moves away -->
+  <path d="M 62 238 C 170 248, 250 312, 478 408" fill="none" stroke="var(--brand)" stroke-width="2.5"/>
+  <text x="90" y="232" font-size="11" font-weight="700" fill="var(--brand)">RSS&#8321; (BS1) &#8595;</text>
+
+  <!-- BS2 RSS rising curve: starts low (far from BS2) and grows as MS approaches; mirror of BS1 so they cross at one clean point -->
+  <path d="M 62 408 C 290 312, 370 248, 478 238" fill="none" stroke="var(--gold)" stroke-width="2.5"/>
+  <text x="450" y="232" text-anchor="end" font-size="11" font-weight="700" fill="var(--gold)">RSS&#8322; (BS2) &#8593;</text>
+
+  <!-- crossover point: RSS1 == RSS2 (curves drawn symmetric so they meet at x=270, y=323) -->
+  <line x1="270" y1="208" x2="270" y2="428" stroke="var(--muted)" stroke-width="1" stroke-dasharray="3 3"/>
+  <circle cx="270" cy="323" r="4.5" fill="var(--ink)"/>
+  <text x="270" y="202" text-anchor="middle" font-size="9" fill="var(--muted)">RSS&#8321;=RSS&#8322;</text>
+  <text x="248" y="318" text-anchor="end" font-size="9" fill="var(--ink)">crossover</text>
+
+  <!-- handoff trigger: BS2 has climbed above BS1 by margin AND cleared threshold -->
+  <line x1="330" y1="208" x2="330" y2="428" stroke="var(--svg-bad)" stroke-width="1.2" stroke-dasharray="3 3"/>
+  <circle cx="330" cy="307" r="4" fill="var(--svg-bad)"/>
+  <text x="330" y="200" text-anchor="middle" font-size="9.5" fill="var(--svg-bad)" font-weight="700">HANDOFF</text>
+
+  <!-- margin / hysteresis band between crossover and trigger -->
+  <rect x="270" y="208" width="60" height="220" fill="var(--svg-bad)" opacity="0.08"/>
+  <text x="300" y="392" text-anchor="middle" font-size="8.5" fill="var(--svg-bad)" font-weight="700">margin &#916;</text>
+  <text x="300" y="404" text-anchor="middle" font-size="7.5" fill="var(--svg-bad)">(hysteresis)</text>
+
+  <!-- served-by labels under x-axis -->
+  <text x="160" y="446" text-anchor="middle" font-size="9.5" fill="var(--brand)" font-weight="700">served by BS1</text>
+  <text x="404" y="446" text-anchor="middle" font-size="9.5" fill="var(--gold)" font-weight="700">served by BS2</text>
+</svg>
+          <figcaption><b>Fig Q4.1</b> · Handoff trigger — as the mobile moves from BS1 toward BS2, <mark>RSS from BS1 falls</mark> while RSS from BS2 rises; the handoff fires only when BS2 exceeds BS1 by the <mark>hysteresis margin</mark> past threshold P<sub>th</sub>, preventing ping-pong</figcaption>
         </figure>
 
         <h5>NCHO — Network-Controlled Handoff</h5>
@@ -1825,7 +2702,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
-            <li><span>Introduction + Fig 4.1 (NCHO→MAHO→MCHO ladder)</span><span class="m">1.5M</span></li>
+            <li><span>Introduction + Fig Q4.1 (RSS-crossover handoff trigger)</span><span class="m">1.5M</span></li>
             <li><span>NCHO + MAHO + MCHO bullet expansions (3 × 1.0M)</span><span class="m">3.0M</span></li>
             <li><span>Strategy comparison table + Hard/Soft/Softer table</span><span class="m">3.5M</span></li>
             <li><span>Five practical considerations (hysteresis, dwell, guard, ping-pong, cell-drag)</span><span class="m">2.5M</span></li>
@@ -1838,15 +2715,85 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q5 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q6(b) · 4×</span></div>
       <div class="qbody"><b>Contrast Cell Splitting, Cell Sectoring, and Microzone cell designs in detail. Explain how each increases coverage or capacity, with a detailed comparison table.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
         <p>As cellular customer count grows, operators must scale capacity <em>without</em> buying more costly frequency band. Three classic methods solve this — <b><mark>cell splitting</mark></b> (cut a cell into smaller cells), <b><mark>sectoring</mark></b> (use directional antennas), and <b><mark>microcell zone</mark></b> (spread out low-power zones, one tower). They form the textbook capacity toolkit. Each one trades cost, handover load, and signal clash in a different way. Airtel and Jio use all three across crowded zones like Connaught Place and Mumbai Airport.</p>
 
         <figure class="diagram-fig">
-          <img src="img/wc-cell-split-sector.jpg" alt="Cell splitting and cell sectoring (120° / 60° sectors)">
-          <figcaption><b>Fig 5.1</b> · Three capacity-extension techniques compared — same goal, very different cost/complexity profiles</figcaption>
+<svg viewBox="0 0 520 300" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,system-ui,sans-serif">
+  <!-- ============ LEFT PANEL : CELL SPLITTING ============ -->
+  <text x="128" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">CELL SPLITTING</text>
+  <text x="128" y="36" text-anchor="middle" font-size="10.5" fill="var(--muted)">1 macro cell &#8594; 4 micro cells</text>
+
+  <!-- Original macro cell footprint (dashed outline, retained for comparison) -->
+  <polygon points="128,56 201,98 201,182 128,224 55,182 55,98" fill="var(--brand-soft)" stroke="var(--muted)" stroke-width="1.5" stroke-dasharray="5 4" opacity="0.5"/>
+
+  <!-- 4 non-overlapping micro hexagons tessellated inside (honeycomb) -->
+  <polygon points="135,114 120,88 90,88 75,114 90,140 120,140" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.3" opacity="0.88"/>
+  <polygon points="135,166 120,140 90,140 75,166 90,192 120,192" fill="var(--brand-2)" stroke="var(--ink)" stroke-width="1.3" opacity="0.88"/>
+  <polygon points="180,88 165,62 135,62 120,88 135,114 165,114" fill="var(--brand-2)" stroke="var(--ink)" stroke-width="1.3" opacity="0.72"/>
+  <polygon points="180,140 165,114 135,114 120,140 135,166 165,166" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.3" opacity="0.72"/>
+
+  <!-- low-power base station per micro cell -->
+  <circle cx="105" cy="114" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="105" cy="166" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="150" cy="88" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+  <circle cx="150" cy="140" r="3" fill="var(--paper)" stroke="var(--ink)" stroke-width="1"/>
+
+  <text x="128" y="248" text-anchor="middle" font-size="11" font-weight="700" fill="var(--brand-deep)">&#8776; 4&#215; capacity</text>
+  <text x="128" y="263" text-anchor="middle" font-size="9.5" fill="var(--muted)">smaller radius &#183; lower Tx power</text>
+  <text x="128" y="277" text-anchor="middle" font-size="9.5" fill="var(--muted)">same channels reused 4&#215;</text>
+
+  <!-- panel divider -->
+  <line x1="260" y1="40" x2="260" y2="282" stroke="var(--rule)" stroke-width="1.5"/>
+
+  <!-- ============ RIGHT PANEL : CELL SECTORING ============ -->
+  <text x="390" y="20" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">CELL SECTORING</text>
+  <text x="390" y="36" text-anchor="middle" font-size="10.5" fill="var(--muted)">3 &#215; 120&#176; directional antennas</text>
+
+  <!-- sector tints (each EXACTLY one 120 deg wedge, aligned to the dividers) -->
+  <!-- alpha = right wedge -->
+  <path d="M390,140 L390,58 L461,99 L461,181 Z" fill="var(--brand)" opacity="0.30"/>
+  <!-- beta = left wedge -->
+  <path d="M390,140 L390,58 L319,99 L319,181 Z" fill="var(--brand-2)" opacity="0.30"/>
+  <!-- gamma = bottom wedge -->
+  <path d="M390,140 L461,181 L390,222 L319,181 Z" fill="var(--brand)" opacity="0.15"/>
+
+  <!-- hexagon outline -->
+  <polygon points="390,58 461,99 461,181 390,222 319,181 319,99" fill="none" stroke="var(--ink)" stroke-width="1.6"/>
+
+  <!-- three 120 deg divider lines from centre to alternate vertices -->
+  <line x1="390" y1="140" x2="390" y2="58" stroke="var(--ink)" stroke-width="1.3"/>
+  <line x1="390" y1="140" x2="461" y2="181" stroke="var(--ink)" stroke-width="1.3"/>
+  <line x1="390" y1="140" x2="319" y2="181" stroke="var(--ink)" stroke-width="1.3"/>
+
+  <!-- directional antenna arrows bisecting each 120 deg sector -->
+  <line x1="390" y1="140" x2="434" y2="115" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="434,115 423,114 428,123" fill="var(--brand-deep)"/>
+  <line x1="390" y1="140" x2="346" y2="115" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="346,115 352,123 357,114" fill="var(--brand-deep)"/>
+  <line x1="390" y1="140" x2="390" y2="191" stroke="var(--brand-deep)" stroke-width="2.2"/>
+  <polygon points="390,191 384,182 396,182" fill="var(--brand-deep)"/>
+
+  <!-- co-located base station at centre -->
+  <circle cx="390" cy="140" r="4" fill="var(--ink)"/>
+
+  <!-- sector labels alpha beta gamma at wedge midpoints -->
+  <text x="441" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#945;</text>
+  <text x="339" y="112" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#946;</text>
+  <text x="390" y="207" text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">&#947;</text>
+
+  <!-- 120 deg angle arc + label -->
+  <path d="M404,124 A22,22 0 0,1 412,148" fill="none" stroke="var(--muted)" stroke-width="1.1"/>
+  <text x="424" y="142" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)">120&#176;</text>
+
+  <text x="390" y="248" text-anchor="middle" font-size="11" font-weight="700" fill="var(--brand-deep)">&#8595; co-channel interference</text>
+  <text x="390" y="263" text-anchor="middle" font-size="9.5" fill="var(--muted)">same BS, 3 beamwidths</text>
+  <text x="390" y="277" text-anchor="middle" font-size="9.5" fill="var(--muted)">6-sector variant = 6 &#215; 60&#176;</text>
+</svg>
+          <figcaption><b>Fig Q5.1</b> · Three capacity-extension techniques compared — same goal, very different cost/complexity profiles</figcaption>
         </figure>
 
         <h5>The Capacity Upgrades Comparison</h5>
@@ -1922,7 +2869,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
-            <li><span>Introduction + Fig 5.1 (3-card visualisation)</span><span class="m">1.5M</span></li>
+            <li><span>Introduction + Fig Q5.1 (3-card visualisation)</span><span class="m">1.5M</span></li>
             <li><span>Cell Splitting expansion + worked numerical</span><span class="m">3.0M</span></li>
             <li><span>Cell Sectoring expansion (CCI gain, smaller cluster)</span><span class="m">3.0M</span></li>
             <li><span>Microzone expansion + worked numerical (9-zone grid)</span><span class="m">2.5M</span></li>
@@ -1933,17 +2880,230 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
+    <!-- Q5b — Performance criteria of a cellular system (joint #1 frequency) -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q5b</span><span class="tag year">Unit 2 · Joint #1 Freq</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(b) · 4×</span></div>
+      <div class="qbody"><b>Discuss the performance criteria used to evaluate a cellular mobile system. Explain voice quality, grade of service (GoS), coverage and capacity, with the Erlang-B model and a worked blocking-probability example.</b></div>
+      <div class="ans">
+        <h5>Introduction</h5>
+        <p>A cellular system is judged on <em>how well it serves users at the busy hour</em>, not just on raw coverage. Engineers track four core <b><mark>performance criteria</mark></b> — <b><mark>voice quality</mark></b>, <b><mark>grade of service (GoS)</mark></b>, <b><mark>coverage</mark></b>, and <b><mark>capacity</mark></b>. The first asks <em>"does the call sound clear?"</em>, the next <em>"can I get a channel when I dial?"</em>, the third <em>"is there signal where I stand?"</em>, and the last <em>"how many users can the cell hold at once?"</em>. The blocking criterion is computed from offered traffic in <b><mark>Erlangs</mark></b> through the <b><mark>Erlang-B</mark></b> formula. Operators like Jio and Airtel size every cell against these numbers — a target GoS of <b><mark>2%</mark></b> is the industry norm.</p>
+
+        <figure class="diagram-fig">
+<svg viewBox="0 0 520 200" role="img" aria-label="Four performance criteria of a cellular system: voice quality, grade of service, coverage, and capacity" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,system-ui,sans-serif">
+  <!-- central node -->
+  <rect x="195" y="78" width="130" height="44" rx="8" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.6"/>
+  <text x="260" y="98" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--paper)">CELLULAR</text>
+  <text x="260" y="114" text-anchor="middle" font-size="10.5" fill="var(--paper)">performance criteria</text>
+
+  <!-- connecting lines (CSS-style bordered links via SVG strokes, no box-drawing chars) -->
+  <line x1="195" y1="88" x2="120" y2="48" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="195" y1="112" x2="120" y2="152" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="325" y1="88" x2="400" y2="48" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="325" y1="112" x2="400" y2="152" stroke="var(--brand)" stroke-width="2"/>
+
+  <!-- 1 Voice quality (top-left) -->
+  <rect x="20" y="28" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
+  <text x="100" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Voice Quality</text>
+  <text x="100" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">MOS / SNR &#183; clarity</text>
+
+  <!-- 2 Grade of Service (bottom-left) -->
+  <rect x="20" y="132" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
+  <text x="100" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Grade of Service</text>
+  <text x="100" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">blocking P &#8804; 2%</text>
+
+  <!-- 3 Coverage (top-right) -->
+  <rect x="340" y="28" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+  <text x="420" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Coverage</text>
+  <text x="420" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">90&#8211;95% of area</text>
+
+  <!-- 4 Capacity (bottom-right) -->
+  <rect x="340" y="132" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+  <text x="420" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Capacity</text>
+  <text x="420" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">Erlangs carried</text>
+</svg>
+          <figcaption><b>Fig Q5b.1</b> · The four performance criteria of a cellular system — <mark>voice quality</mark> (clarity, MOS/SNR), <mark>grade of service</mark> (busy-hour blocking, target &#8804;2%), <mark>coverage</mark> (fraction of area above the usable signal threshold), and <mark>capacity</mark> (offered traffic carried, in Erlangs)</figcaption>
+        </figure>
+
+        <h5>1 · Voice Quality</h5>
+        <ul>
+          <li><b>What it measures:</b> how clear the received speech is, scored on the <b><mark>Mean Opinion Score (MOS)</mark></b> scale (1 = bad, 5 = excellent); toll-quality target is MOS &#8805; 4.0.</li>
+          <li><b>Driven by:</b> received <b>SNR / C/I</b>, codec bit-rate (GSM full-rate vs AMR), and bit-error rate after channel coding.</li>
+          <li><b>Digital advantage:</b> error-correcting codes and interleaving fix bit errors, so 2G+ keeps clear voice where 1G analog degraded with distance.</li>
+        </ul>
+
+        <h5>2 · Grade of Service (GoS)</h5>
+        <ul>
+          <li><b>Definition:</b> the probability a call is <b>blocked</b> (no free channel) during the <b><mark>busy hour</mark></b>. Industry target = <b><mark>GoS &#8804; 2% (0.02)</mark></b> — at most 2 of 100 attempts fail at peak.</li>
+          <li><b>Model:</b> computed by the <b><mark>Erlang-B</mark></b> formula, which assumes <em>blocked calls are cleared</em> (the caller hangs up and retries) — the standard cellular trunking model.</li>
+          <li><b>Trade-off:</b> tighter GoS (e.g. 1%) needs more channels for the same traffic; looser GoS (5%) packs more users per channel but frustrates callers.</li>
+        </ul>
+
+        <h5>3 · Coverage</h5>
+        <ul>
+          <li><b>Definition:</b> fraction of the service area where the received signal exceeds the <b>usable threshold</b> (typically <mark>&#8722;100 to &#8722;110 dBm</mark>). Target is usually <b>90&#8211;95%</b> area coverage.</li>
+          <li><b>Edge effect:</b> coverage is specified at the <em>cell edge</em>, the weakest point; a fade margin (6&#8211;10 dB) offsets shadowing and multipath.</li>
+          <li><b>Coverage vs capacity tension:</b> shrinking cells to add capacity (cell splitting) needs more towers to keep the same coverage.</li>
+        </ul>
+
+        <h5>4 · Capacity (Traffic Intensity)</h5>
+        <ul>
+          <li><b>Traffic intensity</b> is measured in <b><mark>Erlangs</mark></b>; <b>1 Erlang = one channel kept busy 100% of the time</b> (e.g. 30 calls/hr &#215; 2 min each = 1 E).</li>
+          <li><b>Offered vs carried:</b> offered traffic A is what users <em>request</em>; carried traffic = A&#215;(1&#8722;GoS) is what actually flows; the gap is blocked traffic.</li>
+          <li><b>Raising capacity:</b> smaller cluster size N, sectoring, and cell splitting all increase simultaneous calls per unit area.</li>
+        </ul>
+
+        <h5>Erlang-B Formula</h5>
+        <p>For <b>C</b> channels offered <b>A</b> Erlangs of traffic, the blocking probability is:</p>
+        <pre><code>           A&#8304;/C!
+B(C, A) = ----------------     (blocked-calls-cleared)
+          &#931;&#8342;&#8320;&#8230;&#8330;  A&#8319;/k!</code></pre>
+        <p>Hand-calculation uses the stable <b>recursion</b> (no large factorials):</p>
+        <pre><code>B(0, A) = 1
+              A &#183; B(n&#8722;1, A)
+B(n, A) = ----------------------
+            n + A &#183; B(n&#8722;1, A)</code></pre>
+
+        <h5>Worked Example — Sizing a 10-channel cell at 2% GoS</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Q</span><div class="body">A cell has <b>C = 10</b> traffic channels. The operator wants <b>GoS = 2%</b>. (i) Find the offered traffic A it can carry. (ii) If each subscriber generates <b>0.025 E</b> in the busy hour, how many subscribers does the cell support? (iii) Find the carried traffic and trunking efficiency.</div></div>
+          <div class="step"><span class="k">1</span><div class="body"><b>Set up:</b> we need A such that B(10, A) = 0.02. Apply the recursion with the trial value <b>A = 5.084 E</b> (read from the Erlang-B table, then verified):</div></div>
+          <div class="step"><span class="k">2</span><div class="body"><b>Run the recursion</b> B(n)=A&#183;B(n&#8722;1)/(n+A&#183;B(n&#8722;1)), A=5.084:<br>
+            B(1)=0.8356 &#183; B(2)=0.6799 &#183; B(3)=0.5354 &#183; B(4)=0.4049 &#183; B(5)=0.2917<br>
+            B(6)=0.1982 &#183; B(7)=0.1258 &#183; B(8)=0.0740 &#183; B(9)=0.0401 &#183; <b>B(10)=0.0200</b></div></div>
+          <div class="step"><span class="k">3</span><div class="body"><b>(i) Offered traffic:</b> the recursion lands on B = 0.0200 = 2% &#10004;, so <mark><b>A &#8776; 5.084 Erlang</b></mark>.</div></div>
+          <div class="step"><span class="k">4</span><div class="body"><b>(ii) Subscribers:</b> users = A / per-user load = 5.084 / 0.025 = <mark><b>&#8776; 203 subscribers</b></mark>.</div></div>
+          <div class="step"><span class="k">5</span><div class="body"><b>(iii) Carried traffic</b> = A&#215;(1&#8722;B) = 5.084 &#215; 0.98 = 4.982 E. <b>Trunking efficiency</b> = 4.982 / 10 = <mark><b>49.8%</b></mark> — note a 10-channel trunk only fills to ~50% at 2% GoS, which is why <em>large trunk groups are far more efficient</em>.</div></div>
+        </div>
+
+        <h5>Comparison — How the Four Criteria Are Specified</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Criterion</th><th>What it answers</th><th>Metric / unit</th><th>Typical target</th><th>Improved by</th></tr>
+            <tr><td><b>Voice quality</b></td><td>Is the call clear?</td><td>MOS (1&#8211;5), SNR / C/I (dB)</td><td>MOS &#8805; 4.0; C/I &#8805; 18 dB</td><td>Better codec, error coding, larger N</td></tr>
+            <tr><td><b>Grade of Service</b></td><td>Can I get a channel?</td><td>Blocking probability (Erlang-B)</td><td>&#8804; 2% (0.02)</td><td>More channels, trunk pooling</td></tr>
+            <tr><td><b>Coverage</b></td><td>Is there signal here?</td><td>% area above RSS threshold</td><td>90&#8211;95% area</td><td>Fade margin, more / taller towers</td></tr>
+            <tr><td><b>Capacity</b></td><td>How many calls at once?</td><td>Traffic intensity (Erlangs)</td><td>Per cell sizing target</td><td>Smaller N, sectoring, cell splitting</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — Erlang vs GoS vs capacity</span>
+          Do not confuse the three. <b>Erlang</b> is the <em>unit</em> of traffic load (channel-hours per hour). <b>GoS</b> is a <em>probability</em> (the 2% blocking target), <b>not</b> a traffic figure. <b>Capacity</b> is the <em>number</em> of simultaneous calls or offered Erlangs the cell holds. A frequent error is writing "GoS = 5 Erlang" — GoS has no unit, it is a fraction. Also remember Erlang-<b>B</b> clears blocked calls; Erlang-<b>C</b> queues them — the exam default for cellular is Erlang-B.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>In 2026 LTE/5G networks the criteria persist but widen: voice quality is now <b><mark>VoLTE / VoNR</mark></b> MOS over packet links, GoS extends to <b>data drop / scheduling-delay</b> targets, coverage is planned per <b>SINR band</b> for adaptive modulation, and capacity is measured in <b>throughput (Mbps/cell)</b> as well as Erlangs. Jio and Airtel run automated <b>SON (Self-Organizing Network)</b> tools that re-tune power and tilt nightly to hold these four targets across millions of cells.</p>
+
+        <h5>Conclusion</h5>
+        <p>Voice quality, GoS, coverage, and capacity are the four pillars of cellular system performance. They trade against each other — tighter GoS or wider coverage costs spectrum and towers, while denser reuse raises capacity at the price of interference. The <mark>Erlang-B</mark> model ties offered traffic, channels, and blocking together, letting operators size every cell to the 2% busy-hour target.</p>
+
+        <div class="score">
+          <b>Mark Allocation (15 Marks)</b>
+          <ul>
+            <li><span>Introduction + Fig Q5b.1 (four-criteria map)</span><span class="m">2.0M</span></li>
+            <li><span>Voice quality + GoS + Coverage + Capacity bullet sections (4 &#215; 1.0M)</span><span class="m">4.0M</span></li>
+            <li><span>Erlang-B formula + recursion statement</span><span class="m">2.0M</span></li>
+            <li><span>Worked example (A, subscribers, carried traffic, efficiency)</span><span class="m">3.0M</span></li>
+            <li><span>Four-criteria comparison table</span><span class="m">2.0M</span></li>
+            <li><span>Warn box + Modern relevance + Conclusion</span><span class="m">2.0M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Q6 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(a) · 3×</span></div>
       <div class="qbody"><b>Compare FDMA, TDMA, CDMA, and SDMA multiple access techniques in detail with a comparison table. Discuss the code separation concept in CDMA and show a worked bit-level despreading example.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
         <p>Multiple access answers the question: <em>how do many users share one wireless channel</em> without signal clash. The four classic schemes (<b><mark>FDMA</mark></b>, <b><mark>TDMA</mark></b>, <b><mark>CDMA</mark></b>, <b><mark>SDMA</mark></b>) split the medium along four axes — <em>frequency, time, code, space</em>. FDMA ran 1G analog cellular (AMPS, TACS, NMT). TDMA became the workhorse of 2G GSM and IS-136. CDMA powered the IS-95 / CDMA2000 / WCDMA 3G family. SDMA (long just on paper) finally shipped in mass volume with <mark>4G</mark>/5G Massive-MIMO. Real systems mix them: GSM is FDMA + TDMA. LTE is OFDMA. 5G NR is OFDMA + SDMA + power-domain NOMA. Get the four base axes right and everything modern makes sense.</p>
 
         <figure class="diagram-fig">
-          <img src="img/wc-fdma-tdma-cdma.png" alt="FDMA / TDMA / CDMA multiple-access division of the shared channel">
-          <figcaption><b>Fig 6.1</b> · Four multiple-access axes — orthogonal partitioning of the shared wireless medium</figcaption>
+<div style="display:flex;flex-wrap:wrap;gap:14px;justify-content:center;align-items:flex-start;max-width:580px;margin:0 auto">
+
+  <!-- ===================== FDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="FDMA: frequency axis split into stacked bands, each user keeps one frequency band across all time">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- frequency bands (each user = a horizontal slab across full time) -->
+      <rect x="35" y="18"  width="132" height="22" fill="var(--brand)"   opacity="0.85"/>
+      <rect x="35" y="42"  width="132" height="22" fill="var(--brand-2)" opacity="0.85"/>
+      <rect x="35" y="66"  width="132" height="22" fill="var(--gold)"    opacity="0.80"/>
+      <rect x="35" y="90"  width="132" height="22" fill="var(--brand)"   opacity="0.55"/>
+      <rect x="35" y="114" width="132" height="22" fill="var(--brand-2)" opacity="0.55"/>
+      <!-- band labels -->
+      <text x="101" y="33"  text-anchor="middle" font-size="11" fill="var(--paper)" font-weight="700">User 1</text>
+      <text x="101" y="57"  text-anchor="middle" font-size="11" fill="var(--paper)" font-weight="700">User 2</text>
+      <text x="101" y="81"  text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 3</text>
+      <text x="101" y="105" text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 4</text>
+      <text x="101" y="129" text-anchor="middle" font-size="11" fill="var(--ink)"   font-weight="700">User 5</text>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">FDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Split by <b style="color:var(--brand)">frequency</b><br>all time, own band</div>
+  </div>
+
+  <!-- ===================== TDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="TDMA: time axis split into slots, each user keeps the full frequency band during its own time slot">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- time slots (each user = a vertical slab across full frequency) -->
+      <rect x="35"  y="18" width="25" height="118" fill="var(--brand)"   opacity="0.85"/>
+      <rect x="61"  y="18" width="25" height="118" fill="var(--brand-2)" opacity="0.85"/>
+      <rect x="87"  y="18" width="25" height="118" fill="var(--gold)"    opacity="0.80"/>
+      <rect x="113" y="18" width="25" height="118" fill="var(--brand)"   opacity="0.55"/>
+      <rect x="139" y="18" width="28" height="118" fill="var(--brand-2)" opacity="0.55"/>
+      <!-- slot labels (vertical so they fit narrow columns) -->
+      <text x="47"  y="77" text-anchor="middle" font-size="10" fill="var(--paper)" font-weight="700" transform="rotate(-90 47 77)">User 1</text>
+      <text x="73"  y="77" text-anchor="middle" font-size="10" fill="var(--paper)" font-weight="700" transform="rotate(-90 73 77)">User 2</text>
+      <text x="99"  y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 99 77)">User 3</text>
+      <text x="125" y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 125 77)">User 4</text>
+      <text x="152" y="77" text-anchor="middle" font-size="10" fill="var(--ink)"   font-weight="700" transform="rotate(-90 152 77)">User 5</text>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">TDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Split by <b style="color:var(--brand)">time</b><br>all band, own slot</div>
+  </div>
+
+  <!-- ===================== CDMA ===================== -->
+  <div style="flex:1 1 160px;min-width:150px;max-width:182px">
+    <svg viewBox="0 0 180 170" style="width:100%;height:auto;display:block" role="img" aria-label="CDMA: all users share the full frequency-time block simultaneously, separated only by unique spreading codes C1 to C4">
+      <!-- axes -->
+      <line x1="34" y1="14" x2="34" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <line x1="34" y1="138" x2="168" y2="138" stroke="var(--ink)" stroke-width="1.5"/>
+      <!-- one shared block: every user fills whole freq+time, separated by code -->
+      <rect x="35" y="18" width="132" height="118" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.2"/>
+      <text x="101" y="32" text-anchor="middle" font-size="9.5" fill="var(--brand-2)" font-weight="700">all share freq + time</text>
+      <!-- code chips overlapping in the same block -->
+      <g font-size="10.5" font-weight="700">
+        <rect x="44" y="44"  width="74" height="17" rx="3" fill="var(--brand)"   opacity="0.9"/>
+        <text x="81"  y="56"  text-anchor="middle" fill="var(--paper)">User 1 &#183; C&#8321;</text>
+        <rect x="76" y="66"  width="74" height="17" rx="3" fill="var(--brand-2)" opacity="0.9"/>
+        <text x="113" y="78"  text-anchor="middle" fill="var(--paper)">User 2 &#183; C&#8322;</text>
+        <rect x="44" y="88"  width="74" height="17" rx="3" fill="var(--gold)"    opacity="0.92"/>
+        <text x="81"  y="100" text-anchor="middle" fill="var(--ink)">User 3 &#183; C&#8323;</text>
+        <rect x="76" y="110" width="74" height="17" rx="3" fill="var(--ink-soft)"/>
+        <text x="113" y="122" text-anchor="middle" fill="var(--paper)">User 4 &#183; C&#8324;</text>
+      </g>
+      <!-- axis labels -->
+      <text x="14" y="78" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700" transform="rotate(-90 14 78)">Frequency</text>
+      <text x="101" y="152" text-anchor="middle" font-size="11" fill="var(--ink)" font-weight="700">Time</text>
+    </svg>
+    <div style="text-align:center;font-size:11.5px;color:var(--ink);font-weight:700;margin-top:2px">CDMA</div>
+    <div style="text-align:center;font-size:10.5px;color:var(--muted);line-height:1.3;margin-top:1px">Share <b style="color:var(--brand)">both</b><br>split by code C&#8345;</div>
+  </div>
+
+</div>
+          <figcaption><b>Fig 6.1</b> · Three of the four multiple-access axes — FDMA (frequency), TDMA (time), CDMA (code); SDMA (space) is shown separately in Fig 3.5</figcaption>
         </figure>
 
         <h5>1 · FDMA — Frequency Division Multiple Access</h5>
@@ -2033,7 +3193,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div class="score">
           <b>Mark Allocation (15 Marks)</b>
           <ul>
-            <li><span>Introduction + Fig 6.1 (4-axis grid)</span><span class="m">1.5M</span></li>
+            <li><span>Introduction + Fig 6.1 (3-axis grid)</span><span class="m">1.5M</span></li>
             <li><span>FDMA expansion (carriers, AMPS frame)</span><span class="m">1.5M</span></li>
             <li><span>TDMA expansion (GSM 8-slot frame, sync, Timing Advance)</span><span class="m">2.0M</span></li>
             <li><span>CDMA expansion (PN codes, soft capacity, near-far)</span><span class="m">2.0M</span></li>
@@ -2047,9 +3207,164 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
+    <!-- Q6b — FHSS / Spread Spectrum (verbatim BCA25 Q6a) -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q6b</span><span class="tag year">Unit 3 Highlight</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA · May-2025 · Q6</span><span class="tag marks">15M (10+5)</span></div>
+      <div class="qbody"><b>(a) Explain the need for spreading and the types of spread spectrum. Describe Frequency Hopping Spread Spectrum (FHSS) in detail with a neat diagram. <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[10M]</span>
+        <br>(b) Differentiate between DSSS and FHSS. <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[5M]</span></b></div>
+      <div class="ans">
+        <h5>Introduction &amp; Definition</h5>
+        <p><mark>Spread spectrum (SS)</mark> is a modulation method that deliberately spreads a narrowband data signal over a bandwidth <em>far wider</em> than the minimum needed to carry the bits. The spreading is driven by a <mark>pseudo-noise (PN) code</mark> that is independent of the data and known to both transmitter and receiver. It was born in the military (anti-jam, low probability of intercept) and now powers <mark>Bluetooth</mark>, <mark>GPS</mark>, and 3G CDMA. The two main families are <b><mark>DSSS</mark></b> (Direct Sequence) and <b><mark>FHSS</mark></b> (Frequency Hopping).</p>
+
+        <h5>(a) Need for Spreading <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[part of 10M]</span></h5>
+        <ul>
+          <li><b><mark>Anti-jamming (AJ):</mark></b> a narrowband jammer can only sit on a sliver of the wide spread band, so it corrupts a tiny fraction of the energy. After despreading, the jammer is spread thin while the wanted signal collapses back to full power.</li>
+          <li><b><mark>Low probability of intercept (LPI):</mark></b> spread over a wide band the power spectral density drops below the noise floor. Without the PN code an eavesdropper just sees noise — the signal is hidden.</li>
+          <li><b><mark>Multipath resistance:</mark></b> delayed echoes decorrelate from the live PN code, so the receiver rejects them (DSSS RAKE receiver) instead of suffering inter-symbol interference.</li>
+          <li><b>Multiple access:</b> many users share one band with different codes (CDMA = DSSS based) or different hop patterns (FHSS), without hard frequency/time slicing.</li>
+          <li><b>Coexistence in ISM bands:</b> hopping/spreading lets unlicensed devices share crowded 2.4 GHz with Wi-Fi, microwaves, and other Bluetooth piconets gracefully.</li>
+        </ul>
+
+        <h5>Types of Spread Spectrum</h5>
+        <ul>
+          <li><b><mark>DSSS</mark> (Direct Sequence):</b> each data bit is multiplied (XOR'd) by a fast PN <b>chip</b> sequence, smearing it across a wide continuous band. Used in IS-95 CDMA, 802.11b, GPS.</li>
+          <li><b><mark>FHSS</mark> (Frequency Hopping):</b> the carrier <em>jumps</em> among many narrow channels in a pseudo-random order set by the PN code. Used in Bluetooth, classic 802.11 FH, military radios.</li>
+          <li><b>THSS (Time Hopping):</b> the signal is sent in pseudo-random short bursts in time. Rare alone; used in UWB.</li>
+          <li><b>Hybrid (DS/FH):</b> combines direct-sequence spreading with frequency hopping for both AJ and LPI; used in military JTIDS / Link-16.</li>
+        </ul>
+
+        <h5>FHSS in Detail</h5>
+        <figure class="diagram-fig">
+          <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;">
+          <div style="display:grid;grid-template-columns:54px repeat(6,1fr);gap:3px;min-width:430px;max-width:560px;margin:0 auto;font-size:10.5px;">
+            <!-- header row: time slots -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:flex-end;justify-content:center;font-size:9.5px;">f &#8595; / t &#8594;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8321;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8322;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8323;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8324;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8325;</div>
+            <div style="text-align:center;font-weight:700;color:var(--muted);">t&#8326;</div>
+
+            <!-- f5 row -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:center;">f&#8325;</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+
+            <!-- f4 row -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:center;">f&#8324;</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+
+            <!-- f3 row -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:center;">f&#8323;</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+
+            <!-- f2 row -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:center;">f&#8322;</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+
+            <!-- f1 row -->
+            <div style="font-weight:700;color:var(--ink);display:flex;align-items:center;">f&#8321;</div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1.5px solid var(--brand);background:var(--brand);border-radius:3px;height:24px;color:var(--paper);font-weight:700;display:flex;align-items:center;justify-content:center;">hop</div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+            <div style="border:1px solid var(--rule);border-radius:3px;height:24px;"></div>
+          </div>
+          </div>
+          <figcaption><b>Fig 6b.1</b> &middot; FHSS hop pattern — the carrier occupies <b>one channel per dwell slot</b> (t&#8321;&#8230;t&#8326;) and jumps to a new frequency f&#8345; each slot following the <mark>PN hop sequence</mark> f&#8321;&#8594;f&#8323;&#8594;f&#8325;&#8594;f&#8321;&#8594;f&#8324;&#8594;f&#8322;. A jammer parked on any single row hits at most one slot.</figcaption>
+        </figure>
+
+        <h5>FHSS Working — Transmit Chain</h5>
+        <ul>
+          <li><b>PN code &#8594; frequency synthesizer:</b> a <mark>PN code generator</mark> feeds k bits at a time to a <b>frequency synthesizer</b>. Each k-bit word selects one of <b>2<sup>k</sup> hop frequencies</b> from the hopset. The synthesizer retunes the carrier every dwell.</li>
+          <li><b>Modulation:</b> data first modulates the carrier (usually non-coherent <mark>FSK / GFSK</mark>, since the carrier phase is lost across a hop), then the modulated signal is up-converted to the currently-selected hop frequency.</li>
+          <li><b>Hopset &amp; dwell:</b> the radio stays on each frequency for the <mark>dwell time T<sub>d</sub></mark> then hops. The full ordered list of frequencies is the <b>hopping sequence</b>; it repeats with the PN code period.</li>
+          <li><b>Receiver:</b> a synchronised PN generator drives the receiver's synthesizer through the <em>same</em> hop sequence, so its local oscillator tracks the transmitter hop-for-hop and despreads (de-hops) the signal back to a fixed IF for the FSK demodulator.</li>
+        </ul>
+
+        <h5>Key FHSS Parameters</h5>
+        <ul>
+          <li><b><mark>Dwell time (T<sub>d</sub>):</mark></b> time spent on one frequency before hopping. <code>T<sub>d</sub> = 1 / R<sub>h</sub></code>.</li>
+          <li><b><mark>Hop rate (R<sub>h</sub>):</mark></b> hops per second. Bluetooth = <b>1600 hops/s</b>.</li>
+          <li><b><mark>Fast hopping:</mark></b> hop rate &gt; symbol rate &rarr; <em>several hops carry one data symbol</em>. Best anti-jam; costly synthesizer.</li>
+          <li><b><mark>Slow hopping:</mark></b> symbol rate &gt; hop rate &rarr; <em>several symbols sent per hop</em>. Cheaper; Bluetooth is slow-hopping.</li>
+        </ul>
+
+        <h5>Worked Example — Bluetooth Dwell Time &amp; Hop Type</h5>
+        <p>Bluetooth Classic: hop rate <code>R<sub>h</sub> = 1600 hops/s</code>, gross bit rate <code>R<sub>b</sub> = 1 Mbps</code>, hopset = <b>79 channels</b> (2402&#8211;2480 MHz, 1 MHz spacing).</p>
+        <div class="steps">
+          <div class="step"><span class="k">Step 1</span><div class="body">Dwell time per hop: <code>T<sub>d</sub> = 1 / R<sub>h</sub> = 1 / 1600 = 625 &#215; 10<sup>&#8722;6</sup> s = 625 &#181;s</code>.</div></div>
+          <div class="step"><span class="k">Step 2</span><div class="body">Bits sent per dwell: <code>N = R<sub>b</sub> &#215; T<sub>d</sub> = (1 &#215; 10<sup>6</sup>) &#215; (625 &#215; 10<sup>&#8722;6</sup>) = 625 bits/hop</code>.</div></div>
+          <div class="step"><span class="k">Step 3</span><div class="body">Many bits (625) are sent on each single frequency, i.e. symbol rate &#8811; hop rate &#8658; this is <b>SLOW frequency hopping</b>.</div></div>
+          <div class="step"><span class="k">Step 4</span><div class="body">Channels needed to address the 79-channel hopset: <code>k = &#8968;log&#8322;79&#8969; = 7 bits</code> from the PN generator drive the synthesizer (2<sup>7</sup> = 128 &#8805; 79).</div></div>
+        </div>
+        <p><b>Boxed answer:</b> <mark><b>T<sub>d</sub> = 625 &#181;s, 625 bits/hop &#8594; SLOW FHSS; 7 PN bits select the hop frequency.</b></mark></p>
+
+        <h5>(b) DSSS vs FHSS — Differentiate <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[5M]</span></h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>DSSS (Direct Sequence)</th><th>FHSS (Frequency Hopping)</th></tr>
+            <tr><td><b>Spreading method</b></td><td>Multiply each bit by a fast PN <b>chip code</b> &#8594; one wide continuous band</td><td>Hop the carrier among many narrow channels in PN order</td></tr>
+            <tr><td><b>Bandwidth use</b></td><td>Occupies the <em>whole</em> wide band continuously</td><td>Occupies <em>one narrow channel at a time</em>, total band covered over many hops</td></tr>
+            <tr><td><b>Processing gain</b></td><td><code>G<sub>p</sub> = chip rate / bit rate</code> (e.g. 128)</td><td><code>G<sub>p</sub> = number of hop channels</code> (e.g. 79)</td></tr>
+            <tr><td><b>Anti-jam mechanism</b></td><td>Despreading spreads the jammer thin across the band</td><td>Jammer must follow the hop pattern; misses most hops</td></tr>
+            <tr><td><b>Near-far problem</b></td><td>Severe &#8211; needs tight power control</td><td>Mild &#8211; users rarely on same channel at same instant</td></tr>
+            <tr><td><b>Synchronisation</b></td><td>Tight chip-level (sub-microsecond) code phase</td><td>Coarser hop-level sync (dwell-time scale)</td></tr>
+            <tr><td><b>Hardware</b></td><td>Fast correlator / RAKE receiver, linear amplifier</td><td>Fast agile frequency synthesizer, simpler FSK demod</td></tr>
+            <tr><td><b>Real-world use</b></td><td>IS-95 CDMA, 802.11b, GPS</td><td>Bluetooth, classic 802.11 FH, military radios</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — processing gain definitions differ</span>
+          For DSSS, <b>G<sub>p</sub> = chip rate / data rate</b>; for FHSS, <b>G<sub>p</sub> = number of hopping channels</b>. Students often quote the DSSS formula for both and lose marks. Also note FHSS modulation is almost always <em>non-coherent FSK/GFSK</em> — coherent PSK fails because carrier phase is lost on every hop.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p><mark>Bluetooth</mark> (1600 hops/s over 79/40 channels) and <b>Adaptive Frequency Hopping (AFH)</b> in Bluetooth 5 dodge busy Wi-Fi channels in the 2.4 GHz ISM band. <b>GPS</b> and 3G <b>WCDMA</b> use DSSS. Military <b>Link-16 / JTIDS</b> uses hybrid DS/FH for both anti-jam and low-probability-of-intercept. LoRa's chirp spread spectrum is a modern SS cousin powering IoT in India's smart-meter rollouts.</p>
+
+        <h5>Conclusion</h5>
+        <p>Spreading trades extra bandwidth for <mark>anti-jam, security, and multipath resistance</mark>. DSSS spreads by a fast chip code over one wide band; FHSS spreads by hopping a narrow carrier under PN control. FHSS dominates short-range coexistence (Bluetooth) while DSSS dominates capacity-driven cellular (CDMA) — and hybrids serve hard military needs.</p>
+
+        <div class="score">
+          <b>Mark Allocation (15 Marks)</b>
+          <ul>
+            <li><span>Definition + need for spreading (AJ, LPI, multipath, MA)</span><span class="m">2.5M</span></li>
+            <li><span>Types of spread spectrum (DSSS/FHSS/THSS/hybrid)</span><span class="m">1.5M</span></li>
+            <li><span>FHSS hop-pattern diagram (Fig 6b.1)</span><span class="m">2.0M</span></li>
+            <li><span>FHSS working — PN synthesizer + dwell/hopset + receiver</span><span class="m">2.0M</span></li>
+            <li><span>Fast vs slow hopping + Bluetooth dwell-time numerical</span><span class="m">2.0M</span></li>
+            <li><span>(b) DSSS vs FHSS comparison table</span><span class="m">3.0M</span></li>
+            <li><span>Warn box + Modern relevance + Conclusion</span><span class="m">2.0M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
     <!-- Q7 — Differentiate (BCA examiner signature) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Differentiate · BCA Signature</span><span class="tag marks">15M (5+5+5)</span></div>
+      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Differentiate · BCA Signature</span><span class="tag marks">15M (5+5+5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q7(i)(ii)(iii)</span></div>
       <div class="qbody"><b>Differentiate between the following pairs (5 marks each):
         <br>(i) Analog cellular (1G) vs Digital cellular (2G/3G).
         <br>(ii) FDMA vs TDMA.
@@ -2148,7 +3463,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q8 — Complete GSM call flow -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Unit 1 + 4 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Unit 1 + 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q3(a) · 2×</span></div>
       <div class="qbody"><b>Explain the complete GSM call-setup flow for a mobile-originated call. Name every network element involved (MS, BTS, BSC, MSC, HLR, VLR, AuC) and trace the signalling step by step from dialling to a connected voice path.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -2229,7 +3544,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q9 — Generation comparison 1G–4G -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q9</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q9</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>Compare the first four generations of mobile cellular networks (1G, 2G, 3G, 4G) in detail. Use a comparison table across access scheme, switching, data rate, security and key services, and explain the driving force behind each generational jump.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -2308,7 +3623,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q10 — Mixed numerical bank -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Unit 2 + 3 Numerical</span><span class="tag marks">15M</span></div>
+      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Unit 2 + 3 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(b) · numerical</span></div>
       <div class="qbody"><b>Solve the following cellular-engineering numericals (show full working and box each answer):
         <br>(a) A cellular system has 30 MHz total spectrum, a duplex channel of 60 kHz, a cluster size N = 4, and 1 MHz reserved for control. Find total duplex channels, voice and control channels per cell.
         <br>(b) For a cluster size N = 12 with path-loss exponent n = 4, find the co-channel reuse ratio Q and the worst-case S/I in dB.
@@ -2367,6 +3682,290 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
             <li><span>(c) CDMA processing gain (absolute + dB)</span><span class="m">3.0M</span></li>
             <li><span>(d) Cluster size, Q, and Erlang traffic</span><span class="m">3.0M</span></li>
             <li><span>Warn box + Conclusion</span><span class="m">1.5M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q11 — ISDN architecture + ISDN vs AIN (Unit 4) -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q11</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M (7.5+7.5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q6(a) · 2×</span></div>
+      <div class="qbody"><b>(a) Describe the architecture of an ISDN (Integrated Services Digital Network). Name the functional groupings (TE1, TE2, TA, NT1, NT2) and the reference points (R, S, T, U), and explain the B-channel / D-channel structure with BRI and PRI access. [7.5M]
+        <br>(b) Differentiate between ISDN and AIN (Advanced Intelligent Network) using a comparison matrix. [7.5M]</b></div>
+      <div class="ans">
+        <h5>(a) ISDN Architecture</h5>
+        <p><mark>ISDN</mark> (Integrated Services Digital Network) is a fully <mark>digital end-to-end</mark> network that carries voice, data and signalling over the ordinary local-loop copper pair. It replaces the analog local loop with a digital pipe split into <mark>bearer (B) channels</mark> for user payload and a separate <mark>delta (D) channel</mark> for out-of-band call control. The architecture is defined by <b>functional groupings</b> (the equipment roles) joined at standardised <b>reference points</b>.</p>
+
+        <figure class="diagram-fig">
+          <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:620px;margin:6px auto;font-size:11px;">
+            <!-- Equipment row -->
+            <div style="display:flex;align-items:stretch;flex-wrap:nowrap;gap:0;overflow-x:auto;">
+              <div style="flex:1;min-width:74px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);">TE2</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">non-ISDN<br>(PC, analog phone)</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">R</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);">TA</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">Terminal<br>Adapter</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">S</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--brand-deep);">NT2</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">PBX /<br>LAN router</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">T</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--brand-deep);">NT1</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">line<br>termination</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">U</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:74px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;">LE</div>
+                <div style="font-size:9px;color:var(--brand-soft);line-height:1.2;margin-top:2px;">Local Exchange<br>(ISDN switch)</div>
+              </div>
+            </div>
+            <!-- TE1 direct branch note -->
+            <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;">
+              <div style="background:#fff;border:1.5px dashed var(--ink);border-radius:4px;padding:5px 9px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);font-size:11px;">TE1</div>
+                <div style="font-size:9px;color:var(--muted);">native ISDN phone</div>
+              </div>
+              <div style="font-size:10px;color:var(--ink-soft);">joins directly at the <b>S</b> reference point (no TA needed)</div>
+            </div>
+            <!-- Channel make-up strip -->
+            <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · voice/data payload</div>
+              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · 2nd bearer</div>
+              <div style="background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>D</b> · 16 kbps · signalling (out-of-band)</div>
+            </div>
+          </div>
+          <figcaption><b>Fig 11.1</b> · ISDN functional groupings (TE1/TE2/TA/NT2/NT1) and reference points (R · S · T · U) from terminal to local exchange; one BRI 2B+D access shown below</figcaption>
+        </figure>
+
+        <h5>Functional Groupings (Equipment Roles)</h5>
+        <ul>
+          <li><b><mark>TE1</mark> (Terminal Equipment type 1)</b>: a native ISDN device (ISDN telephone, ISDN fax) with a built-in S-interface. Connects directly at the <b>S</b> point.</li>
+          <li><b><mark>TE2</mark> (Terminal Equipment type 2)</b>: a non-ISDN device (analog phone, ordinary PC with RS-232/V.35). Cannot speak ISDN, so it needs a converter.</li>
+          <li><b><mark>TA</mark> (Terminal Adapter)</b>: converts a TE2's non-ISDN signalling into ISDN format, sitting between the <b>R</b> and <b>S</b> points.</li>
+          <li><b><mark>NT2</mark> (Network Termination 2)</b>: customer-side smart node — a <mark>PBX</mark>, LAN router or multiplexer doing OSI layer-2/3 switching and concentration. Often omitted in a home BRI.</li>
+          <li><b><mark>NT1</mark> (Network Termination 1)</b>: terminates the physical 2-wire <b>U</b> loop from the exchange and presents the 4-wire <b>S/T</b> bus to the premises. Handles layer-1 line coding and power feeding.</li>
+        </ul>
+
+        <h5>Reference Points (Interfaces)</h5>
+        <ul>
+          <li><b><mark>R</mark></b>: between TE2 and TA (non-ISDN to adapter).</li>
+          <li><b><mark>S</mark></b>: between terminals (TE1/TA) and NT2 — the user "bus" that can carry up to 8 devices.</li>
+          <li><b><mark>T</mark></b>: between NT2 and NT1 (S and T are electrically identical, so often called the <b>S/T</b> bus when NT2 is absent).</li>
+          <li><b><mark>U</mark></b>: the 2-wire digital local loop between NT1 and the <mark>Local Exchange (LE)</mark>.</li>
+        </ul>
+
+        <h5>Channel Structure &amp; Access Types</h5>
+        <ul>
+          <li><b><mark>B-channel (Bearer)</mark></b>: a clear <mark>64 kbps</mark> circuit-switched pipe for user payload — digitised voice or data.</li>
+          <li><b><mark>D-channel (Delta)</mark></b>: out-of-band signalling (call setup/teardown via Q.931) — 16 kbps in BRI, 64 kbps in PRI. When idle it can also carry low-rate X.25 packet data.</li>
+          <li><b><mark>BRI</mark> (Basic Rate Interface)</b>: <mark>2B + D</mark> = 2×64 + 16 = 144 kbps payload. For home / small office.</li>
+          <li><b><mark>PRI</mark> (Primary Rate Interface)</b>: <mark>30B + D</mark> (Europe E1) or 23B + D (US T1) for a business PBX trunk.</li>
+        </ul>
+
+        <h5>Worked Example — line rates</h5>
+        <div class="steps">
+          <div class="step"><span class="k">BRI</span><div class="body"><b>Payload</b> = 2 B-channels + 1 D-channel = <code>2×64 + 16 = 144 kbps</code>. The physical <b>line rate</b> adds 48 kbps of framing/synchronisation → <code>144 + 48 = 192 kbps</code> on the U loop.</div></div>
+          <div class="step"><span class="k">PRI (E1)</span><div class="body">European PRI rides an E1 frame of 32 timeslots × 64 kbps = <code>2.048 Mbps</code>. Slot 0 is framing, slot 16 is the 64 kbps D-channel, leaving <code>30 × 64 = 1920 kbps</code> of bearer = <b>30B + D</b>.</div></div>
+          <div class="step"><span class="k">PRI (T1)</span><div class="body">US PRI rides a T1 frame of 24 timeslots × 64 = <code>1.544 Mbps</code>; one slot is the D-channel, leaving <code>23 × 64 = 1472 kbps</code> bearer = <b>23B + D</b>.</div></div>
+        </div>
+        <p><b>Boxed answer:</b> <mark><b>BRI = 144 kbps payload (192 kbps line); E1 PRI = 30B+D on 2.048 Mbps; T1 PRI = 23B+D on 1.544 Mbps.</b></mark></p>
+
+        <h5>(b) ISDN vs AIN — Comparison Matrix</h5>
+        <p><mark>AIN</mark> (Advanced Intelligent Network) is <em>not</em> a replacement for ISDN — it is a control-plane overlay. ISDN defines the <b>access pipe</b> to the subscriber; AIN defines <b>where the call-routing intelligence lives</b> inside the network. The two answer different questions, so the contrast is best shown axis by axis.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Axis</th><th>ISDN</th><th>AIN</th></tr>
+            <tr><td><b>Full form / nature</b></td><td>Integrated Services Digital Network — a digital <em>access technology</em> for the local loop.</td><td>Advanced Intelligent Network — a <em>service-control architecture</em> layered on the SS7 signalling network.</td></tr>
+            <tr><td><b>Primary goal</b></td><td>Carry voice + data digitally end-to-end over one subscriber line (B + D channels).</td><td>Decouple call-routing logic from physical switches so new services deploy fast.</td></tr>
+            <tr><td><b>Plane of operation</b></td><td>Mostly <mark>user / bearer plane</mark> — the actual 64 kbps payload pipe, plus D-channel signalling to its own exchange.</td><td>Pure <mark>control plane</mark> — no user payload; it only answers "how should this call be routed?".</td></tr>
+            <tr><td><b>Key network elements</b></td><td>TE1/TE2, TA, NT1/NT2, LE (Local Exchange).</td><td><mark>SSP</mark> (Service Switching Point), <mark>SCP</mark> (Service Control Point), <mark>STP</mark> (Signal Transfer Point), plus SS7 links.</td></tr>
+            <tr><td><b>Where intelligence sits</b></td><td>Distributed in each local exchange's software.</td><td>Centralised in SCP databases queried via SS7 — switches stay "dumb".</td></tr>
+            <tr><td><b>Service deployment</b></td><td>New service often needs every switch re-programmed.</td><td>Add a row in the SCP and the service is live network-wide instantly.</td></tr>
+            <tr><td><b>Typical services</b></td><td>Digital voice, BRI/PRI data, videoconferencing, dial-up to ISP.</td><td>Toll-free 1-800, number portability, call forwarding, prepaid/calling-card, VPN dialling.</td></tr>
+            <tr><td><b>Relationship</b></td><td>The access leg that delivers a call to the network.</td><td>The brain that decides what to do with that call once it arrives.</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Traps</span>
+          (1) S and T reference points are electrically the same bus — don't lose a mark calling them two different physical interfaces; NT2 is what separates them. (2) The D-channel is <em>16 kbps in BRI but 64 kbps in PRI</em> — students often write 16 kbps for both. (3) Don't say "AIN replaces ISDN" — ISDN is access, AIN is control; they coexist. (4) In AIN the switch is the <b>SSP</b>, the database is the <b>SCP</b>, and the router of SS7 messages is the <b>STP</b> — mixing these up loses the matrix marks.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>Legacy ISDN local loops have largely been retired (BSNL and most European telcos shut down BRI/PRI by the mid-2020s in favour of <mark>SIP trunking</mark> and <mark>VoLTE</mark>), but the <b>2B+D / 64 kbps DS0</b> granularity it standardised still underlies E1/T1 carrier circuits. The AIN concept of moving service logic out of switches into a central database is the direct ancestor of today's <mark>IMS</mark> (IP Multimedia Subsystem) and <mark>SDN/NFV</mark> control planes used by Jio and Airtel, where a centralised controller programs forwarding behaviour on demand.</p>
+
+        <h5>Conclusion</h5>
+        <p>ISDN answers <em>how the subscriber connects digitally</em> (B + D channels across the R/S/T/U reference points), while AIN answers <em>where the routing intelligence lives</em> (centralised SCP over SS7). One is the access pipe, the other the brain — together they made services like toll-free and number-portability possible long before the all-IP era.</p>
+
+        <div class="score">
+          <b>Mark Allocation (15 Marks)</b>
+          <ul>
+            <li><span>(a) Intro + Fig 11.1 labelled architecture diagram</span><span class="m">2.0M</span></li>
+            <li><span>(a) Functional groupings + reference points (R/S/T/U)</span><span class="m">3.0M</span></li>
+            <li><span>(a) B/D channel structure + BRI/PRI worked line rates</span><span class="m">2.5M</span></li>
+            <li><span>(b) ISDN vs AIN comparison matrix</span><span class="m">5.5M</span></li>
+            <li><span>Warn box + Modern relevance + Conclusion</span><span class="m">2.0M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q12 — Traffic routing + CCS/SS7 + AIN (Unit 4) -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q12</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q5(b)</span></div>
+      <div class="qbody"><b>Explain traffic routing in a wireless network. Trace the mobile-originated call (MOC) and mobile-terminated call (MTC) flows, including the HLR/VLR lookups, and describe the role of Common Channel Signalling (CCS/SS7) and the Advanced Intelligent Network (AIN).</b></div>
+      <div class="ans">
+        <h5>Introduction</h5>
+        <p><mark>Traffic routing</mark> is the process of steering a call from the originating party to the terminating party across the mobile network and, where needed, into the fixed <mark>PSTN</mark>. In a GSM-style network the <mark>MSC</mark> (Mobile Switching Centre) is the switching workhorse, while the <mark>HLR</mark> (Home Location Register, the subscriber's permanent database) and <mark>VLR</mark> (Visitor Location Register, the local cache of who is currently in this area) supply the location intelligence. The call follows two distinct directions: a <mark>mobile-originated call (MOC)</mark> goes phone&nbsp;&rarr;&nbsp;network&nbsp;&rarr;&nbsp;PSTN, while a <mark>mobile-terminated call (MTC)</mark> arrives from outside, hits the <mark>GMSC</mark> (Gateway MSC), and must first interrogate the HLR to learn where the subscriber currently is. The signalling that carries every setup/teardown message between these nodes is the out-of-band <mark>SS7 (CCS No. 7)</mark> network, and the service logic that decides special routing (toll-free, number portability, prepaid) lives in the <mark>AIN</mark>.</p>
+
+        <figure class="diagram-fig">
+          <div style="display:flex;flex-direction:column;gap:14px;max-width:660px;margin:6px auto;font-size:11px;">
+            <!-- MOC row -->
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:var(--brand-deep);font-weight:700;margin-bottom:5px;">MOBILE-ORIGINATED CALL (MOC) &middot; payload path</div>
+              <div style="display:flex;align-items:center;flex-wrap:nowrap;gap:0;overflow-x:auto;">
+                <div style="flex:1;min-width:54px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:6px 4px;text-align:center;"><b>MS</b><div style="font-size:8.5px;color:var(--muted);">handset</div></div>
+                <div style="color:var(--brand);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:6px 4px;text-align:center;"><b>BTS</b><div style="font-size:8.5px;color:var(--muted);">radio</div></div>
+                <div style="color:var(--brand);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:6px 4px;text-align:center;"><b>BSC</b><div style="font-size:8.5px;color:var(--muted);">radio ctrl</div></div>
+                <div style="color:var(--brand);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:6px 4px;text-align:center;"><b>MSC</b><div style="font-size:8.5px;color:var(--brand-soft);">+ VLR check</div></div>
+                <div style="color:var(--brand);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:6px 4px;text-align:center;"><b>GMSC</b><div style="font-size:8.5px;color:var(--brand-soft);">gateway</div></div>
+                <div style="color:var(--brand);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:6px 4px;text-align:center;"><b>PSTN</b><div style="font-size:8.5px;color:var(--muted);">fixed net</div></div>
+              </div>
+            </div>
+            <!-- MTC row -->
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:var(--auburn);font-weight:700;margin-bottom:5px;">MOBILE-TERMINATED CALL (MTC) &middot; HLR interrogation first</div>
+              <div style="display:flex;align-items:center;flex-wrap:nowrap;gap:0;overflow-x:auto;">
+                <div style="flex:1;min-width:54px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:6px 4px;text-align:center;"><b>PSTN</b><div style="font-size:8.5px;color:var(--muted);">caller</div></div>
+                <div style="color:var(--auburn);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:6px 4px;text-align:center;"><b>GMSC</b><div style="font-size:8.5px;color:var(--brand-soft);">entry</div></div>
+                <div style="color:var(--auburn);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1.3;min-width:64px;background:#fff;border:1.5px dashed var(--auburn);border-radius:4px;padding:6px 4px;text-align:center;"><b>HLR</b><div style="font-size:8.5px;color:var(--muted);">SRI &rarr; asks VLR for <b>MSRN</b></div></div>
+                <div style="color:var(--auburn);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:6px 4px;text-align:center;"><b>MSC</b><div style="font-size:8.5px;color:var(--brand-soft);">+ VLR</div></div>
+                <div style="color:var(--auburn);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:6px 4px;text-align:center;"><b>BSC</b><div style="font-size:8.5px;color:var(--muted);">&rarr; BTS</div></div>
+                <div style="color:var(--auburn);font-weight:700;padding:0 3px;">&rarr;</div>
+                <div style="flex:1;min-width:54px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:6px 4px;text-align:center;"><b>MS</b><div style="font-size:8.5px;color:var(--muted);">paged</div></div>
+              </div>
+            </div>
+            <!-- SS7 / AIN node strip -->
+            <div>
+              <div style="font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:.16em;color:var(--ink-soft);font-weight:700;margin-bottom:5px;">SS7 SIGNALLING + AIN SERVICE NODES &middot; control plane</div>
+              <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;justify-content:center;">
+                <div style="background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:7px 10px;text-align:center;"><b>SSP</b><div style="font-size:9px;color:var(--muted);line-height:1.25;">switch that<br>triggers a query</div></div>
+                <div style="color:var(--brand);font-weight:700;">&harr;</div>
+                <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 10px;text-align:center;"><b>STP</b><div style="font-size:9px;color:var(--muted);line-height:1.25;">packet router<br>of SS7 msgs</div></div>
+                <div style="color:var(--brand);font-weight:700;">&harr;</div>
+                <div style="background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:7px 10px;text-align:center;"><b>SCP</b><div style="font-size:9px;color:var(--muted);line-height:1.25;">service-logic<br>+ database</div></div>
+              </div>
+            </div>
+          </div>
+          <figcaption><b>Fig 12.1</b> · MOC payload path (MS&rarr;BTS&rarr;BSC&rarr;MSC&rarr;GMSC&rarr;PSTN), MTC flow with GMSC&rarr;HLR interrogation for the MSRN before paging, and the SS7/AIN control-plane nodes SSP&harr;STP&harr;SCP</figcaption>
+        </figure>
+
+        <h5>Mobile-Originated Call (MOC) — steps</h5>
+        <ul>
+          <li><b>Channel request</b>: the <mark>MS</mark> sends a setup request on the air interface to its <mark>BTS</mark>, which forwards via the <mark>BSC</mark> to the serving <mark>MSC</mark>.</li>
+          <li><b>Authentication &amp; ciphering</b>: the MSC/VLR runs the <mark>RAND&ndash;SRES</mark> challenge and starts ciphering; the subscriber is verified against the local VLR record.</li>
+          <li><b>Number analysis</b>: the MSC analyses the dialled digits to decide the route — internal mobile, another network, or the fixed <mark>PSTN</mark>.</li>
+          <li><b>Trunk setup</b>: for an external call the MSC seizes a trunk to the <mark>GMSC</mark>, which hands the call to the PSTN; SS7 <mark>IAM</mark> (Initial Address Message) carries the called number.</li>
+          <li><b>Through-connect</b>: when the far end answers, an <mark>ANM</mark> (Answer Message) completes the speech path and billing starts.</li>
+        </ul>
+
+        <h5>Mobile-Terminated Call (MTC) — steps with HLR interrogation</h5>
+        <ul>
+          <li><b>Entry at the GMSC</b>: an incoming call to a mobile number (<mark>MSISDN</mark>) from the PSTN lands on the <mark>GMSC</mark>, the only node that knows how to find a roaming subscriber.</li>
+          <li><b>HLR interrogation</b>: the GMSC sends a <mark>Send Routing Information (SRI)</mark> query to the subscriber's <mark>HLR</mark> using only the MSISDN.</li>
+          <li><b>Roaming number request</b>: the HLR knows which VLR the subscriber is registered under and asks that VLR for a temporary <mark>MSRN</mark> (Mobile Station Roaming Number).</li>
+          <li><b>MSRN returned</b>: the VLR allocates an MSRN and returns it via the HLR to the GMSC. The MSRN is a routable address pointing at the <em>current</em> serving MSC, hiding the subscriber's roaming from the PSTN.</li>
+          <li><b>Routing &amp; paging</b>: the GMSC routes the call to the serving <mark>MSC</mark>; that MSC pages the MS across all cells of its location area via the BSC/BTS, the MS responds, and the speech path is set up. Roaming works because the HLR&rarr;VLR pair always knows the live location.</li>
+        </ul>
+
+        <h5>CCS / SS7 — link types &amp; role</h5>
+        <ul>
+          <li><b>What CCS is</b>: <mark>Common Channel Signalling</mark> carries all call-control messages on a <em>separate</em> signalling channel, out of band from the voice trunks — the opposite of old in-band tone signalling. <mark>SS7</mark> (Signalling System No. 7) is the global CCS standard.</li>
+          <li><b>A-links (Access)</b>: connect an end node (<mark>SSP</mark> or <mark>SCP</mark>) to its home <mark>STP</mark>. Always deployed as a pair for redundancy.</li>
+          <li><b>B/D-links (Bridge / Diagonal)</b>: interconnect mated STP pairs at the same (B) or different (D) hierarchy levels, forming the quad mesh between STP regions.</li>
+          <li><b>C-links (Cross)</b>: join the two STPs of a <em>mated pair</em>, used only when other routes fail — they keep the pair in sync.</li>
+          <li><b>F-links (Fully associated)</b>: a direct link between two end nodes (SSP&ndash;SSP) bypassing STPs, used for very high call volumes between two switches.</li>
+          <li><b>Why SS7 matters</b>: faster call setup, support for IN/AIN database queries (TCAP), and services impossible with in-band signalling (caller-ID, number portability, SMS transport).</li>
+        </ul>
+
+        <h5>AIN — SSP / STP / SCP roles</h5>
+        <ul>
+          <li><b><mark>SSP</mark> (Service Switching Point)</b>: a switch (MSC/local exchange) with IN <em>trigger</em> logic. When it detects a special number (e.g. 1-800, a ported number), it <em>suspends</em> call processing and launches a query instead of routing blindly.</li>
+          <li><b><mark>STP</mark> (Signal Transfer Point)</b>: a pure SS7 packet router. It does not originate or terminate calls — it relays signalling messages between SSPs and SCPs by global-title translation. Always mated for reliability.</li>
+          <li><b><mark>SCP</mark> (Service Control Point)</b>: the centralised <em>brain</em> — a database + service-logic engine. It answers the SSP's query ("route this 1-800 number to physical line X", "this prepaid balance is empty &ndash; reject") and the SSP then completes routing.</li>
+          <li><b>The pay-off</b>: service logic lives in <em>one</em> SCP, so a new service is deployed by editing one database, not re-programming every switch &mdash; switches stay "dumb", intelligence is centralised.</li>
+        </ul>
+
+        <h5>Worked Example — MTC HLR-interrogation latency budget</h5>
+        <p>Estimate the signalling delay before the MS rings on an MTC. Each one-way SS7 message hop (node&rarr;STP or STP&rarr;node) takes <code>10 ms</code>, and each database lookup (HLR or VLR) takes <code>20 ms</code>. The interrogation path is: GMSC&rarr;STP&rarr;HLR (query), HLR&rarr;STP&rarr;VLR (MSRN request), VLR back to HLR, HLR back to GMSC.</p>
+        <div class="steps">
+          <div class="step"><span class="k">Step 1</span><div class="body"><b>Message hops</b>: GMSC&rarr;STP&rarr;HLR = 2 hops; HLR&rarr;STP&rarr;VLR = 2 hops; VLR&rarr;STP&rarr;HLR = 2 hops; HLR&rarr;STP&rarr;GMSC = 2 hops. Total = <code>8 hops &times; 10 ms = 80 ms</code>.</div></div>
+          <div class="step"><span class="k">Step 2</span><div class="body"><b>Database lookups</b>: HLR processes the SRI = 1 lookup; VLR allocates the MSRN = 1 lookup. Total = <code>2 &times; 20 ms = 40 ms</code>.</div></div>
+          <div class="step"><span class="k">Step 3</span><div class="body"><b>Total interrogation delay</b> before routing/paging = <code>80 ms + 40 ms = 120 ms</code>.</div></div>
+        </div>
+        <p><b>Boxed answer:</b> <mark><b>HLR-interrogation budget &asymp; 120 ms</b></mark> &mdash; this is the location-lookup overhead the MTC pays that the MOC does not, which is why a call to a roaming mobile sets up a fraction of a second slower than a local one.</p>
+
+        <h5>Node-Role Table</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Node</th><th>Full form</th><th>Plane</th><th>Role in routing</th></tr>
+            <tr><td><b>MSC</b></td><td>Mobile Switching Centre</td><td>Bearer + control</td><td>Serving switch; sets up speech path, runs auth via VLR, pages the MS.</td></tr>
+            <tr><td><b>GMSC</b></td><td>Gateway MSC</td><td>Bearer + control</td><td>Entry point for incoming MTC; interrogates HLR for the MSRN.</td></tr>
+            <tr><td><b>HLR</b></td><td>Home Location Register</td><td>Database</td><td>Permanent subscriber record; on SRI it asks the current VLR for an MSRN.</td></tr>
+            <tr><td><b>VLR</b></td><td>Visitor Location Register</td><td>Database</td><td>Local cache of visiting subscribers; allocates the temporary MSRN.</td></tr>
+            <tr><td><b>SSP</b></td><td>Service Switching Point</td><td>Control (AIN)</td><td>Switch with IN triggers; suspends call and queries the SCP for special numbers.</td></tr>
+            <tr><td><b>STP</b></td><td>Signal Transfer Point</td><td>Control (SS7)</td><td>Packet router of SS7 messages; never holds a call, only relays signalling.</td></tr>
+            <tr><td><b>SCP</b></td><td>Service Control Point</td><td>Control (AIN)</td><td>Centralised service-logic + database; answers SSP queries with the routing decision.</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Traps</span>
+          (1) The <b>MTC needs HLR interrogation, the MOC does not</b> &mdash; the extra HLR&harr;VLR round-trip and the MSRN are the whole reason for the GMSC. (2) The <mark>MSRN</mark> is a <em>temporary, routable</em> number that points at the serving MSC; it is <em>not</em> the MSISDN and is released after the call. (3) In SS7 the <b>STP routes, the SSP triggers, the SCP decides</b> &mdash; don't swap their roles. (4) CCS is <em>out-of-band</em> signalling on a separate channel; calling it in-band loses marks.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>The SS7 control-plane idea did not die with 2G/3G &mdash; in <mark>LTE/4G</mark> the same roaming and service queries are carried over the IP-based <mark>Diameter</mark> protocol (interfaces such as S6a between the MME and the HSS, the LTE successor to the HLR), and AIN-style centralised service logic re-appears as the <mark>IMS</mark> (IP Multimedia Subsystem) and HSS in VoLTE networks run by Jio and Airtel. The SS7-to-Diameter migration also fixed long-standing SS7 security holes (location tracking, SMS interception) that plagued the older signalling network.</p>
+
+        <h5>Conclusion</h5>
+        <p>Wireless traffic routing splits into the outbound <mark>MOC</mark> (MS&rarr;BTS&rarr;BSC&rarr;MSC&rarr;GMSC&rarr;PSTN) and the inbound <mark>MTC</mark>, where the GMSC must first interrogate the <mark>HLR</mark>, which fetches an <mark>MSRN</mark> from the serving <mark>VLR</mark> before the MS can be paged &mdash; this is how roaming stays transparent to the caller. The whole exchange of setup messages rides the out-of-band <mark>SS7</mark> network, and the <mark>AIN</mark> trio <mark>SSP</mark> (trigger) / <mark>STP</mark> (route) / <mark>SCP</mark> (decide) centralises the service intelligence, a pattern that survives today as Diameter and IMS in LTE.</p>
+
+        <div class="score">
+          <b>Mark Allocation (15 Marks)</b>
+          <ul>
+            <li><span>Intro + Fig 12.1 labelled MOC/MTC + SS7/AIN diagram</span><span class="m">3.0M</span></li>
+            <li><span>MOC steps</span><span class="m">2.5M</span></li>
+            <li><span>MTC steps + HLR interrogation / MSRN / roaming</span><span class="m">3.0M</span></li>
+            <li><span>CCS/SS7 link types + AIN SSP/STP/SCP roles</span><span class="m">3.0M</span></li>
+            <li><span>Node-role table + worked latency example</span><span class="m">2.0M</span></li>
+            <li><span>Warn box + Modern relevance + Conclusion</span><span class="m">1.5M</span></li>
           </ul>
         </div>
       </div>
