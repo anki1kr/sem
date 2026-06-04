@@ -44,4 +44,8 @@ build/
 
 # Service-worker generated artifacts (none right now, but reserved)
 workbox-*.js
-sw.js.map
+
+
+dbms-exam-guide.html
+ctrc-exam-guide.html
+iks-exam-guide.html
