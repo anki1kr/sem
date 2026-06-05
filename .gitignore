@@ -44,8 +44,8 @@ build/
 
 # Service-worker generated artifacts (none right now, but reserved)
 workbox-*.js
-
-
+loc.md
+.playwright-mcp
 dbms-exam-guide.html
 ctrc-exam-guide.html
 iks-exam-guide.html

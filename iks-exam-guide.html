@@ -69,8 +69,8 @@ nav.chips a{
   text-decoration:none; white-space:nowrap; text-transform:uppercase;
 }
 nav.chips a:hover{ background:var(--brand); color:var(--paper); }
-nav.chips a.live{ background:var(--brand); color:var(--paper); }
 nav.chips a.hot{ background:var(--highlighter); border-color:var(--ink); }
+nav.chips a.live, nav.chips a.live.hot{ background:var(--brand); color:var(--paper); border-color:var(--ink); }
 
 .wrap{ position:relative; z-index:1; max-width:760px; margin:0 auto; padding:14px 12px 80px; }
 @media(min-width:600px){ .wrap{ padding:24px 22px 96px; } body{ font-size:17px; line-height:1.7; } }
@@ -169,6 +169,7 @@ section.unit{ margin:0 0 36px; scroll-margin-top:100px; }
 .sanskrit{ font-style:italic; color:var(--brand); }
 
 mark{ background:linear-gradient(180deg,transparent 55%,var(--highlighter) 55%); padding:0 1px; }
+th mark, thead mark{ background:transparent !important; color:inherit !important; padding:0 !important; }
 mark.pink{ background:linear-gradient(180deg,transparent 55%,var(--highlight-pink) 55%); }
 mark.mint{ background:linear-gradient(180deg,transparent 55%,var(--highlight-mint) 55%); }
 strong{ color:var(--ink); font-weight:700; }
