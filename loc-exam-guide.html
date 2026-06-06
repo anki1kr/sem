@@ -751,6 +751,26 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div style="text-align:center; margin-top:8px; color:var(--brand); font-weight:700; font-size:11px; font-family:'JetBrains Mono',monospace;">&#8635; loop back to FETCH for the next instruction</div>
       <figcaption><b>Fig 1.3</b> · The instruction execution cycle — Fetch, Decode, Execute, repeat</figcaption>
     </figure>
+
+    <h4>Instruction Set — Types of Instructions</h4>
+    <p>The <mark>instruction set</mark> of a CPU groups machine instructions by the kind of work they do. Every ISA — RISC or CISC — provides these five categories:</p>
+    <ul>
+      <li><b><mark>Data-transfer</mark></b>: move data between registers, memory, and I/O without changing it — <code>MOV, LOAD, STORE, PUSH, POP, XCHG</code>.</li>
+      <li><b><mark>Arithmetic</mark></b>: numeric operations on operands — <code>ADD, SUB, MUL, DIV, INC, DEC</code>.</li>
+      <li><b><mark>Logical / bit-manipulation</mark></b>: Boolean and shift operations — <code>AND, OR, XOR, NOT, SHL, SHR, ROL</code>.</li>
+      <li><b><mark>Control-transfer</mark></b> (program control): alter the PC to branch/call — <code>JMP, CALL, RET, BEQ, conditional branches</code>.</li>
+      <li><b><mark>I/O (machine-control)</mark></b>: talk to peripherals or set CPU state — <code>IN, OUT, HLT, NOP, interrupt-control</code>.</li>
+    </ul>
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:6px; max-width:580px; margin:0 auto;">
+        <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:6px; padding:8px 5px; text-align:center;"><div style="font-weight:700; color:var(--brand-deep); font-size:11.5px;">DATA<br>TRANSFER</div><div style="font-size:9px; color:var(--muted); margin-top:4px;">MOV · LOAD<br>STORE · PUSH</div></div>
+        <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:6px; padding:8px 5px; text-align:center;"><div style="font-weight:700; color:var(--forest); font-size:11.5px;">ARITH-<br>METIC</div><div style="font-size:9px; color:var(--muted); margin-top:4px;">ADD · SUB<br>MUL · INC</div></div>
+        <div style="background:var(--auburn-soft); border:1.5px solid var(--auburn); border-radius:6px; padding:8px 5px; text-align:center;"><div style="font-weight:700; color:var(--auburn); font-size:11.5px;">LOGICAL</div><div style="font-size:9px; color:var(--muted); margin-top:4px;">AND · OR<br>XOR · SHL</div></div>
+        <div style="background:var(--ink); border:1.5px solid var(--ink); border-radius:6px; padding:8px 5px; text-align:center;"><div style="font-weight:700; color:var(--paper); font-size:11.5px;">CONTROL<br>TRANSFER</div><div style="font-size:9px; color:var(--paper-soft); margin-top:4px;">JMP · CALL<br>RET · BEQ</div></div>
+        <div style="background:var(--paper-soft); border:1.5px dashed var(--brand-2); border-radius:6px; padding:8px 5px; text-align:center;"><div style="font-weight:700; color:var(--brand-2); font-size:11.5px;">I/O &amp;<br>CONTROL</div><div style="font-size:9px; color:var(--muted); margin-top:4px;">IN · OUT<br>HLT · NOP</div></div>
+      </div>
+      <figcaption><b>Fig 1.3b</b> · Five instruction categories — data-transfer (move), arithmetic (compute), logical (bit-ops), control-transfer (alter PC), and I/O/machine-control.</figcaption>
+    </figure>
   </div>
 
   <!-- 1.5 Signed Number Representation -->
@@ -1902,6 +1922,33 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <tr><td><b>Typical devices</b></td><td>Server hard disks, tape drives, scanners.</td><td>Keyboard, mouse, pen-drive, printer, phone.</td></tr>
       </table>
     </div>
+    <p>USB uses a <mark>tiered-star</mark> topology: a single <b>host controller</b> sits at the root, and <b>hubs</b> fan out additional ports. Up to <mark>127 devices</mark> across up to <b>5 tiers</b>, every device a leaf of a hub.</p>
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-direction:column; align-items:center; gap:0; max-width:520px; margin:0 auto;">
+        <div style="background:var(--ink); color:var(--paper); border:1.5px solid var(--ink); border-radius:6px; padding:7px 16px; font-weight:700; font-size:12px;">HOST CONTROLLER + ROOT HUB</div>
+        <div style="width:2px; height:14px; background:var(--brand);"></div>
+        <div style="display:flex; justify-content:center; gap:36px; align-items:flex-start; width:100%;">
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <div style="background:var(--brand-soft); border:1.5px solid var(--brand); color:var(--brand-deep); border-radius:6px; padding:6px 12px; font-weight:700; font-size:11px;">HUB 1</div>
+            <div style="width:2px; height:12px; background:var(--brand);"></div>
+            <div style="display:flex; gap:6px;">
+              <div style="background:var(--paper-soft); border:1.5px solid var(--brand-2); border-radius:5px; padding:5px 7px; font-size:9.5px; text-align:center;">Key-<br>board</div>
+              <div style="background:var(--paper-soft); border:1.5px solid var(--brand-2); border-radius:5px; padding:5px 7px; font-size:9.5px; text-align:center;">Mouse</div>
+            </div>
+          </div>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0;">
+            <div style="background:var(--brand-soft); border:1.5px solid var(--brand); color:var(--brand-deep); border-radius:6px; padding:6px 12px; font-weight:700; font-size:11px;">HUB 2</div>
+            <div style="width:2px; height:12px; background:var(--brand);"></div>
+            <div style="display:flex; gap:6px;">
+              <div style="background:var(--paper-soft); border:1.5px solid var(--brand-2); border-radius:5px; padding:5px 7px; font-size:9.5px; text-align:center;">Pen-<br>drive</div>
+              <div style="background:var(--paper-soft); border:1.5px solid var(--brand-2); border-radius:5px; padding:5px 7px; font-size:9.5px; text-align:center;">Printer</div>
+              <div style="background:var(--paper-soft); border:1.5px solid var(--brand-2); border-radius:5px; padding:5px 7px; font-size:9.5px; text-align:center;">Phone</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.8</b> · USB tiered-star — one host/root hub at the top, hubs fan out ports, devices hang as leaves (up to 127 devices, 5 tiers).</figcaption>
+    </figure>
   </div>
 
   <!-- 2.9 8086 Architecture: registers, segmentation & flags -->
@@ -2168,6 +2215,67 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <tr><td><b>Control</b></td><td>Branch/jump changes which instruction is fetched next</td><td><code>BEQ</code> outcome unknown until EX; wrong instructions fetched</td><td><mark>Branch prediction</mark>; branch target buffer; delayed branch</td></tr>
       </table>
     </div>
+    <figure class="diagram-fig">
+      <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:10px; max-width:600px; margin:0 auto;">
+
+        <div style="flex:1 1 170px; min-width:160px; border:1.5px solid var(--brand); border-radius:7px; padding:8px 9px; background:var(--paper-soft);">
+          <div style="font-weight:700; color:var(--brand-deep); font-size:11.5px; text-align:center; margin-bottom:6px;">STRUCTURAL</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">ID</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">EX</span>
+            <span style="background:#fde2e8; border:1.5px solid var(--svg-bad); color:var(--svg-bad); border-radius:3px; padding:3px 4px;">MEM</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">WB</span>
+          </div>
+          <div style="text-align:center; color:var(--svg-bad); font-size:13px; font-weight:700; line-height:1;">&#8597;</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="visibility:hidden; padding:3px 4px;">IF</span>
+            <span style="background:#fde2e8; border:1.5px solid var(--svg-bad); color:var(--svg-bad); border-radius:3px; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">ID</span>
+          </div>
+          <div style="font-size:9px; color:var(--muted); text-align:center; margin-top:5px;">Two stages want the <b>same memory port</b> in one cycle &rarr; split I/D caches.</div>
+        </div>
+
+        <div style="flex:1 1 170px; min-width:160px; border:1.5px solid var(--brand); border-radius:7px; padding:8px 9px; background:var(--paper-soft);">
+          <div style="font-weight:700; color:var(--brand-deep); font-size:11.5px; text-align:center; margin-bottom:6px;">DATA (RAW)</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">ID</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">EX</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">MEM</span>
+            <span style="background:#dcfce7; border:1.5px solid var(--svg-good); color:var(--svg-good); border-radius:3px; padding:3px 4px;">WB</span>
+          </div>
+          <div style="text-align:center; color:var(--svg-good); font-size:11px; font-weight:700; line-height:1.1;">forward &#8600;</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="visibility:hidden; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">ID</span>
+            <span style="background:#dcfce7; border:1.5px solid var(--svg-good); color:var(--svg-good); border-radius:3px; padding:3px 4px;">EX</span>
+          </div>
+          <div style="font-size:9px; color:var(--muted); text-align:center; margin-top:5px;">I2 needs R1 before I1's WB &rarr; <b>forward</b> ALU result EX&rarr;EX.</div>
+        </div>
+
+        <div style="flex:1 1 170px; min-width:160px; border:1.5px solid var(--brand); border-radius:7px; padding:8px 9px; background:var(--paper-soft);">
+          <div style="font-weight:700; color:var(--brand-deep); font-size:11.5px; text-align:center; margin-bottom:6px;">CONTROL</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">IF</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">ID</span>
+            <span style="background:#fef3c7; border:1.5px solid var(--gold); color:var(--brand-deep); border-radius:3px; padding:3px 4px;">EX&#42;</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">MEM</span>
+            <span style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:3px 4px;">WB</span>
+          </div>
+          <div style="text-align:center; color:var(--svg-bad); font-size:11px; font-weight:700; line-height:1.1;">flush &#10007;</div>
+          <div style="display:flex; gap:3px; justify-content:center; font-size:9px; font-weight:700;">
+            <span style="visibility:hidden; padding:3px 4px;">IF</span>
+            <span style="background:#fde2e8; border:1.5px solid var(--svg-bad); color:var(--svg-bad); border-radius:3px; padding:3px 4px; text-decoration:line-through;">IF</span>
+            <span style="background:#fde2e8; border:1.5px solid var(--svg-bad); color:var(--svg-bad); border-radius:3px; padding:3px 4px; text-decoration:line-through;">IF</span>
+          </div>
+          <div style="font-size:9px; color:var(--muted); text-align:center; margin-top:5px;">Branch resolved at EX&#42; &rarr; wrongly-fetched instrs <b>flushed</b>.</div>
+        </div>
+
+      </div>
+      <figcaption><b>Fig 3.5</b> · Three pipeline hazards — Structural (same hardware port, one cycle), Data RAW (operand not yet written → forward), Control (branch outcome late → flush wrong fetches).</figcaption>
+    </figure>
     <div class="box why"><span class="label">Why it matters</span>
       Every hazard either stalls the pipeline (wastes cycles) or, if unhandled, produces a wrong result. <b>Forwarding</b> (routing an ALU result directly to the next instruction's input without waiting for write-back) is the single most important hardware fix and appears in almost every exam.
     </div>
