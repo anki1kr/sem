@@ -238,9 +238,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
 /* ── STEPS ── */
 .steps{ display:flex; flex-direction:column; gap:5px; margin:10px 0; }
-.step{ display:grid; grid-template-columns:32px 1fr; gap:8px; background:var(--paper-soft); border:1.5px solid var(--rule); border-radius:4px; padding:8px 10px; align-items:start; border-left:4px solid var(--brand); }
-.step .k{ font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; color:var(--brand); }
-.step .body{ font-size:13.5px; color:var(--ink-soft); }
+.step{ display:block; background:var(--paper-soft); border:1.5px solid var(--rule); border-radius:4px; padding:8px 10px; border-left:4px solid var(--brand); font-size:13.5px; color:var(--ink-soft); line-height:1.5; }
+.step .k{ display:inline-block; min-width:18px; margin-right:6px; font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; color:var(--brand); vertical-align:top; }
+.step .body{ display:inline; font-size:13.5px; color:var(--ink-soft); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:480px){
@@ -292,7 +292,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 <header class="topbar">
   <nav class="chips" id="navChips">
     <a href="#cover">📌 Cover</a>
-    <a href="#imp-topics" class="hot">★ IMP</a>
+    <a href="#scope" class="hot">★ Syllabus</a>
     <a href="#unit-1">U1 · CPU &amp; Data</a>
     <a href="#unit-2">U2 · CU &amp; Memory</a>
     <a href="#unit-3">U3 · Pipelines</a>
@@ -319,56 +319,69 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
 <div id="countdown-bar">⏳ Loading countdown…</div>
 
-<!-- ── SCOPE ── -->
+<!-- ── SYLLABUS + IMPORTANT TOPICS (merged) ── -->
 <section class="howto solid" id="scope">
-  <h4>📌 Syllabus snapshot · 4 Units (BCG-208-V)</h4>
-  <ul>
-    <li><b>Unit I</b> — Functional Blocks &amp; Data Representation — RTL fetch/execute cycle, Addressing modes, x86 basics, Booth's multiplier, IEEE-754 conversions, division traces. <span class="priority">High-yield</span></li>
-    <li><b>Unit II</b> — x86, Control Unit, Memory &amp; Peripherals — Hardwired vs Microprogrammed sequenced addresses, DMA controller modes, Programmed/Interrupt driven I/O. <span class="priority">⭐ Highest-yield</span></li>
-    <li><b>Unit III</b> — Pipelining &amp; Parallel Processors — Speedup &amp; throughput formulas, hazards (structural, data, control), Flynn's MIMD classification. <span class="priority">Medium-yield</span></li>
-    <li><b>Unit IV</b> — Memory Organisation — Memory interleaving, Cache sizing &amp; mapping (direct, associative, set-associative), Cache replacement traces. <span class="priority">⭐ Highest-yield</span></li>
-  </ul>
-</section>
+  <h4>📌 Syllabus &amp; Important Topics · 4 Units (BCG-208-V)</h4>
+  <p style="margin:0 0 14px;color:var(--muted);font-size:13px;">Marks per unit = its typical weight in the 75-mark paper (Part-A shorts + Part-B questions, from PYQ analysis). Tap any topic to jump; ⭐ = guaranteed/most-repeated.</p>
 
-<!-- ── IMPORTANT TOPICS JUMP INDEX ── -->
-<section class="howto" id="imp-topics" style="border-color:var(--brand);">
-  <h4>⭐ Important Topics — tap to jump</h4>
-  <p style="margin:0 0 12px;color:var(--muted);font-size:13px;">Click any topic to jump straight to it.</p>
-
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit I · CPU &amp; Data Representation</div>
-  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
-    <a href="#t-1-1" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.1 Instruction Addressing Modes</a>
-    <a href="#t-1-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.3 Functional Blocks of a Computer</a>
-    <a href="#t-1-4" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.4 Instruction Execution Cycle &amp; RTL</a>
-    <a href="#t-1-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.5 Signed Number Representation</a>
-    <a href="#t-1-5b" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2's-Complement Add/Subtract &amp; Overflow</a>
-    <a href="#t-1-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.6 Ripple Carry vs Carry Look-Ahead Adder</a>
-    <a href="#t-1-7" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.7 Booth's Signed Multiplier</a>
-    <a href="#t-1-8" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.8 Restoring vs Non-Restoring Division</a>
+  <!-- Unit I -->
+  <div style="margin:0 0 16px;">
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 7px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;">Unit I · Functional Blocks &amp; Data Representation</span>
+      <span style="background:var(--brand);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.04em;">≈ 22 marks</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;">
+      <a href="#t-1-1" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 1.1 Instruction Addressing Modes</a>
+      <a href="#t-1-7" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 1.7 Booth's Signed Multiplier</a>
+      <a href="#t-1-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.3 Functional Blocks of a Computer</a>
+      <a href="#t-1-4" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.4 Instruction Execution Cycle &amp; RTL</a>
+      <a href="#t-1-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.5 Signed Number Representation</a>
+      <a href="#t-1-5b" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2's-Complement Add/Subtract &amp; Overflow</a>
+      <a href="#t-1-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.6 Ripple Carry vs Carry Look-Ahead Adder</a>
+      <a href="#t-1-8" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">1.8 Restoring vs Non-Restoring Division</a>
+    </div>
   </div>
 
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit II · Control Unit, Memory &amp; Peripherals</div>
-  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
-    <a href="#t-2-1" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.1 Hardwired vs Microprogrammed Control</a>
-    <a href="#t-2-2" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.2 DMA Controllers &amp; I/O Transfer Modes</a>
-    <a href="#t-2-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.3 Semiconductor Memory Technologies</a>
-    <a href="#t-2-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.5 Programmed vs Interrupt vs DMA I/O</a>
-    <a href="#t-2-9" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.9 8086 — Registers, Segmentation &amp; Flags</a>
+  <!-- Unit II -->
+  <div style="margin:0 0 16px;">
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 7px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;">Unit II · Control Unit, Memory &amp; Peripherals</span>
+      <span style="background:var(--brand);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.04em;">≈ 22 marks</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;">
+      <a href="#t-2-2" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 2.2 DMA Controllers &amp; I/O Transfer Modes</a>
+      <a href="#t-2-9" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 2.9 8086 — Registers, Segmentation &amp; Flags</a>
+      <a href="#t-2-1" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.1 Hardwired vs Microprogrammed Control</a>
+      <a href="#t-2-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.3 Semiconductor Memory Technologies</a>
+      <a href="#t-2-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">2.5 Programmed vs Interrupt vs DMA I/O</a>
+    </div>
   </div>
 
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit III · Pipelining &amp; Parallel Processors</div>
-  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0 0 16px;">
-    <a href="#t-3-2" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.2 Pipelining &amp; 5-Stage RISC Pipeline</a>
-    <a href="#t-3-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.3 Throughput &amp; Speedup</a>
-    <a href="#t-3-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.5 Parallel Processors &amp; Flynn's Taxonomy</a>
-    <a href="#t-3-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.6 Concurrent Access &amp; Cache Coherency</a>
+  <!-- Unit III -->
+  <div style="margin:0 0 16px;">
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 7px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;">Unit III · Pipelining &amp; Parallel Processors</span>
+      <span style="background:var(--brand);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.04em;">≈ 15 marks</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;">
+      <a href="#t-3-3" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 3.3 Throughput &amp; Speedup</a>
+      <a href="#t-3-2" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.2 Pipelining &amp; 5-Stage RISC Pipeline</a>
+      <a href="#t-3-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.5 Parallel Processors &amp; Flynn's Taxonomy</a>
+      <a href="#t-3-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">3.6 Concurrent Access &amp; Cache Coherency</a>
+    </div>
   </div>
 
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10.5px;letter-spacing:.16em;color:var(--brand);text-transform:uppercase;font-weight:700;margin:0 0 6px;">Unit IV · Memory Organisation</div>
-  <div style="display:flex;flex-wrap:wrap;gap:7px;margin:0;">
-    <a href="#t-4-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.3 Memory Hierarchy</a>
-    <a href="#t-4-5" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.5 Cache Mapping — Direct/Associative/Set</a>
-    <a href="#t-4-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.6 Replacement Algorithms — LRU Trace</a>
+  <!-- Unit IV -->
+  <div style="margin:0;">
+    <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin:0 0 7px;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:.14em;color:var(--brand);text-transform:uppercase;font-weight:700;">Unit IV · Memory Organisation &amp; Cache</span>
+      <span style="background:var(--brand);color:var(--paper);font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;padding:3px 9px;border-radius:3px;letter-spacing:.04em;">≈ 16 marks</span>
+    </div>
+    <div style="display:flex;flex-wrap:wrap;gap:7px;">
+      <a href="#t-4-5" style="display:inline-block;padding:5px 11px;background:var(--highlighter);border:1.5px solid var(--ink);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;font-weight:700;">⭐ 4.5 Cache Mapping — Direct/Associative/Set</a>
+      <a href="#t-4-3" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.3 Memory Hierarchy</a>
+      <a href="#t-4-6" style="display:inline-block;padding:5px 11px;background:var(--paper-soft);border:1.5px solid var(--brand);border-radius:3px;text-decoration:none;color:var(--ink);font-size:13px;">4.6 Replacement Algorithms — LRU Trace</a>
+    </div>
   </div>
 </section>
 
@@ -1011,97 +1024,101 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <b><mark>Booth's algorithm</mark></b> multiplies two <b>signed</b> 2's-complement numbers directly (no sign correction). It scans the multiplier's bit pair <code>(Q₀, Q₋₁)</code> and acts on <mark>runs of 1's</mark>, replacing many additions with one add + one subtract per run.
     </div>
     <figure class="diagram-fig">
-<div style="display:flex;justify-content:center;font-size:12.5px;line-height:1.35;color:var(--ink);max-width:520px;margin:0 auto;padding:6px 2px;">
-  <div style="display:flex;flex-direction:column;align-items:center;gap:0;width:100%;">
+<svg viewBox="0 0 480 700" style="width:100%;height:auto;max-width:460px;display:block;margin:0 auto;font-family:inherit;" role="img" aria-label="Booth's algorithm flowchart">
+  <defs>
+    <marker id="bArr" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--brand)"/></marker>
+  </defs>
 
   <!-- START -->
-  <div style="background:var(--brand);color:var(--paper);border:2px solid var(--brand-deep);border-radius:22px;padding:7px 26px;font-weight:700;letter-spacing:.4px;">START</div>
-  <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <rect x="156" y="14" width="108" height="32" rx="16" fill="var(--brand)" stroke="var(--brand-deep)" stroke-width="2"/>
+  <text x="210" y="35" text-anchor="middle" font-size="13" font-weight="700" fill="var(--paper)" letter-spacing="1">START</text>
+  <line x1="210" y1="46" x2="210" y2="63" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
 
   <!-- INIT -->
-  <div style="background:var(--brand-soft);border:2px solid var(--brand);border-radius:6px;padding:9px 14px;text-align:center;width:100%;box-sizing:border-box;">
-    <b>Initialise registers</b><br>
-    <span style="font-family:monospace;">AC = 0 &nbsp;&middot;&nbsp; Q&#8331; = 0 &nbsp;&middot;&nbsp; count = n</span>
-    <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">n = number of bits in multiplier Q</div>
-  </div>
-  <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <rect x="58" y="66" width="304" height="58" rx="8" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="210" y="85" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--ink)">Initialise registers</text>
+  <text x="210" y="102" text-anchor="middle" font-size="11" font-family="monospace" fill="var(--ink)">AC = 0 &#183; Q&#8331;&#8321; = 0 &#183; count = n</text>
+  <text x="210" y="117" text-anchor="middle" font-size="9" fill="var(--muted)">n = number of bits in multiplier Q</text>
+  <line x1="210" y1="124" x2="210" y2="139" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
 
-  <!-- LOOP BODY (rail attaches to this bordered container) -->
-  <div style="position:relative;width:100%;box-sizing:border-box;border:2px dashed var(--brand-2);border-radius:10px;padding:10px 12px 12px;background:var(--paper-soft);">
+  <!-- LOOP CONTAINER -->
+  <rect x="16" y="142" width="420" height="474" rx="12" fill="var(--paper-soft)" stroke="var(--brand-2)" stroke-width="2" stroke-dasharray="6 4"/>
+  <rect x="30" y="134" width="126" height="17" rx="5" fill="var(--brand-2)"/>
+  <text x="93" y="146" text-anchor="middle" font-size="10" font-weight="700" fill="var(--paper)">&#8635; repeat n times</text>
 
-    <!-- loop label -->
-    <div style="position:absolute;top:-11px;left:14px;background:var(--brand-2);color:var(--paper);font-size:10.5px;font-weight:700;border-radius:5px;padding:1px 9px;">&#8635; repeat n times</div>
+  <!-- INSPECT -->
+  <rect x="96" y="164" width="228" height="38" rx="7" fill="var(--paper)" stroke="var(--ink-soft)" stroke-width="2"/>
+  <text x="210" y="181" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Inspect bit pair</text>
+  <text x="210" y="196" text-anchor="middle" font-size="10.5" font-family="monospace" font-weight="700" fill="var(--ink)">(Q&#8320;, Q&#8331;&#8321;)</text>
 
-    <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+  <!-- fan from inspect to 3 boxes -->
+  <line x1="210" y1="202" x2="210" y2="218" stroke="var(--brand)" stroke-width="1.6"/>
+  <line x1="86" y1="218" x2="334" y2="218" stroke="var(--brand)" stroke-width="1.6"/>
+  <line x1="86" y1="218" x2="86" y2="231" stroke="var(--brand)" stroke-width="1.6" marker-end="url(#bArr)"/>
+  <line x1="210" y1="218" x2="210" y2="231" stroke="var(--brand)" stroke-width="1.6" marker-end="url(#bArr)"/>
+  <line x1="334" y1="218" x2="334" y2="231" stroke="var(--brand)" stroke-width="1.6" marker-end="url(#bArr)"/>
 
-      <!-- INSPECT -->
-      <div style="background:var(--paper);border:2px solid var(--ink-soft);border-radius:6px;padding:9px 14px;text-align:center;width:100%;box-sizing:border-box;">
-        <b>Inspect bit pair</b> &nbsp;<span style="font-family:monospace;font-weight:700;">(Q&#8320;, Q&#8331;)</span>
-      </div>
-      <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <!-- BRANCH A (10 subtract) -->
+  <rect x="28" y="232" width="116" height="72" rx="6" fill="var(--paper)" stroke="var(--brand)" stroke-width="2"/>
+  <rect x="62" y="240" width="48" height="15" rx="3" fill="var(--brand)"/>
+  <text x="86" y="251" text-anchor="middle" font-size="10" font-family="monospace" font-weight="700" fill="var(--paper)">1 0</text>
+  <text x="86" y="274" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Subtract</text>
+  <text x="86" y="289" text-anchor="middle" font-size="10.5" font-family="monospace" fill="var(--ink)">AC = AC &#8722; M</text>
+  <text x="86" y="300" text-anchor="middle" font-size="8.5" fill="var(--muted)">start of a 1-run</text>
 
-      <!-- THREE-WAY BRANCH -->
-      <div style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;width:100%;">
-        <div style="flex:1 1 130px;min-width:118px;background:var(--paper);border:2px solid var(--brand);border-radius:6px;padding:8px;text-align:center;box-sizing:border-box;">
-          <div style="font-family:monospace;font-weight:700;background:var(--brand);color:var(--paper);border-radius:4px;padding:1px 8px;display:inline-block;margin-bottom:5px;">1 0</div>
-          <div><b>Subtract</b></div>
-          <span style="font-family:monospace;">AC = AC &minus; M</span>
-          <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">start of a 1-run</div>
-        </div>
-        <div style="flex:1 1 130px;min-width:118px;background:var(--paper);border:2px solid var(--brand);border-radius:6px;padding:8px;text-align:center;box-sizing:border-box;">
-          <div style="font-family:monospace;font-weight:700;background:var(--brand);color:var(--paper);border-radius:4px;padding:1px 8px;display:inline-block;margin-bottom:5px;">0 1</div>
-          <div><b>Add</b></div>
-          <span style="font-family:monospace;">AC = AC + M</span>
-          <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">end of a 1-run</div>
-        </div>
-        <div style="flex:1 1 130px;min-width:118px;background:var(--paper);border:2px dashed var(--muted);border-radius:6px;padding:8px;text-align:center;box-sizing:border-box;">
-          <div style="font-family:monospace;font-weight:700;background:var(--ink-soft);color:var(--paper);border-radius:4px;padding:1px 8px;display:inline-block;margin-bottom:5px;">0 0 / 1 1</div>
-          <div><b>No-op</b></div>
-          <span style="color:var(--muted);">(skip arithmetic)</span>
-          <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">inside a run</div>
-        </div>
-      </div>
+  <!-- BRANCH B (01 add) -->
+  <rect x="152" y="232" width="116" height="72" rx="6" fill="var(--paper)" stroke="var(--brand)" stroke-width="2"/>
+  <rect x="186" y="240" width="48" height="15" rx="3" fill="var(--brand)"/>
+  <text x="210" y="251" text-anchor="middle" font-size="10" font-family="monospace" font-weight="700" fill="var(--paper)">0 1</text>
+  <text x="210" y="274" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">Add</text>
+  <text x="210" y="289" text-anchor="middle" font-size="10.5" font-family="monospace" fill="var(--ink)">AC = AC + M</text>
+  <text x="210" y="300" text-anchor="middle" font-size="8.5" fill="var(--muted)">end of a 1-run</text>
 
-      <div style="color:var(--brand);font-size:18px;line-height:1;margin:4px 0 2px;">&#8595;</div>
+  <!-- BRANCH C (00/11 no-op) -->
+  <rect x="276" y="232" width="116" height="72" rx="6" fill="var(--paper)" stroke="var(--muted)" stroke-width="2" stroke-dasharray="5 3"/>
+  <rect x="300" y="240" width="68" height="15" rx="3" fill="var(--ink-soft)"/>
+  <text x="334" y="251" text-anchor="middle" font-size="10" font-family="monospace" font-weight="700" fill="var(--paper)">0 0 / 1 1</text>
+  <text x="334" y="274" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)">No-op</text>
+  <text x="334" y="289" text-anchor="middle" font-size="9" fill="var(--muted)">skip arithmetic</text>
+  <text x="334" y="300" text-anchor="middle" font-size="8.5" fill="var(--muted)">inside a run</text>
 
-      <!-- ASR -->
-      <div style="background:var(--brand-soft);border:2px solid var(--brand);border-radius:6px;padding:9px 14px;text-align:center;width:100%;box-sizing:border-box;">
-        <b>Arithmetic Shift Right</b> &nbsp;<span style="font-family:monospace;font-weight:700;">(AC, Q, Q&#8331;)</span>
-        <div style="font-size:10.5px;color:var(--muted);margin-top:3px;">sign bit of AC preserved (no carry-in)</div>
-      </div>
-      <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <!-- merge to ASR -->
+  <line x1="86" y1="304" x2="86" y2="320" stroke="var(--brand)" stroke-width="1.6"/>
+  <line x1="334" y1="304" x2="334" y2="320" stroke="var(--brand)" stroke-width="1.6"/>
+  <line x1="86" y1="320" x2="334" y2="320" stroke="var(--brand)" stroke-width="1.6"/>
+  <line x1="210" y1="320" x2="210" y2="335" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
 
-      <!-- DECREMENT -->
-      <div style="background:var(--paper);border:2px solid var(--ink-soft);border-radius:6px;padding:8px 14px;text-align:center;width:100%;box-sizing:border-box;font-family:monospace;">
-        count = count &minus; 1
-      </div>
-      <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <!-- ASR -->
+  <rect x="58" y="338" width="304" height="42" rx="7" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="2"/>
+  <text x="210" y="357" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Arithmetic Shift Right (AC, Q, Q&#8331;&#8321;)</text>
+  <text x="210" y="372" text-anchor="middle" font-size="9" fill="var(--muted)">sign bit of AC preserved (no carry-in)</text>
+  <line x1="210" y1="380" x2="210" y2="395" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
 
-      <!-- DECISION DIAMOND -->
-      <div style="position:relative;width:128px;height:128px;margin:6px 0 2px;display:flex;align-items:center;justify-content:center;">
-        <div style="position:absolute;inset:0;background:var(--gold-soft);border:2px solid var(--brand-2);transform:rotate(45deg);border-radius:8px;"></div>
-        <div style="position:relative;text-align:center;font-weight:700;color:var(--brand-deep);">count<br>== 0 ?</div>
-        <div style="position:absolute;bottom:-19px;left:50%;transform:translateX(-50%);font-size:11px;color:var(--brand);font-weight:700;white-space:nowrap;">yes &#8595;</div>
-      </div>
-    </div>
+  <!-- COUNT -->
+  <rect x="124" y="398" width="172" height="32" rx="7" fill="var(--paper)" stroke="var(--ink-soft)" stroke-width="2"/>
+  <text x="210" y="418" text-anchor="middle" font-size="11.5" font-family="monospace" fill="var(--ink)">count = count &#8722; 1</text>
+  <line x1="210" y1="430" x2="210" y2="445" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
 
-    <!-- LOOP-BACK RAIL: real CSS borders, hugs the left edge, returns no-branch to inspect -->
-    <div style="position:absolute;left:-2px;top:0;bottom:42px;border-left:2px solid var(--brand);border-top:2px solid var(--brand);width:14px;border-top-left-radius:8px;"></div>
-    <div style="position:absolute;left:-2px;bottom:40px;width:22px;border-top:2px solid var(--brand);"></div>
-    <div style="position:absolute;left:18px;bottom:35px;color:var(--brand);font-size:14px;font-weight:700;line-height:1;">&#8593;</div>
-    <div style="position:absolute;left:-2px;top:-9px;color:var(--brand);font-size:13px;font-weight:700;line-height:1;">&#9656;</div>
-    <div style="position:absolute;left:-50px;top:50%;transform:translateY(-50%) rotate(-90deg);transform-origin:center;font-size:10.5px;color:var(--brand);font-weight:700;white-space:nowrap;">no &middot; loop back</div>
-  </div>
+  <!-- DIAMOND -->
+  <polygon points="210,448 256,494 210,540 164,494" fill="var(--gold-soft)" stroke="var(--brand-2)" stroke-width="2"/>
+  <text x="210" y="490" text-anchor="middle" font-size="12" font-weight="700" fill="var(--brand-deep)">count</text>
+  <text x="210" y="505" text-anchor="middle" font-size="12" font-weight="700" fill="var(--brand-deep)">== 0 ?</text>
 
-  <div style="color:var(--brand);font-size:18px;line-height:1;margin:2px 0;">&#8595;</div>
+  <!-- YES exit down to END -->
+  <line x1="210" y1="540" x2="210" y2="641" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
+  <text x="220" y="562" text-anchor="start" font-size="11" font-weight="700" fill="var(--brand)">Yes</text>
+
+  <!-- NO loop-back: clean right rail back to Inspect -->
+  <path d="M256,494 H415 V183 H326" fill="none" stroke="var(--brand)" stroke-width="2" marker-end="url(#bArr)"/>
+  <circle cx="256" cy="494" r="2.5" fill="var(--brand)"/>
+  <rect x="266" y="476" width="30" height="16" rx="4" fill="var(--paper)" stroke="var(--brand)" stroke-width="1.2"/>
+  <text x="281" y="488" text-anchor="middle" font-size="10" font-weight="700" fill="var(--brand)">No</text>
 
   <!-- END -->
-  <div style="background:var(--brand);color:var(--paper);border:2px solid var(--brand-deep);border-radius:22px;padding:7px 22px;text-align:center;">
-    <b>END</b><br><span style="font-size:11px;font-family:monospace;">2's-comp product in (AC, Q)</span>
-  </div>
-
-  </div>
-</div>
+  <rect x="90" y="643" width="240" height="42" rx="20" fill="var(--brand)" stroke="var(--brand-deep)" stroke-width="2"/>
+  <text x="210" y="661" text-anchor="middle" font-size="13" font-weight="700" fill="var(--paper)">END</text>
+  <text x="210" y="676" text-anchor="middle" font-size="9.5" font-family="monospace" fill="var(--paper)">2's-comp product in (AC, Q)</text>
+</svg>
       <figcaption><b>Fig 1.5</b> · Booth's algorithm flowchart — init (AC=0, count=n, Q₋₁=0) → test Q₀Q₋₁ (01:+M, 10:−M, 00/11:none) → arithmetic shift right → loop until count=0</figcaption>
     </figure>
     <h4>Recoding Rule (examine Q₀ Q₋₁)</h4>
@@ -1524,6 +1541,27 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         </div>
       </div>
       <figcaption><b>Fig 2.1</b> · Two control-unit designs — Hardwired derives signals from a fixed FSM (opcode + flags + step counter → combinational gates, 1 clock); Microprogrammed reads a microinstruction from Control ROM addressed by the CAR into the CBR, whose control field drives signals and whose next-address field (via the sequencer) reloads the CAR.</figcaption>
+    </figure>
+
+    <figure class="diagram-fig">
+      <div style="display:grid; grid-template-columns:auto auto auto; gap:14px; align-items:center; justify-content:center; min-width:360px; max-width:600px; margin:0 auto; font-size:10px; text-align:center;">
+        <!-- inputs -->
+        <div style="display:flex; flex-direction:column; gap:8px;">
+          <div style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:6px;"><b>Instruction Register</b><br>(opcode)</div>
+          <div style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:6px;"><b>Flags</b><br>(condition codes)</div>
+          <div style="background:var(--brand-soft); border:1px solid var(--brand); border-radius:3px; padding:6px;"><b>Clock</b><br>(timing)</div>
+          <div style="font-size:8.5px; color:var(--muted);">inputs →</div>
+        </div>
+        <!-- CU -->
+        <div style="background:var(--ink); color:var(--paper); border-radius:8px; padding:26px 16px; font-weight:700; font-size:13px;">CONTROL<br>UNIT</div>
+        <!-- outputs -->
+        <div style="display:flex; flex-direction:column; gap:8px; text-align:left;">
+          <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:3px; padding:6px;">→ Control signals <b>within the CPU</b><br><span style="color:var(--muted);">(ALU, registers, internal data paths)</span></div>
+          <div style="background:#fffefb; border:1px solid var(--gold); border-radius:3px; padding:6px;">← Control signals <b>from the Control Bus</b><br><span style="color:var(--muted);">(interrupt, bus-grant, ready)</span></div>
+          <div style="background:var(--forest-soft); border:1px solid var(--forest); border-radius:3px; padding:6px;">→ Control signals <b>to the Control Bus</b><br><span style="color:var(--muted);">(READ, WRITE, memory/IO commands)</span></div>
+        </div>
+      </div>
+      <figcaption><b>Fig 2.1b</b> · Control Unit interface — it reads the <mark>IR opcode</mark>, <mark>flags</mark> and <mark>clock</mark>, and emits three groups of control signals: internal (to ALU/registers), outward to the control bus (READ/WRITE), and inward from the control bus (interrupt/bus-grant).</figcaption>
     </figure>
   </div>
 
@@ -2383,10 +2421,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
   <!-- ===== access-time + cost/bit endpoint callouts ===== -->
   <text x="116" y="44" font-size="8" fill="var(--muted)">~1 ns &middot; cost/bit high</text>
-  <text x="444" y="412" text-anchor="end" font-size="8" fill="var(--muted)">~ms&ndash;s &middot; cost/bit low</text>
+  <text x="444" y="406" text-anchor="end" font-size="8" fill="var(--muted)">~ms&ndash;s &middot; cost/bit low</text>
 
   <!-- ===== CPU access flow note ===== -->
-  <text x="280" y="416" text-anchor="middle" font-size="8.5" fill="var(--muted)">CPU requests flow top &rarr; down on a miss; locality keeps hot data near the apex</text>
+  <text x="280" y="426" text-anchor="middle" font-size="8.5" fill="var(--muted)">CPU requests flow top &rarr; down on a miss; locality keeps hot data near the apex</text>
 </svg>
       <figcaption><b>Fig 4.1</b> &middot; Memory hierarchy &mdash; widening toward the bottom (bigger, cheaper, slower)</figcaption>
     </figure>
@@ -2711,7 +2749,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 a -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">BTech May-24 Q1(b)</span></div>
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-26 Q1(c) · BTech May-24 Q1(b)</span></div>
       <div class="qbody"><b>Define a Program Status Word (PSW). What are its primary flags?</b></div>
       <div class="ans">
         <p>The <mark>PSW</mark> is a small CPU register. It holds <mark>status bits (flags)</mark>. The ALU updates these bits after every operation. Main x86 flags:</p>
@@ -2740,7 +2778,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 c -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech Dec-23 Q1(g) · BCA May-25 Q1(g)</span></div>
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BCA May-25 Q1(g) · BTech Dec-23 Q1(g)</span></div>
       <div class="qbody"><b>Differentiate between Direct and Indirect addressing modes.</b></div>
       <div class="ans">
         <div class="table-wrap">
@@ -2756,7 +2794,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 d -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×4 · BTech Dec-23 Q5(a) · BCA May-25 Q7(d)</span></div>
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×4 · BCA May-25 Q7(d) · BTech Dec-23 Q5(a)</span></div>
       <div class="qbody"><b>Why does a DMA controller have priority over the CPU for bus control?</b></div>
       <div class="ans">
         <ul>
@@ -2770,7 +2808,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 e -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-24 Q5(b) · BTech Dec-23 Q7</span></div>
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q1(f) · BTech May-24 Q5(b) · BTech Dec-23 Q7</span></div>
       <div class="qbody"><b>List the three primary pipeline hazards with a single sentence each.</b></div>
       <div class="ans">
         <ul>
@@ -2834,7 +2872,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 j -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-26 Q1(a) · ★ high-freq</span></div>
       <div class="qbody"><b>What is the function of the Instruction Register (IR) and Program Counter (PC)?</b></div>
       <div class="ans">
         <ul>
@@ -2993,7 +3031,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q2 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q2</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BCA May-25 Q4 · BTech May-24 Q1(i)</span></div>
+      <div class="qhead"><span class="qnum">Q2</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×4 · BTech May-26 Q4(a) · BCA May-25 Q4 · BTech May-24 Q1(i)</span></div>
       <div class="qbody"><b>What are addressing modes? Describe the 9 standard addressing modes with their EA formulas. Provide a worked numerical trace for direct, relative, and register-indirect effective addresses on a memory system.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -3410,7 +3448,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q4 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech Dec-23 Q6 · BTech May-24 Q4(b)</span></div>
+      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q3(b) · BTech May-24 Q4(b) · BTech Dec-23 Q6</span></div>
       <div class="qbody"><b>Describe Microprogrammed Control Address Sequencing with a neat block diagram. Trace the CAR (Control Address Register) or μPC values through the execution cycle of an ADD M microroutine.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -3483,7 +3521,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <line x1="130" y1="74" x2="158" y2="74" stroke="var(--svg-ink)" stroke-width="1.4" marker-end="url(#mpA)"/>
   <!-- mapping -> sequencer (start addr) -->
   <line x1="220" y1="94" x2="220" y2="158" stroke="var(--svg-ink)" stroke-width="1.4" marker-end="url(#mpA)"/>
-  <text x="246" y="128" text-anchor="middle" font-size="8" fill="var(--muted)">start</text>
+  <text x="246" y="120" text-anchor="middle" font-size="8" fill="var(--muted)">start</text>
   <!-- status flags -> sequencer (select / branch condition) -->
   <line x1="130" y1="210" x2="158" y2="205" stroke="var(--svg-ink)" stroke-width="1.4" marker-end="url(#mpA)"/>
   <text x="145" y="180" text-anchor="middle" font-size="7.5" fill="var(--muted)">sel</text>
@@ -3592,7 +3630,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q5 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×4 · BTech May-24 Q6(b) · BTech Dec-23 Q5(a) · BCA May-25 Q7(d)</span></div>
+      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×5 · BTech May-26 Q5(b) · BCA May-25 Q7(d) · BTech May-24 Q6(b) · BTech Dec-23 Q5(a)</span></div>
       <div class="qbody"><b>Compare Programmed I/O, Interrupt-Driven I/O, and Direct Memory Access (DMA) in detail. Draw the DMA Controller Block Diagram and explain its three transfer modes.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -3625,7 +3663,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
         <h5>DMA Controller Block Diagram</h5>
         <figure class="diagram-fig">
-<svg viewBox="0 0 640 480" style="width:100%;height:auto;max-width:560px;display:block;margin:0 auto;font-family:inherit;" role="img" aria-label="DMA controller block diagram with internal registers, handshake lines and system bus">
+<svg viewBox="0 0 670 480" style="width:100%;height:auto;max-width:580px;display:block;margin:0 auto;font-family:inherit;" role="img" aria-label="DMA controller block diagram with internal registers, handshake lines and system bus">
   <defs>
     <marker id="dmaArrB" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--brand)"/></marker>
     <marker id="dmaArrM" markerWidth="9" markerHeight="9" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 Z" fill="var(--muted)"/></marker>
@@ -3697,11 +3735,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <text x="515" y="439" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">disk / NIC controller</text>
   <line x1="515" y1="350" x2="515" y2="388" stroke="var(--muted)" stroke-width="2" marker-end="url(#dmaArrM)"/>
 
-  <!-- ============ I/O <-> DMA handshake (DREQ / DACK) — routed up the right edge ============ -->
-  <path d="M615,392 L632,392 L632,160 L612,160" fill="none" stroke="var(--muted)" stroke-width="2" marker-end="url(#dmaArrM)"/>
-  <text x="636" y="285" text-anchor="middle" font-size="10.5" fill="var(--muted)" transform="rotate(90 636 285)">DREQ (DMA Request)</text>
-  <path d="M608,180 L626,180 L626,406 L608,406" fill="none" stroke="var(--brand)" stroke-width="2" marker-end="url(#dmaArrB)"/>
-  <text x="618" y="300" text-anchor="middle" font-size="10.5" fill="var(--brand-deep)" transform="rotate(90 618 300)">DACK (Acknowledge)</text>
+  <!-- ============ I/O <-> DMA handshake (DREQ / DACK) — routed up the right edge, labels in separate Y-bands ============ -->
+  <path d="M615,392 L630,392 L630,160 L612,160" fill="none" stroke="var(--muted)" stroke-width="2" marker-end="url(#dmaArrM)"/>
+  <path d="M608,180 L644,180 L644,406 L608,406" fill="none" stroke="var(--brand)" stroke-width="2" marker-end="url(#dmaArrB)"/>
+  <text x="658" y="244" text-anchor="middle" font-size="10" fill="var(--muted)" transform="rotate(90 658 244)">DREQ (request)</text>
+  <text x="658" y="368" text-anchor="middle" font-size="10" fill="var(--brand-deep)" transform="rotate(90 658 368)">DACK (grant)</text>
 </svg>
           <figcaption><b>Fig 2.6</b> &middot; DMA controller registers &mdash; address + word-count + control words sit between system buses and peripheral handshake.</figcaption>
         </figure>
@@ -3807,7 +3845,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q6 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-24 Q2(a)+Q5(b) · BTech Dec-23 Q7</span></div>
+      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q3(a)+Q1(f) · BTech May-24 Q2(a)+Q5(b) · BTech Dec-23 Q7</span></div>
       <div class="qbody"><b>Describe Flynn's Classification of parallel computer architectures with a neat diagram. Discuss the three pipeline hazards (structural, data, control) and how each is resolved.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -3964,7 +4002,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q7 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Unit 4 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-24 Q6(a) · BTech Dec-23 Q5(b)+Q3(b)</span></div>
+      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Unit 4 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q6(a)+Q6(b)+Q1(i) · BTech May-24 Q6(a) · BTech Dec-23 Q5(b)+Q3(b)</span></div>
       <div class="qbody"><b>Solve the following memory organisation problems step-by-step:
         <br>(a) A 2-way set-associative cache has size 64 KB, block size 16 bytes, and 32-bit physical addresses. Compute the bits in TAG, SET, and WORD fields.
         <br>(b) Given the block-reference string: 7, 5, 3, 2, 1, 0, 4, 7, 4, 2, 0, 1, 3, 5 with 4 cache lines. Compute the total cache misses for FIFO, LRU, and Optimal replacement algorithms.
@@ -4106,7 +4144,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q8 — RISC vs CISC (real same-code paper Q2b, 5M) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Real Paper 311404 · Q2(b)</span><span class="tag marks">5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-24 Q7(c) · BCA May-25 Q7(c)</span></div>
+      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Real Paper 311404 · Q2(b)</span><span class="tag marks">5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q7(c) · BCA May-25 Q7(c) · BTech May-24 Q7(c)</span></div>
       <div class="qbody"><b>Differentiate between RISC and CISC instruction set architectures.</b></div>
       <div class="ans">
         <ul>
@@ -4315,7 +4353,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q10 — SRAM vs DRAM + EMAT numerical (15M) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Predicted · Unit IV</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q5(a) · BTech Dec-23 Q1(b)</span></div>
+      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Predicted · Unit IV</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q7(a) · BCA May-25 Q5(a) · BTech Dec-23 Q1(b)</span></div>
       <div class="qbody"><b>Compare Static RAM (SRAM) and Dynamic RAM (DRAM) in detail. With a worked example, compute the effective memory-access time of a cache + main-memory hierarchy.</b></div>
       <div class="ans">
         <h5>Introduction</h5>
@@ -4459,6 +4497,216 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
             <li><span>Sync-vs-async table + source/destination-initiated note</span><span class="m">1.0M</span></li>
           </ul>
         </div>
+      </div>
+    </div>
+
+    <!-- Q12 — Booth multiplier -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q12</span><span class="tag year">Unit 1 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×4 · BTech May-26 Q2(b) · BTech May-24 Q3(b) · BTech Dec-23 Q2</span></div>
+      <div class="qbody"><b>Explain the functioning of Booth's multiplication algorithm. Multiply (+15) × (−13) using Booth's multiplier, showing every step.</b></div>
+      <div class="ans">
+        <p><mark>Booth's algorithm</mark> multiplies two <mark>signed (2's-complement)</mark> numbers directly. It scans the multiplier bit-pair <code>(Q₀, Q₋₁)</code> and acts on <i>runs</i> of 1s instead of adding for every 1 bit, which makes signed multiplication fast.</p>
+        <h5>Recoding rule (examine Q₀ Q₋₁)</h5>
+        <ul>
+          <li><code>1 0</code> → <code>A ← A − M</code> (start of a run of 1s), then ASR.</li>
+          <li><code>0 1</code> → <code>A ← A + M</code> (end of a run of 1s), then ASR.</li>
+          <li><code>0 0</code> or <code>1 1</code> → no add, just <mark>arithmetic shift right</mark> (ASR) of A·Q·Q₋₁.</li>
+        </ul>
+        <h5>Worked Example — (+15) × (−13), 5-bit</h5>
+        <p>Multiplicand <code>M = +15 = 01111</code>, so <code>−M = 10001</code>. Multiplier <code>Q = −13 = 10011</code>. Initialise <code>A = 00000</code>, <code>Q₋₁ = 0</code>, run <code>n = 5</code> cycles. Expected product = <b>−195</b>.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Step</th><th>Q₀Q₋₁</th><th>Action</th><th>A</th><th>Q</th><th>Q₋₁</th></tr>
+            <tr><td>Init</td><td>—</td><td>—</td><td><code>00000</code></td><td><code>10011</code></td><td><code>0</code></td></tr>
+            <tr><td>1</td><td>1&nbsp;0</td><td>A←A−M; ASR</td><td><code>11000</code></td><td><code>11001</code></td><td><code>1</code></td></tr>
+            <tr><td>2</td><td>1&nbsp;1</td><td>ASR only</td><td><code>11100</code></td><td><code>01100</code></td><td><code>1</code></td></tr>
+            <tr><td>3</td><td>0&nbsp;1</td><td>A←A+M; ASR</td><td><code>00101</code></td><td><code>10110</code></td><td><code>0</code></td></tr>
+            <tr><td>4</td><td>0&nbsp;0</td><td>ASR only</td><td><code>00010</code></td><td><code>11011</code></td><td><code>0</code></td></tr>
+            <tr><td>5</td><td>1&nbsp;0</td><td>A←A−M; ASR</td><td><code>11001</code></td><td><code>11101</code></td><td><code>1</code></td></tr>
+          </table>
+        </div>
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body">A−M = <code>00000 + 10001 = 10001</code>; ASR of <code>10001 10011 0</code> (sign-fill) → A=<code>11000</code>, Q=<code>11001</code>, Q₋₁=<code>1</code>.</div></div>
+          <div class="step"><span class="k">3</span><div class="body">A+M = <code>11100 + 01111 = 01011</code> (carry discarded); ASR of <code>01011 01100 1</code> → A=<code>00101</code>, Q=<code>10110</code>, Q₋₁=<code>0</code>.</div></div>
+          <div class="step"><span class="k">5</span><div class="body">A−M = <code>00010 + 10001 = 10011</code>; ASR of <code>10011 11101 0</code> → A=<code>11001</code>, Q=<code>11101</code>, Q₋₁=<code>1</code>.</div></div>
+          <div class="step"><span class="k">✓</span><div class="body">Product = <code>A:Q</code> = <mark><b><code>11001 11101</code></b></mark>. 2's-complement (invert+1 → <code>00110 00011</code> = 195) ⇒ <mark><b>−195</b></mark>. Check: <code>15 × (−13) = −195</code> ✓.</div></div>
+        </div>
+        <div class="box warn"><span class="label">Examiner trap</span>
+          The shift is <b>arithmetic</b> (sign bit of A is <mark>copied, not zero-filled</mark>), and the register pair is extended by <code>Q₋₁</code> before each shift. Number of cycles = bit-width <code>n</code> (here 5), not the number of 1s.
+        </div>
+      </div>
+    </div>
+
+    <!-- Q13 — 8086 architecture -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q13</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-26 Q4(b) · BCA May-25 Q6</span></div>
+      <div class="qbody"><b>Explain the architecture of the 8086 microprocessor with a neat diagram, including all its functional units. Show how a physical address is formed.</b></div>
+      <div class="ans">
+        <p>The <mark>8086</mark> is Intel's first <mark>16-bit</mark> microprocessor (1978): 16-bit data bus, <mark>20-bit address bus → 2²⁰ = 1 MB</mark>, split into two concurrent units — the <mark>BIU</mark> (Bus Interface Unit) and the <mark>EU</mark> (Execution Unit).</p>
+        <h5>BIU + EU split (built-in pipelining)</h5>
+        <ul>
+          <li><b><mark>BIU</mark></b>: fetches instructions, reads/writes operands, computes physical addresses, and fills a <mark>6-byte instruction queue</mark>. Holds the 4 segment registers + IP.</li>
+          <li><b><mark>EU</mark></b>: decodes and executes from the queue, runs the ALU, holds the general registers + FLAGS. While the EU executes, the BIU pre-fetches the next instruction → <mark>fetch–execute overlap</mark>.</li>
+        </ul>
+        <figure class="diagram-fig">
+          <div style="max-width:560px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:11px; text-align:left;">
+            <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:5px; padding:8px;">
+              <div style="font-weight:700; color:var(--brand-deep); text-align:center;">EU (Execution Unit)</div>
+              <div style="margin-top:5px;"><b>General regs</b>: AX, BX, CX, DX (each AH/AL)</div>
+              <div><b>Pointer/Index</b>: SP, BP, SI, DI</div>
+              <div><b>ALU</b> + <b>FLAGS</b> (PSW)</div>
+              <div style="font-size:9.5px; color:var(--muted);">decodes &amp; executes from the queue</div>
+            </div>
+            <div style="background:var(--gold-soft); border:1.5px solid var(--gold); border-radius:5px; padding:8px;">
+              <div style="font-weight:700; color:var(--gold); text-align:center;">BIU (Bus Interface Unit)</div>
+              <div style="margin-top:5px;"><b>Segment regs</b>: CS, DS, SS, ES</div>
+              <div><b>IP</b> (instruction pointer)</div>
+              <div><b>6-byte instruction queue</b></div>
+              <div><b>Address adder</b> (Seg×16 + Offset)</div>
+            </div>
+            <div style="grid-column:1/-1; background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:5px; padding:6px; text-align:center; font-weight:700;">⇅ shared system bus → Memory (1 MB) &amp; I/O</div>
+          </div>
+          <figcaption><b>Fig P13</b> · 8086 internal architecture — EU (registers + ALU + FLAGS) executes from the queue while the BIU (segment regs + IP + 6-byte queue + address adder) pre-fetches over the bus.</figcaption>
+        </figure>
+        <h5>Register set (14 × 16-bit)</h5>
+        <ul>
+          <li><b>Data</b>: AX (accumulator), BX (base), CX (count), DX (data) — each splits into high/low bytes.</li>
+          <li><b>Pointer/Index</b>: SP, BP, SI, DI. <b>Segment</b>: CS, DS, SS, ES. <b>IP</b> + <b>FLAGS</b>.</li>
+        </ul>
+        <h5>Memory segmentation — physical address</h5>
+        <p>16-bit registers can only span 64 KB, so a <mark>segment register</mark> gives the upper base of each 64 KB segment (aligned to a 16-byte paragraph):</p>
+        <ul>
+          <li><mark><b>Physical Address = (Segment × 16) + Offset</b></mark> — shift segment left one hex digit, add offset.</li>
+          <li>Worked: <code>CS:IP = 2000h:0050h</code> → <code>2000h × 10h + 0050h = 20000h + 0050h =</code> <mark><b>20050h</b></mark>.</li>
+        </ul>
+        <div class="mnem"><b>FLAGS</b> 6 status (CF ZF SF OF PF AF) + 3 control (IF DF TF) — order <b>ODITSZAPC</b>.</div>
+      </div>
+    </div>
+
+    <!-- Q14 — pipeline timing numerical -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q14</span><span class="tag year">Unit 3 Numerical</span><span class="tag marks">5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ BTech May-26 Q5(a)</span></div>
+      <div class="qbody"><b>A 5-stage pipeline has stage delays 150, 120, 150, 160, 140 ns, with an inter-stage register (latch) delay of 5 ns each. Find the total time to execute 100 independent instructions (no stalls).</b></div>
+      <div class="ans">
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body"><b>Clock period</b> = slowest stage + latch delay = <code>max(150,120,150,160,140) + 5</code> = <code>160 + 5</code> = <mark><b>165 ns</b></mark>. (The clock must be slow enough for the worst stage.)</div></div>
+          <div class="step"><span class="k">2</span><div class="body"><b>Cycles for n instructions</b> on a k-stage pipe = <code>k + (n − 1)</code> = <code>5 + (100 − 1)</code> = <code>104</code> clock cycles. (First instruction needs k cycles to fill the pipe; the rest finish one per cycle.)</div></div>
+          <div class="step"><span class="k">3</span><div class="body"><b>Total time</b> = cycles × clock period = <code>104 × 165</code> = <mark><b><code>17160 ns</code></b></mark>.</div></div>
+          <div class="step"><span class="k">✓</span><div class="body">Boxed answer: <mark><b>17,160 ns (17.16 µs)</b></mark>. (Non-pipelined would be 100 × (150+120+150+160+140) = 72000 ns, so speedup ≈ 4.2×.)</div></div>
+        </div>
+        <div class="box warn"><span class="label">Examiner trap</span>
+          The clock period is set by the <b>slowest</b> stage <i>plus</i> the latch delay (160+5), not the sum or average of stages. Forgetting the +5 ns register delay is the usual marks-loser.
+        </div>
+      </div>
+    </div>
+
+    <!-- Q15 — cache + memory numericals -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q15</span><span class="tag year">Unit 4 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×3 · BTech May-26 Q6(a)+Q6(b)+Q1(i)</span></div>
+      <div class="qbody"><b>Solve: (a) How many 128×4 RAM chips are needed for a 1 K-byte memory? (b) For a 32-way set-associative cache of 128 KB with 32-word blocks on a 64-bit CPU with 32 GB memory space, find the tag-field size. (c) For the reference string 5, 6, 6, 3, 8, 5, 7, 8, 6, 5, 8, 5 with 3 cache lines, count hits/misses for Direct, FIFO and LRU.</b></div>
+      <div class="ans">
+        <h5>(a) Number of 128 × 4 RAM chips for 1 KB</h5>
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body">Required system = <code>1 KB = 1024 × 8</code> bits. Each chip = <code>128 × 4</code> = 128 words of 4 bits.</div></div>
+          <div class="step"><span class="k">2</span><div class="body"><b>Rows (address)</b> = 1024 / 128 = <code>8</code>; <b>Columns (data width)</b> = 8 / 4 = <code>2</code>.</div></div>
+          <div class="step"><span class="k">✓</span><div class="body">Chips = 8 × 2 = <mark><b>16 chips</b></mark> (check: total bits 1024×8 ÷ 128×4 = 8192 ÷ 512 = 16 ✓).</div></div>
+        </div>
+        <h5>(b) Tag-field size — 32-way set associative</h5>
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body">Physical address: 32 GB = <code>2³⁵</code> bytes → <mark>35-bit address</mark>. Word = 64 bits = 8 B; block = 32 words = 256 B = <code>2⁸</code> → <b>offset = 8 bits</b>.</div></div>
+          <div class="step"><span class="k">2</span><div class="body">Blocks in cache = 128 KB / 256 B = <code>2¹⁷ / 2⁸ = 2⁹ = 512</code>. Sets = 512 / 32 = <code>16 = 2⁴</code> → <b>set/index = 4 bits</b>.</div></div>
+          <div class="step"><span class="k">✓</span><div class="body">Tag = 35 − 4 − 8 = <mark><b>23 bits</b></mark>.</div></div>
+        </div>
+        <h5>(c) Hits / misses — reference string on 3 lines</h5>
+        <p>String: 5, 6, 6, 3, 8, 5, 7, 8, 6, 5, 8, 5 (12 references). Direct map uses line = block mod 3.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Policy</th><th>Hits</th><th>Misses</th><th>Hit ratio</th></tr>
+            <tr><td><b>Direct mapping</b> (block mod 3)</td><td><mark><b>1</b></mark></td><td>11</td><td>1/12 ≈ 0.083</td></tr>
+            <tr><td><b>FIFO</b> (fully assoc.)</td><td><mark><b>3</b></mark></td><td>9</td><td>3/12 = 0.25</td></tr>
+            <tr><td><b>LRU</b> (fully assoc.)</td><td><mark><b>4</b></mark></td><td>8</td><td>4/12 ≈ 0.333</td></tr>
+          </table>
+        </div>
+        <ul>
+          <li><b>Direct</b>: only the 2nd <code>6</code> hits (every other reference maps to an already-overwritten line — heavy conflict/thrashing).</li>
+          <li><b>FIFO</b>: hits on 6 (2nd), 8 (8th ref), 5 (10th ref).</li>
+          <li><b>LRU</b>: hits on 6, 8, 8, 5 — LRU keeps recently used blocks, so it wins here.</li>
+        </ul>
+        <div class="box warn"><span class="label">Examiner trap</span>
+          For <b>direct mapping</b> you MUST apply <code>block mod (#lines)</code> first — you cannot treat it like a fully-associative FIFO/LRU set. The same string gives very different counts per policy; show the line/queue state at each step.
+        </div>
+      </div>
+    </div>
+
+    <!-- Q16 — horizontal vs vertical microprogramming -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q16</span><span class="tag year">Unit 2 Differentiate</span><span class="tag marks">10M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ BTech May-26 Q3(b)</span></div>
+      <div class="qbody"><b>Differentiate between horizontal and vertical microprogramming in control units.</b></div>
+      <div class="ans">
+        <p>Both store control signals in a <mark>control memory</mark> as microinstructions; they differ in how the <mark>control field</mark> encodes the signals.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Horizontal µ-programming</th><th>Vertical µ-programming</th></tr>
+            <tr><td><b>Encoding</b></td><td><mark>Unencoded</mark> — one control bit per signal (or minimally encoded).</td><td><mark>Highly encoded</mark> — a small field is decoded into the signals.</td></tr>
+            <tr><td><b>Microinstruction width</b></td><td>Long (wide control word).</td><td>Short (narrow control word).</td></tr>
+            <tr><td><b>Parallelism</b></td><td>High — many micro-operations fire in one step.</td><td>Low — usually one micro-operation per step.</td></tr>
+            <tr><td><b>Decoder needed</b></td><td>Little/none (bits drive signals directly) → fast.</td><td>Needs a decoder per field → slower.</td></tr>
+            <tr><td><b>Control memory</b></td><td>Fewer words but very wide → large bit-count.</td><td>More words but narrow.</td></tr>
+            <tr><td><b>Diagram</b></td><td><div style="display:flex;gap:2px;justify-content:center;"><div style="background:var(--brand-soft);border:1px solid var(--brand);padding:2px 4px;font-size:9px;">1</div><div style="background:var(--brand-soft);border:1px solid var(--brand);padding:2px 4px;font-size:9px;">1</div><div style="background:var(--brand-soft);border:1px solid var(--brand);padding:2px 4px;font-size:9px;">0</div><div style="background:var(--brand-soft);border:1px solid var(--brand);padding:2px 4px;font-size:9px;">1</div><div style="background:var(--brand-soft);border:1px solid var(--brand);padding:2px 4px;font-size:9px;">1</div></div><div style="font-size:8.5px;color:var(--muted);text-align:center;">1 bit → 1 signal (wide)</div></td><td><div style="display:flex;gap:3px;justify-content:center;align-items:center;"><div style="background:var(--gold-soft);border:1px solid var(--gold);padding:2px 5px;font-size:9px;">011</div><span style="font-size:9px;">→</span><div style="background:var(--ink);color:var(--paper);padding:2px 4px;font-size:8.5px;border-radius:2px;">decoder</div></div><div style="font-size:8.5px;color:var(--muted);text-align:center;">field decoded → signals (narrow)</div></td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q18 — restoring vs non-restoring division -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q18</span><span class="tag year">Unit 1 Numerical</span><span class="tag marks">10M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-26 Q2(a) · BTech Dec-23 Q3</span></div>
+      <div class="qbody"><b>Describe the non-restoring division method and compare it with restoring division. Work 7 ÷ 3 (4-bit) to illustrate.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b><mark>Restoring</mark></b>: each step shift left (A,Q), then <code>A ← A − M</code>. If <code>A &lt; 0</code> (sign=1), <mark>restore</mark> by adding M back and set quotient bit <code>0</code>; else set <code>1</code>.</li>
+          <li><b><mark>Non-restoring</mark></b>: never wastes a cycle restoring. If <code>A ≥ 0</code> → shift, <code>A ← A − M</code>; if <code>A &lt; 0</code> → shift, <code>A ← A + M</code>. Quotient bit = 1 when result ≥ 0, else 0. A final correction adds M if the remainder ended negative.</li>
+        </ul>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>Restoring</th><th>Non-Restoring</th></tr>
+            <tr><td><b>Restore step</b></td><td>Yes — adds M back when A goes negative.</td><td><mark>No</mark> — corrects on the next cycle instead.</td></tr>
+            <tr><td><b>Operations/cycle</b></td><td>Up to 2 adds (subtract + restore).</td><td><mark>One</mark> add or subtract per cycle.</td></tr>
+            <tr><td><b>Speed</b></td><td>Slower.</td><td><mark>Faster</mark> (fewer operations).</td></tr>
+            <tr><td><b>Final fix</b></td><td>None needed.</td><td>Add M once if remainder is negative.</td></tr>
+          </table>
+        </div>
+        <h5>Worked — 7 ÷ 3, 4-bit (restoring)</h5>
+        <p>Dividend Q = <code>0111</code> (7), Divisor M = <code>0011</code> (3), A = <code>0000</code>. Run 4 cycles; quotient builds in Q, remainder in A.</p>
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body">Shift AQ left → A=<code>0000</code> Q=<code>111_</code>; A−M=<code>1101</code> (&lt;0) → restore, q=0 → A=<code>0000</code>, Q=<code>1110</code>.</div></div>
+          <div class="step"><span class="k">2</span><div class="body">Shift → A=<code>0001</code>; A−M=<code>1110</code> (&lt;0) → restore, q=0 → A=<code>0001</code>, Q=<code>1100</code>.</div></div>
+          <div class="step"><span class="k">3</span><div class="body">Shift → A=<code>0011</code>; A−M=<code>0000</code> (≥0) → q=1 → A=<code>0000</code>, Q=<code>1001</code>.</div></div>
+          <div class="step"><span class="k">4</span><div class="body">Shift → A=<code>0001</code>; A−M=<code>1110</code> (&lt;0) → restore, q=0 → A=<code>0001</code>, Q=<code>0010</code>.</div></div>
+          <div class="step"><span class="k">✓</span><div class="body">Quotient = Q = <mark><b><code>0010</code> = 2</b></mark>, Remainder = A = <mark><b><code>0001</code> = 1</b></mark>. Check: <code>3 × 2 + 1 = 7</code> ✓.</div></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q17 — short notes: Amdahl's Law + Stack Organization -->
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q17</span><span class="tag year">Short Notes</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ BTech May-26 Q7(b),(d)</span></div>
+      <div class="qbody"><b>Write short notes on: (a) Amdahl's Law, (b) Stack Organization.</b></div>
+      <div class="ans">
+        <h5>(a) Amdahl's Law</h5>
+        <ul>
+          <li><b>Idea</b>: the speedup from improving one part of a system is <mark>limited by the fraction that is NOT improved</mark>. Used to bound parallel-processing gains.</li>
+          <li><b>Formula</b>: <code>Speedup = 1 / ((1 − f) + f/s)</code>, where <code>f</code> = fraction of work that is parallelisable (enhanced) and <code>s</code> = speedup of that fraction.</li>
+          <li><b>Limit</b>: as <code>s → ∞</code>, max speedup = <code>1 / (1 − f)</code>. So if 90% is parallel (<code>f = 0.9</code>), the best possible speedup is only <mark><b>10×</b></mark>, no matter how many processors.</li>
+          <li><b>Lesson</b>: the <mark>serial part</mark> dominates — optimise the most-used / largest fraction first.</li>
+        </ul>
+        <h5>(b) Stack Organization</h5>
+        <ul>
+          <li><b>Stack</b>: a <mark>LIFO</mark> (Last-In-First-Out) list of registers/memory words; the <mark>Stack Pointer (SP)</mark> holds the address of the top.</li>
+          <li><b>Operations</b>: <code>PUSH</code> (write data, then adjust SP) and <code>POP</code> (read top, then adjust SP). Only the top element is accessible.</li>
+          <li><b>Stack machine = <mark>0-address</mark> instruction format</b>: operands are implicit (top of stack), e.g. <code>ADD</code> pops two operands and pushes the sum — no address field needed.</li>
+          <li><b>Uses</b>: evaluating <mark>postfix (RPN)</mark> expressions, subroutine call/return (save return address + registers), and nested interrupt handling.</li>
+        </ul>
       </div>
     </div>
 
