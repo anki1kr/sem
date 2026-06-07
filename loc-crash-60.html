@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0f766e" />
+<meta name="description" content="LOC Crash-60 · BCG-208-V · PYQ-driven minimum-effort pass sheet · Part-A shorts + 6 Part-B essays with worked numericals · BCA-paper anchored" />
+<title>LOC Crash-60 · Pass Sheet · 08 Jun 2026</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400..800&family=Spectral:ital,wght@0,400;0,500;0,700;1,400&family=JetBrains+Mono:wght@400;500;700&family=Caveat:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f1e1; --paper-soft:#fffaef; --paper-deep:#ebe2cc;
+  --ink:#1a1209; --ink-soft:#3d2f1c; --muted:#6b5d47; --rule:#d9cfb6;
+  --brand:#0f766e; --brand-2:#115e59; --brand-soft:#ccfbf1; --brand-deep:#134e4a;
+  --gold:#ca8a04; --highlighter:#fde047;
+  --auburn:#7c2d12; --auburn-soft:#fde6d6;
+  --forest:#166534; --forest-soft:#dcfce7;
+  --crimson:#9f1239; --crimson-soft:#fee2e2;
+  --navy:#1e3a8a; --navy-soft:#dbeafe;
+  --amber:#d97706; --amber-soft:#fef3c7;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+}
+*{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; min-width:0; }
+html{ scroll-behavior:smooth; scroll-padding-top:96px; overflow-x:hidden; }
+:target{ scroll-margin-top:96px; }
+h2.section, h3.qhead, .plan, #parta, #partb, #mnem, #plan, #e1, #e2, #e3, #e4, #e5, #e6{ scroll-margin-top:96px; }
+body{
+  margin:0; font-family:"Spectral",Georgia,serif; font-size:15.5px; line-height:1.6; color:var(--ink);
+  background:
+    radial-gradient(ellipse at top left, rgba(204,251,241,.5), transparent 60%),
+    radial-gradient(ellipse at bottom right, rgba(241,224,193,.5), transparent 70%),
+    var(--paper);
+  background-attachment:fixed;
+  padding-top:var(--safe-top); padding-bottom:var(--safe-bot);
+  -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
+  word-wrap:break-word; overflow-wrap:break-word; overflow-x:hidden;
+}
+body::before{
+  content:""; position:fixed; inset:0;
+  background-image:repeating-linear-gradient(0deg, rgba(15,118,110,.013) 0 1px, transparent 1px 28px);
+  pointer-events:none; z-index:0;
+}
+
+.topbar{
+  position:sticky; top:0; z-index:50;
+  background:rgba(247,241,225,.96); backdrop-filter:blur(8px);
+  border-bottom:1.5px solid var(--ink);
+}
+.title{ display:flex; justify-content:space-between; align-items:center; padding:calc(10px + var(--safe-top)) 16px 4px; }
+.title b{ font-family:"Fraunces",serif; font-weight:700; font-size:17px; color:var(--brand); letter-spacing:-.01em; }
+.title small{ font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.18em; color:var(--muted); text-transform:uppercase; }
+nav.chips{ display:flex; gap:6px; padding:6px 12px 10px; overflow-x:auto; scrollbar-width:none; }
+nav.chips::-webkit-scrollbar{ display:none; }
+nav.chips a{
+  flex-shrink:0; padding:6px 12px;
+  font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:500; letter-spacing:.08em;
+  color:var(--ink); background:var(--paper-soft); border:1.5px solid var(--ink);
+  text-decoration:none; white-space:nowrap; text-transform:uppercase;
+}
+nav.chips a.hot{ background:var(--highlighter); }
+nav.chips a:hover{ background:var(--brand); color:var(--paper); }
+
+.wrap{ position:relative; z-index:1; max-width:780px; margin:0 auto; padding:14px 12px 80px; }
+@media(min-width:600px){ .wrap{ padding:24px 22px 96px; } body{ font-size:17px; line-height:1.7; } }
+
+.cover{
+  margin:0 0 24px; padding:22px 18px 20px;
+  background:
+    radial-gradient(circle at 15% 18%, rgba(204,251,241,.6), transparent 40%),
+    radial-gradient(circle at 90% 80%, rgba(241,224,193,.45), transparent 45%),
+    var(--paper-soft);
+  border:1.5px solid var(--ink); box-shadow:4px 4px 0 var(--ink); border-radius:4px; position:relative;
+}
+.cover .stamp{
+  position:absolute; top:14px; right:16px;
+  border:1.5px solid var(--crimson); color:var(--crimson);
+  padding:4px 10px; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.18em;
+  transform:rotate(4deg); background:rgba(255,250,239,.6);
+}
+.cover h1{
+  font-family:"Fraunces",serif; font-weight:700;
+  font-size:clamp(30px,8vw,58px); line-height:.95; letter-spacing:-.02em; margin:8px 0 4px;
+}
+.cover h1 em{ font-style:italic; font-weight:400; color:var(--brand); display:block; font-size:.45em; margin-top:6px; }
+.cover .sub{ font-family:"Caveat",cursive; font-size:22px; color:var(--brand); margin:10px 0 16px; line-height:1.1; transform:rotate(-1deg); display:inline-block; }
+.cover .stats{
+  display:grid; grid-template-columns:repeat(3,1fr); gap:10px 16px;
+  border-top:1.5px solid var(--ink); padding-top:14px; margin-top:6px;
+}
+.cover .stat .lbl{ font-family:"JetBrains Mono",monospace; font-size:9.5px; letter-spacing:.2em; color:var(--muted); text-transform:uppercase; margin-bottom:4px; }
+.cover .stat .num{ font-family:"Fraunces",serif; font-weight:700; font-size:22px; line-height:1; color:var(--ink); letter-spacing:-.02em; }
+.cover .stat:nth-child(2) .num{ color:var(--brand); }
+.cover .stat:nth-child(3) .num{ color:var(--crimson); }
+
+h2.section{
+  font-family:"Fraunces",serif; font-weight:700; font-size:28px; letter-spacing:-.01em;
+  margin:36px 0 12px; padding-bottom:6px; border-bottom:2px solid var(--ink);
+  display:flex; align-items:baseline; gap:10px; flex-wrap:wrap;
+}
+h2.section small{ font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.18em; color:var(--brand); text-transform:uppercase; }
+
+h3.qhead{
+  font-family:"Fraunces",serif; font-weight:700; font-size:19px; margin:22px 0 8px; line-height:1.25;
+  display:flex; flex-wrap:wrap; align-items:baseline; gap:8px;
+}
+h3.qhead .tag{
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em;
+  padding:2px 8px; background:var(--brand); color:var(--paper); text-transform:uppercase;
+}
+h3.qhead .tag.hot{ background:var(--crimson); }
+h3.qhead .tag.freq{ background:var(--forest); }
+h3.qhead .tag.year{ background:var(--paper-soft); color:var(--ink); border:1px solid var(--ink); }
+
+.box{
+  margin:10px 0; padding:12px 14px; border-radius:4px;
+  border:1px solid var(--rule); background:var(--paper-soft);
+}
+.box.def{ background:var(--brand-soft); border-color:var(--brand); }
+.box.tip{ background:var(--forest-soft); border-color:var(--forest); }
+.box.prof{ background:var(--auburn-soft); border-color:var(--auburn); }
+.box.warn{ background:var(--crimson-soft); border-color:var(--crimson); }
+.box.why{ background:var(--navy-soft); border-color:var(--navy); }
+.box.eli5{ background:var(--amber-soft); border-color:var(--amber); }
+.box b.lbl{
+  display:inline-block; font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.16em;
+  text-transform:uppercase; padding:2px 6px; margin-right:8px; border:1px solid currentColor; border-radius:2px;
+}
+.box.def b.lbl{ color:var(--brand-deep); }
+.box.tip b.lbl{ color:var(--forest); }
+.box.prof b.lbl{ color:var(--auburn); }
+.box.warn b.lbl{ color:var(--crimson); }
+.box.why b.lbl{ color:var(--navy); }
+.box.eli5 b.lbl{ color:var(--amber); }
+
+.ans{
+  margin:10px 0 18px; padding:14px 16px; background:#fff;
+  border-left:4px solid var(--brand); border-top:1px solid var(--rule); border-right:1px solid var(--rule); border-bottom:1px solid var(--rule);
+  border-radius:0 4px 4px 0;
+}
+.ans h4{
+  font-family:"JetBrains Mono",monospace; font-size:11px; letter-spacing:.18em;
+  color:var(--brand); text-transform:uppercase; margin:0 0 8px;
+}
+.ans ul,.ans ol{ margin:6px 0 6px 20px; padding:0; }
+.ans li{ margin:4px 0; }
+.ans p{ margin:6px 0; }
+.ans p.lead{ font-weight:600; }
+strong.hot{ background:var(--highlighter); padding:0 3px; }
+strong.key{ color:var(--brand-deep); }
+code{ font-family:"JetBrains Mono",monospace; font-size:.9em; background:var(--paper-deep); padding:1px 5px; border-radius:3px; }
+
+.boxed{
+  display:inline-block; background:var(--brand-soft); border:1.5px solid var(--brand);
+  padding:4px 10px; border-radius:3px; font-weight:700; font-family:"JetBrains Mono",monospace;
+}
+
+table.flash{ width:100%; border-collapse:collapse; margin:12px 0; font-size:14.5px; }
+table.flash th, table.flash td{ border:1px solid var(--rule); padding:8px 10px; text-align:left; vertical-align:top; }
+table.flash th{ background:var(--paper-deep); font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.14em; text-transform:uppercase; }
+table.flash tr:nth-child(even) td{ background:var(--paper-soft); }
+table.flash td.q{ font-weight:600; width:35%; }
+@media(max-width:600px){
+  table.flash{ display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; white-space:normal; }
+  table.flash th, table.flash td{ word-break:break-word; }
+}
+
+table.trace{ width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; font-family:"JetBrains Mono",monospace; }
+table.trace th, table.trace td{ border:1px solid var(--rule); padding:6px 8px; text-align:center; }
+table.trace th{ background:var(--ink); color:var(--paper); font-size:10px; letter-spacing:.1em; }
+table.trace tr:nth-child(even) td{ background:var(--paper-soft); }
+.trace-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; }
+
+.mnem{
+  font-family:"Caveat",cursive; font-size:22px; color:var(--auburn);
+  background:var(--highlighter); padding:6px 12px; display:inline-block;
+  transform:rotate(-1deg); margin:6px 0; border:1.5px solid var(--ink);
+}
+
+.plan{
+  background:var(--navy-soft); border:2px solid var(--navy); border-radius:6px;
+  padding:14px 16px; margin:16px 0 24px;
+}
+.plan h3{ margin:0 0 8px; font-family:"Fraunces",serif; font-size:20px; color:var(--navy); }
+.plan ol{ margin:6px 0 6px 20px; }
+.plan li{ margin:4px 0; }
+
+.hr{ border:0; border-top:1.5px dashed var(--rule); margin:24px 0; }
+
+.foot{
+  margin-top:40px; padding:14px; text-align:center;
+  font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:.16em;
+  color:var(--muted); text-transform:uppercase;
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="title"><b>LOC · CRASH-60</b><small>08 JUN 2026 · 75 MARK</small></div>
+  <nav class="chips">
+    <a href="#plan" class="hot">Plan</a>
+    <a href="#evidence">PYQ Evidence</a>
+    <a href="#parta">Part-A · 10×1.5</a>
+    <a href="#partb">Part-B · 4×15</a>
+    <a href="#e1">Booth</a>
+    <a href="#e2">DMA / I-O</a>
+    <a href="#e3">Cache</a>
+    <a href="#e4">Addressing</a>
+    <a href="#e5">Control Unit</a>
+    <a href="#e6">Pipeline</a>
+    <a href="#mnem">Mnemonics</a>
+  </nav>
+</header>
+
+<main class="wrap">
+
+<section class="cover">
+  <div class="stamp">PASS-OPTIMIZED</div>
+  <div style="font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.22em; color:var(--muted); text-transform:uppercase;">BCG-208-V · LOC (COA)</div>
+  <h1>Crash-60.<em>Memorize. Walk in. Pass.</em></h1>
+  <div class="sub">BCA-paper anchored · 6 essays + 24 shorts · whole syllabus skimmed</div>
+  <div class="stats">
+    <div class="stat"><div class="lbl">Target</div><div class="num">45/75</div></div>
+    <div class="stat"><div class="lbl">Coverage</div><div class="num">~70%</div></div>
+    <div class="stat"><div class="lbl">Anchor</div><div class="num">BCA PYQ</div></div>
+  </div>
+</section>
+
+<div class="plan" id="plan">
+  <h3>Battle plan · 180 min</h3>
+  <ol>
+    <li><strong>00:00–00:25</strong> · Part-A · 10 shorts × ~2.5 min · keep answers to <strong>2-4 lines / 2 points + example</strong>. Aim 12-13/15.</li>
+    <li><strong>00:25–02:30</strong> · Part-B · attempt <strong>any 4 of 6</strong> · ~30 min each. For numericals: formula → substitution → arithmetic → <strong>boxed answer</strong>. Aim 11-12/15 each.</li>
+    <li><strong>02:30–03:00</strong> · Revisit, label every diagram, check Q-numbering (Q2(a), Q4(b)), box every final answer.</li>
+  </ol>
+  <p style="margin:8px 0 0;"><b>Safe 4 longs (all BCA-confirmed):</b> <strong class="key">Booth multiplication · DMA &amp; I/O · Cache mapping numerical · Addressing modes</strong>. Backups: Control Unit (microprogrammed) · Pipeline hazards. Pick any 4 of these 6.</p>
+</div>
+
+<div class="box why" id="evidence">
+  <b class="lbl">Why these topics — PYQ evidence (not guesswork)</b>
+  <p style="margin:6px 0 8px;"><span style="background:var(--forest-soft);border:1px solid var(--forest);border-radius:3px;padding:1px 6px;font-size:12px;">🟢 BCA-CONFIRMED</span> = appeared in a real <b>BCA-stream</b> paper. <span style="background:var(--brand-soft);border:1px solid var(--brand);border-radius:3px;padding:1px 6px;font-size:12px;">🟡 CROSS-STREAM</span> = repeats across BTech papers + in syllabus → strong prediction. (Full ledger + every PYQ card lives in the main exam guide; this sheet is the short version.)</p>
+  <table class="flash">
+    <thead><tr><th>Topic</th><th>Seen in (papers)</th><th>Confidence</th></tr></thead>
+    <tbody>
+    <tr><td class="q">Arithmetic numerical (Booth / IEEE / division)</td><td>BCA May-25 Q4 · BCA Dec-25 Q3 · BTech May-26</td><td>🟢 ×4</td></tr>
+    <tr><td class="q">DMA &amp; I/O transfer modes</td><td>BCA May-25 Q7(d) · BTech May-26 Q5 · BTech May-24</td><td>🟢 ×4</td></tr>
+    <tr><td class="q">Cache mapping + memory numerical</td><td>BCA May-25 Q5(a) · BTech May-26 Q7 · BTech Dec-23</td><td>🟢 ×3</td></tr>
+    <tr><td class="q">Addressing modes (x86)</td><td>BCA May-25 Q6 · Real Paper 311404 · BTech Dec-23</td><td>🟢 ×3</td></tr>
+    <tr><td class="q">RISC vs CISC (5M short)</td><td>Real Paper 311404 Q2(b) · BCA May-25 Q7(c) · BTech May-26</td><td>🟢 ×3</td></tr>
+    <tr><td class="q">Microprogrammed vs hardwired CU</td><td>BTech May-26 Q4 · BTech May-24</td><td>🟡 ×2</td></tr>
+    <tr><td class="q">Pipeline hazards + speedup</td><td>BTech May-26 · BTech May-24 · BTech Dec-23</td><td>🟡 ×3</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="box warn">
+  <b class="lbl">Examiner rules · read before you uncap the pen</b>
+  <ol>
+    <li><strong>Match depth to marks.</strong>
+      <ul>
+        <li><strong>1.5 M (Part-A):</strong> 2-4 lines · direct fact / 2 points + 1 example. <em>Don't write a paragraph.</em></li>
+        <li><strong>5 M:</strong> bullet points + one-line explanation each + a small diagram/table.</li>
+        <li><strong>10 M:</strong> headed sub-points + labelled diagram + worked example.</li>
+        <li><strong>15 M:</strong> definition → diagram → 4-6 headed points → worked example → comparison table → conclusion.</li>
+      </ul>
+    </li>
+    <li><strong>Numericals = show every step.</strong> Booth table, cache bit-split, speedup — write the formula, substitute, compute, then <strong>box the final answer</strong>. No "refer above".</li>
+    <li><strong>Label every diagram.</strong> Block diagram of DMA, cache mapping, pipeline stages — every box named + a one-line caption. Unlabelled = half marks.</li>
+    <li><strong>"Differentiate / Compare" → always a TABLE</strong>, never paragraphs. One row per parameter, one column per item.</li>
+    <li><strong>Write the full question number</strong> in the margin: <em>Q2(a), Q2(b), Q5</em>. Never orphan a "(a)".</li>
+    <li><strong>Don't repeat a point</strong> across sub-parts. Each bullet = a new fact.</li>
+  </ol>
+</div>
+
+<!-- ========== PART A ========== -->
+<h2 class="section" id="parta">PART A <small>10 SHORTS · 15 MARKS · COMPULSORY</small></h2>
+
+<div class="box prof">
+  <b class="lbl">Prof pattern</b>
+  Stems: <em>"define / differentiate / what is / write the formula / convert / why"</em>. Each answer = 2-4 lines or 2 points + 1 example. 10 sub-parts (a)–(j) cover the <strong>whole syllabus</strong> — leave none blank, each is 1.5 free marks.
+</div>
+
+<table class="flash">
+  <thead><tr><th>If asked…</th><th>Write this</th></tr></thead>
+  <tbody>
+
+  <tr><td class="q">Define PSW. Its primary flags?</td>
+  <td><strong class="key">Program Status Word</strong> = a CPU register holding <strong>status flags</strong> the ALU sets after each operation: <strong>CF</strong> (carry), <strong>ZF</strong> (zero), <strong>SF</strong> (sign), <strong>OF</strong> (signed overflow), <strong>PF</strong> (parity). <em>Eg: 5−5=0 → ZF=1, used by JZ branch.</em></td></tr>
+
+  <tr><td class="q">What is an n-bit parallel (ripple-carry) adder?</td>
+  <td>n full-adders chained so each stage's carry-out feeds the next stage's carry-in, adding two n-bit numbers in one pass. Simple but slow — the carry <strong>ripples</strong> stage to stage (delay ∝ n). <strong>Carry-look-ahead</strong> fixes this by computing all carries in parallel. <em>(Unit-I, computer arithmetic.)</em></td></tr>
+
+  <tr><td class="q">Differentiate direct vs indirect addressing.</td>
+  <td><strong>Direct:</strong> the address in the instruction <em>is</em> the operand's address (<code>EA = A</code>), 1 memory read. <strong>Indirect:</strong> the instruction points to a cell that <em>holds</em> the real address (<code>EA = M[A]</code>), 2 reads. <em>Eg: <code>MOV AX,[1000]</code> vs <code>MOV AX,@[1000]</code>.</em></td></tr>
+
+  <tr><td class="q">Why does DMA have priority over CPU for the bus?</td>
+  <td>I/O data is <strong>volatile</strong> — a fast incoming byte not read at once is overwritten and lost; CPU work can simply wait. So DMA gets the bus first (<strong>cycle stealing</strong>). <em>Eg: a disk streaming a block — miss one byte and the whole sector is corrupt.</em></td></tr>
+
+  <tr><td class="q">List the three pipeline hazards.</td>
+  <td><strong>Structural</strong> — two stages need the same hardware in one cycle. <strong>Data</strong> — an instruction reads a value before the earlier one writes it. <strong>Control</strong> — branches delay the pipeline because the next address isn't known yet.</td></tr>
+
+  <tr><td class="q">Define spatial &amp; temporal locality.</td>
+  <td><strong>Temporal:</strong> a cell used once is likely used again soon (<em>eg loop counter i</em>). <strong>Spatial:</strong> cells near a used cell are likely used next (<em>eg walking an array</em>). This is why caches work.</td></tr>
+
+  <tr><td class="q">Pipeline speedup formula + variables.</td>
+  <td><code>S_p = (n × k) / (k + n − 1)</code>, where <code>n</code> = instructions, <code>k</code> = stages; as <code>n</code> grows, <code>S_p → k</code>. <em>Eg: k=4, n=100 → 400/103 ≈ <strong class="hot">3.88×</strong>.</em></td></tr>
+
+  <tr><td class="q">Differentiate write-through vs write-back cache.</td>
+  <td><strong>Write-through:</strong> every cache write also goes to RAM at once — high traffic, always consistent. <strong>Write-back:</strong> writes update only the cache line; RAM updated later on eviction (dirty bit) — low traffic.</td></tr>
+
+  <tr><td class="q">Convert (19.625)₁₀ to binary.</td>
+  <td>Integer: 19 = 16+2+1 = <code>10011</code>. Fraction: 0.625 = 0.5+0.125 = <code>.101</code>. Result: <span class="boxed">10011.101₂</span></td></tr>
+
+  <tr><td class="q">Function of IR and PC?</td>
+  <td><strong>PC (Program Counter)</strong> holds the address of the <strong>next</strong> instruction to fetch; <strong>IR (Instruction Register)</strong> holds the <strong>current</strong> instruction's opcode being decoded. <em>Eg: fetch at 2000 → goes to IR, PC increments to 2001.</em></td></tr>
+
+  <tr><td class="q">What is RTL (Register Transfer Language)?</td>
+  <td>A symbolic notation for micro-operations between registers. <em>Eg:</em> <code>R1 ← R2 + R3</code> means add R2,R3 and store in R1. A conditional: <code>T0: R1 ← R2</code> (transfer happens at time T0). Used to describe CPU control.</td></tr>
+
+  <tr><td class="q">Differentiate hardware vs software interrupt.</td>
+  <td><strong>Hardware interrupt:</strong> raised by an external device (keyboard, timer) via an interrupt line — asynchronous. <strong>Software interrupt:</strong> raised by a program instruction (<code>INT n</code>, system call) — synchronous, planned.</td></tr>
+
+  <tr><td class="q">Differentiate combinational vs sequential circuit.</td>
+  <td><strong>Combinational:</strong> output depends only on present inputs, no memory (<em>eg adder, MUX</em>). <strong>Sequential:</strong> output depends on inputs + past state, uses memory/clock (<em>eg flip-flop, counter, register</em>).</td></tr>
+
+  <tr><td class="q">Differentiate fixed-point vs floating-point.</td>
+  <td><strong>Fixed-point:</strong> radix point at a fixed position, limited range, simple/fast. <strong>Floating-point:</strong> radix point "floats" via an exponent (<code>1.M × 2^E</code>), huge range, costlier arithmetic. <em>Eg IEEE-754 single = 1+8+23 bits.</em></td></tr>
+
+  <tr><td class="q">Address space is 24 bits, memory space 16 bits — words in each?</td>
+  <td>Address space = 2²⁴ = <span class="boxed">16 M words</span>; memory space = 2¹⁶ = <span class="boxed">64 K words</span>. (1 address = 1 word; 2¹⁰=1K, 2²⁰=1M.)</td></tr>
+
+  <tr><td class="q">Differentiate cache line vs block size.</td>
+  <td><strong>Block</strong> = unit of transfer between main memory and cache. <strong>Line</strong> = the cache slot that holds one block. Line size = block size; bigger blocks exploit <em>spatial locality</em> but raise miss penalty.</td></tr>
+
+  <tr><td class="q">What is memory interleaving?</td>
+  <td>Splitting memory into several <strong>banks</strong> that can be accessed in parallel, so consecutive addresses fall in different banks. Speeds up block/burst reads (cache fills, pipelines). Eg low-order interleaving.</td></tr>
+
+  <tr><td class="q">Define throughput and speedup.</td>
+  <td><strong>Throughput</strong> = number of instructions/tasks completed per unit time. <strong>Speedup</strong> = <code>(time without enhancement) / (time with enhancement)</code>. Pipelining/parallelism raise both.</td></tr>
+
+  <tr><td class="q">Differentiate RISC vs CISC (short).</td>
+  <td><strong>RISC:</strong> few simple fixed-length instructions, load/store, many registers, hardwired control, pipelined (<em>ARM</em>). <strong>CISC:</strong> many complex variable-length instructions, memory operands, microprogrammed (<em>x86</em>).</td></tr>
+
+  <tr><td class="q">What is Booth's algorithm?</td>
+  <td>An efficient method for <strong>signed (2's-complement) multiplication</strong>. It scans the multiplier's last two bits <code>Q₀Q₋₁</code> (10→sub, 01→add, 00/11→nothing) then arithmetic-shift-right. A run of 1s becomes one sub + one add → fewer operations.</td></tr>
+
+  <tr><td class="q">Write the IEEE-754 single-precision format.</td>
+  <td>32 bits = <strong>1 Sign + 8 Exponent (bias 127) + 23 Mantissa</strong>. Value = <code>(−1)ˢ × 1.M × 2^(E−127)</code>; leading 1 is hidden. Double = 1+11+52, bias 1023.</td></tr>
+
+  <tr><td class="q">What is the instruction cycle?</td>
+  <td>The basic CPU loop: <strong>Fetch → Decode → Execute</strong> (+ store / interrupt check). PC supplies the address, IR holds the opcode, control unit generates the micro-operations.</td></tr>
+
+  <tr><td class="q">Name the cache mapping techniques.</td>
+  <td><strong>Direct mapping</strong> (block → one fixed line), <strong>Associative</strong> (block → any line), <strong>Set-associative</strong> (block → any line within one set). Set-associative is the practical middle ground.</td></tr>
+
+  <tr><td class="q">What is microprogramming?</td>
+  <td>Implementing the control unit as a <strong>program of microinstructions</strong> stored in control memory (ROM). Each machine instruction triggers a micro-routine. Flexible &amp; easy to modify, but slower than hardwired control.</td></tr>
+
+  <tr><td class="q">Define DMA.</td>
+  <td><strong>Direct Memory Access</strong> = a controller that transfers data directly between an I/O device and memory <strong>without CPU involvement</strong> per byte. CPU only sets it up (start address + count), then is interrupted when done.</td></tr>
+
+  </tbody>
+</table>
+
+<!-- ========== PART B ========== -->
+<h2 class="section" id="partb">PART B <small>ANY 4 OF 6 · 60 MARKS</small></h2>
+
+<div class="box prof">
+  <b class="lbl">Essay scaffold</b>
+  Every 15M answer: (1) <strong>Definition + intro</strong>. (2) <strong>Labelled diagram / table</strong>. (3) <strong>4-6 headed points</strong>. (4) <strong>Worked example</strong> (numerical = full working + boxed answer). (5) <strong>Conclusion / comparison</strong>.
+</div>
+
+<!-- ========== ESSAY 1 — BOOTH ========== -->
+<h3 class="qhead" id="e1"><span class="tag hot">15M · #1 LOCK</span>Booth's Algorithm — signed multiplication</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Explain Booth's algorithm for signed multiplication and multiply (−6) × (−9) showing every step." / "Multiply the given signed numbers using Booth's algorithm."
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead"><strong class="key">Booth's algorithm</strong> multiplies two signed numbers in <strong>2's-complement</strong> form directly, with no separate sign handling. It treats a string of 1s in the multiplier as one subtraction + one addition, reducing the number of partial products.</p>
+
+<p><strong class="key">Recoding rule</strong> — examine the multiplier's two lowest bits <code>Q₀ Q₋₁</code>:</p>
+<table class="flash">
+  <thead><tr><th>Q₀ Q₋₁</th><th>Action</th><th>Meaning</th></tr></thead>
+  <tbody>
+  <tr><td class="q">0 0</td><td>No operation</td><td>middle of run of 0s</td></tr>
+  <tr><td class="q">0 1</td><td><code>A ← A + M</code></td><td>end of a run of 1s</td></tr>
+  <tr><td class="q">1 0</td><td><code>A ← A − M</code></td><td>start of a run of 1s</td></tr>
+  <tr><td class="q">1 1</td><td>No operation</td><td>middle of run of 1s</td></tr>
+  </tbody>
+</table>
+<p>After each step do an <strong>Arithmetic Shift Right (ASR)</strong> on the combined <code>A·Q·Q₋₁</code> register (sign bit of A preserved). Repeat for <code>n</code> = bit-width of the multiplier.</p>
+
+<p><strong class="key">Worked example — (−6) × (−9), 5-bit:</strong></p>
+<p>M = −6 = <code>11010</code>, so −M = +6 = <code>00110</code>. &nbsp; Q = −9 = <code>10111</code>. &nbsp; Init A = <code>00000</code>, Q₋₁ = 0. &nbsp; <strong>5-bit → 5 steps.</strong></p>
+<div class="trace-wrap">
+<table class="trace">
+  <thead><tr><th>Step</th><th>A</th><th>Q</th><th>Q₋₁</th><th>Q₀Q₋₁ → op</th></tr></thead>
+  <tbody>
+  <tr><td>Init</td><td>00000</td><td>10111</td><td>0</td><td>—</td></tr>
+  <tr><td>1</td><td>00110</td><td>10111</td><td>0</td><td>10 → A−M (+6)</td></tr>
+  <tr><td>1·ASR</td><td>00011</td><td>01011</td><td>1</td><td>shift</td></tr>
+  <tr><td>2</td><td>00011</td><td>01011</td><td>1</td><td>11 → no-op</td></tr>
+  <tr><td>2·ASR</td><td>00001</td><td>10101</td><td>1</td><td>shift</td></tr>
+  <tr><td>3</td><td>00001</td><td>10101</td><td>1</td><td>11 → no-op</td></tr>
+  <tr><td>3·ASR</td><td>00000</td><td>11010</td><td>1</td><td>shift</td></tr>
+  <tr><td>4</td><td>11010</td><td>11010</td><td>1</td><td>01 → A+M (−6)</td></tr>
+  <tr><td>4·ASR</td><td>11101</td><td>01101</td><td>0</td><td>shift</td></tr>
+  <tr><td>5</td><td>00011</td><td>01101</td><td>0</td><td>10 → A−M (+6)</td></tr>
+  <tr><td>5·ASR</td><td>00001</td><td>10110</td><td>1</td><td>shift · done</td></tr>
+  </tbody>
+</table>
+</div>
+<p><strong class="key">Result</strong> = combined A:Q = <code>00001 10110₂</code> = <span class="boxed">+54₁₀</span> &nbsp; ✓ &nbsp;(−6 × −9 = +54).</p>
+
+<p><strong class="key">Advantages:</strong> handles signed numbers uniformly (no sign correction); fewer add/subtract operations for numbers with long runs of 1s; basis of modern multiplier hardware (Booth-encoded multiplier trees).</p>
+
+<p><strong>Conclusion:</strong> Booth's algorithm is the standard hardware method for 2's-complement multiplication — one recoding table + arithmetic shift gives correct signed products with reduced operations.</p>
+</div>
+
+<div class="box tip">
+  <b class="lbl">Exam tip</b>
+  <strong>Steps = bit-width of multiplier; table rows = steps + 1 (Init).</strong> If a number is too big for n bits (eg −9 needs 5 bits, not 4) use the next width. Always verify: sign of result must match sign of (M × Q).
+</div>
+
+<!-- ========== ESSAY 2 — DMA / I-O ========== -->
+<h3 class="qhead" id="e2"><span class="tag hot">15M · #2 LOCK</span>I/O Data Transfer Modes + DMA</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Explain the modes of data transfer between CPU and I/O." / "Describe DMA with a block diagram and its working." (BCA May-25 Q7(d))
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead">Data moves between an I/O device and memory in three modes, differing in <strong class="key">how much the CPU is involved</strong>.</p>
+
+<p><strong class="key">1. Programmed I/O:</strong> the CPU runs a loop that <em>polls</em> the device status flag and transfers each byte itself. Simple, but the CPU <strong>wastes cycles busy-waiting</strong>. Suits slow devices.</p>
+
+<p><strong class="key">2. Interrupt-driven I/O:</strong> the device <em>interrupts</em> the CPU when ready; the CPU runs an ISR to transfer the byte, then resumes its work. No busy-wait, but still <strong>one interrupt + CPU transfer per byte</strong> — costly for fast/bulk data.</p>
+
+<p><strong class="key">3. DMA (Direct Memory Access):</strong> a <strong>DMA controller</strong> transfers a whole block directly between device and memory <strong>without the CPU per byte</strong>. CPU only programs it (start address + count), DMA takes the bus (cycle stealing), and interrupts the CPU once at the end.</p>
+
+<p><strong class="key">DMA block diagram:</strong></p>
+<figure class="diagram-fig" style="margin:12px 0;">
+  <div style="max-width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--ink);">
+    <!-- top row: CPU + Memory -->
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+      <div style="flex:1;min-width:120px;background:var(--brand-soft);border:1.5px solid var(--brand-deep);border-radius:5px;padding:8px;text-align:center;">
+        <b style="color:var(--brand-deep);">CPU</b>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">bus master (default)</div>
+      </div>
+      <div style="flex:1;min-width:120px;background:var(--paper-deep);border:1.5px solid var(--rule);border-radius:5px;padding:8px;text-align:center;">
+        <b>Memory</b>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">main RAM</div>
+      </div>
+    </div>
+    <!-- CPU <-> DMAC control signals -->
+    <div style="display:flex;justify-content:center;gap:14px;margin:6px 0;flex-wrap:wrap;">
+      <span style="background:var(--paper-soft);border:1px solid var(--brand);border-radius:3px;padding:1px 6px;font-size:10px;">BR &uarr; (Bus Request)</span>
+      <span style="background:var(--paper-soft);border:1px solid var(--brand);border-radius:3px;padding:1px 6px;font-size:10px;">BG &darr; (Bus Grant)</span>
+      <span style="background:var(--paper-soft);border:1px solid var(--crimson);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--crimson);">INT &uarr; (done)</span>
+    </div>
+    <!-- SYSTEM BUS spine -->
+    <div style="border-top:3px solid var(--brand);margin:4px 0;padding-top:3px;text-align:center;font-size:10px;letter-spacing:.05em;color:var(--brand-deep);font-weight:700;">SYSTEM BUS (address / data / control)</div>
+    <!-- bottom row: DMAC + I/O Device -->
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:6px;">
+      <div style="flex:1;min-width:130px;background:var(--brand-soft);border:2px solid var(--brand);border-radius:5px;padding:8px;text-align:center;">
+        <b style="color:var(--brand-deep);">DMA Controller</b>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">becomes bus master on BG</div>
+      </div>
+      <div style="flex:1;min-width:130px;background:var(--paper-deep);border:1.5px solid var(--rule);border-radius:5px;padding:8px;text-align:center;">
+        <b>I/O Device</b>
+        <div style="font-size:10px;color:var(--muted);margin-top:2px;">disk / high-speed peripheral</div>
+      </div>
+    </div>
+    <!-- Device <-> DMAC handshake -->
+    <div style="display:flex;justify-content:center;gap:14px;margin-top:6px;flex-wrap:wrap;">
+      <span style="background:var(--paper-soft);border:1px solid var(--brand);border-radius:3px;padding:1px 6px;font-size:10px;">DREQ &uarr; (Device Request)</span>
+      <span style="background:var(--paper-soft);border:1px solid var(--brand);border-radius:3px;padding:1px 6px;font-size:10px;">DACK &darr; (DMA Ack)</span>
+    </div>
+  </div>
+  <figcaption style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;"><b>Fig · DMA</b> · Device asserts DREQ &rarr; DMAC raises BR &rarr; CPU grants BG &amp; floats bus &rarr; DMAC drives bus, sends DACK, moves data direct to Memory &rarr; INT signals CPU on completion.</figcaption>
+</figure>
+
+<p><strong class="key">DMA working steps:</strong></p>
+<ol>
+<li>CPU loads DMAC registers: memory start address, word count, read/write.</li>
+<li>Device asserts <strong>DREQ</strong>; DMAC raises <strong>BR</strong> to the CPU.</li>
+<li>CPU finishes the current cycle, asserts <strong>BG</strong>, and floats off the bus.</li>
+<li>DMAC transfers data word-by-word, incrementing address &amp; decrementing count.</li>
+<li>On count = 0, DMAC releases the bus and sends an <strong>interrupt</strong> to the CPU.</li>
+</ol>
+
+<p><strong class="key">DMA transfer modes:</strong> <strong>Burst</strong> (whole block at once, bus held), <strong>Cycle-stealing</strong> (one word per CPU idle cycle), <strong>Transparent/hidden</strong> (only when CPU isn't using the bus).</p>
+
+<p><strong>Conclusion:</strong> DMA gives the highest I/O throughput by removing the CPU from the per-byte path — essential for disks, network cards and graphics where data is fast and volatile.</p>
+</div>
+
+<div class="box tip"><b class="lbl">Mnemonic</b> Modes ladder: <strong>P-I-D</strong> = <em>Programmed (poll) → Interrupt (notify) → DMA (delegate)</em> — CPU involvement drops at each step.</div>
+
+<!-- ========== ESSAY 3 — CACHE ========== -->
+<h3 class="qhead" id="e3"><span class="tag hot">15M · #3 LOCK</span>Cache Mapping + Address-Split Numerical</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Explain cache mapping techniques with a numerical." / "Given cache and memory sizes, find the TAG/LINE/WORD bits." (BCA May-25 Q5(a))
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead"><strong class="key">Cache</strong> is small fast memory between CPU and RAM that exploits <strong>locality of reference</strong>. <strong>Mapping</strong> decides which cache line a memory block can occupy.</p>
+
+<p><strong class="key">The three mapping techniques:</strong></p>
+<table class="flash">
+  <thead><tr><th>Type</th><th>Rule</th><th>Address split</th></tr></thead>
+  <tbody>
+  <tr><td class="q">Direct</td><td>block → exactly one line (<code>line = block mod #lines</code>)</td><td>TAG + LINE + WORD</td></tr>
+  <tr><td class="q">Associative</td><td>block → any line (full search)</td><td>TAG + WORD</td></tr>
+  <tr><td class="q">Set-associative</td><td>block → any line within one set</td><td>TAG + SET + WORD</td></tr>
+  </tbody>
+</table>
+
+<figure style="margin:12px 0;">
+  <div style="display:flex;flex-wrap:wrap;gap:4px;max-width:100%;font-family:'JetBrains Mono',monospace;font-size:11px;">
+    <div style="flex:5 1 90px;min-width:80px;border:1.5px solid var(--brand-deep);background:var(--brand-soft);color:var(--brand-deep);border-radius:5px;padding:8px 6px;text-align:center;">
+      <div style="font-weight:700;letter-spacing:.5px;">TAG</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">5 bits</div>
+    </div>
+    <div style="flex:7 1 110px;min-width:90px;border:1.5px solid var(--forest);background:var(--forest-soft);color:#0b3d1f;border-radius:5px;padding:8px 6px;text-align:center;">
+      <div style="font-weight:700;letter-spacing:.5px;">LINE</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">7 bits</div>
+    </div>
+    <div style="flex:4 1 70px;min-width:60px;border:1.5px solid var(--auburn);background:var(--auburn-soft);color:var(--auburn);border-radius:5px;padding:8px 6px;text-align:center;">
+      <div style="font-weight:700;letter-spacing:.5px;">WORD</div>
+      <div style="font-size:10px;color:var(--muted);margin-top:2px;">4 bits</div>
+    </div>
+  </div>
+  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted);margin-top:5px;text-align:center;">16-bit address &nbsp;=&nbsp; 64KB mem · 2KB cache · 16B block</div>
+  <figcaption style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;"><b>Fig · Cache</b> · direct-mapping address split (TAG + LINE + WORD)</figcaption>
+</figure>
+
+<p><strong class="key">Worked numerical (direct mapping):</strong> Main memory = 64 KB, cache = 2 KB, block = 16 bytes. Find TAG/LINE/WORD bits.</p>
+<ol>
+<li>Memory = 64 KB = 2¹⁶ → <strong>16-bit physical address</strong>.</li>
+<li>Block = 16 B = 2⁴ → <strong>WORD (offset) = 4 bits</strong>.</li>
+<li>Cache lines = cache/block = 2 KB / 16 B = 2¹¹/2⁴ = 2⁷ → <strong>LINE = 7 bits</strong>.</li>
+<li>TAG = 16 − 7 − 4 = <strong>5 bits</strong>.</li>
+</ol>
+<p>Answer: <span class="boxed">TAG 5 · LINE 7 · WORD 4 = 16 bits</span></p>
+
+<p><strong class="key">Set-associative variation:</strong> for a 4-way set-associative cache, #sets = #lines / 4 = 2⁷/2² = 2⁵ → <strong>SET = 5 bits</strong>, so TAG = 16 − 5 − 4 = <strong>7 bits</strong> (fewer set bits → bigger tag).</p>
+
+<p><strong class="key">Write policies &amp; replacement (mention for marks):</strong> write-through vs write-back; replacement algorithms <strong>FIFO, LRU, Random</strong> (associative caches need one; direct mapping doesn't — only one choice).</p>
+
+<p><strong>Conclusion:</strong> direct mapping is simple but conflict-prone; associative is flexible but costly; <strong>set-associative</strong> balances both and is used in real CPUs. Bit-splitting always = <code>address = TAG + (SET/LINE) + WORD</code>.</p>
+</div>
+
+<div class="box tip"><b class="lbl">Formula card</b> <code>WORD = log₂(block size)</code> · <code>LINE = log₂(#cache lines)</code> · <code>SET = log₂(#sets)</code> · <code>TAG = addr bits − rest</code>. Always start from total address bits = <code>log₂(memory size)</code>.</div>
+
+<!-- ========== ESSAY 4 — ADDRESSING ========== -->
+<h3 class="qhead" id="e4"><span class="tag hot">15M · #4 LOCK</span>Addressing Modes (x86)</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Explain the various addressing modes with examples." (BCA May-25 Q6 · Real Paper 311404)
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead">An <strong class="key">addressing mode</strong> is the rule by which an instruction specifies <em>where</em> its operand is. It lets the same opcode reach data in a register, in memory, or in the instruction itself — giving flexibility and compact code.</p>
+
+<table class="flash">
+  <thead><tr><th>Mode</th><th>Operand location (EA)</th><th>Example</th></tr></thead>
+  <tbody>
+  <tr><td class="q">Immediate</td><td>operand is in the instruction itself</td><td><code>MOV AX, 5</code></td></tr>
+  <tr><td class="q">Register</td><td>operand in a register</td><td><code>MOV AX, BX</code></td></tr>
+  <tr><td class="q">Direct</td><td>EA = address in instruction</td><td><code>MOV AX, [1000]</code></td></tr>
+  <tr><td class="q">Register-indirect</td><td>EA = contents of a register</td><td><code>MOV AX, [BX]</code></td></tr>
+  <tr><td class="q">Indexed / Displacement</td><td>EA = base/index reg + offset</td><td><code>MOV AX, [SI+4]</code></td></tr>
+  <tr><td class="q">Based-indexed</td><td>EA = base reg + index reg (+ disp)</td><td><code>MOV AX, [BX+SI]</code></td></tr>
+  <tr><td class="q">Indirect (memory)</td><td>EA = M[address in instruction]</td><td><code>MOV AX, @[1000]</code></td></tr>
+  <tr><td class="q">Relative (PC)</td><td>EA = PC + offset</td><td><code>JMP +6</code> (branches)</td></tr>
+  </tbody>
+</table>
+
+<p><strong class="key">Why so many modes:</strong></p>
+<ul>
+<li><strong>Immediate</strong> — fast constants, no memory read.</li>
+<li><strong>Register</strong> — fastest operand access (no memory).</li>
+<li><strong>Indirect / indexed</strong> — essential for arrays, pointers, loops (vary the index each iteration).</li>
+<li><strong>Relative</strong> — position-independent code, branch targets.</li>
+</ul>
+
+<p><strong class="key">Worked micro-example:</strong> if <code>BX = 1000</code> and <code>M[1004] = 25</code>, then <code>MOV AX,[BX+4]</code> computes EA = 1000+4 = 1004 → loads <span class="boxed">AX = 25</span>.</p>
+
+<p><strong>Conclusion:</strong> addressing modes trade off speed vs flexibility. Register/immediate are fastest; indexed/indirect enable data structures. A rich mode set (CISC/x86) shortens programs at the cost of decoder complexity.</p>
+</div>
+
+<!-- ========== ESSAY 5 — CONTROL UNIT ========== -->
+<h3 class="qhead" id="e5"><span class="tag freq">15M · BACKUP</span>Hardwired vs Microprogrammed Control Unit</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Differentiate hardwired and microprogrammed control units." / "Explain the design of a microprogrammed control unit." (in syllabus, BTech-repeated)
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead">The <strong class="key">control unit (CU)</strong> generates the timing &amp; control signals that drive every micro-operation. It is built in two ways — <strong>hardwired</strong> or <strong>microprogrammed</strong>.</p>
+
+<p><strong class="key">Hardwired:</strong> control signals come from <strong>fixed combinational logic</strong> (gates, decoders, flip-flops, a sequence counter). Very fast, but rigid — changing the instruction set means redesigning the circuit. Used in <strong>RISC</strong>.</p>
+
+<p><strong class="key">Microprogrammed:</strong> each machine instruction maps to a <strong>micro-routine</strong> of microinstructions stored in <strong>control memory (ROM)</strong>. A microinstruction's bits directly drive the control lines. Flexible — add/modify instructions by editing the microcode. Used in <strong>CISC</strong>.</p>
+
+<table class="flash">
+  <thead><tr><th>Parameter</th><th>Hardwired</th><th>Microprogrammed</th></tr></thead>
+  <tbody>
+  <tr><td class="q">Implementation</td><td>combinational logic</td><td>microcode in control ROM</td></tr>
+  <tr><td class="q">Speed</td><td>fast</td><td>slower (ROM fetch per micro-op)</td></tr>
+  <tr><td class="q">Flexibility</td><td>rigid, hard to modify</td><td>easy to modify/extend</td></tr>
+  <tr><td class="q">Cost / design</td><td>complex to design</td><td>systematic, simpler design</td></tr>
+  <tr><td class="q">Used in</td><td>RISC</td><td>CISC</td></tr>
+  </tbody>
+</table>
+
+<p><strong class="key">Microprogrammed CU design (label every block):</strong></p>
+<figure style="margin:12px 0;max-width:100%;font-family:'JetBrains Mono',monospace;">
+  <div style="display:flex;flex-direction:column;align-items:center;gap:0;">
+    <div style="border:1.5px solid var(--navy);background:var(--navy-soft);color:var(--ink);border-radius:5px;padding:6px 10px;font-size:11px;text-align:center;max-width:100%;">Instruction opcode</div>
+    <div style="font-size:13px;color:var(--brand-deep);line-height:1;">↓</div>
+    <div style="border:1.5px solid var(--brand);background:var(--paper-deep);color:var(--ink);border-radius:5px;padding:6px 10px;font-size:11px;text-align:center;max-width:100%;">Mapping logic <span style="color:var(--muted);">(opcode → start addr)</span></div>
+    <div style="font-size:13px;color:var(--brand-deep);line-height:1;">↓</div>
+    <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;max-width:100%;">
+      <div style="border:2px solid var(--brand);background:var(--brand-soft);color:var(--brand-deep);border-radius:5px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center;">Control Address<br>Register (CAR)</div>
+      <div style="display:flex;flex-direction:column;align-items:center;font-size:10px;color:var(--muted);line-height:1.3;">
+        <span style="color:var(--brand-deep);font-size:13px;">←</span>
+        <span>next address</span>
+      </div>
+      <div style="border:1.5px dashed var(--brand);background:var(--paper-soft);color:var(--ink);border-radius:5px;padding:6px 10px;font-size:10.5px;text-align:center;">Next-address /<br>sequencer<br><span style="color:var(--muted);">(incr · branch · map)</span></div>
+    </div>
+    <div style="font-size:13px;color:var(--brand-deep);line-height:1;">↓</div>
+    <div style="border:2px solid var(--brand);background:var(--brand-soft);color:var(--brand-deep);border-radius:5px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center;max-width:100%;">Control Memory (ROM)</div>
+    <div style="font-size:13px;color:var(--brand-deep);line-height:1;">↓</div>
+    <div style="border:2px solid var(--brand);background:var(--brand-soft);color:var(--brand-deep);border-radius:5px;padding:6px 10px;font-size:11px;font-weight:700;text-align:center;max-width:100%;">Control Data Register (CDR)<br><span style="font-weight:400;color:var(--ink);">microinstruction</span></div>
+    <div style="font-size:13px;color:var(--brand-deep);line-height:1;">↓</div>
+    <div style="display:flex;flex-wrap:wrap;align-items:stretch;justify-content:center;gap:8px;max-width:100%;">
+      <div style="border:1.5px solid var(--navy);background:var(--navy-soft);color:var(--ink);border-radius:5px;padding:6px 10px;font-size:10.5px;text-align:center;display:flex;flex-direction:column;justify-content:center;">
+        <span style="color:var(--navy);font-size:12px;">→</span>
+        <b style="font-size:11px;">Control signals</b>
+        <span style="color:var(--muted);">to datapath (ALU, regs, bus)</span>
+      </div>
+      <div style="border:1.5px solid var(--brand);background:var(--paper-deep);color:var(--ink);border-radius:5px;padding:6px 10px;font-size:10.5px;text-align:center;display:flex;flex-direction:column;justify-content:center;">
+        <span style="color:var(--brand-deep);font-size:12px;">↻</span>
+        <b style="font-size:11px;">Address field</b>
+        <span style="color:var(--muted);">feeds sequencer → CAR</span>
+      </div>
+    </div>
+  </div>
+  <figcaption style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;"><b>Fig · Microprogrammed CU</b> · opcode mapped to CAR; ROM emits microinstruction in CDR → control signals out + next-address field loops back via sequencer to CAR.</figcaption>
+</figure>
+
+<p><strong>Conclusion:</strong> hardwired trades flexibility for speed; microprogrammed trades speed for flexibility. Modern CPUs often combine both — a hardwired core for common instructions, microcode for complex ones.</p>
+</div>
+
+<!-- ========== ESSAY 6 — PIPELINE ========== -->
+<h3 class="qhead" id="e6"><span class="tag freq">15M · BACKUP</span>Pipelining — Hazards + Speedup</h3>
+
+<div class="box def">
+  <b class="lbl">Likely stem</b> "Explain pipelining, its hazards and how they are resolved. Compute the speedup." (BTech May-26/24 repeated)
+</div>
+
+<div class="ans">
+<h4>Model answer</h4>
+<p class="lead"><strong class="key">Pipelining</strong> overlaps the execution of several instructions by splitting the datapath into stages, so one instruction is fetched while another decodes and a third executes — like an assembly line.</p>
+
+<p><strong class="key">Classic 5-stage pipeline:</strong> <strong>IF</strong> (fetch) → <strong>ID</strong> (decode) → <strong>EX</strong> (execute) → <strong>MEM</strong> (memory) → <strong>WB</strong> (write-back). Ideally one instruction completes every clock cycle.</p>
+
+<figure style="margin:12px 0;">
+  <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;border:1px solid var(--rule);border-radius:6px;background:var(--paper-soft);padding:10px;">
+    <div style="display:grid;grid-template-columns:64px repeat(8, minmax(38px,1fr));gap:4px;min-width:400px;font-family:'JetBrains Mono',monospace;">
+      <div style="font-size:10px;color:var(--muted);display:flex;align-items:center;justify-content:center;font-weight:700;">Instr↓ Cyc→</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C1</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C2</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C3</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C4</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C5</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C6</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C7</div>
+      <div style="font-size:10px;color:var(--muted);text-align:center;padding:3px 0;">C8</div>
+
+      <div style="font-size:10px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;">I1</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand-deep);border-radius:3px;background:var(--brand-soft);color:var(--brand-deep);font-weight:700;">IF</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand);border-radius:3px;background:#d7f5ef;color:var(--brand-deep);font-weight:700;">ID</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--gold);border-radius:3px;background:var(--amber-soft);color:var(--ink);font-weight:700;">EX</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--forest);border-radius:3px;background:var(--forest-soft);color:var(--forest);font-weight:700;">MEM</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--muted);border-radius:3px;background:var(--paper-deep);color:var(--ink);font-weight:700;">WB</div>
+      <div></div><div></div><div></div>
+
+      <div style="font-size:10px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;">I2</div>
+      <div></div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand-deep);border-radius:3px;background:var(--brand-soft);color:var(--brand-deep);font-weight:700;">IF</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand);border-radius:3px;background:#d7f5ef;color:var(--brand-deep);font-weight:700;">ID</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--gold);border-radius:3px;background:var(--amber-soft);color:var(--ink);font-weight:700;">EX</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--forest);border-radius:3px;background:var(--forest-soft);color:var(--forest);font-weight:700;">MEM</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--muted);border-radius:3px;background:var(--paper-deep);color:var(--ink);font-weight:700;">WB</div>
+      <div></div><div></div>
+
+      <div style="font-size:10px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;">I3</div>
+      <div></div><div></div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand-deep);border-radius:3px;background:var(--brand-soft);color:var(--brand-deep);font-weight:700;">IF</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand);border-radius:3px;background:#d7f5ef;color:var(--brand-deep);font-weight:700;">ID</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--gold);border-radius:3px;background:var(--amber-soft);color:var(--ink);font-weight:700;">EX</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--forest);border-radius:3px;background:var(--forest-soft);color:var(--forest);font-weight:700;">MEM</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--muted);border-radius:3px;background:var(--paper-deep);color:var(--ink);font-weight:700;">WB</div>
+      <div></div>
+
+      <div style="font-size:10px;color:var(--ink);font-weight:700;display:flex;align-items:center;justify-content:flex-end;padding-right:4px;">I4</div>
+      <div></div><div></div><div></div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand-deep);border-radius:3px;background:var(--brand-soft);color:var(--brand-deep);font-weight:700;">IF</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--brand);border-radius:3px;background:#d7f5ef;color:var(--brand-deep);font-weight:700;">ID</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--gold);border-radius:3px;background:var(--amber-soft);color:var(--ink);font-weight:700;">EX</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--forest);border-radius:3px;background:var(--forest-soft);color:var(--forest);font-weight:700;">MEM</div>
+      <div style="font-size:10px;text-align:center;padding:4px 0;border:1px solid var(--muted);border-radius:3px;background:var(--paper-deep);color:var(--ink);font-weight:700;">WB</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:10px;">
+    <span style="border:1px solid var(--brand-deep);background:var(--brand-soft);color:var(--brand-deep);border-radius:3px;padding:2px 6px;"><b>IF</b>=Fetch</span>
+    <span style="border:1px solid var(--brand);background:#d7f5ef;color:var(--brand-deep);border-radius:3px;padding:2px 6px;"><b>ID</b>=Decode</span>
+    <span style="border:1px solid var(--gold);background:var(--amber-soft);color:var(--ink);border-radius:3px;padding:2px 6px;"><b>EX</b>=Execute</span>
+    <span style="border:1px solid var(--forest);background:var(--forest-soft);color:var(--forest);border-radius:3px;padding:2px 6px;"><b>MEM</b>=Memory</span>
+    <span style="border:1px solid var(--muted);background:var(--paper-deep);color:var(--ink);border-radius:3px;padding:2px 6px;"><b>WB</b>=Write-back</span>
+  </div>
+  <figcaption style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--muted);margin-top:8px;"><b>Fig · Pipeline</b> · 5-stage overlap — each instruction starts 1 cycle after the previous, so by cycle 5 one instruction completes every cycle (ideal CPI→1).</figcaption>
+</figure>
+
+<p><strong class="key">Hazards (and resolution):</strong></p>
+<ul>
+<li><strong>Structural</strong> — two stages need the same unit; fix with separate instruction/data memory or more ports.</li>
+<li><strong>Data</strong> — instruction needs a result not yet written; fix with <strong>forwarding/bypassing</strong>, or stall/bubble, or compiler reordering.</li>
+<li><strong>Control</strong> — branch changes the PC; fix with <strong>branch prediction</strong>, delayed branch, or flushing wrong-path instructions.</li>
+</ul>
+
+<p><strong class="key">Speedup formula:</strong> <code>S_p = (n × k) / (k + n − 1)</code>, n = instructions, k = stages; max speedup → k.</p>
+
+<p><strong class="key">Worked example:</strong> k = 5 stages, n = 100 instructions →
+<code>S_p = (100 × 5) / (5 + 100 − 1) = 500 / 104 =</code> <span class="boxed">≈ 4.81×</span> (approaching the ideal 5×).</p>
+
+<p><strong class="key">Pipeline clock note:</strong> clock period = slowest stage + latch delay. If stages are 100 ns and latch 5 ns, clock = 105 ns; total time = <code>(k + n − 1) × clock</code>.</p>
+
+<p><strong>Conclusion:</strong> pipelining boosts <strong>throughput</strong> (not single-instruction latency). Real speedup is below the ideal k because of hazards; forwarding and branch prediction recover most of the loss.</p>
+</div>
+
+<hr class="hr">
+
+<!-- ========== MNEMONICS ========== -->
+<h2 class="section" id="mnem">Last-15-min flash cards <small>memorise verbatim</small></h2>
+
+<div class="box tip">
+  <b class="lbl">Lists you must not forget</b>
+  <ul>
+    <li><strong>Pipeline stages:</strong> IF, ID, EX, MEM, WB.</li>
+    <li><strong>3 hazards:</strong> Structural, Data, Control.</li>
+    <li><strong>3 I/O modes:</strong> Programmed (poll) → Interrupt (notify) → DMA (delegate).</li>
+    <li><strong>3 DMA modes:</strong> Burst, Cycle-stealing, Transparent.</li>
+    <li><strong>3 cache mappings:</strong> Direct, Associative, Set-associative.</li>
+    <li><strong>Replacement algos:</strong> FIFO, LRU, Random.</li>
+    <li><strong>PSW flags:</strong> CF, ZF, SF, OF, PF.</li>
+    <li><strong>IEEE-754 single:</strong> 1 Sign + 8 Exp (bias 127) + 23 Mantissa.</li>
+    <li><strong>Booth rule:</strong> 10→sub, 01→add, 00/11→nothing, then ASR.</li>
+    <li><strong>2 CU types:</strong> Hardwired (RISC, fast) · Microprogrammed (CISC, flexible).</li>
+  </ul>
+</div>
+
+<div class="box why">
+  <b class="lbl">Formula cards (box your final answer)</b>
+  <ul>
+    <li><strong>Pipeline speedup:</strong> <code>S_p = (n×k)/(k+n−1)</code>.</li>
+    <li><strong>Cache split:</strong> <code>WORD = log₂(block)</code>, <code>LINE = log₂(#lines)</code>, <code>TAG = addr − rest</code>.</li>
+    <li><strong>Address bits:</strong> <code>log₂(memory size)</code>. 2¹⁰=1K, 2²⁰=1M, 2²⁴=16M.</li>
+    <li><strong>IEEE-754 value:</strong> <code>(−1)ˢ × 1.M × 2^(E−127)</code>.</li>
+    <li><strong>Booth result:</strong> combined A:Q in 2's complement; verify sign of product.</li>
+    <li><strong>Speedup (general):</strong> <code>old time / new time</code>.</li>
+  </ul>
+</div>
+
+<div class="box prof">
+  <b class="lbl">Phrases that earn marks in every long answer</b>
+  <ul>
+    <li>"…this exploits the <strong>principle of locality of reference</strong>…"</li>
+    <li>"…removing the CPU from the per-byte path increases <strong>throughput</strong>…"</li>
+    <li>"…used in <strong>RISC (ARM)</strong> / <strong>CISC (x86)</strong> processors…"</li>
+    <li>"…resolved by <strong>forwarding / branch prediction</strong>…"</li>
+    <li>"…trades off <strong>speed vs flexibility / cost</strong>…"</li>
+  </ul>
+</div>
+
+<div class="box warn">
+  <b class="lbl">DON'Ts in the exam hall</b>
+  <ul>
+    <li><strong>Never leave a numerical at the formula</strong> — substitute, compute, and <strong>box</strong> the answer.</li>
+    <li>Don't leave Part-A blanks — each short = 1.5 free marks.</li>
+    <li>"Differentiate / Compare" → <strong>always a table</strong>, never paragraphs.</li>
+    <li>Label every diagram (DMA blocks, cache split, pipeline stages) + a one-line caption.</li>
+    <li>Write full Q-numbers — Q2(a), Q5(b) — never orphan a "(a)".</li>
+    <li>Don't dump everything — answer the asked question. Focused 12/15 beats wandering 8/15.</li>
+  </ul>
+</div>
+
+<p class="foot">LOC Crash-60 · BCG-208-V · 08 Jun 2026 · ~70% paper-probability coverage · BCA-PYQ anchored · Memorise 6 essays + 24 shorts · Walk in confident.</p>
+
+</main>
+</body>
+</html>
