@@ -485,7 +485,17 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       Bit layout: <code>1-bit Sign (S) · 8-bit Biased Exponent (E) (Bias=127) · 23-bit Mantissa (M)</code>.
       Formula: Value = <code>(-1)ˢ × 1.M × 2ᴱ⁻¹²⁷</code>.
     </div>
-    
+
+    <div class="box tip"><span class="label">Think of it simply — binary scientific notation</span>
+      In school you wrote big numbers as <code>262.125 = 2.62125 × 10²</code>. IEEE-754 does the <b>same trick in binary</b> — force the number into <code>1.something × 2^power</code>, then store just three things. Memory hook: <mark><b>S-E-M</b></mark> = <b>S</b>ign, <b>E</b>xponent, <b>M</b>antissa.
+      <ul style="margin:8px 0 4px 0;">
+        <li><b><mark>S</mark> (Sign)</b> — minus number → <code>1</code>, plus number → <code>0</code>. One bit. Done.</li>
+        <li><b><mark>E</mark> (Exponent)</b> — slide the binary point left/right until only <b>one "1" sits before the dot</b> (<code>1.xxxx</code>). Count the slides = the power. Then <mark>add 127</mark> and write as 8 bits.</li>
+        <li><b><mark>M</mark> (Mantissa)</b> — copy whatever sits <b>after the dot</b>, then <mark>pad zeros up to 23 bits</mark>. (The leading <code>1.</code> is free — never store it.)</li>
+      </ul>
+      <b>5-move recipe:</b> <code>(1)</code> sign bit → <code>(2)</code> number to binary → <code>(3)</code> slide dot to <code>1.xxx</code>, count = exponent → <code>(4)</code> exponent <mark>+127</mark> as 8 bits → <code>(5)</code> digits-after-dot <mark>padded to 23</mark>. Glue: <code>S | E | M</code>. <b>One-line memory: "Slide → +127 → Pad-23".</b>
+    </div>
+
     <div class="box why">
       <span class="label">Booth's Signed Multiplier Mnemonic</span>
       Recode multiplier bits Q<sub>i</sub>, Q<sub>i−1</sub> as follows:<br>
@@ -2860,13 +2870,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ ×2 · BTech May-26 Q1(c) · BTech May-24 Q1(b)</span></div>
       <div class="qbody"><b>Define a Program Status Word (PSW). What are its primary flags?</b></div>
       <div class="ans">
-        <p>The <mark>PSW</mark> is a small CPU register. It holds <mark>status bits (flags)</mark>. The ALU updates these bits after every operation. Main x86 flags:</p>
         <ul>
-          <li><b><mark>CF</mark></b>: Carry Flag. Set when unsigned add overflows the top bit.</li>
-          <li><b><mark>ZF</mark></b>: Zero Flag. Set when the result is zero.</li>
-          <li><b><mark>SF</mark></b>: Sign Flag. Copies the top bit (sign) of the result.</li>
-          <li><b><mark>OF</mark></b>: Overflow Flag. Set on signed (2's-complement) overflow.</li>
-          <li><b><mark>PF</mark></b>: Parity Flag. Set when the low byte has even parity.</li>
+          <li><mark>PSW</mark> is a small CPU register holding <mark>status flags</mark> that the ALU sets after each operation. Main x86 flags: <b><mark>CF</mark></b> (carry), <b><mark>ZF</mark></b> (zero), <b><mark>SF</mark></b> (sign), <b><mark>OF</mark></b> (signed overflow), <b><mark>PF</mark></b> (parity).</li>
+          <li><b>Example:</b> <code>5 − 5 = 0</code> → result zero, so <mark>ZF = 1</mark>; the CPU's <code>JZ</code> branch then reads this flag to decide the jump.</li>
         </ul>
       </div>
     </div>
@@ -2877,9 +2883,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qbody"><b>Explain the Stored-Program concept.</b></div>
       <div class="ans">
         <ul>
-          <li><b>Origin</b>: <mark>John von Neumann</mark> gave this idea in <mark>1945</mark>.</li>
-          <li><b>Concept</b>: program instructions and data sit together in the <mark>same read-write memory</mark>.</li>
-          <li><b>Implication</b>: so instructions can be treated like data too.</li>
+          <li>Given by <mark>von Neumann (1945)</mark>: program instructions and data sit together in the <mark>same read-write memory</mark>, so instructions can be treated like data.</li>
+          <li><b>Example:</b> a compiler is a program that <i>writes</i> another program into memory — possible only because code is just data here.</li>
         </ul>
       </div>
     </div>
@@ -2906,10 +2911,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qbody"><b>Why does a DMA controller have priority over the CPU for bus control?</b></div>
       <div class="ans">
         <ul>
-          <li><b>Cause</b>: I/O device data is highly <b><mark>volatile</mark></b>.</li>
-          <li><b>Risk</b>: if fast incoming data is not read at once, the next byte overwrites it and the old data is lost.</li>
-          <li><b>CPU contrast</b>: CPU work can be paused safely. No data is lost.</li>
-          <li><b>Result</b>: so DMA wins the bus.</li>
+          <li>I/O data is <b><mark>volatile</mark></b> — if a fast incoming byte is not read at once, the next byte overwrites it and data is <mark>lost</mark>. CPU work can simply wait, no loss.</li>
+          <li>So DMA gets the bus first (<mark>cycle stealing</mark>). <b>Example:</b> a hard disk streaming a block at high speed — miss one byte and the whole sector is corrupt.</li>
         </ul>
       </div>
     </div>
@@ -2945,9 +2948,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qbody"><b>Write the formula for pipeline speedup S_p and define its variables.</b></div>
       <div class="ans">
         <ul>
-          <li><b>Formula</b>: <code>S_p = (n × k) / (k + n − 1)</code>.</li>
-          <li><b>Variables</b>: <code>n</code> = number of <mark>instructions</mark>, <code>k</code> = number of <mark>pipeline stages</mark>.</li>
-          <li><b>Limit</b>: as <code>n</code> gets big, speedup tends to <code>k</code>.</li>
+          <li><b>Formula:</b> <code>S_p = (n × k) / (k + n − 1)</code>, where <code>n</code> = <mark>instructions</mark>, <code>k</code> = <mark>pipeline stages</mark>. As <code>n</code> grows, speedup → <code>k</code>.</li>
+          <li><b>Example:</b> <code>k = 4</code> stages, <code>n = 100</code> → <code>S_p = 400 / 103 ≈ <mark>3.88×</mark></code> (near the max of 4).</li>
         </ul>
       </div>
     </div>
@@ -2984,8 +2986,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="qbody"><b>What is the function of the Instruction Register (IR) and Program Counter (PC)?</b></div>
       <div class="ans">
         <ul>
-          <li><b><mark>Program Counter (PC)</mark></b>: holds the address of the next instruction to fetch.</li>
-          <li><b><mark>Instruction Register (IR)</mark></b>: holds the actual opcode of the instruction being decoded and run right now.</li>
+          <li><b><mark>PC</mark></b> holds the address of the <mark>next</mark> instruction to fetch; <b><mark>IR</mark></b> holds the <mark>current</mark> instruction's opcode being decoded and run now.</li>
+          <li><b>Example:</b> fetch instruction at <code>2000</code> → it goes into IR, PC auto-increments to <code>2001</code> for the next fetch.</li>
         </ul>
       </div>
     </div>
