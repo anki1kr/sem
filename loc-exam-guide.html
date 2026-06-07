@@ -2902,12 +2902,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 b -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">BTech May-24 Q1(a)</span></div>
-      <div class="qbody"><b>Explain the Stored-Program concept.</b></div>
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">RP 311404 · Unit I (syllabus-core)</span></div>
+      <div class="qbody"><b>What is an n-bit parallel (ripple-carry) adder?</b></div>
       <div class="ans">
         <ul>
-          <li>Given by <mark>von Neumann (1945)</mark>: program instructions and data sit together in the <mark>same read-write memory</mark>, so instructions can be treated like data.</li>
-          <li><b>Example:</b> a compiler is a program that <i>writes</i> another program into memory — possible only because code is just data here.</li>
+          <li><mark>n full-adders</mark> chained so each stage's <mark>carry-out</mark> feeds the next stage's carry-in, adding two n-bit numbers in one pass. Slow because the carry <mark>ripples</mark> stage to stage (delay ∝ n); <mark>carry-look-ahead</mark> fixes this by computing all carries in parallel.</li>
+          <li><b>Example:</b> a 4-bit ripple adder = 4 full-adders (IC 7483); adding <code>0110 + 0011</code> the carry walks bit-by-bit to give <code>1001</code>.</li>
         </ul>
       </div>
     </div>
@@ -4571,77 +4571,6 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
             <li><span>EMAT formula + worked calculation</span><span class="m">4.0M</span></li>
             <li><span>Pitfalls + modern relevance</span><span class="m">2.0M</span></li>
             <li><span>Conclusion</span><span class="m">2.0M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q11 — Asynchronous data transfer: strobe vs handshake (5M) -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q11</span><span class="tag year">Predicted · Unit III</span><span class="tag marks">5M</span><span class="tag year" style="opacity:.72;background:var(--brand-soft);color:var(--brand-deep);border-color:var(--brand);">⟲ BTech May-24 Q4(a) · BTech Dec-23 Q4</span></div>
-      <div class="qbody"><b>Explain asynchronous data transfer. Differentiate the strobe control and handshaking methods, and show the four-edge handshake timing.</b></div>
-      <div class="ans">
-        <ul>
-          <li><b><mark>Asynchronous transfer</mark></b>: source and destination units use <b>independent clocks</b>, so the data exchange is coordinated by <b>control signals</b> instead of a shared timing pulse. Used when CPU and a slow peripheral run at different speeds.</li>
-          <li><b><mark>Strobe control</mark></b>: a single control line (the <mark>strobe</mark>) signals "data is ready / take it now". It is <b>one-directional</b> — the sender assumes the receiver kept up; there is <b>no acknowledgement</b> back.</li>
-          <li><b><mark>Handshaking</mark></b>: <b>two</b> control lines exchange a request/reply (e.g. <code>Data-Valid</code> and <code>Data-Accepted</code>). The receiver explicitly confirms, so neither unit ever races ahead of the other.</li>
-        </ul>
-
-        <figure class="diagram-fig">
-          <div style="max-width:560px; margin:0 auto; font-size:11.5px;">
-            <div style="text-align:center; font-weight:700; color:var(--brand-deep); margin-bottom:6px;">Source-initiated handshake — four edges</div>
-            <div style="display:grid; grid-template-columns:repeat(4,1fr); gap:6px; text-align:center;">
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:7px 4px;"><b>①</b><br>Source places <mark>Data</mark> on bus &amp; raises <code>DATA-VALID</code> ↑</div>
-              <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:7px 4px;"><b>②</b><br>Dest. reads data &amp; raises <code>DATA-ACCEPTED</code> ↑</div>
-              <div style="background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:4px; padding:7px 4px;"><b>③</b><br>Source drops <code>DATA-VALID</code> ↓ &amp; removes data</div>
-              <div style="background:var(--forest-soft); border:1.5px solid var(--forest); border-radius:4px; padding:7px 4px;"><b>④</b><br>Dest. drops <code>DATA-ACCEPTED</code> ↓ → ready again</div>
-            </div>
-            <div style="display:flex; align-items:center; justify-content:center; gap:8px; margin-top:8px; font-size:10.5px; color:var(--muted);">
-              <span style="border-top:2px solid var(--brand); width:60px; display:inline-block;"></span>
-              <span>edges ①→②→③→④ repeat for each word; full cycle = one interlocked round-trip</span>
-              <span style="border-top:2px solid var(--brand); width:60px; display:inline-block;"></span>
-            </div>
-          </div>
-          <figcaption><b>Fig 3.x</b> · Four-edge source-initiated handshake — every transfer is bracketed by a DATA-VALID / DATA-ACCEPTED request–reply pair (destination-initiated reverses who asserts first via READY-FOR-DATA).</figcaption>
-        </figure>
-
-        <h5>Source-initiated vs Destination-initiated</h5>
-        <ul>
-          <li><b>Source-initiated</b>: the <b>source</b> starts by asserting <code>DATA-VALID</code> when it has data; destination replies with <code>DATA-ACCEPTED</code>. (Used when the producer drives the flow — e.g. CPU → printer.)</li>
-          <li><b>Destination-initiated</b>: the <b>destination</b> starts by asserting <code>READY-FOR-DATA</code>; the source responds by placing data and pulsing <code>DATA-VALID</code>. (Used when the consumer pulls — e.g. CPU reading a sensor.)</li>
-        </ul>
-
-        <h5>Strobe vs Handshake — comparison</h5>
-        <div class="table-wrap"><table>
-          <tr><th>Parameter</th><th>Strobe Control</th><th>Handshaking</th></tr>
-          <tr><td><b>Control lines</b></td><td>One (single strobe)</td><td>Two (request + reply)</td></tr>
-          <tr><td><b>Acknowledgement</b></td><td><mark>None</mark> — sender assumes success</td><td><mark>Yes</mark> — receiver confirms each word</td></tr>
-          <tr><td><b>Direction</b></td><td>One-way signalling</td><td>Two-way interlocked</td></tr>
-          <tr><td><b>Reliability</b></td><td>Lower — data can be lost if receiver is busy</td><td>High — no word lost, units never out of step</td></tr>
-          <tr><td><b>Speed flexibility</b></td><td>Assumes both run at similar speed</td><td>Adapts to any speed mismatch</td></tr>
-          <tr><td><b>Complexity / cost</b></td><td>Simple, cheap</td><td>More logic + an extra line</td></tr>
-        </table></div>
-
-        <h5>Synchronous vs Asynchronous — quick contrast</h5>
-        <div class="table-wrap"><table>
-          <tr><th>Parameter</th><th>Synchronous</th><th>Asynchronous</th></tr>
-          <tr><td><b>Timing source</b></td><td>One <mark>shared clock</mark> drives both units</td><td>Independent clocks; coordinated by control signals</td></tr>
-          <tr><td><b>Coordination</b></td><td>Fixed clock edges (known in advance)</td><td>Strobe or handshake at transfer time</td></tr>
-          <tr><td><b>Speed matching</b></td><td>Both must run at the same rate</td><td>Tolerates a fast CPU + slow peripheral</td></tr>
-          <tr><td><b>Overhead</b></td><td>Low (no handshake) but inflexible</td><td>Extra control signalling per word</td></tr>
-        </table></div>
-
-        <div class="box warn"><span class="label">Common pitfalls</span>
-          (1) The handshake is a <b>four-edge</b> cycle, not two — both lines must go up <i>and</i> come back down before the next word. (2) Strobe ≠ handshake: a strobe has <b>no reply line</b>, so naming the acknowledgement signal in a strobe diagram loses marks. (3) "Asynchronous" here means <b>no common clock</b>, not "no timing at all". (4) State who initiates (source vs destination) — the question's wording decides which line is asserted first.
-        </div>
-
-        <div class="score">
-          <b>Mark Allocation (5 Marks)</b>
-          <ul>
-            <li><span>Define asynchronous transfer + strobe vs handshake bullets</span><span class="m">1.5M</span></li>
-            <li><span>Four-edge handshake timing diagram (labelled)</span><span class="m">1.5M</span></li>
-            <li><span>Strobe-vs-handshake comparison table</span><span class="m">1.0M</span></li>
-            <li><span>Sync-vs-async table + source/destination-initiated note</span><span class="m">1.0M</span></li>
           </ul>
         </div>
       </div>
