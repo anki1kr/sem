@@ -1,0 +1,19 @@
+Save as    Diagram prompt (style line ke baad paste)
+
+02-multiple-access.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. Four panels comparing FDMA / TDMA / CDMA / SDMA: FDMA = users in stacked frequency bands (f1,f2,f3); TDMA = users in time slots (T1,T2,T3) on one frequency; CDMA = users overlapping same time+frequency, separated by codes (C1,C2,C3); SDMA = base-station tower with directional beams to users in different directions.
+
+05-spread-spectrum.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. Compare DSSS vs FHSS: DSSS = narrow data × fast PN chip code → wide flat spread; FHSS = carrier hopping across frequency channels each time slot (staircase on a frequency-vs-time grid). Label axes.
+
+06-cdma-spreading.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. CDMA spreading/despreading: data bit × spreading code (PN/Walsh) → transmitted chips; at receiver, × same code → original bit recovered. Show one bit example.
+
+07-cell-split-sector.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. Cell splitting vs sectoring vs microzone: (1) one big cell split into 4 smaller cells; (2) one cell with 3×120° directional sectors (α,β,γ); (3) microzone — one BS with distributed zone antennas.
+
+08-gsm-call-flow.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. GSM mobile-originated call flow: MS → BTS → BSC → MSC, MSC checks VLR/AuC (RAND/SRES/Kc), assigns traffic channel, routes to PSTN. Show as a numbered signalling sequence.
+
+09-evolution-1g-5g.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. 1G→5G evolution timeline: 1G analog/FDMA, 2G GSM/TDMA+SMS, 2.5G GPRS, 3G UMTS/CDMA, 4G LTE/OFDMA all-IP, 5G NR/mmWave/IoT — with year + key feature each.
+
+11-isdn-bri-pri.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. ISDN BRI vs PRI: BRI = 2B+D (2×64 + 16 kbps = 144 kbps); PRI = 30B+D (Europe/India, 2.048 Mbps). Show B-channels (bearer) + D-channel (signalling).
+
+12-ccs-ss7.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. CCS / SS7: voice trunks between two exchanges + a SEPARATE SS7 signalling network; show nodes SSP, STP, SCP. Contrast in-band vs out-of-band signalling.
+
+13-ain.png    A neat, clean, minimalist 2D vector technical schematic. White background, vector art, high contrast, forest green accents (#166534), crisp labels, highly legible text, professional block diagram. AIN architecture: SSP (switch/trigger) → STP (routes signalling) → SCP (service logic + database), with SMS (management). Show a query/response flow.

@@ -1,4 +1,4 @@
-﻿// Service Worker for BCA Exam Prep
+// Service Worker for BCA Exam Prep
 // Strategy:
 //   - HTML / navigation requests → network-first (so the live exam ticker
 //     and auto-hide JS always run against the latest file). Falls back to
@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v36';
+const CACHE_VERSION = 'bca-prep-v39';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -22,7 +22,19 @@ const PRECACHE_URLS = [
   './de-exam-guide.html',
   './manifest.json',
   './icon-192.svg',
-  './icon-512.svg'
+  './icon-512.svg',
+  './wc-images/01-gsm-architecture.png',
+  './wc-images/02-multiple-access.png',
+  './wc-images/03-frequency-reuse.png',
+  './wc-images/04-handoff.jpeg',
+  './wc-images/05-spread-spectrum.png',
+  './wc-images/06-cdma-spreading.png',
+  './wc-images/07-cell-split-sector.png',
+  './wc-images/08-gsm-call-flow.png',
+  './wc-images/09-evolution-1g-5g.png',
+  './wc-images/11-isdn-bri-pri.png',
+  './wc-images/12-ccs-ss7.png',
+  './wc-images/13-ain.png'
 ];
 
 // Install: pre-cache all guides. Use individual put() so a single 404 does
