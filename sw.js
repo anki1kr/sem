@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v39';
+const CACHE_VERSION = 'bca-prep-v40';
 const PRECACHE_URLS = [
   './',
   './index.html',
