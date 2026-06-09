@@ -399,7 +399,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <h3>GSM System Architecture <span class="tag hot">⭐ Repeated 5×</span></h3>
     <figure class="diagram-fig">
       <img src="wc-images/01-gsm-architecture.png" alt="GSM System Architecture showing MS, BSS, and NSS subsystems" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-      <figcaption><b>Fig 1.0</b> &middot; GSM three-subsystem architecture: MS &rarr; BSS (BTS + BSC) &rarr; NSS (MSC / HLR / VLR / AuC) &rarr; PSTN.</figcaption>
+      <figcaption><b>Fig 1.0</b> &middot; GSM three-subsystem architecture: MS &rarr; BSS (BTS + BSC) &rarr; NSS (MSC / HLR / VLR / AuC / EIR) &rarr; PSTN.</figcaption>
     </figure>
 
     <div class="box def">
@@ -412,7 +412,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <tr><th>Subsystem Group</th><th>Constituent Modules</th><th>Role in Network</th></tr>
         <tr><td><b>Mobile Station (MS)</b></td><td>Handset + SIM Card</td><td>Insulates subscriber identity. SIM stores IMSI and A3/A8 security keys.</td></tr>
         <tr><td><b>Base Station Subsystem (BSS)</b></td><td>BTS (Transceiver) + BSC (Controller)</td><td>Handles radio link connection (Um interface) and local channel allocation.</td></tr>
-        <tr><td><b>Network Switching Subsystem (NSS)</b></td><td>MSC (Switch) + HLR + VLR + AuC</td><td>The brain. Handles routing, billing, user location caching, and authentication triplets.</td></tr>
+        <tr><td><b>Network Switching Subsystem (NSS)</b></td><td>MSC (Switch) + HLR + VLR + AuC + EIR</td><td>The brain. Handles routing, billing, user location caching, authentication triplets, and (via EIR) blacklisting stolen IMEIs.</td></tr>
       </table>
     </div>
     <div class="box why">
@@ -482,7 +482,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <h3>Evolution of Wireless Communication (1G &rarr; 5G) <span class="tag hot">&starf; Frequent 5M</span></h3>
     <figure class="diagram-fig">
       <img src="wc-images/09-evolution-1g-5g.png" alt="1G to 5G cellular evolution timeline diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-      <figcaption><b>Fig 1.1</b> &middot; Evolution 1G&rarr;5G. Each jump = a leap in multiple-access (<b>FDMA&rarr;TDMA&rarr;CDMA&rarr;OFDMA</b>) and switching (<b>circuit&rarr;packet&rarr;all-IP</b>). The arrows name the driver of each transition; tags show access scheme, switching, peak speed and the headline feature per generation.</figcaption>
+      <figcaption><b>Fig 1.1</b> &middot; Evolution 1G&rarr;5G. Each jump = a leap in multiple-access (<b>FDMA&rarr;TDMA&rarr;CDMA&rarr;OFDMA</b>) and switching (<b>circuit&rarr;packet&rarr;all-IP</b>). Each generation shows its decade, multiple-access scheme and headline feature.</figcaption>
     </figure>
 
     <div class="box def">
@@ -491,6 +491,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
     <p>The key migration is from <mark>analog FDMA</mark> (1G) to <mark>digital TDMA/CDMA</mark> (2G/3G) to <mark>packet-switched OFDMA</mark> (4G/5G):</p>
 
+    <div class="box tip"><span class="label">Milestone timeline</span>
+      <mark>Marconi's wireless radio</mark> (1890s, first radio transmission) &rarr; <mark>1G AMPS</mark> (1980s, analog voice) &rarr; <mark>2G GSM</mark> (1991, digital + SMS) &rarr; <mark>3G UMTS</mark> (2001, mobile internet) &rarr; <mark>4G LTE</mark> (2009, all-IP broadband) &rarr; <mark>5G NR</mark> (2019, ultra-low latency + IoT). Each step roughly a decade apart.
+    </div>
 
     <div class="table-wrap">
       <table>
@@ -547,6 +550,20 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </table>
     </div>
     
+    <div class="box def"><span class="label">Cordless telephone system</span>
+      A <mark>cordless telephone</mark> is a short-range, <mark>single-cell</mark> system: one <mark>fixed base station</mark> (wired to the PSTN line) talks to a low-power handset over a few tens of metres. Because it is one cell there is <mark>no handoff and no roaming</mark> — step out of range and the call drops. It is built for <mark>home / office</mark> indoor use, where low power gives long battery life. The European digital standard is <mark>DECT</mark> (Digital Enhanced Cordless Telecommunications), ~1.9 GHz, ~32&ndash;1000 kbps.
+    </div>
+
+    <div class="box def"><span class="label">Satellite communication system</span>
+      A <mark>satellite system</mark> relays signals via orbiting satellites for <mark>global coverage</mark> where terrestrial cells cannot reach. The ground station sends on the <mark>uplink</mark> and receives on the <mark>downlink</mark>; satellites are classified by orbit altitude:
+      <ul style="margin-top:8px;margin-bottom:4px;">
+        <li><b><mark>LEO</mark></b> (Low Earth Orbit, ~500&ndash;2000 km): low delay (~5&ndash;10 ms), but a satellite is overhead only briefly, so many are needed (e.g. Iridium, Starlink).</li>
+        <li><b><mark>MEO</mark></b> (Medium Earth Orbit, ~8000&ndash;20000 km): the navigation belt &mdash; <mark>GPS</mark> and Galileo sit here.</li>
+        <li><b><mark>GEO</mark></b> (Geostationary, ~35786 km): one satellite appears fixed over a spot and covers a third of the globe, but the long path gives a <mark>~250 ms one-way propagation delay</mark> (~500 ms round trip), noticeable on voice calls.</li>
+      </ul>
+      <b>Use-cases:</b> <mark>maritime</mark> and aircraft links, <mark>remote / rural</mark> connectivity, TV / radio <mark>broadcast</mark>, and <mark>GPS</mark> positioning.
+    </div>
+
     <div class="box def"><span class="label">Paging system</span>
       A <mark>paging system</mark> is a simple, mostly <mark>one-way</mark> wireless system that sends short alerts (a beep, a number, or a brief text) to a small low-power receiver called a <mark>pager</mark>. It uses <mark>wide-area, high-power transmitters</mark>, needs very little bandwidth, and gives long battery life and deep in-building reach — historically used by doctors and emergency staff. Examples: POCSAG and FLEX numeric/alphanumeric paging.
     </div>
@@ -630,10 +647,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <!-- 1.6 3G CDMA & 4G LTE -->
   <div class="topic" id="t-1-6">
     <h3>3G (CDMA / UMTS) &amp; 4G (LTE)</h3>
-    <figure class="diagram-fig">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Evolved_Packet_Core.svg" alt="4G LTE architecture: UE and eNodeB forming the E-UTRAN, connected to the all-IP Evolved Packet Core (MME, S-GW, P-GW, HSS, PCRF) and the external PDN / Internet" loading="lazy">
-      <figcaption><b>Fig 1.2c</b> &middot; 4G LTE = <b>E-UTRAN</b> (UE &rarr; eNodeB) + all-IP <b>EPC</b>. Control plane: <b>MME</b> + <b>HSS</b>; user plane: <b>S-GW &rarr; P-GW &rarr; Internet (PDN)</b>. No RNC (eNodeB is smart), and voice is VoLTE over IP.</figcaption>
-    </figure>
+    <p style="font-size:13px;color:var(--muted);margin:4px 0 10px;">Quick comparison below; full architectures in the next two sections (<b>3G/UMTS</b> and <b>4G/LTE</b>).</p>
 
     <div class="box def">
       <span class="label">Definition</span>
@@ -660,32 +674,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <div class="topic" id="t-1-6b">
     <h3>3G / UMTS Architecture (UTRAN + Core)</h3>
     <figure class="diagram-fig">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/UMTS_Network_Architecture.svg" alt="UMTS 3G network architecture: UE, Node-B and RNC forming the UTRAN, connected to the CS core (MSC/HLR) and PS core (SGSN/GGSN)" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-      <div style="display:none;gap:0;align-items:center;flex-wrap:wrap;justify-content:center;margin:6px 0;">
-        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
-          <div style="font-weight:700;color:var(--brand-deep);">UE</div>
-          <div style="font-size:11px;color:var(--muted);">Handset + USIM</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>W-CDMA</span><span>Uu &rarr;</span></div>
-        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
-          <div style="font-weight:700;color:var(--brand-deep);">Node-B</div>
-          <div style="font-size:11px;color:var(--muted);">Base station (radio)</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>Iub</span><span>&rarr;</span></div>
-        <div style="flex:1;min-width:96px;border:2px solid var(--brand);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand-soft);">
-          <div style="font-weight:700;color:var(--brand-deep);">RNC</div>
-          <div style="font-size:11px;color:var(--muted);">Radio Network Controller</div>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;font-size:11px;font-weight:700;color:var(--brand);"><span>Iu</span><span>&rarr;</span></div>
-        <div style="flex:1;min-width:96px;border:2px solid var(--brand-deep);border-radius:6px;padding:10px 8px;text-align:center;background:var(--brand);color:var(--paper);">
-          <div style="font-weight:700;">Core Network</div>
-          <div style="font-size:11px;opacity:.9;">MSC/HLR (CS) + SGSN/GGSN (PS)</div>
-        </div>
-      </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--muted);">
-        <b style="color:var(--brand-2);">UTRAN</b> = Node-B + RNC &nbsp;&middot;&nbsp; reused-GSM core = HLR / AuC / MSC (CS) + SGSN / GGSN (PS)
-      </div>
-      <figcaption><b>Fig 1.2b</b> &middot; UMTS chain UE &rarr; Node-B &rarr; RNC &rarr; Core. The Node-B + RNC form the new UTRAN radio side; the packet (SGSN/GGSN) and circuit (MSC/HLR/AuC) core is reused from GSM/GPRS.</figcaption>
+      <img src="wc-images/3g-umts-architecture.png" alt="3G UMTS network architecture in three parts: UE (mobile) → UTRAN (Node-B + RNC, radio access) → Core network reused from GSM (CS: MSC/HLR → PSTN; PS: SGSN → GGSN → Internet)" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
+      <figcaption><b>Fig 1.2b</b> &middot; UMTS 3G in three parts: <b>UE</b> (mobile) &rarr; <b>UTRAN</b> (Node-B + RNC, the new radio side) &rarr; <b>Core</b> (CS: MSC/HLR&rarr;PSTN for voice, PS: SGSN&rarr;GGSN&rarr;Internet for data). Only the radio side (UTRAN) is new; the core is reused from GSM/GPRS.</figcaption>
     </figure>
 
     <div class="box def">
@@ -757,6 +747,39 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="box tip">
       <span class="label">Exam Line</span>
       3G UMTS = <mark>new UTRAN (Node-B + RNC)</mark> bolted onto a <mark>reused GSM core</mark>, W-CDMA on a 5 MHz carrier with soft handover, evolving via HSPA to ~14&ndash;42 Mbps. Name the chain <mark>UE &rarr; Node-B &rarr; RNC &rarr; Core</mark> and you have the answer.
+    </div>
+  </div>
+
+  <!-- 1.6c 4G / LTE deep-dive -->
+  <div class="topic" id="t-1-6c">
+    <h3>4G / LTE Architecture (E-UTRAN + EPC)</h3>
+    <figure class="diagram-fig">
+      <img src="wc-images/4g-lte-architecture.png" alt="4G LTE network architecture in three parts: UE (mobile) → E-UTRAN (eNodeB, RNC function built in) → EPC all-IP core (MME control + HSS via S6a; S-GW → P-GW → Internet/PDN user plane)" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
+      <figcaption><b>Fig 1.2c</b> &middot; 4G LTE in three parts: <b>UE</b> &rarr; <b>E-UTRAN</b> (just the eNodeB &mdash; the RNC is gone, folded into eNodeB) &rarr; <b>EPC</b> all-IP core (MME + HSS = control plane; S-GW &rarr; P-GW &rarr; Internet = user plane). No circuit core; voice is VoLTE over IP.</figcaption>
+    </figure>
+
+    <div class="box def">
+      <span class="label">Definition</span>
+      <mark>4G LTE</mark> (Long Term Evolution) is the 3GPP fourth-generation standard with a flat, <mark>all-IP</mark> architecture. The radio side is <mark>E-UTRAN</mark> (only eNodeBs) and the core is the <mark>EPC</mark> (Evolved Packet Core). The air interface is <mark>OFDMA</mark> (downlink) / SC-FDMA (uplink), giving ~100 Mbps&ndash;1 Gbps.
+    </div>
+
+    <h5>E-UTRAN &mdash; the radio side</h5>
+    <ul>
+      <li><b><mark>eNodeB</mark></b> is the only radio node &mdash; it absorbs the old <mark>RNC</mark>'s control job (scheduling, handover), so there is <b>no separate controller</b>. This flat design cuts latency to ~10 ms.</li>
+      <li>eNodeBs link to each other directly over the <mark>X2</mark> interface (fast handover) and to the core over <mark>S1</mark>.</li>
+    </ul>
+
+    <h5>EPC &mdash; the all-IP core</h5>
+    <ul>
+      <li><b><mark>MME</mark></b> (Mobility Management Entity) &mdash; <b>control plane</b>: authentication, paging, handover, bearer setup; talks to HSS over <mark>S6a</mark>.</li>
+      <li><b><mark>HSS</mark></b> &mdash; subscriber database (the LTE equivalent of GSM's HLR/AuC).</li>
+      <li><b><mark>S-GW</mark></b> (Serving Gateway) &rarr; <b><mark>P-GW</mark></b> (PDN Gateway) &mdash; <b>user plane</b>: carry the data packets; P-GW is the exit to the <mark>Internet (PDN)</mark> over SGi.</li>
+      <li><b>No circuit switching:</b> voice rides as <mark>VoLTE</mark> (voice over IP) &mdash; the CS core (MSC) is gone.</li>
+    </ul>
+
+    <div class="box tip">
+      <span class="label">3G &rarr; 4G &mdash; what changed</span>
+      <mark>Node-B &rarr; eNodeB</mark> (smarter) &middot; <mark>RNC removed</mark> (folded into eNodeB) &middot; <mark>CS core dropped</mark> (all-IP EPC) &middot; W-CDMA &rarr; <mark>OFDMA</mark> &middot; voice &rarr; <mark>VoLTE</mark>. Chain to remember: <mark>UE &rarr; eNodeB &rarr; MME / S-GW / P-GW &rarr; Internet</mark>.
     </div>
   </div>
 
@@ -962,94 +985,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <div class="topic" id="t-2-0">
     <h3>Basic Cellular System &amp; Operation <span class="tag hot">⭐ Foundation 5M</span></h3>
     <figure class="diagram-fig">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Gsm_structures.svg" alt="GSM network architecture: MS, BTS, BSC (BSS) and MSC, HLR, VLR, AuC, EIR (NSS) connected to PSTN" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-<div style="display:none;flex-direction:column;gap:0;align-items:stretch;max-width:560px;margin:0 auto;font-family:'JetBrains Mono',monospace;">
-
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
-
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;">
-      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">MS</span>
-      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">Mobile<br>Station</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;">
-      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
-      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;letter-spacing:.04em;text-align:center;">U<sub>m</sub><br>air</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;">
-      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">BSS &middot; Base Station Subsystem</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BTS</span>
-          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">radio<br>tower</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);">
-          <span style="font-size:13px;font-weight:700;line-height:1;">&#9656;</span>
-          <span style="font-size:7px;color:var(--muted);margin-top:1px;">Abis</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BSC</span>
-          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">base st.<br>controller</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div style="display:flex;justify-content:center;align-items:center;gap:8px;color:var(--brand);margin:7px 0;">
-    <span style="font-size:18px;font-weight:700;line-height:1;">&#9662;</span>
-    <span style="font-size:8px;color:var(--muted);letter-spacing:.06em;">A-interface</span>
-  </div>
-
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
-
-    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;flex:1 1 300px;min-width:250px;">
-      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">NSS &middot; Network &amp; Switching Subsystem</span>
-
-      <div style="display:flex;justify-content:center;margin-bottom:7px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;padding:9px 12px;background:var(--ink);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:12.5px;font-weight:700;color:var(--paper);">MSC</span>
-          <span style="font-size:8.5px;color:var(--paper-soft);margin-top:2px;text-align:center;line-height:1.2;">Mobile Switching<br>Centre &mdash; the &quot;brain&quot;</span>
-        </div>
-      </div>
-
-      <div style="text-align:center;font-size:8px;color:var(--brand-deep);font-weight:700;letter-spacing:.04em;margin-bottom:5px;">&#8597; MSC queries 4 databases &#8597;</div>
-
-      <div style="border-top:2px solid var(--brand);padding-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">HLR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">home loc.<br>register</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">VLR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">visitor loc.<br>register</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">AUC</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">authent.<br>centre</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">EIR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">equip. id.<br>register</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;align-self:center;">
-      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
-      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;">trunk</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;align-self:center;">
-      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">PSTN</span>
-      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">wired phone<br>network</span>
-    </div>
-
-  </div>
-
-</div>
-      <figcaption><b>Fig 2.1</b> · Cellular system hierarchy — one MSC controls many base stations (BS), each BS serves the mobiles (MS) in its cell; MSC bridges the radio network to the PSTN</figcaption>
+      <img src="wc-images/basic-cellular-system.png" alt="Basic cellular system: three hexagonal cells each with a base station (BTS), all connected to one MSC (Mobile Switching Centre) which links to the PSTN" loading="lazy" style="width:100%;max-width:620px;height:auto;border-radius:5px;display:block;margin:0 auto;">
+      <figcaption><b>Fig 2.1</b> &middot; Basic cellular system &mdash; the area is split into <b>cells</b>, each served by a <b>base station (BTS)</b>; one <b>MSC</b> controls many base stations and bridges to the <b>PSTN</b>. <i>(Full GSM network architecture is in Unit 1.)</i></figcaption>
     </figure>
 
     <div class="box def"><span class="label">Cellular Concept</span>
@@ -1111,8 +1048,9 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
     <div class="formula">
       <b>Frequency Reuse Formulas</b><br>
-      • <code>Q = D / R = sqrt(3N)</code> (Co-channel reuse ratio)<br>
-      • <code>Standard N sizes = i² + ij + j²</code> (Common sizes: 3, 4, 7, 9, 12)
+      • <code>Q = D / R = √(3N)</code> (Co-channel reuse ratio)<br>
+      • <code>N = i² + ij + j²</code> (cluster size; common: 3, 4, 7, 9, 12)<br>
+      <span style="font-size:12.5px;color:var(--muted);display:inline-block;margin-top:5px;"><b>where:</b> <b>Q</b> = co-channel reuse ratio · <b>D</b> = distance between two nearest co-channel cells · <b>R</b> = cell radius · <b>N</b> = cluster size (cells per cluster) · <b>i, j</b> = non-negative integer shift steps.</span>
     </div>
     <p>A smaller cluster size N increases overall network capacity but reduces the physical distance between co-channel cells, increasing <b><mark>Co-channel Interference (CCI)</mark></b>.</p>
 
@@ -1209,11 +1147,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </div>
     <div class="formula">
       <b>Signal-to-Interference ratio (downlink, 6 co-channel cells)</b><br>
-      • <code>S / I = (D/R)^n / 6 = (√(3N))^n / 6</code> &nbsp;(n = path-loss exponent, typically 4 in urban areas)<br>
+      • <code>S / I = (D/R)^n / 6 = (√(3N))^n / 6</code><br>
+      <span style="font-size:12.5px;color:var(--muted);display:inline-block;margin-top:5px;"><b>where:</b> <b>S</b> = desired signal power · <b>I</b> = combined interference from the six first-tier co-channel cells · <b>n</b> = path-loss exponent (≈4 in cities) · <b>D, R, N</b> as defined above.</span><br>
       • Larger N → larger D/R → higher S/I → cleaner calls, but fewer channels per cell.
     </div>
     <div class="steps">
-      <div class="step"><span class="k">S/I</span><div class="body"><b>Worked example — N = 7, n = 4:</b> D/R = √21 ≈ 4.58. S/I = (4.58)⁴ ⁄ 6 = (√21)⁴ ⁄ 6 = 21² ⁄ 6 = 441 ⁄ 6 ≈ <mark><b>73.5</b></mark> (linear) ≈ <mark><b>18.66 dB</b></mark> — comfortably above the ~18 dB minimum that analog systems need.</div></div>
+      <div class="step"><span class="k">S/I</span><div class="body"><b>Worked example — N = 7, n = 4:</b> D/R = √21 ≈ 4.58. S/I = (4.58)⁴ ⁄ 6 = (√21)⁴ ⁄ 6 = 21² ⁄ 6 = 441 ⁄ 6 ≈ <mark><b>73.5</b></mark> (linear) ≈ <mark><b>18.66 dB</b></mark> — just meets the ~18 dB minimum that analog systems need (only ~0.6 dB margin, which is why N = 7 is the standard choice).</div></div>
     </div>
     <p>The first tier has exactly <b>six</b> co-channel cells around any cell (the six equidistant hexagon neighbours of the reuse pattern), which is why the denominator is 6.</p>
     
@@ -1266,6 +1205,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="formula" style="margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.7;">
         <code>B(C, A) = A · B(C−1, A) / ( C + A · B(C−1, A) )</code>
       </div>
+      <span style="font-size:12.5px;color:var(--muted);display:inline-block;margin:4px 0 6px;"><b>where:</b> <b>B(C,A)</b> = blocking probability (the GoS) · <b>C</b> = number of channels/trunks · <b>A</b> = offered traffic in Erlangs (= calls per hour × average holding time in hours).</span><br>
       Iterate from <code>c = 1</code> up to <code>C</code>; the last value is the answer. No factorials, no overflow — exam-safe on a basic calculator.
     </div>
 
@@ -1399,7 +1339,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <table>
         <tr><th>Technique</th><th>Core Mechanism</th><th>Advantage</th><th>Primary Drawback</th></tr>
         <tr><td><b>Cell Splitting</b></td><td>Subdivide a congested cell into 4 smaller cells with lower-power antennas.</td><td>Directly increases capacity by 4×.</td><td>Drastically increases signaling load and handovers. High site cost.</td></tr>
-        <tr><td><b>Cell Sectoring</b></td><td>Replace omni-directional antenna with 3 directional sector antennas (120°).</td><td>Decreases co-channel interference ($S/I$ increases ~5 dB).</td><td>Reduces trunking efficiency by splitting channels into smaller groups.</td></tr>
+        <tr><td><b>Cell Sectoring</b></td><td>Replace omni-directional antenna with 3 directional sector antennas (120°).</td><td>Decreases co-channel interference (S/I increases ~5 dB).</td><td>Reduces trunking efficiency by splitting channels into smaller groups.</td></tr>
         <tr><td><b>Microzone</b></td><td>Distribute active micro-antennas inside one cell all wired to one base station.</td><td>No handovers between zones inside the cell; excellent indoor coverage.</td><td>High cabling infrastructure cost.</td></tr>
       </table>
     </div>
@@ -1506,6 +1446,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
   <!-- 3.1 Multiple Access -->
   <div class="topic" id="t-3-1">
     <h3>Multiple Access: FDMA, TDMA, CDMA, SDMA <span class="tag hot">⭐ Repeated 4×</span></h3>
+    <p><b>Need for multiple access:</b> radio spectrum is scarce and expensive, so one shared channel must carry <mark>many users at once</mark> without them colliding &mdash; a multiple-access scheme is the rule that keeps users apart in frequency, time, code or space.</p>
     <div class="box def"><span class="label">Access Schemes Mnemonic</span>
       • <b>FDMA:</b> Separate users by frequency (one channel per user).<br>
       • <b>TDMA:</b> Separate users by time slots (all share one frequency in turns).<br>
@@ -1845,6 +1786,20 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <tr><td><b>Example system</b></td><td>1G AMPS</td><td>2G GSM, DECT</td></tr>
       </table>
     </div>
+
+    <h4>FDMA &mdash; Number of Channels (Worked Numerical)</h4>
+    <div class="box def"><span class="label">Channel-Count Formula</span>
+      The number of FDMA channels that fit in a band is the usable spectrum divided by the per-channel width:<br>
+      <mark><b>N = (B<sub>total</sub> &minus; 2&middot;B<sub>guard</sub>) / B<sub>channel</sub></b></mark><br>
+      <span style="font-size:12.5px;color:var(--muted);display:inline-block;margin:5px 0;"><b>where:</b> <b>N</b> = number of channels · <b>B<sub>total</sub></b> = total available spectrum · <b>B<sub>guard</sub></b> = edge guard band (one each side) · <b>B<sub>channel</sub></b> = bandwidth per channel.</span><br>
+      If edge guards are ignored it simplifies to <b>N &asymp; B<sub>total</sub> / B<sub>channel</sub></b>.
+    </div>
+    <p><b>Setup:</b> total spectrum <code>B<sub>total</sub> = 12.5 MHz</code> (one direction), channel spacing <code>B<sub>channel</sub> = 30 kHz</code> (AMPS), edge guard band <code>B<sub>guard</sub> = 10 kHz</code> each side.</p>
+    <div class="steps">
+      <div class="step"><div class="k">1</div><div class="body"><b>Usable spectrum.</b> Subtract both edge guards: 12,500 kHz &minus; (2 &times; 10 kHz) = <code>12,480 kHz</code>.</div></div>
+      <div class="step"><div class="k">2</div><div class="body"><b>Divide by channel width.</b> N = 12,480 kHz &divide; 30 kHz = <code>416</code>.</div></div>
+      <div class="step"><div class="k">3</div><div class="body"><b>Result.</b> <mark><b>N = 416 channels</b></mark> (ignoring guards, 12,500 &divide; 30 &asymp; 416 too). These are then split across the cluster &mdash; e.g. a 7-cell cluster gets ~59 channels per cell.</div></div>
+    </div>
   </div>
 
   <!-- 3.5 CDMA spreading/despreading worked example -->
@@ -1856,7 +1811,10 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     </figure>
 
     <div class="box def"><span class="label">Processing Gain</span>
-      In CDMA each data bit is multiplied by a fast <mark>PN (Pseudo-Noise) code</mark> of <i>N</i> chips. The <b>processing gain</b> = chip rate &divide; data rate = <i>N</i>. Higher gain means more spreading, better interference rejection, and lower probability of intercept.
+      In CDMA each data bit is multiplied by a fast <mark>PN (Pseudo-Noise) code</mark> of <i>N</i> chips:<br>
+      <mark><b>G<sub>p</sub> = chip rate / data rate = N</b></mark><br>
+      <span style="font-size:12.5px;color:var(--muted);display:inline-block;margin:5px 0;"><b>where:</b> <b>G<sub>p</sub></b> = processing (spreading) gain · <b>chip rate</b> = speed of the PN code · <b>data rate</b> = user bit rate · <b>N</b> = chips per data bit.</span><br>
+      Higher gain means more spreading, better interference rejection, and lower probability of intercept.
     </div>
     <div class="box tip"><span class="label">Bipolar Rule</span>
       Map bits to &plusmn;1: data <b>1 &rarr; +1</b>, data <b>0 &rarr; &minus;1</b>. PN chips are also &plusmn;1. <b>Spread:</b> multiply the bit by every chip. <b>Despread:</b> multiply the received chips by the <i>same</i> code, sum them, divide by <i>N</i>. Because chip &times; chip = +1 always, the original bit returns: <mark>data &times; code &times; code = data</mark>.
@@ -1870,6 +1828,23 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <p><b>Check the other bit (data = 0 &rarr; &minus;1):</b> Spread = (&minus;1, +1, &minus;1, &minus;1). Despread with same code = (&minus;1&times;+1, +1&times;&minus;1, &minus;1&times;+1, &minus;1&times;+1) = (&minus;1, &minus;1, &minus;1, &minus;1). Sum = &minus;4, &divide;4 = <mark><b>&minus;1 = data bit 0</b></mark>. &#10003;</p>
     <div class="box why"><span class="label">Why a different user's code rejects it</span>
       A receiver using the <i>wrong</i> code multiplies by a sequence orthogonal to the sender's. The &plusmn; products cancel, the sum &asymp; 0, and that user's signal is rejected as background noise. This is how many users share one band at once.
+    </div>
+
+    <h4>CDMA vs TDMA &mdash; How They Differ</h4>
+    <div class="table-wrap">
+      <table>
+        <tr><th>Parameter</th><th>TDMA</th><th>CDMA</th></tr>
+        <tr><td><b>Channel sharing</b></td><td>Users split by <mark>time slots</mark> (take turns on one carrier)</td><td>Users split by orthogonal <mark>codes</mark> (all transmit at once on the same band)</td></tr>
+        <tr><td><b>Capacity limit</b></td><td><mark>Hard</mark> &mdash; fixed slot count; extra call is blocked</td><td><mark>Soft</mark> &mdash; interference-limited; capacity degrades gradually</td></tr>
+        <tr><td><b>Handoff</b></td><td><mark>Hard</mark> handoff (break-before-make)</td><td><mark>Soft</mark> handoff (make-before-break, talks to 2&ndash;3 BS)</td></tr>
+        <tr><td><b>Near-far problem</b></td><td>Not significant (users on separate time slots)</td><td>Severe &mdash; needs strict fast power control</td></tr>
+        <tr><td><b>Frequency reuse</b></td><td>Cluster size <mark>N &gt; 1</mark> (adjacent cells need different frequencies)</td><td>Universal reuse <mark>N = 1</mark> (every cell uses the same band)</td></tr>
+        <tr><td><b>Example</b></td><td>2G GSM</td><td>IS-95, 3G WCDMA</td></tr>
+      </table>
+    </div>
+
+    <div class="box tip"><span class="label">CDMA &mdash; Areas of Application</span>
+      Used in <mark>GPS</mark> satellite ranging, <mark>2G IS-95 (cdmaOne)</mark> and <mark>3G WCDMA / CDMA2000</mark> cellular, and <mark>military</mark> anti-jam / low-probability-of-intercept links.
     </div>
 
   </div>
@@ -1899,7 +1874,12 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="box def"><span class="label">Separate Users by Space</span>
       <mark>SDMA</mark> uses <mark>directional / smart (adaptive) antennas</mark> to point narrow beams at individual users. Because the beams aim in different physical directions, the <i>same frequency, time slot, and code</i> can be <mark>reused spatially</mark> for users in different directions &mdash; multiplying capacity. It underlies <mark>MIMO beamforming</mark> in 4G/5G.
     </div>
-    
+    <ul>
+      <li><b>Spatial reuse:</b> the same frequency, time slot and code are reused for users in <mark>different directions</mark>, multiplying capacity.</li>
+      <li><b>Smart antennas:</b> uses <mark>adaptive antenna arrays</mark> that steer beams toward the wanted user and place nulls toward interferers.</li>
+      <li><b>Often combined:</b> SDMA is a capacity multiplier <em>on top of</em> FDMA/TDMA/CDMA, not a standalone replacement.</li>
+    </ul>
+
   </div>
 
   <!-- 3.7 Packet Radio -->
@@ -1926,6 +1906,11 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <h3>Capacity of Cellular Systems</h3>
     <div class="box def"><span class="label">Hard vs Soft Capacity</span>
       System capacity is the number of simultaneous users a system can serve at acceptable quality, often measured in <mark>Erlangs</mark> (offered traffic load) via the <mark>Erlang-B</mark> formula relating channels, traffic, and blocking probability.
+    </div>
+    <div class="box def"><span class="label">Shannon Channel Capacity</span>
+      The theoretical maximum error-free bit rate of a channel is given by the <mark>Shannon&ndash;Hartley</mark> law:<br>
+      <mark><b>C = B &middot; log<sub>2</sub>(1 + S/N)</b></mark><br>
+      where <i>C</i> = capacity in bits/s, <i>B</i> = bandwidth in Hz, and <i>S/N</i> = signal-to-noise ratio. More bandwidth or a better SNR raises the ceiling. <b>Cell capacity</b> then scales as <b>channels per cell &times; frequency-reuse factor</b> across the coverage area.
     </div>
     <ul>
       <li><b>FDMA / TDMA &mdash; <mark>hard capacity</mark>:</b> A fixed number of frequency/time channels per cell. When all channels are busy the next call is <b>blocked</b> outright. The limit is rigid.</li>
@@ -2029,7 +2014,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
         <div style="color:var(--gold);font-weight:700;text-align:center;line-height:1.1;">→<br><span style="font-size:8px;color:var(--muted);">×4</span></div>
         <div style="border:1.5px solid var(--gold);background:var(--gold-soft);border-radius:5px;padding:6px 8px;text-align:center;color:var(--ink);"><b>E4</b><br>1920 ch<br><b>139.264 Mbps</b></div>
         <div style="color:var(--ink-soft);font-weight:700;text-align:center;line-height:1.1;">⇒<br><span style="font-size:8px;color:var(--muted);">SDH</span></div>
-        <div style="border:1.5px solid var(--ink);background:var(--paper-deep);border-radius:5px;padding:6px 8px;text-align:center;color:var(--ink);"><b>STM-1</b><br>~1920 ch<br><b>155.52 Mbps</b></div>
+        <div style="border:1.5px solid var(--ink);background:var(--paper-deep);border-radius:5px;padding:6px 8px;text-align:center;color:var(--ink);"><b>STM-1</b><br>~1890 ch<br><b>155.52 Mbps</b></div>
       </div>
       <figcaption><b>Fig 4.1b</b> · Digital multiplexing hierarchy — one <mark>PCM voice channel = 64 kbps</mark>; thirty-two of these make an <mark>E1 (2.048 Mbps)</mark>; the <mark>PDH</mark> E-carrier then multiplies ×4 at each level (E2/E3/E4); modern <mark>SDH</mark> carries it on fibre starting at <mark>STM-1 = 155.52 Mbps</mark>.</figcaption>
     </figure>
@@ -2249,46 +2234,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
 
     <!-- Q1 a -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
-      <div class="qbody"><b>What is WLL (Wireless Local Loop)? What is its main advantage?</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>Definition</b>: <mark>WLL</mark> links home phones to the local exchange using a short radio link instead of copper wires.</li>
-          <li><b>Main advantage</b>: very fast and cheap to set up in villages.</li>
-          <li><b>Example</b>: how BSNL rolled out fixed wireless in rural India.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 b -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(h)</span></div>
-      <div class="qbody"><b>Explain frequency reuse. Define co-channel cells.</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>Frequency reuse</b>: the same <mark>radio channels</mark> are used again in cells that are far apart; low-power antennas keep the signals from clashing.</li>
-          <li><b>Co-channel cells</b>: cells that share the same channels are called <b><mark>co-channel cells</mark></b>.</li>
-          <li><b>Example</b>: Jio reuses the same 4G band across many Mumbai towers.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 c -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g)</span></div>
-      <div class="qbody"><b>List three advantages of digital cellular systems (2G) over analog (1G).</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>More users fit in same band</b>: <mark>TDMA</mark>/<mark>CDMA</mark> pack many calls into one band.</li>
-          <li><b>Safe locked calls</b>: A5/1 cipher and SIM card check who you are. No phone cloning.</li>
-          <li><b>SMS and data work</b>: text messages and slow internet through GPRS/EDGE — what early Airtel phones used.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 d -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g) · 3×</span></div>
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g) · 3×</span></div>
       <div class="qbody"><b>Explain Grade of Service (GoS) in cellular networks. What is the standard target?</b></div>
       <div class="ans">
         <ul>
@@ -2299,9 +2245,56 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q1 e -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(d)</span></div>
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(e)</span></div>
+      <div class="qbody"><b>Define scatternet in Bluetooth.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Definition</b>: a <mark>scatternet</mark> is formed when two or more Bluetooth piconets are joined.</li>
+          <li><b>Bridge device</b>: one device is a slave in one piconet and a master or slave in another.</li>
+          <li><b>Example</b>: your Bluetooth earbuds and smartwatch both connecting through your phone.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(h)</span></div>
+      <div class="qbody"><b>Explain the near-far problem in TDMA and CDMA systems.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Problem</b>: the <mark>near-far effect</mark> happens when a phone close to the tower shouts so loud that it drowns out weak signals from far-away phones.</li>
+          <li><b>CDMA fix</b>: the tower keeps sending <mark>power-control</mark> orders so every phone reaches it at the same strength.</li>
+          <li><b>Analogy</b>: like asking the front-row student to whisper so the back row can be heard.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(h)</span></div>
+      <div class="qbody"><b>Explain frequency reuse. Define co-channel cells.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Frequency reuse</b>: the same <mark>radio channels</mark> are used again in cells that are far apart; low-power antennas keep the signals from clashing.</li>
+          <li><b>Co-channel cells</b>: cells that share the same channels are called <b><mark>co-channel cells</mark></b>.</li>
+          <li><b>Example</b>: Jio reuses the same 4G band across many Mumbai towers.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(g)</span></div>
+      <div class="qbody"><b>List three advantages of digital cellular systems (2G) over analog (1G).</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>More users fit in same band</b>: <mark>TDMA</mark>/<mark>CDMA</mark> pack many calls into one band.</li>
+          <li><b>Safe locked calls</b>: A5/1 cipher and SIM card check who you are. No phone cloning.</li>
+          <li><b>SMS and data work</b>: text messages and slow internet through GPRS/EDGE — what early Airtel phones used.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(d)</span></div>
       <div class="qbody"><b>Differentiate hard handoff and soft handoff.</b></div>
       <div class="ans">
         <div class="table-wrap">
@@ -2314,9 +2307,32 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q1 f -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(e)</span></div>
+      <div class="qbody"><b>What is the pure ALOHA maximum theoretical throughput and slotted ALOHA throughput?</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Pure ALOHA</b>: top throughput = <mark><b>18.4%</b></mark> (when G = 0.5).</li>
+          <li><b>Slotted ALOHA</b>: top throughput = <mark><b>36.8%</b></mark> (when G = 1.0).</li>
+          <li><b>Why double</b>: fixed time slots cut the collision window in half.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
+      <div class="qbody"><b>What is WLL (Wireless Local Loop)? What is its main advantage?</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Definition</b>: <mark>WLL</mark> links home phones to the local exchange using a short radio link instead of copper wires.</li>
+          <li><b>Main advantage</b>: very fast and cheap to set up in villages.</li>
+          <li><b>Example</b>: how BSNL rolled out fixed wireless in rural India.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>Define CDMA. What is the processing gain formula?</b></div>
       <div class="ans">
         <ul>
@@ -2327,9 +2343,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q1 g -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
       <div class="qbody"><b>List the three GSM security authentication triplets generated by the AuC.</b></div>
       <div class="ans">
         <p>The <mark>AuC</mark> triplet has three parts:</p>
@@ -2337,45 +2352,6 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
           <li><b>RAND</b>: a random number sent to the phone as a challenge.</li>
           <li><b>SRES</b>: the signed reply the phone gives back, made from RAND and the secret key Ki using A3.</li>
           <li><b>Kc</b>: the cipher key built from RAND and Ki using A8. It locks the call with A5 encryption.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 h -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(e)</span></div>
-      <div class="qbody"><b>Define scatternet in Bluetooth.</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>Definition</b>: a <mark>scatternet</mark> is formed when two or more Bluetooth piconets are joined.</li>
-          <li><b>Bridge device</b>: one device is a slave in one piconet and a master or slave in another.</li>
-          <li><b>Example</b>: your Bluetooth earbuds and smartwatch both connecting through your phone.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 i -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q1(h)</span></div>
-      <div class="qbody"><b>Explain the near-far problem in TDMA and CDMA systems.</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>Problem</b>: the <mark>near-far effect</mark> happens when a phone close to the tower shouts so loud that it drowns out weak signals from far-away phones.</li>
-          <li><b>CDMA fix</b>: the tower keeps sending <mark>power-control</mark> orders so every phone reaches it at the same strength.</li>
-          <li><b>Analogy</b>: like asking the front-row student to whisper so the back row can be heard.</li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Q1 j -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q1(e)</span></div>
-      <div class="qbody"><b>What is the pure ALOHA maximum theoretical throughput and slotted ALOHA throughput?</b></div>
-      <div class="ans">
-        <ul>
-          <li><b>Pure ALOHA</b>: top throughput = <mark><b>18.4%</b></mark> (when G = 0.5).</li>
-          <li><b>Slotted ALOHA</b>: top throughput = <mark><b>36.8%</b></mark> (when G = 1.0).</li>
-          <li><b>Why double</b>: fixed time slots cut the collision window in half.</li>
         </ul>
       </div>
     </div>
@@ -2471,25 +2447,13 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       <div class="ans">
         <ul>
           <li><b>Shift parameters</b>: <b>i = 2, j = 2</b> → <code>N = i² + ij + j² = 4 + 4 + 4 = <mark>12</mark></code>.</li>
-          <li><b>Cluster</b>: one cluster has <b>12 cells</b>, each assigned a distinct channel group.</li>
+          <li><b>Reuse ratio</b>: <code>Q = D/R = √(3N) = √(3×12) = √36 = <mark>6</mark></code> — co-channel cells lie 6 cell-radii apart.</li>
+          <li><b>Cluster</b>: one cluster has <b>12 hexagonal cells</b>, each assigned a distinct channel group.</li>
           <li><b>Tiling</b>: the 12-cell pattern then repeats across the coverage area.</li>
         </ul>
         <figure class="diagram-fig">
-          <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px;max-width:300px;margin:6px auto;">
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">1</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">2</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">3</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">4</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">5</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">6</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">7</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">8</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">9</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">10</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">11</div>
-            <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:5px;padding:9px 0;text-align:center;font-weight:700;font-size:12px;color:var(--brand-deep);">12</div>
-          </div>
-          <figcaption><b>Fig P.1</b> · N = 12 cluster (i = 2, j = 2) — 12 distinct channel groups; the pattern tiles and repeats.</figcaption>
+          <img src="wc-images/frequency-reuse-n12.png" alt="Cell structure for frequency reuse factor N=12: a cluster of 12 hexagonal cells, the calculation N=i^2+ij+j^2=12 and co-channel reuse ratio Q=sqrt(3N)=6, and the frequency-reuse pattern showing the 12-cell cluster repeated at co-channel distance D" loading="lazy" style="width:100%;max-width:780px;height:auto;border-radius:5px;display:block;margin:0 auto;">
+          <figcaption><b>Fig P.1</b> · N = 12 cluster (i = 2, j = 2) — 12 <b>hexagonal</b> cells; reuse ratio Q = √(3N) = 6; the cluster repeats at co-channel reuse distance D.</figcaption>
         </figure>
       </div>
     </div>
@@ -2540,6 +2504,7 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
     <div class="part-head">Section B (Answer Any Four · 15M Each)</div>
 
     <!-- Q4 -->
+    <!-- Q2 (was Q2) -->
     <div class="qcard predicted">
       <div class="qhead"><span class="qnum">Q2</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(a) · 6×</span></div>
       <div class="qbody"><b>Compare MAHO, MCHO, and NCHO handoff strategies. Discuss the practical handoff considerations: hysteresis, dwell time, guard channels, and the ping-pong effect. Trace the 4-stage handoff sequence.</b></div>
@@ -2707,101 +2672,100 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q2 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q3</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q4 · 3×</span></div>
+      <div class="qhead"><span class="qnum">Q3</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q6(b) · 5×</span></div>
+      <div class="qbody"><b>Contrast Cell Splitting, Cell Sectoring, and Microzone cell designs in detail. Explain how each increases coverage or capacity, with a detailed comparison table.</b></div>
+      <div class="ans">
+        <figure class="diagram-fig">
+          <img src="wc-images/07-cell-split-sector.png" alt="Cell splitting vs sectoring vs microcell zone designs compared" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
+          <figcaption><b>Fig Q5.1</b> &middot; Capacity enhancement techniques compared &mdash; Cell splitting (subdivision), Cell sectoring (directional antennas), and Microzone cell designs.</figcaption>
+        </figure>
+
+        <h5>Introduction</h5>
+        <p>As cellular customer count grows, operators must scale capacity <em>without</em> buying more costly frequency band. Three classic methods solve this — <b><mark>cell splitting</mark></b> (cut a cell into smaller cells), <b><mark>sectoring</mark></b> (use directional antennas), and <b><mark>microcell zone</mark></b> (spread out low-power zones, one tower). They form the textbook capacity toolkit. Each one trades cost, handover load, and signal clash in a different way. Airtel and Jio use all three across crowded zones like Connaught Place and Mumbai Airport.</p>
+
+
+        <h5>The Capacity Upgrades Comparison</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Axis</th><th>Cell Splitting</th><th>Cell Sectoring</th><th>Microzone Cell</th></tr>
+            <tr><td><b>Mechanism</b></td><td>Splits a busy cell into 4 micro-cells. Antenna radius cut to R/2.</td><td>Swaps omni antenna for 3 directional sector antennas (120°).</td><td>Spreads low-power zone antennas inside one cell.</td></tr>
+            <tr><td><b>Capacity Gain</b></td><td><b>4× capacity</b> per area (more channels reuse in the same space).</td><td><b>Medium gain</b> (cuts same-frequency signal clash, lets a smaller N work).</td><td><b>High local capacity</b> (no handoffs between zones).</td></tr>
+            <tr><td><b>CCI Impact</b></td><td>No change in S/I ratio.</td><td><b>Cuts CCI</b> by limiting clash from omni to only 2 directions.</td><td><b>Big cut in CCI</b>. Power stays in active zones.</td></tr>
+            <tr><td><b>Key Drawback</b></td><td>High hardware cost. Handover signalling load shoots up.</td><td>Cuts trunking efficiency by splitting channel sets into small groups.</td><td>High fibre cost between zone antennas and the central tower.</td></tr>
+          </table>
+        </div>
+
+        <h5>1 · Cell Splitting — Cut the Cell into Smaller Cells</h5>
+        <ul>
+          <li><b>Mechanism:</b> A busy cell of radius <code>R</code> is cut into <b>four smaller cells</b> each of radius <code>R/2</code>. New BTS towers go at the new centres. Transmit power drops by 16× (path-loss with n = 4) to keep the same coverage shape.</li>
+          <li><b>Capacity formula:</b> Cell area scales as <code>R²</code>. Halving the radius gives <code>(R/R/2)² = 4×</code> more cells per km², so <b><mark>capacity ×4</mark></b> more channels per km². Cluster size N stays the same, so S/I is unchanged.</li>
+          <li><b>Worked numerical:</b> A macro cell of <b>R = 10 km</b> with 100 channels has <b>100/314 ≈ 0.32 channels/km²</b> in its 314 km² area. Split to <b>R/2 = 5 km</b> gives 4 cells × 100 channels in the same 314 km² → <b>1.27 channels/km²</b> ⇒ 4× raw capacity.</li>
+          <li><b>Drawback:</b> Costly. Each split needs new tower, backhaul, and land. Handover signalling load jumps roughly 4× because users cross more edges per minute at the same walking or driving speed.</li>
+          <li><b>Used when:</b> A specific cell stays busy (Erlang-B blocking > 2%) and there is space for more sites. The "umbrella cell" trick keeps the original big cell on at low power for fast users (cars on Mumbai-Pune highway), while the new small cells serve slow walkers.</li>
+        </ul>
+
+        <h5>2 · Cell Sectoring — Directional Antennas</h5>
+        <ul>
+          <li><b>Mechanism:</b> The single omni antenna at the cell centre is swapped for <b>3 directional antennas at <mark>120°</mark></b> (or 6 at <mark>60°</mark>). Each one lights up its own pie-slice and reuses only 1/3 (or 1/6) of the cell's channels.</li>
+          <li><b>Interference cut:</b> With 3-sector 120° antennas, the count of strong first-tier interferers drops from <b>6 to 2</b>. With 6-sector, it drops to <b>1</b>. So S/I improves by ~4.7 dB (3-sector) or ~7.8 dB (6-sector) over omni.</li>
+          <li><b>Enables smaller cluster:</b> Better S/I lets the operator drop N from 7 to 4 or 3 and still meet the 18 dB target. This raises reuse density and effective capacity by <b>(7/4) ≈ 1.75×</b> with just an antenna swap.</li>
+          <li><b>Cost:</b> Very low. Only the antenna head is changed. The BTS cabinet, backhaul, and licence stay the same. The cheapest capacity upgrade.</li>
+          <li><b>Drawback:</b> Trunking efficiency drops. Splitting 60 cell-wide channels into 3 sector pools of 20 means each sector's Erlang-B blocking gets worse for the same load (smaller pools waste more channels). Also, crossing sector edges inside the same cell triggers <em>intra-cell sector handovers</em>, adding signalling.</li>
+        </ul>
+
+        <h5>3 · <mark>Microcell zone</mark> — Spread Antennas, One Tower</h5>
+        <ul>
+          <li><b>Mechanism:</b> Many low-power "zone" antennas (Distributed Antenna System, DAS) sit across one big cell. They go on street lights, rooftops, lamp posts. All are <b>fed by one central tower</b> through fibre. Each antenna covers a small zone of ~100 m radius.</li>
+          <li><b>Single-BS design:</b> The user's call jumps from one zone antenna to another as they move, but it stays inside the same BTS. The handover is <em>internal</em> and never reaches the BSC. Result: <b>zero classic handovers</b> across the whole macro cell.</li>
+          <li><b>Capacity gain:</b> Each zone has its own set of channels. This gives small-cell capacity across the original macro footprint, with capacity close to splitting but no extra towers.</li>
+          <li><b>Worked numerical:</b> A 1-km macro cell with 60 channels usually carries 60 calls at once. Swap it for 9 zone antennas in a 3×3 grid (each with 60 channels via spatial reuse inside the cell) and effective capacity goes up to ~9 × 60 = <b>540 channels</b> in the same footprint. Cost is fibre, not towers.</li>
+          <li><b>Drawback:</b> Fibre or coax between zones and central tower is costly to retrofit in old buildings. Best fit: new campuses, airports (Mumbai T2), malls, cricket stadiums where conduit is planned upfront.</li>
+        </ul>
+
+        <h5>Capacity Upgrades Side-by-Side</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Axis</th><th>Cell Splitting</th><th>Cell Sectoring</th><th>Microzone Cell</th></tr>
+            <tr><td><b>Mechanism</b></td><td>Cut cell, R → R/2</td><td>Swap omni for 3×120° directional</td><td>Many low-power zone antennas, one BTS</td></tr>
+            <tr><td><b>Capacity gain</b></td><td><b>4×</b> per km² (area scales as R²)</td><td><b>~1.75×</b> by letting a smaller N work (N: 7→4)</td><td><b>High</b> (zone count × original capacity)</td></tr>
+            <tr><td><b>S/I impact</b></td><td>Same (N unchanged)</td><td>Up by ~4.7 dB (3-sector)</td><td>Big improvement — directional zones</td></tr>
+            <tr><td><b>Capital cost</b></td><td>High — new tower per cell</td><td>Lowest — antenna swap only</td><td>Medium-high — fibre to many zones</td></tr>
+            <tr><td><b>Handover signalling</b></td><td><b>~4× more</b> (more edges)</td><td>Plus intra-cell sector handovers</td><td><b>Near zero</b> (intra-BTS zone switch)</td></tr>
+            <tr><td><b>Trunking efficiency</b></td><td>Slightly worse (smaller pools)</td><td>Worse (3 isolated 1/3-pools per cell)</td><td>Worst (many small zone pools)</td></tr>
+            <tr><td><b>Best for</b></td><td>Long-term urban capacity growth</td><td>Quick cheap upgrade of existing tower</td><td>Indoor venues, campuses, stadiums</td></tr>
+          </table>
+        </div>
+
+        <h5>Trunking &amp; Handoff Trade-offs</h5>
+        <ul>
+          <li><b>Cell splitting</b> is the only method with <em>no cap</em> on capacity growth — you can always split again. But cost rises and handover load scales with the number of new edges.</li>
+          <li><b>Cell sectoring</b> is the cheapest single upgrade. It is the textbook first step for an operator running out of capacity on an old tower.</li>
+          <li><b>Microzone</b> avoids the handover storm of splitting by tying every zone to one central tower. But cost shifts from towers to fibre runs and central racks. Worth it only in busy indoor venues like cricket stadiums and metro stations.</li>
+        </ul>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — Over-sectoring</span>
+          A common over-design mistake: cutting a cell into 6 or 12 sectors instead of the standard 3. Yes, it cuts signal clash more (~3 dB extra at 6-sector). But it <em>multiplies handoff load</em> (every user crossing each sector edge inside the same cell triggers an intra-cell handover) and badly hurts trunking efficiency (Erlang-B blocking on a pool of 10 is far worse than on a pool of 60). Stick to <b>3-sector 120°</b> as the sweet spot unless dense urban traffic demands more.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>2026 networks lean on <b>5G small-cell densification</b>. It is cell splitting in a new form. Pico and femto cells (10–100 m radius) are dropped into malls, stadiums, and on street furniture like lamp posts and traffic signals. Jio True5G uses this across Delhi. Massive-MIMO + <b>3D beamforming</b> in 5G NR works as <em>smart sectoring</em>. It uses 64 to 256 spatially-steered beams instead of 3 fixed sectors, so the antenna pattern follows the user. Modern <b>Distributed Antenna Systems (DAS)</b> turn the microzone idea into a product for indoor and venue rollouts (cricket grounds, airports, metro lines). All three classic methods survive — just in software, beam, and fibre form.</p>
+
+        <h5>Conclusion</h5>
+        <p>Cell splitting, sectoring, and microzone form the cellular capacity toolkit. Splitting buys raw area gain at high capex. Sectoring is the cheapest clash fix. Microzone trades cabling for handover-free indoor capacity. Modern 5G blends all three — small cells (splitting), Massive-MIMO beams (sectoring), and central distributed units (microzone-style DAS). But the basic rule, same-channel reuse at a safe distance, has not changed since the original AMPS design.</p>
+
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q4 · 3×</span></div>
       <div class="qbody"><b>Describe the GSM System Architecture in detail with a neat block diagram. Detail the role of Mobile Station (MS), Base Station Subsystem (BSS), and Network Switching Subsystem (NSS) with a table.</b></div>
       <div class="ans">
         <figure class="diagram-fig">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/d/d1/Gsm_structures.svg" alt="GSM network architecture: MS, BTS, BSC (BSS) and MSC, HLR, VLR, AuC, EIR (NSS) connected to PSTN" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
-<div style="display:none;flex-direction:column;gap:0;align-items:stretch;max-width:560px;margin:0 auto;font-family:'JetBrains Mono',monospace;">
-
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
-
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;">
-      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">MS</span>
-      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">Mobile<br>Station</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;">
-      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
-      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;letter-spacing:.04em;text-align:center;">U<sub>m</sub><br>air</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;">
-      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">BSS &middot; Base Station Subsystem</span>
-      <div style="display:flex;align-items:center;gap:6px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BTS</span>
-          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">radio<br>tower</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);">
-          <span style="font-size:13px;font-weight:700;line-height:1;">&#9656;</span>
-          <span style="font-size:7px;color:var(--muted);margin-top:1px;">Abis</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:66px;padding:8px 6px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:11.5px;font-weight:700;color:var(--ink);">BSC</span>
-          <span style="font-size:8.5px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">base st.<br>controller</span>
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <div style="display:flex;justify-content:center;align-items:center;gap:8px;color:var(--brand);margin:7px 0;">
-    <span style="font-size:18px;font-weight:700;line-height:1;">&#9662;</span>
-    <span style="font-size:8px;color:var(--muted);letter-spacing:.06em;">A-interface</span>
-  </div>
-
-  <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;">
-
-    <div style="display:flex;flex-direction:column;border:2px solid var(--brand);border-radius:8px;background:var(--brand-soft);padding:7px 9px 9px;flex:1 1 300px;min-width:250px;">
-      <span style="font-size:9px;font-weight:700;letter-spacing:.12em;color:var(--brand-deep);text-transform:uppercase;text-align:center;margin-bottom:6px;">NSS &middot; Network &amp; Switching Subsystem</span>
-
-      <div style="display:flex;justify-content:center;margin-bottom:7px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:130px;padding:9px 12px;background:var(--ink);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:12.5px;font-weight:700;color:var(--paper);">MSC</span>
-          <span style="font-size:8.5px;color:var(--paper-soft);margin-top:2px;text-align:center;line-height:1.2;">Mobile Switching<br>Centre &mdash; the &quot;brain&quot;</span>
-        </div>
-      </div>
-
-      <div style="text-align:center;font-size:8px;color:var(--brand-deep);font-weight:700;letter-spacing:.04em;margin-bottom:5px;">&#8597; MSC queries 4 databases &#8597;</div>
-
-      <div style="border-top:2px solid var(--brand);padding-top:8px;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;">
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">HLR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">home loc.<br>register</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">VLR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">visitor loc.<br>register</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">AUC</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">authent.<br>centre</span>
-        </div>
-        <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:6px 3px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:5px;">
-          <span style="font-size:10.5px;font-weight:700;color:var(--ink);">EIR</span>
-          <span style="font-size:8px;color:var(--muted);margin-top:2px;text-align:center;line-height:1.2;">equip. id.<br>register</span>
-        </div>
-      </div>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;color:var(--brand);min-width:40px;align-self:center;">
-      <span style="font-size:16px;font-weight:700;line-height:1;">&#9656;</span>
-      <span style="font-size:7.5px;color:var(--muted);margin-top:2px;">trunk</span>
-    </div>
-
-    <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-width:78px;padding:11px 9px;background:var(--paper-soft);border:1.5px solid var(--ink);border-radius:6px;align-self:center;">
-      <span style="font-size:12.5px;font-weight:700;color:var(--ink);">PSTN</span>
-      <span style="font-size:9px;color:var(--muted);margin-top:3px;text-align:center;line-height:1.25;">wired phone<br>network</span>
-    </div>
-
-  </div>
-
-</div>
-          <figcaption><b>Fig Q2.4</b> · GSM four-subsystem architecture — MS · BSS · NSS · OSS connected by Um (radio), Abis (BSS internal), A (BSS↔NSS), and SS7-family interfaces (E, D, F, G inside NSS)</figcaption>
-        </figure>
+      <img src="wc-images/01-gsm-architecture.png" alt="GSM system architecture: MS, BSS (BTS+BSC), NSS (MSC, HLR, VLR, AuC, EIR) connected to PSTN, plus GPRS SGSN/GGSN to Internet" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;display:block;margin:0 auto;">
+      <figcaption><b>Fig</b> &middot; GSM three-subsystem architecture: MS &rarr; BSS (BTS + BSC) &rarr; NSS (MSC / HLR / VLR / AuC / EIR) &rarr; PSTN.</figcaption>
+    </figure>
 
         <h5>Introduction</h5>
         <p>GSM (Global System for Mobile communications) is the 2G digital cellular standard. It splits the system into <b>four parts</b>: Mobile Station, Base Station Subsystem, Network Switching Subsystem, and Operations Support Subsystem. These four parts talk over <b>four standard interfaces</b>: <mark>Um</mark>, <mark>Abis</mark>, <mark>A</mark>, and SS7 inside the NSS. This clean split lets different vendor gear work together, makes BSNL roaming work on Airtel towers, and helped GSM grow into 3G, 4G, and 5G. GSM uses three main frequency bands:</p>
@@ -2883,9 +2847,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q6 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q4</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(a) · 3×</span></div>
+      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 3 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(a) · 3×</span></div>
       <div class="qbody"><b>Compare FDMA, TDMA, CDMA, and SDMA multiple access techniques in detail with a comparison table. Discuss the code separation concept in CDMA and show a worked bit-level despreading example.</b></div>
       <div class="ans">
         <figure class="diagram-fig">
@@ -2984,96 +2947,460 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q5 -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q5</span><span class="tag year">Unit 2 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q6(b) · 5×</span></div>
-      <div class="qbody"><b>Contrast Cell Splitting, Cell Sectoring, and Microzone cell designs in detail. Explain how each increases coverage or capacity, with a detailed comparison table.</b></div>
+      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Unit 2 · Joint #1 Freq</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(b) · 3×</span></div>
+      <div class="qbody"><b>Discuss the performance criteria used to evaluate a cellular mobile system. Explain voice quality, grade of service (GoS), coverage and capacity, with the Erlang-B model and a worked blocking-probability example.</b></div>
       <div class="ans">
         <figure class="diagram-fig">
-          <img src="wc-images/07-cell-split-sector.png" alt="Cell splitting vs sectoring vs microcell zone designs compared" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-          <figcaption><b>Fig Q5.1</b> &middot; Capacity enhancement techniques compared &mdash; Cell splitting (subdivision), Cell sectoring (directional antennas), and Microzone cell designs.</figcaption>
+<svg viewBox="0 0 520 200" role="img" aria-label="Four performance criteria of a cellular system: voice quality, grade of service, coverage, and capacity" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,system-ui,sans-serif">
+  <!-- central node -->
+  <rect x="195" y="78" width="130" height="44" rx="8" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.6"/>
+  <text x="260" y="98" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--paper)">CELLULAR</text>
+  <text x="260" y="114" text-anchor="middle" font-size="10.5" fill="var(--paper)">performance criteria</text>
+
+  <!-- connecting lines (CSS-style bordered links via SVG strokes, no box-drawing chars) -->
+  <line x1="195" y1="88" x2="120" y2="48" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="195" y1="112" x2="120" y2="152" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="325" y1="88" x2="400" y2="48" stroke="var(--brand)" stroke-width="2"/>
+  <line x1="325" y1="112" x2="400" y2="152" stroke="var(--brand)" stroke-width="2"/>
+
+  <!-- 1 Voice quality (top-left) -->
+  <rect x="20" y="28" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
+  <text x="100" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Voice Quality</text>
+  <text x="100" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">MOS / SNR &#183; clarity</text>
+
+  <!-- 2 Grade of Service (bottom-left) -->
+  <rect x="20" y="132" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
+  <text x="100" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Grade of Service</text>
+  <text x="100" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">blocking P &#8804; 2%</text>
+
+  <!-- 3 Coverage (top-right) -->
+  <rect x="340" y="28" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+  <text x="420" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Coverage</text>
+  <text x="420" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">90&#8211;95% of area</text>
+
+  <!-- 4 Capacity (bottom-right) -->
+  <rect x="340" y="132" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
+  <text x="420" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Capacity</text>
+  <text x="420" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">Erlangs carried</text>
+</svg>
+          <figcaption><b>Fig Q5b.1</b> · The four performance criteria of a cellular system — <mark>voice quality</mark> (clarity, MOS/SNR), <mark>grade of service</mark> (busy-hour blocking, target &#8804;2%), <mark>coverage</mark> (fraction of area above the usable signal threshold), and <mark>capacity</mark> (offered traffic carried, in Erlangs)</figcaption>
         </figure>
 
         <h5>Introduction</h5>
-        <p>As cellular customer count grows, operators must scale capacity <em>without</em> buying more costly frequency band. Three classic methods solve this — <b><mark>cell splitting</mark></b> (cut a cell into smaller cells), <b><mark>sectoring</mark></b> (use directional antennas), and <b><mark>microcell zone</mark></b> (spread out low-power zones, one tower). They form the textbook capacity toolkit. Each one trades cost, handover load, and signal clash in a different way. Airtel and Jio use all three across crowded zones like Connaught Place and Mumbai Airport.</p>
+        <p>A cellular system is judged on <em>how well it serves users at the busy hour</em>, not just on raw coverage. Engineers track four core <b><mark>performance criteria</mark></b> — <b><mark>voice quality</mark></b>, <b><mark>grade of service (GoS)</mark></b>, <b><mark>coverage</mark></b>, and <b><mark>capacity</mark></b>. The first asks <em>"does the call sound clear?"</em>, the next <em>"can I get a channel when I dial?"</em>, the third <em>"is there signal where I stand?"</em>, and the last <em>"how many users can the cell hold at once?"</em>. The blocking criterion is computed from offered traffic in <b><mark>Erlangs</mark></b> through the <b><mark>Erlang-B</mark></b> formula. Operators like Jio and Airtel size every cell against these numbers — a target GoS of <b><mark>2%</mark></b> is the industry norm.</p>
 
 
-        <h5>The Capacity Upgrades Comparison</h5>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Axis</th><th>Cell Splitting</th><th>Cell Sectoring</th><th>Microzone Cell</th></tr>
-            <tr><td><b>Mechanism</b></td><td>Splits a busy cell into 4 micro-cells. Antenna radius cut to R/2.</td><td>Swaps omni antenna for 3 directional sector antennas (120°).</td><td>Spreads low-power zone antennas inside one cell.</td></tr>
-            <tr><td><b>Capacity Gain</b></td><td><b>4× capacity</b> per area (more channels reuse in the same space).</td><td><b>Medium gain</b> (cuts same-frequency signal clash, lets a smaller N work).</td><td><b>High local capacity</b> (no handoffs between zones).</td></tr>
-            <tr><td><b>CCI Impact</b></td><td>No change in $S/I$ ratio.</td><td><b>Cuts CCI</b> by limiting clash from omni to only 2 directions.</td><td><b>Big cut in CCI</b>. Power stays in active zones.</td></tr>
-            <tr><td><b>Key Drawback</b></td><td>High hardware cost. Handover signalling load shoots up.</td><td>Cuts trunking efficiency by splitting channel sets into small groups.</td><td>High fibre cost between zone antennas and the central tower.</td></tr>
-          </table>
+        <h5>1 · Voice Quality</h5>
+        <ul>
+          <li><b>What it measures:</b> how clear the received speech is, scored on the <b><mark>Mean Opinion Score (MOS)</mark></b> scale (1 = bad, 5 = excellent); toll-quality target is MOS &#8805; 4.0.</li>
+          <li><b>Driven by:</b> received <b>SNR / C/I</b>, codec bit-rate (GSM full-rate vs AMR), and bit-error rate after channel coding.</li>
+          <li><b>Digital advantage:</b> error-correcting codes and interleaving fix bit errors, so 2G+ keeps clear voice where 1G analog degraded with distance.</li>
+        </ul>
+
+        <h5>2 · Grade of Service (GoS)</h5>
+        <ul>
+          <li><b>Definition:</b> the probability a call is <b>blocked</b> (no free channel) during the <b><mark>busy hour</mark></b>. Industry target = <b><mark>GoS &#8804; 2% (0.02)</mark></b> — at most 2 of 100 attempts fail at peak.</li>
+          <li><b>Model:</b> computed by the <b><mark>Erlang-B</mark></b> formula, which assumes <em>blocked calls are cleared</em> (the caller hangs up and retries) — the standard cellular trunking model.</li>
+          <li><b>Trade-off:</b> tighter GoS (e.g. 1%) needs more channels for the same traffic; looser GoS (5%) packs more users per channel but frustrates callers.</li>
+        </ul>
+
+        <h5>3 · Coverage</h5>
+        <ul>
+          <li><b>Definition:</b> fraction of the service area where the received signal exceeds the <b>usable threshold</b> (typically <mark>&#8722;100 to &#8722;110 dBm</mark>). Target is usually <b>90&#8211;95%</b> area coverage.</li>
+          <li><b>Edge effect:</b> coverage is specified at the <em>cell edge</em>, the weakest point; a fade margin (6&#8211;10 dB) offsets shadowing and multipath.</li>
+          <li><b>Coverage vs capacity tension:</b> shrinking cells to add capacity (cell splitting) needs more towers to keep the same coverage.</li>
+        </ul>
+
+        <h5>4 · Capacity (Traffic Intensity)</h5>
+        <ul>
+          <li><b>Traffic intensity</b> is measured in <b><mark>Erlangs</mark></b>; <b>1 Erlang = one channel kept busy 100% of the time</b> (e.g. 30 calls/hr &#215; 2 min each = 1 E).</li>
+          <li><b>Offered vs carried:</b> offered traffic A is what users <em>request</em>; carried traffic = A&#215;(1&#8722;GoS) is what actually flows; the gap is blocked traffic.</li>
+          <li><b>Raising capacity:</b> smaller cluster size N, sectoring, and cell splitting all increase simultaneous calls per unit area.</li>
+        </ul>
+
+        <h5>Erlang-B Formula</h5>
+        <p>For <b>C</b> channels offered <b>A</b> Erlangs of traffic, the blocking probability is:</p>
+        <pre><code>           A&#8304;/C!
+B(C, A) = ----------------     (blocked-calls-cleared)
+          &#931;&#8342;&#8320;&#8230;&#8330;  A&#8319;/k!</code></pre>
+        <p>Hand-calculation uses the stable <b>recursion</b> (no large factorials):</p>
+        <pre><code>B(0, A) = 1
+              A &#183; B(n&#8722;1, A)
+B(n, A) = ----------------------
+            n + A &#183; B(n&#8722;1, A)</code></pre>
+
+        <h5>Worked Example — Sizing a 10-channel cell at 2% GoS</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Q</span><div class="body">A cell has <b>C = 10</b> traffic channels. The operator wants <b>GoS = 2%</b>. (i) Find the offered traffic A it can carry. (ii) If each subscriber generates <b>0.025 E</b> in the busy hour, how many subscribers does the cell support? (iii) Find the carried traffic and trunking efficiency.</div></div>
+          <div class="step"><span class="k">1</span><div class="body"><b>Set up:</b> we need A such that B(10, A) = 0.02. Apply the recursion with the trial value <b>A = 5.084 E</b> (read from the Erlang-B table, then verified):</div></div>
+          <div class="step"><span class="k">2</span><div class="body"><b>Run the recursion</b> B(n)=A&#183;B(n&#8722;1)/(n+A&#183;B(n&#8722;1)), A=5.084:<br>
+            B(1)=0.8356 &#183; B(2)=0.6799 &#183; B(3)=0.5354 &#183; B(4)=0.4049 &#183; B(5)=0.2917<br>
+            B(6)=0.1982 &#183; B(7)=0.1258 &#183; B(8)=0.0740 &#183; B(9)=0.0401 &#183; <b>B(10)=0.0200</b></div></div>
+          <div class="step"><span class="k">3</span><div class="body"><b>(i) Offered traffic:</b> the recursion lands on B = 0.0200 = 2% &#10004;, so <mark><b>A &#8776; 5.084 Erlang</b></mark>.</div></div>
+          <div class="step"><span class="k">4</span><div class="body"><b>(ii) Subscribers:</b> users = A / per-user load = 5.084 / 0.025 = <mark><b>&#8776; 203 subscribers</b></mark>.</div></div>
+          <div class="step"><span class="k">5</span><div class="body"><b>(iii) Carried traffic</b> = A&#215;(1&#8722;B) = 5.084 &#215; 0.98 = 4.982 E. <b>Trunking efficiency</b> = 4.982 / 10 = <mark><b>49.8%</b></mark> — note a 10-channel trunk only fills to ~50% at 2% GoS, which is why <em>large trunk groups are far more efficient</em>.</div></div>
         </div>
 
-        <h5>1 · Cell Splitting — Cut the Cell into Smaller Cells</h5>
-        <ul>
-          <li><b>Mechanism:</b> A busy cell of radius <code>R</code> is cut into <b>four smaller cells</b> each of radius <code>R/2</code>. New BTS towers go at the new centres. Transmit power drops by 16× (path-loss with n = 4) to keep the same coverage shape.</li>
-          <li><b>Capacity formula:</b> Cell area scales as <code>R²</code>. Halving the radius gives <code>(R/R/2)² = 4×</code> more cells per km², so <b><mark>capacity ×4</mark></b> more channels per km². Cluster size N stays the same, so S/I is unchanged.</li>
-          <li><b>Worked numerical:</b> A macro cell of <b>R = 10 km</b> with 100 channels has <b>100/314 ≈ 0.32 channels/km²</b> in its 314 km² area. Split to <b>R/2 = 5 km</b> gives 4 cells × 100 channels in the same 314 km² → <b>1.27 channels/km²</b> ⇒ 4× raw capacity.</li>
-          <li><b>Drawback:</b> Costly. Each split needs new tower, backhaul, and land. Handover signalling load jumps roughly 4× because users cross more edges per minute at the same walking or driving speed.</li>
-          <li><b>Used when:</b> A specific cell stays busy (Erlang-B blocking > 2%) and there is space for more sites. The "umbrella cell" trick keeps the original big cell on at low power for fast users (cars on Mumbai-Pune highway), while the new small cells serve slow walkers.</li>
-        </ul>
-
-        <h5>2 · Cell Sectoring — Directional Antennas</h5>
-        <ul>
-          <li><b>Mechanism:</b> The single omni antenna at the cell centre is swapped for <b>3 directional antennas at <mark>120°</mark></b> (or 6 at <mark>60°</mark>). Each one lights up its own pie-slice and reuses only 1/3 (or 1/6) of the cell's channels.</li>
-          <li><b>Interference cut:</b> With 3-sector 120° antennas, the count of strong first-tier interferers drops from <b>6 to 2</b>. With 6-sector, it drops to <b>1</b>. So S/I improves by ~4.7 dB (3-sector) or ~7.8 dB (6-sector) over omni.</li>
-          <li><b>Enables smaller cluster:</b> Better S/I lets the operator drop N from 7 to 4 or 3 and still meet the 18 dB target. This raises reuse density and effective capacity by <b>(7/4) ≈ 1.75×</b> with just an antenna swap.</li>
-          <li><b>Cost:</b> Very low. Only the antenna head is changed. The BTS cabinet, backhaul, and licence stay the same. The cheapest capacity upgrade.</li>
-          <li><b>Drawback:</b> Trunking efficiency drops. Splitting 60 cell-wide channels into 3 sector pools of 20 means each sector's Erlang-B blocking gets worse for the same load (smaller pools waste more channels). Also, crossing sector edges inside the same cell triggers <em>intra-cell sector handovers</em>, adding signalling.</li>
-        </ul>
-
-        <h5>3 · <mark>Microcell zone</mark> — Spread Antennas, One Tower</h5>
-        <ul>
-          <li><b>Mechanism:</b> Many low-power "zone" antennas (Distributed Antenna System, DAS) sit across one big cell. They go on street lights, rooftops, lamp posts. All are <b>fed by one central tower</b> through fibre. Each antenna covers a small zone of ~100 m radius.</li>
-          <li><b>Single-BS design:</b> The user's call jumps from one zone antenna to another as they move, but it stays inside the same BTS. The handover is <em>internal</em> and never reaches the BSC. Result: <b>zero classic handovers</b> across the whole macro cell.</li>
-          <li><b>Capacity gain:</b> Each zone has its own set of channels. This gives small-cell capacity across the original macro footprint, with capacity close to splitting but no extra towers.</li>
-          <li><b>Worked numerical:</b> A 1-km macro cell with 60 channels usually carries 60 calls at once. Swap it for 9 zone antennas in a 3×3 grid (each with 60 channels via spatial reuse inside the cell) and effective capacity goes up to ~9 × 60 = <b>540 channels</b> in the same footprint. Cost is fibre, not towers.</li>
-          <li><b>Drawback:</b> Fibre or coax between zones and central tower is costly to retrofit in old buildings. Best fit: new campuses, airports (Mumbai T2), malls, cricket stadiums where conduit is planned upfront.</li>
-        </ul>
-
-        <h5>Capacity Upgrades Side-by-Side</h5>
+        <h5>Comparison — How the Four Criteria Are Specified</h5>
         <div class="table-wrap">
           <table>
-            <tr><th>Axis</th><th>Cell Splitting</th><th>Cell Sectoring</th><th>Microzone Cell</th></tr>
-            <tr><td><b>Mechanism</b></td><td>Cut cell, R → R/2</td><td>Swap omni for 3×120° directional</td><td>Many low-power zone antennas, one BTS</td></tr>
-            <tr><td><b>Capacity gain</b></td><td><b>4×</b> per km² (area scales as R²)</td><td><b>~1.75×</b> by letting a smaller N work (N: 7→4)</td><td><b>High</b> (zone count × original capacity)</td></tr>
-            <tr><td><b>S/I impact</b></td><td>Same (N unchanged)</td><td>Up by ~4.7 dB (3-sector)</td><td>Big improvement — directional zones</td></tr>
-            <tr><td><b>Capital cost</b></td><td>High — new tower per cell</td><td>Lowest — antenna swap only</td><td>Medium-high — fibre to many zones</td></tr>
-            <tr><td><b>Handover signalling</b></td><td><b>~4× more</b> (more edges)</td><td>Plus intra-cell sector handovers</td><td><b>Near zero</b> (intra-BTS zone switch)</td></tr>
-            <tr><td><b>Trunking efficiency</b></td><td>Slightly worse (smaller pools)</td><td>Worse (3 isolated 1/3-pools per cell)</td><td>Worst (many small zone pools)</td></tr>
-            <tr><td><b>Best for</b></td><td>Long-term urban capacity growth</td><td>Quick cheap upgrade of existing tower</td><td>Indoor venues, campuses, stadiums</td></tr>
+            <tr><th>Criterion</th><th>What it answers</th><th>Metric / unit</th><th>Typical target</th><th>Improved by</th></tr>
+            <tr><td><b>Voice quality</b></td><td>Is the call clear?</td><td>MOS (1&#8211;5), SNR / C/I (dB)</td><td>MOS &#8805; 4.0; C/I &#8805; 18 dB</td><td>Better codec, error coding, larger N</td></tr>
+            <tr><td><b>Grade of Service</b></td><td>Can I get a channel?</td><td>Blocking probability (Erlang-B)</td><td>&#8804; 2% (0.02)</td><td>More channels, trunk pooling</td></tr>
+            <tr><td><b>Coverage</b></td><td>Is there signal here?</td><td>% area above RSS threshold</td><td>90&#8211;95% area</td><td>Fade margin, more / taller towers</td></tr>
+            <tr><td><b>Capacity</b></td><td>How many calls at once?</td><td>Traffic intensity (Erlangs)</td><td>Per cell sizing target</td><td>Smaller N, sectoring, cell splitting</td></tr>
           </table>
         </div>
-
-        <h5>Trunking &amp; Handoff Trade-offs</h5>
-        <ul>
-          <li><b>Cell splitting</b> is the only method with <em>no cap</em> on capacity growth — you can always split again. But cost rises and handover load scales with the number of new edges.</li>
-          <li><b>Cell sectoring</b> is the cheapest single upgrade. It is the textbook first step for an operator running out of capacity on an old tower.</li>
-          <li><b>Microzone</b> avoids the handover storm of splitting by tying every zone to one central tower. But cost shifts from towers to fibre runs and central racks. Worth it only in busy indoor venues like cricket stadiums and metro stations.</li>
-        </ul>
 
         <div class="box warn">
-          <span class="label">Examiner Trap — Over-sectoring</span>
-          A common over-design mistake: cutting a cell into 6 or 12 sectors instead of the standard 3. Yes, it cuts signal clash more (~3 dB extra at 6-sector). But it <em>multiplies handoff load</em> (every user crossing each sector edge inside the same cell triggers an intra-cell handover) and badly hurts trunking efficiency (Erlang-B blocking on a pool of 10 is far worse than on a pool of 60). Stick to <b>3-sector 120°</b> as the sweet spot unless dense urban traffic demands more.
+          <span class="label">Examiner Trap — Erlang vs GoS vs capacity</span>
+          Do not confuse the three. <b>Erlang</b> is the <em>unit</em> of traffic load (channel-hours per hour). <b>GoS</b> is a <em>probability</em> (the 2% blocking target), <b>not</b> a traffic figure. <b>Capacity</b> is the <em>number</em> of simultaneous calls or offered Erlangs the cell holds. A frequent error is writing "GoS = 5 Erlang" — GoS has no unit, it is a fraction. Also remember Erlang-<b>B</b> clears blocked calls; Erlang-<b>C</b> queues them — the exam default for cellular is Erlang-B.
         </div>
 
         <h5>Modern Relevance</h5>
-        <p>2026 networks lean on <b>5G small-cell densification</b>. It is cell splitting in a new form. Pico and femto cells (10–100 m radius) are dropped into malls, stadiums, and on street furniture like lamp posts and traffic signals. Jio True5G uses this across Delhi. Massive-MIMO + <b>3D beamforming</b> in 5G NR works as <em>smart sectoring</em>. It uses 64 to 256 spatially-steered beams instead of 3 fixed sectors, so the antenna pattern follows the user. Modern <b>Distributed Antenna Systems (DAS)</b> turn the microzone idea into a product for indoor and venue rollouts (cricket grounds, airports, metro lines). All three classic methods survive — just in software, beam, and fibre form.</p>
+        <p>In 2026 LTE/5G networks the criteria persist but widen: voice quality is now <b><mark>VoLTE / VoNR</mark></b> MOS over packet links, GoS extends to <b>data drop / scheduling-delay</b> targets, coverage is planned per <b>SINR band</b> for adaptive modulation, and capacity is measured in <b>throughput (Mbps/cell)</b> as well as Erlangs. Jio and Airtel run automated <b>SON (Self-Organizing Network)</b> tools that re-tune power and tilt nightly to hold these four targets across millions of cells.</p>
 
         <h5>Conclusion</h5>
-        <p>Cell splitting, sectoring, and microzone form the cellular capacity toolkit. Splitting buys raw area gain at high capex. Sectoring is the cheapest clash fix. Microzone trades cabling for handover-free indoor capacity. Modern 5G blends all three — small cells (splitting), Massive-MIMO beams (sectoring), and central distributed units (microzone-style DAS). But the basic rule, same-channel reuse at a safe distance, has not changed since the original AMPS design.</p>
+        <p>Voice quality, GoS, coverage, and capacity are the four pillars of cellular system performance. They trade against each other — tighter GoS or wider coverage costs spectrum and towers, while denser reuse raises capacity at the price of interference. The <mark>Erlang-B</mark> model ties offered traffic, channels, and blocking together, letting operators size every cell to the 2% busy-hour target.</p>
 
       </div>
     </div>
 
-    <!-- Q7 — Differentiate (BCA examiner signature) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q6</span><span class="tag year">Differentiate · BCA Signature</span><span class="tag marks">15M (5+5+5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q7(i)(ii)(iii)</span></div>
+      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Unit 2 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(b) · 2×</span></div>
+      <div class="qbody"><b>A total bandwidth of 25 MHz is allocated to a cellular system with N=7 frequency reuse cluster. If each simplex channel is 25 kHz (duplex pair = 50 kHz), and 1 MHz is reserved for control channels:
+        <br>(a) Find the total duplex channels in the system.
+        <br>(b) Compute voice &amp; control channels per cell.
+        <br>(c) If cell radius R = 2 km, find co-channel reuse ratio Q and co-channel cell distance D.
+      </b></div>
+      <div class="ans">
+        <figure class="diagram-fig">
+<svg viewBox="0 0 345 276" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" font-family="inherit" role="img" aria-label="Two tessellating 7-cell frequency-reuse clusters with channel sets A to G. The two A-cells are nearest co-channel neighbours one cluster apart, separated by the co-channel reuse distance D = root(3N) times R, which is about 4.58 R for cluster size N = 7. The cell radius R is the centre-to-vertex distance of one hexagon.">
+  <!-- ===== CLUSTER 1 (left) and CLUSTER 2 (right): non-A cells at low brand opacity ===== -->
+  <g stroke="var(--svg-brand)" stroke-width="1.5" stroke-linejoin="round">
+    <polygon points="157.8,57.0 187.2,74.0 187.2,108.0 157.8,125.0 128.3,108.0 128.3,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,108.0 157.8,125.0 157.8,159.0 128.3,176.0 98.9,159.0 98.9,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,108.0 98.9,125.0 98.9,159.0 69.4,176.0 40.0,159.0 40.0,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="40.0,57.0 69.4,74.0 69.4,108.0 40.0,125.0 10.6,108.0 10.6,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="69.4,6.0 98.9,23.0 98.9,57.0 69.4,74.0 40.0,57.0 40.0,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="128.3,6.0 157.8,23.0 157.8,57.0 128.3,74.0 98.9,57.0 98.9,23.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="305.0,108.0 334.4,125.0 334.4,159.0 305.0,176.0 275.6,159.0 275.6,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,159.0 305.0,176.0 305.0,210.0 275.6,227.0 246.1,210.0 246.1,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,159.0 246.1,176.0 246.1,210.0 216.7,227.0 187.2,210.0 187.2,176.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="187.2,108.0 216.7,125.0 216.7,159.0 187.2,176.0 157.8,159.0 157.8,125.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="216.7,57.0 246.1,74.0 246.1,108.0 216.7,125.0 187.2,108.0 187.2,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+    <polygon points="275.6,57.0 305.0,74.0 305.0,108.0 275.6,125.0 246.1,108.0 246.1,74.0" fill="var(--brand)" fill-opacity="0.12"/>
+  </g>
+  <!-- ===== Two co-channel A-cells highlighted (solid brand) ===== -->
+  <g stroke="var(--brand-deep)" stroke-width="2" stroke-linejoin="round">
+    <polygon points="98.9,57.0 128.3,74.0 128.3,108.0 98.9,125.0 69.4,108.0 69.4,74.0" fill="var(--brand)" fill-opacity="0.60"/>
+    <polygon points="246.1,108.0 275.6,125.0 275.6,159.0 246.1,176.0 216.7,159.0 216.7,125.0" fill="var(--brand)" fill-opacity="0.60"/>
+  </g>
+  <!-- ===== Cluster boundary labels ===== -->
+  <g font-size="9.5" font-weight="700" fill="var(--muted)" text-anchor="middle" letter-spacing="0.5">
+    <text x="84" y="200">CLUSTER 1</text>
+    <text x="261" y="246">CLUSTER 2</text>
+  </g>
+  <!-- ===== Cell labels A-G (both clusters) ===== -->
+  <g text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">
+    <text x="98.9" y="95.6" fill="var(--paper)">A</text>
+    <text x="157.8" y="95.6">B</text>
+    <text x="128.3" y="146.6">C</text>
+    <text x="69.4" y="146.6">D</text>
+    <text x="40.0" y="95.6">E</text>
+    <text x="69.4" y="44.6">F</text>
+    <text x="128.3" y="44.6">G</text>
+    <text x="246.1" y="146.6" fill="var(--paper)">A</text>
+    <text x="305.0" y="146.6">B</text>
+    <text x="275.6" y="197.6">C</text>
+    <text x="216.7" y="197.6">D</text>
+    <text x="187.2" y="146.6">E</text>
+    <text x="216.7" y="95.6">F</text>
+    <text x="275.6" y="95.6">G</text>
+  </g>
+  <!-- ===== Cell radius R: centre to vertex of cluster-1 A-cell ===== -->
+  <line x1="98.9" y1="91.0" x2="128.3" y2="74.0" stroke="var(--gold)" stroke-width="2.2"/>
+  <circle cx="98.9" cy="91.0" r="2.6" fill="var(--gold)"/>
+  <text x="122" y="66.5" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">R</text>
+  <!-- ===== Reuse distance D between the two A-cell centres ===== -->
+  <line x1="98.9" y1="91.0" x2="246.1" y2="142.0" stroke="var(--brand-deep)" stroke-width="2.2" stroke-dasharray="7 4"/>
+  <circle cx="246.1" cy="142.0" r="2.6" fill="var(--brand-deep)"/>
+  <g text-anchor="middle">
+    <rect x="133" y="98" width="80" height="20" rx="4" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="1.2"/>
+    <text x="173" y="112" font-size="12" font-weight="700" fill="var(--ink)">D = &#8730;(3N)&#183;R</text>
+  </g>
+  <!-- ===== Legend block: each token its own positioned <text> so nothing overflows 345px ===== -->
+  <line x1="8" y1="232" x2="337" y2="232" stroke="var(--rule)" stroke-width="1"/>
+  <g font-size="10.5">
+    <text x="8" y="248" fill="var(--muted)">Cluster size <tspan font-weight="700" fill="var(--ink)">N = 7</tspan></text>
+    <text x="120" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">R</tspan> = cell radius</text>
+    <text x="216" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">D</tspan> = reuse distance</text>
+    <text x="8" y="266" fill="var(--muted)">Reuse ratio <tspan font-weight="700" fill="var(--ink)">Q = D/R = &#8730;21 &#8776; 4.58</tspan></text>
+    <text x="195" y="266" fill="var(--muted)">channel-set <tspan font-weight="700" fill="var(--ink)">A</tspan> repeats one cluster away</text>
+  </g>
+</svg>
+          <figcaption><b>Fig Q3.1</b> · N=7 frequency-reuse cluster — distinct channel sets A–G; co-channel cells (A, A') separated by reuse distance D</figcaption>
+        </figure>
+
+        <h5>Introduction</h5>
+        <p><mark>Frequency reuse</mark> is the heart of cellular capacity. The same set of radio channels is used again in cells that are kept a safe distance apart. The pattern is set by the <b><mark>cluster size N</mark></b>. Hex cell shape limits N to values that fit <code>N = i² + ij + j²</code> for whole numbers i, j. Allowed sizes: <b>N ∈ {1, 3, 4, 7, 9, 12, 13, 19, 21 …}</b>. Smaller N packs more reuse per area (more capacity), but co-channel cells sit closer and the <mark>S/I ratio</mark> drops.</p>
+
+        <h5>The Co-Channel Distance Formula — Quick Derivation</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Step</span><div class="body">In a hex cell of radius <code>R</code>, two neighbour cells sit <code>R√3</code> apart centre-to-centre. Move <code>i</code> cells one way, then <code>j</code> cells at 60°. You land on the nearest <mark>co-channel</mark> cell, at distance <mark>D = R√(3N)</mark>. So the <b>co-channel reuse ratio</b> is <code>Q = D / R = √(3N)</code>. Bigger N gives bigger Q, better S/I, but less capacity.</div></div>
+        </div>
+
+
+        <h5>(a) Total Duplex Channels</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Step 1</span><div class="body">Find duplex channel width. Each call needs one uplink + one downlink. Duplex size = <code>2 × 25 kHz = 50 kHz = 0.05 MHz</code>.</div></div>
+          <div class="step"><span class="k">Step 2</span><div class="body">Find total duplex channels: <code>Total = 25 MHz / 0.05 MHz = 500 duplex channels</code>.</div></div>
+        </div>
+
+        <h5>(b) Voice &amp; Control Channels per Cell</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Step 3</span><div class="body">Find system control channels from the reserved 1 MHz: <code>1 MHz / 0.05 MHz = 20 control channels</code>.</div></div>
+          <div class="step"><span class="k">Step 4</span><div class="body">Find system voice channels: <code>500 total − 20 control = 480 voice channels</code>.</div></div>
+          <div class="step"><span class="k">Step 5</span><div class="body">Find <mark>channels per cell</mark> (cluster size N = 7):
+            <br>• Voice channels per cell = <code>480 / 7 ≈ 68.57 → 68 per cell</code> (round down).
+            <br>• Control channels per cell = <code>20 / 7 ≈ 2.86 → 3 per cell</code> (round up).
+          </div></div>
+        </div>
+
+        <h5>(c) Reuse Ratio Q &amp; Co-channel Distance D</h5>
+        <div class="steps">
+          <div class="step"><span class="k">Step 6</span><div class="body">Find reuse ratio Q:
+            <code>Q = sqrt(3 N) = sqrt(21) ≈ 4.58</code>.
+          </div></div>
+          <div class="step"><span class="k">Step 7</span><div class="body">Find co-channel distance D (cell radius R = 2 km):
+            <code>D = Q × R = 4.58 × 2 km = 9.16 km</code>.
+          </div></div>
+        </div>
+        <p><b>Boxed answer:</b> (a) <b>500 duplex channels</b>, (b) <b>68 voice + 3 control channels per cell</b>, (c) <b>Q ≈ 4.58, D ≈ 9.16 km</b>.</p>
+
+        <h5>Sanity Check — Second Scenario (N = 4 Cluster, Smaller Spectrum)</h5>
+        <p>To show the formulas scale, redo with <code>B = 1.5 MHz</code> total, <code>N = 4</code> cluster, simplex channel <code>10 kHz</code> (duplex 20 kHz), control = 60 kHz, R = 1.5 km.</p>
+        <div class="steps">
+          <div class="step"><span class="k">Step A</span><div class="body">Total duplex channels = 1500 kHz / 20 kHz = <b>75 channels</b>. Control = 60/20 = 3. Voice = 75 − 3 = 72.</div></div>
+          <div class="step"><span class="k">Step B</span><div class="body">Voice per cell = 72 / 4 = <b>18 channels</b>. Control per cell = ⌈3/4⌉ = <b>1 channel</b>.</div></div>
+          <div class="step"><span class="k">Step C</span><div class="body">Q = √(3 × 4) = √12 ≈ <b>3.46</b>; D = 3.46 × 1.5 = <b>≈ 5.2 km</b>. Smaller N gives tighter Q and shorter co-channel distance.</div></div>
+        </div>
+
+        <h5>Comparing N = 4 vs N = 7 — Capacity / S/I Trade-off</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>N = 4</th><th>N = 7</th><th>Interpretation</th></tr>
+            <tr><td><b>Voice channels per cell (480 voice ÷ N)</b></td><td>480 / 4 = 120</td><td>480 / 7 ≈ 68</td><td>Smaller N gives ~1.75× more voice channels per cell, so more capacity per km². N = 7 figure matches Part (b) above</td></tr>
+            <tr><td><b>Co-channel reuse ratio Q = √(3N)</b></td><td>3.46</td><td>4.58</td><td>Bigger Q (N = 7) keeps co-channel cells farther apart</td></tr>
+            <tr><td><b>S/I (6 first-tier interferers, n = 4)</b></td><td>≈ 13.8 dB</td><td>≈ 18.7 dB</td><td>S/I = (1/6)·Q<sup>n</sup>. N = 7 just meets the 18 dB GSM threshold</td></tr>
+            <tr><td><b>Verdict</b></td><td>More capacity but only just meets S/I</td><td>Standard balance for analog and 2G GSM</td><td>Pick N to trade capacity against link quality</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — D/R factor &amp; rounding</span>
+          The most common slip is writing <code>D = √(3N)</code> without the <em>× R</em> part. Q is just a ratio (D/R), but the actual co-channel distance <b>D = Q × R</b> is in km. Drop the multiplication and you lose 1.5–2 marks. Also: when channels per cell are not whole numbers, <b>voice channels round down</b> (no half-channel for voice) and <b>control channels round up</b> (every cell must have at least one signalling channel). And remember: <em>one duplex channel = 2 simplex carriers</em>. Half the students forget the ×2.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p><b>N = 7</b> reuse was the 2G GSM standard and still shows up on cell-plan slides. <mark>4G</mark> LTE and 5G NR moved to <b>universal reuse (N = 1)</b> with <em>Fractional Frequency Reuse (FFR)</em> and <em>Soft Frequency Reuse (SFR)</em>. Phones in the middle of a cell get the full band. Phones at the edge get smaller sub-bands to cut <mark>same-frequency signal clash</mark>. Hex cluster geometry still lives inside RF planning tools (Atoll, ICS Telecom, RANplan) and is the base idea behind <b>Coordinated Multi-Point (CoMP)</b> sending and 5G beam-based clash control used by Jio True5G in Mumbai and Delhi.</p>
+
+        <h5>Conclusion</h5>
+        <p>Frequency reuse stays the biggest capacity booster in any radio system. Cut N in half, roughly double the channels per cell. But you also cut Q, shorten the co-channel distance, and weaken S/I. Operators balance these against user density, tower height, and modulation strength. Modern networks push reuse to the limit with universal reuse and smart clash control, but the basics shown above (<code>N = i² + ij + j²</code>, <code>D = R√(3N)</code>) still set the cell plan.</p>
+
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Unit 1 + 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q3(a) · 2×</span></div>
+      <div class="qbody"><b>Explain the complete GSM call-setup flow for a mobile-originated call. Name every network element involved (MS, BTS, BSC, MSC, HLR, VLR, AuC) and trace the signalling step by step from dialling to a connected voice path.</b></div>
+      <div class="ans">
+        <figure class="diagram-fig">
+          <img src="wc-images/08-gsm-call-flow.png" alt="GSM mobile-originated call flow sequence diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
+          <figcaption><b>Fig 8.1</b> &middot; Mobile-originated GSM call sequence &mdash; signalling sequence flow from Mobile Station (MS) up through BTS, BSC, MSC and VLR/HLR to PSTN.</figcaption>
+        </figure>
+
+        <h5>Introduction</h5>
+        <p>A <mark>GSM</mark> call is not a single wire from caller to callee. It is a chain of <mark>signalling messages</mark> across three subsystems — the <b>Mobile Station (MS)</b>, the <b>Base Station Subsystem (BSS)</b> = BTS + BSC, and the <b>Network Switching Subsystem (NSS)</b> = MSC + HLR + VLR + AuC. Setting up a <b>mobile-originated call (MOC)</b> involves channel request, authentication against the security triplet, ciphering, and finally traffic-channel assignment. The same registries (<mark>HLR/VLR</mark>) that track a roaming user are what make this harder than a fixed PSTN call.</p>
+
+
+        <h5>Step-by-Step Call Setup (Mobile-Originated)</h5>
+        <div class="steps">
+          <div class="step"><span class="k">1</span><div class="body"><b>Channel request:</b> the user dials and presses send. The MS sends a <mark>CHANNEL REQUEST</mark> on the <b>RACH</b> (random-access channel, a slotted-ALOHA uplink). The network replies on the <b>AGCH</b> assigning an <b>SDCCH</b> (dedicated signalling channel).</div></div>
+          <div class="step"><span class="k">2</span><div class="body"><b>Service request &amp; identification:</b> on the SDCCH the MS sends a CM Service Request carrying its <mark>TMSI/IMSI</mark>. The BTS relays it via the BSC to the <b>MSC</b>.</div></div>
+          <div class="step"><span class="k">3</span><div class="body"><b>Authentication:</b> the MSC asks the <mark>VLR</mark>; if the subscriber's triplet is not cached, the VLR fetches it from the <mark>HLR/AuC</mark>. The AuC has generated the triplet <code>(RAND, SRES, Kc)</code> using the A3/A8 algorithms and the secret key Ki. The MSC sends <code>RAND</code> to the MS; the SIM computes <code>SRES'</code> and returns it. If <code>SRES' = SRES</code>, the user is genuine.</div></div>
+          <div class="step"><span class="k">4</span><div class="body"><b>Ciphering:</b> both sides switch on A5 encryption using the cipher key <code>Kc</code>. From here the air interface is protected.</div></div>
+          <div class="step"><span class="k">5</span><div class="body"><b>TCH assignment:</b> the MSC orders the BSC to assign a <mark>traffic channel (TCH)</mark>. The SDCCH is released and the call moves to the TCH on an allotted time slot of a 200 kHz carrier.</div></div>
+          <div class="step"><span class="k">6</span><div class="body"><b>Routing onward:</b> the MSC routes the dialled number — into the <b>PSTN</b> if it is a landline, or to the <b>destination MSC</b> if it is another mobile (which then pages the called handset). The called side answers and a two-way voice path is established.</div></div>
+          <div class="step"><span class="k">7</span><div class="body"><b>Conversation &amp; release:</b> during the call the <b>SACCH</b> carries power-control and timing-advance orders; handover commands (if the user moves) steal TCH bursts via the <b>FACCH</b>. On hang-up a release message frees the TCH.</div></div>
+        </div>
+
+        <h5>Role of Each Network Element</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Element</th><th>Subsystem</th><th>Role in the call</th></tr>
+            <tr><td><b>MS (handset + SIM)</b></td><td>MS</td><td>Sends channel request; SIM runs A3/A8 to answer the authentication challenge.</td></tr>
+            <tr><td><b>BTS</b></td><td>BSS</td><td>Radio transceiver over the Um air interface; relays bursts to/from the MS.</td></tr>
+            <tr><td><b>BSC</b></td><td>BSS</td><td>Controls many BTSs; allocates radio channels, manages handover within its area.</td></tr>
+            <tr><td><b>MSC</b></td><td>NSS</td><td>The switching brain; runs authentication, ciphering, TCH assignment and call routing.</td></tr>
+            <tr><td><b>VLR</b></td><td>NSS</td><td>Local cache of subscribers currently in the MSC area; holds the working triplet.</td></tr>
+            <tr><td><b>HLR</b></td><td>NSS</td><td>Permanent home database; knows the user's profile and current VLR location.</td></tr>
+            <tr><td><b>AuC</b></td><td>NSS</td><td>Generates the security triplet (RAND, SRES, Kc) from the secret key Ki.</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — name the channels and the triplet</span>
+          A bare "MS talks to BTS talks to MSC" loses half the marks. The marks sit in the <em>named</em> steps: <b>RACH → AGCH → SDCCH</b> for setup, the <b>(RAND, SRES, Kc)</b> triplet for authentication, A5 for ciphering, and the <b>SDCCH → TCH</b> switch. Always state that the VLR caches the triplet so the HLR/AuC is not queried on every call.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>The same registry idea survives in 4G/5G: the <mark>HLR/AuC</mark> became the <b>HSS/UDM</b>, the MSC's packet role became the <b>MME/AMF</b>, and authentication moved to the stronger <b>AKA</b> (Authentication and Key Agreement) with mutual authentication, fixing GSM's flaw where the network never proved itself to the phone (which enabled fake-tower IMSI-catcher attacks).</p>
+
+        <h5>Conclusion</h5>
+        <p>A GSM call setup is a disciplined hand-off of control between MS, BSS and NSS: request a signalling channel, prove identity with the AuC triplet, switch on ciphering, then assign a traffic channel and route the call. Naming every element and every channel in order is what banks the full 15 marks.</p>
+
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q9</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M (7.5+7.5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q6(a) · 2×</span></div>
+      <div class="qbody"><b>(a) Describe the architecture of an ISDN (Integrated Services Digital Network). Name the functional groupings (TE1, TE2, TA, NT1, NT2) and the reference points (R, S, T, U), and explain the B-channel / D-channel structure with BRI and PRI access. [7.5M]
+        <br>(b) Differentiate between ISDN and AIN (Advanced Intelligent Network) using a comparison matrix. [7.5M]</b></div>
+      <div class="ans">
+        <figure class="diagram-fig">
+          <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:620px;margin:6px auto;font-size:11px;">
+            <!-- Equipment row -->
+            <div style="display:flex;align-items:stretch;flex-wrap:nowrap;gap:0;overflow-x:auto;">
+              <div style="flex:1;min-width:74px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);">TE2</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">non-ISDN<br>(PC, analog phone)</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">R</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);">TA</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">Terminal<br>Adapter</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">S</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--brand-deep);">NT2</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">PBX /<br>LAN router</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">T</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;color:var(--brand-deep);">NT1</div>
+                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">line<br>termination</div>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
+                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">U</div>
+                <div style="color:var(--brand);font-weight:700;">→</div>
+              </div>
+              <div style="flex:1;min-width:74px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:7px 5px;text-align:center;">
+                <div style="font-weight:700;">LE</div>
+                <div style="font-size:9px;color:var(--brand-soft);line-height:1.2;margin-top:2px;">Local Exchange<br>(ISDN switch)</div>
+              </div>
+            </div>
+            <!-- TE1 direct branch note -->
+            <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;">
+              <div style="background:#fff;border:1.5px dashed var(--ink);border-radius:4px;padding:5px 9px;text-align:center;">
+                <div style="font-weight:700;color:var(--ink);font-size:11px;">TE1</div>
+                <div style="font-size:9px;color:var(--muted);">native ISDN phone</div>
+              </div>
+              <div style="font-size:10px;color:var(--ink-soft);">joins directly at the <b>S</b> reference point (no TA needed)</div>
+            </div>
+            <!-- Channel make-up strip -->
+            <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
+              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · voice/data payload</div>
+              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · 2nd bearer</div>
+              <div style="background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>D</b> · 16 kbps · signalling (out-of-band)</div>
+            </div>
+          </div>
+          <figcaption><b>Fig 11.1</b> · ISDN functional groupings (TE1/TE2/TA/NT2/NT1) and reference points (R · S · T · U) from terminal to local exchange; one BRI 2B+D access shown below</figcaption>
+        </figure>
+
+        <h5>(a) ISDN Architecture</h5>
+        <p><mark>ISDN</mark> (Integrated Services Digital Network) is a fully <mark>digital end-to-end</mark> network that carries voice, data and signalling over the ordinary local-loop copper pair. It replaces the analog local loop with a digital pipe split into <mark>bearer (B) channels</mark> for user payload and a separate <mark>delta (D) channel</mark> for out-of-band call control. The architecture is defined by <b>functional groupings</b> (the equipment roles) joined at standardised <b>reference points</b>.</p>
+
+
+        <h5>Functional Groupings (Equipment Roles)</h5>
+        <ul>
+          <li><b><mark>TE1</mark> (Terminal Equipment type 1)</b>: a native ISDN device (ISDN telephone, ISDN fax) with a built-in S-interface. Connects directly at the <b>S</b> point.</li>
+          <li><b><mark>TE2</mark> (Terminal Equipment type 2)</b>: a non-ISDN device (analog phone, ordinary PC with RS-232/V.35). Cannot speak ISDN, so it needs a converter.</li>
+          <li><b><mark>TA</mark> (Terminal Adapter)</b>: converts a TE2's non-ISDN signalling into ISDN format, sitting between the <b>R</b> and <b>S</b> points.</li>
+          <li><b><mark>NT2</mark> (Network Termination 2)</b>: customer-side smart node — a <mark>PBX</mark>, LAN router or multiplexer doing OSI layer-2/3 switching and concentration. Often omitted in a home BRI.</li>
+          <li><b><mark>NT1</mark> (Network Termination 1)</b>: terminates the physical 2-wire <b>U</b> loop from the exchange and presents the 4-wire <b>S/T</b> bus to the premises. Handles layer-1 line coding and power feeding.</li>
+        </ul>
+
+        <h5>Reference Points (Interfaces)</h5>
+        <ul>
+          <li><b><mark>R</mark></b>: between TE2 and TA (non-ISDN to adapter).</li>
+          <li><b><mark>S</mark></b>: between terminals (TE1/TA) and NT2 — the user "bus" that can carry up to 8 devices.</li>
+          <li><b><mark>T</mark></b>: between NT2 and NT1 (S and T are electrically identical, so often called the <b>S/T</b> bus when NT2 is absent).</li>
+          <li><b><mark>U</mark></b>: the 2-wire digital local loop between NT1 and the <mark>Local Exchange (LE)</mark>.</li>
+        </ul>
+
+        <h5>Channel Structure &amp; Access Types</h5>
+        <ul>
+          <li><b><mark>B-channel (Bearer)</mark></b>: a clear <mark>64 kbps</mark> circuit-switched pipe for user payload — digitised voice or data.</li>
+          <li><b><mark>D-channel (Delta)</mark></b>: out-of-band signalling (call setup/teardown via Q.931) — 16 kbps in BRI, 64 kbps in PRI. When idle it can also carry low-rate X.25 packet data.</li>
+          <li><b><mark>BRI</mark> (Basic Rate Interface)</b>: <mark>2B + D</mark> = 2×64 + 16 = 144 kbps payload. For home / small office.</li>
+          <li><b><mark>PRI</mark> (Primary Rate Interface)</b>: <mark>30B + D</mark> (Europe E1) or 23B + D (US T1) for a business PBX trunk.</li>
+        </ul>
+        <figure class="diagram-fig">
+          <img src="wc-images/11-isdn-bri-pri.png" alt="ISDN channel structures: BRI (2B+D) vs PRI (30B+D) block diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
+          <figcaption><b>Fig 11.2</b> &middot; Channel Structure of ISDN Access &mdash; Basic Rate Interface (2B+D) vs Primary Rate Interface (30B+D).</figcaption>
+        </figure>
+
+        <h5>Worked Example — line rates</h5>
+        <div class="steps">
+          <div class="step"><span class="k">BRI</span><div class="body"><b>Payload</b> = 2 B-channels + 1 D-channel = <code>2×64 + 16 = 144 kbps</code>. The physical <b>line rate</b> adds 48 kbps of framing/synchronisation → <code>144 + 48 = 192 kbps</code> on the U loop.</div></div>
+          <div class="step"><span class="k">PRI (E1)</span><div class="body">European PRI rides an E1 frame of 32 timeslots × 64 kbps = <code>2.048 Mbps</code>. Slot 0 is framing, slot 16 is the 64 kbps D-channel, leaving <code>30 × 64 = 1920 kbps</code> of bearer = <b>30B + D</b>.</div></div>
+          <div class="step"><span class="k">PRI (T1)</span><div class="body">US PRI rides a T1 frame of 24 timeslots × 64 = <code>1.544 Mbps</code>; one slot is the D-channel, leaving <code>23 × 64 = 1472 kbps</code> bearer = <b>23B + D</b>.</div></div>
+        </div>
+        <p><b>Boxed answer:</b> <mark><b>BRI = 144 kbps payload (192 kbps line); E1 PRI = 30B+D on 2.048 Mbps; T1 PRI = 23B+D on 1.544 Mbps.</b></mark></p>
+
+        <h5>(b) ISDN vs AIN — Comparison Matrix</h5>
+        <p><mark>AIN</mark> (Advanced Intelligent Network) is <em>not</em> a replacement for ISDN — it is a control-plane overlay. ISDN defines the <b>access pipe</b> to the subscriber; AIN defines <b>where the call-routing intelligence lives</b> inside the network. The two answer different questions, so the contrast is best shown axis by axis.</p>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Axis</th><th>ISDN</th><th>AIN</th></tr>
+            <tr><td><b>Full form / nature</b></td><td>Integrated Services Digital Network — a digital <em>access technology</em> for the local loop.</td><td>Advanced Intelligent Network — a <em>service-control architecture</em> layered on the SS7 signalling network.</td></tr>
+            <tr><td><b>Primary goal</b></td><td>Carry voice + data digitally end-to-end over one subscriber line (B + D channels).</td><td>Decouple call-routing logic from physical switches so new services deploy fast.</td></tr>
+            <tr><td><b>Plane of operation</b></td><td>Mostly <mark>user / bearer plane</mark> — the actual 64 kbps payload pipe, plus D-channel signalling to its own exchange.</td><td>Pure <mark>control plane</mark> — no user payload; it only answers "how should this call be routed?".</td></tr>
+            <tr><td><b>Key network elements</b></td><td>TE1/TE2, TA, NT1/NT2, LE (Local Exchange).</td><td><mark>SSP</mark> (Service Switching Point), <mark>SCP</mark> (Service Control Point), <mark>STP</mark> (Signal Transfer Point), plus SS7 links.</td></tr>
+            <tr><td><b>Where intelligence sits</b></td><td>Distributed in each local exchange's software.</td><td>Centralised in SCP databases queried via SS7 — switches stay "dumb".</td></tr>
+            <tr><td><b>Service deployment</b></td><td>New service often needs every switch re-programmed.</td><td>Add a row in the SCP and the service is live network-wide instantly.</td></tr>
+            <tr><td><b>Typical services</b></td><td>Digital voice, BRI/PRI data, videoconferencing, dial-up to ISP.</td><td>Toll-free 1-800, number portability, call forwarding, prepaid/calling-card, VPN dialling.</td></tr>
+            <tr><td><b>Relationship</b></td><td>The access leg that delivers a call to the network.</td><td>The brain that decides what to do with that call once it arrives.</td></tr>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <span class="label">Examiner Traps</span>
+          (1) S and T reference points are electrically the same bus — don't lose a mark calling them two different physical interfaces; NT2 is what separates them. (2) The D-channel is <em>16 kbps in BRI but 64 kbps in PRI</em> — students often write 16 kbps for both. (3) Don't say "AIN replaces ISDN" — ISDN is access, AIN is control; they coexist. (4) In AIN the switch is the <b>SSP</b>, the database is the <b>SCP</b>, and the router of SS7 messages is the <b>STP</b> — mixing these up loses the matrix marks.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>Legacy ISDN local loops have largely been retired (BSNL and most European telcos shut down BRI/PRI by the mid-2020s in favour of <mark>SIP trunking</mark> and <mark>VoLTE</mark>), but the <b>2B+D / 64 kbps DS0</b> granularity it standardised still underlies E1/T1 carrier circuits. The AIN concept of moving service logic out of switches into a central database is the direct ancestor of today's <mark>IMS</mark> (IP Multimedia Subsystem) and <mark>SDN/NFV</mark> control planes used by Jio and Airtel, where a centralised controller programs forwarding behaviour on demand.</p>
+
+        <h5>Conclusion</h5>
+        <p>ISDN answers <em>how the subscriber connects digitally</em> (B + D channels across the R/S/T/U reference points), while AIN answers <em>where the routing intelligence lives</em> (centralised SCP over SS7). One is the access pipe, the other the brain — together they made services like toll-free and number-portability possible long before the all-IP era.</p>
+
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Differentiate · BCA Signature</span><span class="tag marks">15M (5+5+5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q7(i)(ii)(iii)</span></div>
       <div class="qbody"><b>Differentiate between the following pairs (5 marks each):
         <br>(i) Analog cellular (1G) vs Digital cellular (2G/3G).
         <br>(ii) FDMA vs TDMA.
@@ -3195,9 +3522,8 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q6b — FHSS / Spread Spectrum (verbatim BCA25 Q6a) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q7</span><span class="tag year">Unit 3 Highlight</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA · May-2025 · Q6</span><span class="tag marks">15M (10+5)</span></div>
+      <div class="qhead"><span class="qnum">Q11</span><span class="tag year">Unit 3 Highlight</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA · May-2025 · Q6</span><span class="tag marks">15M (10+5)</span></div>
       <div class="qbody"><b>(a) Explain the need for spreading and the types of spread spectrum. Describe Frequency Hopping Spread Spectrum (FHSS) in detail with a neat diagram. <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[10M]</span>
         <br>(b) Differentiate between DSSS and FHSS. <span style="font-family:'JetBrains Mono',monospace;font-size:10.5px;color:var(--gold);letter-spacing:.1em;">[5M]</span></b></div>
       <div class="ans">
@@ -3343,377 +3669,6 @@ footer.end .meta{ font-family:"JetBrains Mono",monospace; font-size:10px; letter
       </div>
     </div>
 
-    <!-- Q5b — Performance criteria of a cellular system (joint #1 frequency) -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q8</span><span class="tag year">Unit 2 · Joint #1 Freq</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q2(b) · 3×</span></div>
-      <div class="qbody"><b>Discuss the performance criteria used to evaluate a cellular mobile system. Explain voice quality, grade of service (GoS), coverage and capacity, with the Erlang-B model and a worked blocking-probability example.</b></div>
-      <div class="ans">
-        <figure class="diagram-fig">
-<svg viewBox="0 0 520 200" role="img" aria-label="Four performance criteria of a cellular system: voice quality, grade of service, coverage, and capacity" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" xmlns="http://www.w3.org/2000/svg" font-family="Inter,Segoe UI,system-ui,sans-serif">
-  <!-- central node -->
-  <rect x="195" y="78" width="130" height="44" rx="8" fill="var(--brand)" stroke="var(--ink)" stroke-width="1.6"/>
-  <text x="260" y="98" text-anchor="middle" font-size="12.5" font-weight="700" fill="var(--paper)">CELLULAR</text>
-  <text x="260" y="114" text-anchor="middle" font-size="10.5" fill="var(--paper)">performance criteria</text>
-
-  <!-- connecting lines (CSS-style bordered links via SVG strokes, no box-drawing chars) -->
-  <line x1="195" y1="88" x2="120" y2="48" stroke="var(--brand)" stroke-width="2"/>
-  <line x1="195" y1="112" x2="120" y2="152" stroke="var(--brand)" stroke-width="2"/>
-  <line x1="325" y1="88" x2="400" y2="48" stroke="var(--brand)" stroke-width="2"/>
-  <line x1="325" y1="112" x2="400" y2="152" stroke="var(--brand)" stroke-width="2"/>
-
-  <!-- 1 Voice quality (top-left) -->
-  <rect x="20" y="28" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
-  <text x="100" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Voice Quality</text>
-  <text x="100" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">MOS / SNR &#183; clarity</text>
-
-  <!-- 2 Grade of Service (bottom-left) -->
-  <rect x="20" y="132" width="160" height="40" rx="6" fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="1.4"/>
-  <text x="100" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Grade of Service</text>
-  <text x="100" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">blocking P &#8804; 2%</text>
-
-  <!-- 3 Coverage (top-right) -->
-  <rect x="340" y="28" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
-  <text x="420" y="46" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Coverage</text>
-  <text x="420" y="60" text-anchor="middle" font-size="9" fill="var(--muted)">90&#8211;95% of area</text>
-
-  <!-- 4 Capacity (bottom-right) -->
-  <rect x="340" y="132" width="160" height="40" rx="6" fill="var(--gold-soft)" stroke="var(--gold)" stroke-width="1.4"/>
-  <text x="420" y="150" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--ink)">Capacity</text>
-  <text x="420" y="164" text-anchor="middle" font-size="9" fill="var(--muted)">Erlangs carried</text>
-</svg>
-          <figcaption><b>Fig Q5b.1</b> · The four performance criteria of a cellular system — <mark>voice quality</mark> (clarity, MOS/SNR), <mark>grade of service</mark> (busy-hour blocking, target &#8804;2%), <mark>coverage</mark> (fraction of area above the usable signal threshold), and <mark>capacity</mark> (offered traffic carried, in Erlangs)</figcaption>
-        </figure>
-
-        <h5>Introduction</h5>
-        <p>A cellular system is judged on <em>how well it serves users at the busy hour</em>, not just on raw coverage. Engineers track four core <b><mark>performance criteria</mark></b> — <b><mark>voice quality</mark></b>, <b><mark>grade of service (GoS)</mark></b>, <b><mark>coverage</mark></b>, and <b><mark>capacity</mark></b>. The first asks <em>"does the call sound clear?"</em>, the next <em>"can I get a channel when I dial?"</em>, the third <em>"is there signal where I stand?"</em>, and the last <em>"how many users can the cell hold at once?"</em>. The blocking criterion is computed from offered traffic in <b><mark>Erlangs</mark></b> through the <b><mark>Erlang-B</mark></b> formula. Operators like Jio and Airtel size every cell against these numbers — a target GoS of <b><mark>2%</mark></b> is the industry norm.</p>
-
-
-        <h5>1 · Voice Quality</h5>
-        <ul>
-          <li><b>What it measures:</b> how clear the received speech is, scored on the <b><mark>Mean Opinion Score (MOS)</mark></b> scale (1 = bad, 5 = excellent); toll-quality target is MOS &#8805; 4.0.</li>
-          <li><b>Driven by:</b> received <b>SNR / C/I</b>, codec bit-rate (GSM full-rate vs AMR), and bit-error rate after channel coding.</li>
-          <li><b>Digital advantage:</b> error-correcting codes and interleaving fix bit errors, so 2G+ keeps clear voice where 1G analog degraded with distance.</li>
-        </ul>
-
-        <h5>2 · Grade of Service (GoS)</h5>
-        <ul>
-          <li><b>Definition:</b> the probability a call is <b>blocked</b> (no free channel) during the <b><mark>busy hour</mark></b>. Industry target = <b><mark>GoS &#8804; 2% (0.02)</mark></b> — at most 2 of 100 attempts fail at peak.</li>
-          <li><b>Model:</b> computed by the <b><mark>Erlang-B</mark></b> formula, which assumes <em>blocked calls are cleared</em> (the caller hangs up and retries) — the standard cellular trunking model.</li>
-          <li><b>Trade-off:</b> tighter GoS (e.g. 1%) needs more channels for the same traffic; looser GoS (5%) packs more users per channel but frustrates callers.</li>
-        </ul>
-
-        <h5>3 · Coverage</h5>
-        <ul>
-          <li><b>Definition:</b> fraction of the service area where the received signal exceeds the <b>usable threshold</b> (typically <mark>&#8722;100 to &#8722;110 dBm</mark>). Target is usually <b>90&#8211;95%</b> area coverage.</li>
-          <li><b>Edge effect:</b> coverage is specified at the <em>cell edge</em>, the weakest point; a fade margin (6&#8211;10 dB) offsets shadowing and multipath.</li>
-          <li><b>Coverage vs capacity tension:</b> shrinking cells to add capacity (cell splitting) needs more towers to keep the same coverage.</li>
-        </ul>
-
-        <h5>4 · Capacity (Traffic Intensity)</h5>
-        <ul>
-          <li><b>Traffic intensity</b> is measured in <b><mark>Erlangs</mark></b>; <b>1 Erlang = one channel kept busy 100% of the time</b> (e.g. 30 calls/hr &#215; 2 min each = 1 E).</li>
-          <li><b>Offered vs carried:</b> offered traffic A is what users <em>request</em>; carried traffic = A&#215;(1&#8722;GoS) is what actually flows; the gap is blocked traffic.</li>
-          <li><b>Raising capacity:</b> smaller cluster size N, sectoring, and cell splitting all increase simultaneous calls per unit area.</li>
-        </ul>
-
-        <h5>Erlang-B Formula</h5>
-        <p>For <b>C</b> channels offered <b>A</b> Erlangs of traffic, the blocking probability is:</p>
-        <pre><code>           A&#8304;/C!
-B(C, A) = ----------------     (blocked-calls-cleared)
-          &#931;&#8342;&#8320;&#8230;&#8330;  A&#8319;/k!</code></pre>
-        <p>Hand-calculation uses the stable <b>recursion</b> (no large factorials):</p>
-        <pre><code>B(0, A) = 1
-              A &#183; B(n&#8722;1, A)
-B(n, A) = ----------------------
-            n + A &#183; B(n&#8722;1, A)</code></pre>
-
-        <h5>Worked Example — Sizing a 10-channel cell at 2% GoS</h5>
-        <div class="steps">
-          <div class="step"><span class="k">Q</span><div class="body">A cell has <b>C = 10</b> traffic channels. The operator wants <b>GoS = 2%</b>. (i) Find the offered traffic A it can carry. (ii) If each subscriber generates <b>0.025 E</b> in the busy hour, how many subscribers does the cell support? (iii) Find the carried traffic and trunking efficiency.</div></div>
-          <div class="step"><span class="k">1</span><div class="body"><b>Set up:</b> we need A such that B(10, A) = 0.02. Apply the recursion with the trial value <b>A = 5.084 E</b> (read from the Erlang-B table, then verified):</div></div>
-          <div class="step"><span class="k">2</span><div class="body"><b>Run the recursion</b> B(n)=A&#183;B(n&#8722;1)/(n+A&#183;B(n&#8722;1)), A=5.084:<br>
-            B(1)=0.8356 &#183; B(2)=0.6799 &#183; B(3)=0.5354 &#183; B(4)=0.4049 &#183; B(5)=0.2917<br>
-            B(6)=0.1982 &#183; B(7)=0.1258 &#183; B(8)=0.0740 &#183; B(9)=0.0401 &#183; <b>B(10)=0.0200</b></div></div>
-          <div class="step"><span class="k">3</span><div class="body"><b>(i) Offered traffic:</b> the recursion lands on B = 0.0200 = 2% &#10004;, so <mark><b>A &#8776; 5.084 Erlang</b></mark>.</div></div>
-          <div class="step"><span class="k">4</span><div class="body"><b>(ii) Subscribers:</b> users = A / per-user load = 5.084 / 0.025 = <mark><b>&#8776; 203 subscribers</b></mark>.</div></div>
-          <div class="step"><span class="k">5</span><div class="body"><b>(iii) Carried traffic</b> = A&#215;(1&#8722;B) = 5.084 &#215; 0.98 = 4.982 E. <b>Trunking efficiency</b> = 4.982 / 10 = <mark><b>49.8%</b></mark> — note a 10-channel trunk only fills to ~50% at 2% GoS, which is why <em>large trunk groups are far more efficient</em>.</div></div>
-        </div>
-
-        <h5>Comparison — How the Four Criteria Are Specified</h5>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Criterion</th><th>What it answers</th><th>Metric / unit</th><th>Typical target</th><th>Improved by</th></tr>
-            <tr><td><b>Voice quality</b></td><td>Is the call clear?</td><td>MOS (1&#8211;5), SNR / C/I (dB)</td><td>MOS &#8805; 4.0; C/I &#8805; 18 dB</td><td>Better codec, error coding, larger N</td></tr>
-            <tr><td><b>Grade of Service</b></td><td>Can I get a channel?</td><td>Blocking probability (Erlang-B)</td><td>&#8804; 2% (0.02)</td><td>More channels, trunk pooling</td></tr>
-            <tr><td><b>Coverage</b></td><td>Is there signal here?</td><td>% area above RSS threshold</td><td>90&#8211;95% area</td><td>Fade margin, more / taller towers</td></tr>
-            <tr><td><b>Capacity</b></td><td>How many calls at once?</td><td>Traffic intensity (Erlangs)</td><td>Per cell sizing target</td><td>Smaller N, sectoring, cell splitting</td></tr>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <span class="label">Examiner Trap — Erlang vs GoS vs capacity</span>
-          Do not confuse the three. <b>Erlang</b> is the <em>unit</em> of traffic load (channel-hours per hour). <b>GoS</b> is a <em>probability</em> (the 2% blocking target), <b>not</b> a traffic figure. <b>Capacity</b> is the <em>number</em> of simultaneous calls or offered Erlangs the cell holds. A frequent error is writing "GoS = 5 Erlang" — GoS has no unit, it is a fraction. Also remember Erlang-<b>B</b> clears blocked calls; Erlang-<b>C</b> queues them — the exam default for cellular is Erlang-B.
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>In 2026 LTE/5G networks the criteria persist but widen: voice quality is now <b><mark>VoLTE / VoNR</mark></b> MOS over packet links, GoS extends to <b>data drop / scheduling-delay</b> targets, coverage is planned per <b>SINR band</b> for adaptive modulation, and capacity is measured in <b>throughput (Mbps/cell)</b> as well as Erlangs. Jio and Airtel run automated <b>SON (Self-Organizing Network)</b> tools that re-tune power and tilt nightly to hold these four targets across millions of cells.</p>
-
-        <h5>Conclusion</h5>
-        <p>Voice quality, GoS, coverage, and capacity are the four pillars of cellular system performance. They trade against each other — tighter GoS or wider coverage costs spectrum and towers, while denser reuse raises capacity at the price of interference. The <mark>Erlang-B</mark> model ties offered traffic, channels, and blocking together, letting operators size every cell to the 2% busy-hour target.</p>
-
-      </div>
-    </div>
-
-    <!-- Q3 -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q9</span><span class="tag year">Unit 2 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(b) · 2×</span></div>
-      <div class="qbody"><b>A total bandwidth of 25 MHz is allocated to a cellular system with N=7 frequency reuse cluster. If each simplex channel is 25 kHz (duplex pair = 50 kHz), and 1 MHz is reserved for control channels:
-        <br>(a) Find the total duplex channels in the system.
-        <br>(b) Compute voice &amp; control channels per cell.
-        <br>(c) If cell radius R = 2 km, find co-channel reuse ratio Q and co-channel cell distance D.
-      </b></div>
-      <div class="ans">
-        <figure class="diagram-fig">
-<svg viewBox="0 0 345 276" style="width:100%;height:auto;max-width:520px;display:block;margin:0 auto" font-family="inherit" role="img" aria-label="Two tessellating 7-cell frequency-reuse clusters with channel sets A to G. The two A-cells are nearest co-channel neighbours one cluster apart, separated by the co-channel reuse distance D = root(3N) times R, which is about 4.58 R for cluster size N = 7. The cell radius R is the centre-to-vertex distance of one hexagon.">
-  <!-- ===== CLUSTER 1 (left) and CLUSTER 2 (right): non-A cells at low brand opacity ===== -->
-  <g stroke="var(--svg-brand)" stroke-width="1.5" stroke-linejoin="round">
-    <polygon points="157.8,57.0 187.2,74.0 187.2,108.0 157.8,125.0 128.3,108.0 128.3,74.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="128.3,108.0 157.8,125.0 157.8,159.0 128.3,176.0 98.9,159.0 98.9,125.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="69.4,108.0 98.9,125.0 98.9,159.0 69.4,176.0 40.0,159.0 40.0,125.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="40.0,57.0 69.4,74.0 69.4,108.0 40.0,125.0 10.6,108.0 10.6,74.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="69.4,6.0 98.9,23.0 98.9,57.0 69.4,74.0 40.0,57.0 40.0,23.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="128.3,6.0 157.8,23.0 157.8,57.0 128.3,74.0 98.9,57.0 98.9,23.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="305.0,108.0 334.4,125.0 334.4,159.0 305.0,176.0 275.6,159.0 275.6,125.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="275.6,159.0 305.0,176.0 305.0,210.0 275.6,227.0 246.1,210.0 246.1,176.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="216.7,159.0 246.1,176.0 246.1,210.0 216.7,227.0 187.2,210.0 187.2,176.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="187.2,108.0 216.7,125.0 216.7,159.0 187.2,176.0 157.8,159.0 157.8,125.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="216.7,57.0 246.1,74.0 246.1,108.0 216.7,125.0 187.2,108.0 187.2,74.0" fill="var(--brand)" fill-opacity="0.12"/>
-    <polygon points="275.6,57.0 305.0,74.0 305.0,108.0 275.6,125.0 246.1,108.0 246.1,74.0" fill="var(--brand)" fill-opacity="0.12"/>
-  </g>
-  <!-- ===== Two co-channel A-cells highlighted (solid brand) ===== -->
-  <g stroke="var(--brand-deep)" stroke-width="2" stroke-linejoin="round">
-    <polygon points="98.9,57.0 128.3,74.0 128.3,108.0 98.9,125.0 69.4,108.0 69.4,74.0" fill="var(--brand)" fill-opacity="0.60"/>
-    <polygon points="246.1,108.0 275.6,125.0 275.6,159.0 246.1,176.0 216.7,159.0 216.7,125.0" fill="var(--brand)" fill-opacity="0.60"/>
-  </g>
-  <!-- ===== Cluster boundary labels ===== -->
-  <g font-size="9.5" font-weight="700" fill="var(--muted)" text-anchor="middle" letter-spacing="0.5">
-    <text x="84" y="200">CLUSTER 1</text>
-    <text x="261" y="246">CLUSTER 2</text>
-  </g>
-  <!-- ===== Cell labels A-G (both clusters) ===== -->
-  <g text-anchor="middle" font-size="13" font-weight="700" fill="var(--ink)">
-    <text x="98.9" y="95.6" fill="var(--paper)">A</text>
-    <text x="157.8" y="95.6">B</text>
-    <text x="128.3" y="146.6">C</text>
-    <text x="69.4" y="146.6">D</text>
-    <text x="40.0" y="95.6">E</text>
-    <text x="69.4" y="44.6">F</text>
-    <text x="128.3" y="44.6">G</text>
-    <text x="246.1" y="146.6" fill="var(--paper)">A</text>
-    <text x="305.0" y="146.6">B</text>
-    <text x="275.6" y="197.6">C</text>
-    <text x="216.7" y="197.6">D</text>
-    <text x="187.2" y="146.6">E</text>
-    <text x="216.7" y="95.6">F</text>
-    <text x="275.6" y="95.6">G</text>
-  </g>
-  <!-- ===== Cell radius R: centre to vertex of cluster-1 A-cell ===== -->
-  <line x1="98.9" y1="91.0" x2="128.3" y2="74.0" stroke="var(--gold)" stroke-width="2.2"/>
-  <circle cx="98.9" cy="91.0" r="2.6" fill="var(--gold)"/>
-  <text x="122" y="66.5" font-size="12.5" font-weight="700" fill="var(--ink)" text-anchor="middle">R</text>
-  <!-- ===== Reuse distance D between the two A-cell centres ===== -->
-  <line x1="98.9" y1="91.0" x2="246.1" y2="142.0" stroke="var(--brand-deep)" stroke-width="2.2" stroke-dasharray="7 4"/>
-  <circle cx="246.1" cy="142.0" r="2.6" fill="var(--brand-deep)"/>
-  <g text-anchor="middle">
-    <rect x="133" y="98" width="80" height="20" rx="4" fill="var(--paper)" stroke="var(--brand-deep)" stroke-width="1.2"/>
-    <text x="173" y="112" font-size="12" font-weight="700" fill="var(--ink)">D = &#8730;(3N)&#183;R</text>
-  </g>
-  <!-- ===== Legend block: each token its own positioned <text> so nothing overflows 345px ===== -->
-  <line x1="8" y1="232" x2="337" y2="232" stroke="var(--rule)" stroke-width="1"/>
-  <g font-size="10.5">
-    <text x="8" y="248" fill="var(--muted)">Cluster size <tspan font-weight="700" fill="var(--ink)">N = 7</tspan></text>
-    <text x="120" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">R</tspan> = cell radius</text>
-    <text x="216" y="248" fill="var(--muted)"><tspan font-weight="700" fill="var(--ink)">D</tspan> = reuse distance</text>
-    <text x="8" y="266" fill="var(--muted)">Reuse ratio <tspan font-weight="700" fill="var(--ink)">Q = D/R = &#8730;21 &#8776; 4.58</tspan></text>
-    <text x="195" y="266" fill="var(--muted)">channel-set <tspan font-weight="700" fill="var(--ink)">A</tspan> repeats one cluster away</text>
-  </g>
-</svg>
-          <figcaption><b>Fig Q3.1</b> · N=7 frequency-reuse cluster — distinct channel sets A–G; co-channel cells (A, A') separated by reuse distance D</figcaption>
-        </figure>
-
-        <h5>Introduction</h5>
-        <p><mark>Frequency reuse</mark> is the heart of cellular capacity. The same set of radio channels is used again in cells that are kept a safe distance apart. The pattern is set by the <b><mark>cluster size N</mark></b>. Hex cell shape limits N to values that fit <code>N = i² + ij + j²</code> for whole numbers i, j. Allowed sizes: <b>N ∈ {1, 3, 4, 7, 9, 12, 13, 19, 21 …}</b>. Smaller N packs more reuse per area (more capacity), but co-channel cells sit closer and the <mark>S/I ratio</mark> drops.</p>
-
-        <h5>The Co-Channel Distance Formula — Quick Derivation</h5>
-        <div class="steps">
-          <div class="step"><span class="k">Step</span><div class="body">In a hex cell of radius <code>R</code>, two neighbour cells sit <code>R√3</code> apart centre-to-centre. Move <code>i</code> cells one way, then <code>j</code> cells at 60°. You land on the nearest <mark>co-channel</mark> cell, at distance <mark>D = R√(3N)</mark>. So the <b>co-channel reuse ratio</b> is <code>Q = D / R = √(3N)</code>. Bigger N gives bigger Q, better S/I, but less capacity.</div></div>
-        </div>
-
-
-        <h5>(a) Total Duplex Channels</h5>
-        <div class="steps">
-          <div class="step"><span class="k">Step 1</span><div class="body">Find duplex channel width. Each call needs one uplink + one downlink. Duplex size = <code>2 × 25 kHz = 50 kHz = 0.05 MHz</code>.</div></div>
-          <div class="step"><span class="k">Step 2</span><div class="body">Find total duplex channels: <code>Total = 25 MHz / 0.05 MHz = 500 duplex channels</code>.</div></div>
-        </div>
-
-        <h5>(b) Voice &amp; Control Channels per Cell</h5>
-        <div class="steps">
-          <div class="step"><span class="k">Step 3</span><div class="body">Find system control channels from the reserved 1 MHz: <code>1 MHz / 0.05 MHz = 20 control channels</code>.</div></div>
-          <div class="step"><span class="k">Step 4</span><div class="body">Find system voice channels: <code>500 total − 20 control = 480 voice channels</code>.</div></div>
-          <div class="step"><span class="k">Step 5</span><div class="body">Find <mark>channels per cell</mark> (cluster size N = 7):
-            <br>• Voice channels per cell = <code>480 / 7 ≈ 68.57 → 68 per cell</code> (round down).
-            <br>• Control channels per cell = <code>20 / 7 ≈ 2.86 → 3 per cell</code> (round up).
-          </div></div>
-        </div>
-
-        <h5>(c) Reuse Ratio Q &amp; Co-channel Distance D</h5>
-        <div class="steps">
-          <div class="step"><span class="k">Step 6</span><div class="body">Find reuse ratio Q:
-            <code>Q = sqrt(3 N) = sqrt(21) ≈ 4.58</code>.
-          </div></div>
-          <div class="step"><span class="k">Step 7</span><div class="body">Find co-channel distance D (cell radius R = 2 km):
-            <code>D = Q × R = 4.58 × 2 km = 9.16 km</code>.
-          </div></div>
-        </div>
-        <p><b>Boxed answer:</b> (a) <b>500 duplex channels</b>, (b) <b>68 voice + 3 control channels per cell</b>, (c) <b>Q ≈ 4.58, D ≈ 9.16 km</b>.</p>
-
-        <h5>Sanity Check — Second Scenario (N = 4 Cluster, Smaller Spectrum)</h5>
-        <p>To show the formulas scale, redo with <code>B = 1.5 MHz</code> total, <code>N = 4</code> cluster, simplex channel <code>10 kHz</code> (duplex 20 kHz), control = 60 kHz, R = 1.5 km.</p>
-        <div class="steps">
-          <div class="step"><span class="k">Step A</span><div class="body">Total duplex channels = 1500 kHz / 20 kHz = <b>75 channels</b>. Control = 60/20 = 3. Voice = 75 − 3 = 72.</div></div>
-          <div class="step"><span class="k">Step B</span><div class="body">Voice per cell = 72 / 4 = <b>18 channels</b>. Control per cell = ⌈3/4⌉ = <b>1 channel</b>.</div></div>
-          <div class="step"><span class="k">Step C</span><div class="body">Q = √(3 × 4) = √12 ≈ <b>3.46</b>; D = 3.46 × 1.5 = <b>≈ 5.2 km</b>. Smaller N gives tighter Q and shorter co-channel distance.</div></div>
-        </div>
-
-        <h5>Comparing N = 4 vs N = 7 — Capacity / S/I Trade-off</h5>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Parameter</th><th>N = 4</th><th>N = 7</th><th>Interpretation</th></tr>
-            <tr><td><b>Voice channels per cell (480 voice ÷ N)</b></td><td>480 / 4 = 120</td><td>480 / 7 ≈ 68</td><td>Smaller N gives ~1.75× more voice channels per cell, so more capacity per km². N = 7 figure matches Part (b) above</td></tr>
-            <tr><td><b>Co-channel reuse ratio Q = √(3N)</b></td><td>3.46</td><td>4.58</td><td>Bigger Q (N = 7) keeps co-channel cells farther apart</td></tr>
-            <tr><td><b>S/I (6 first-tier interferers, n = 4)</b></td><td>≈ 13.8 dB</td><td>≈ 18.7 dB</td><td>S/I = (1/6)·Q<sup>n</sup>. N = 7 comfortably above the 18 dB GSM threshold</td></tr>
-            <tr><td><b>Verdict</b></td><td>More capacity but only just meets S/I</td><td>Standard balance for analog and 2G GSM</td><td>Pick N to trade capacity against link quality</td></tr>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <span class="label">Examiner Trap — D/R factor &amp; rounding</span>
-          The most common slip is writing <code>D = √(3N)</code> without the <em>× R</em> part. Q is just a ratio (D/R), but the actual co-channel distance <b>D = Q × R</b> is in km. Drop the multiplication and you lose 1.5–2 marks. Also: when channels per cell are not whole numbers, <b>voice channels round down</b> (no half-channel for voice) and <b>control channels round up</b> (every cell must have at least one signalling channel). And remember: <em>one duplex channel = 2 simplex carriers</em>. Half the students forget the ×2.
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p><b>N = 7</b> reuse was the 2G GSM standard and still shows up on cell-plan slides. <mark>4G</mark> LTE and 5G NR moved to <b>universal reuse (N = 1)</b> with <em>Fractional Frequency Reuse (FFR)</em> and <em>Soft Frequency Reuse (SFR)</em>. Phones in the middle of a cell get the full band. Phones at the edge get smaller sub-bands to cut <mark>same-frequency signal clash</mark>. Hex cluster geometry still lives inside RF planning tools (Atoll, ICS Telecom, RANplan) and is the base idea behind <b>Coordinated Multi-Point (CoMP)</b> sending and 5G beam-based clash control used by Jio True5G in Mumbai and Delhi.</p>
-
-        <h5>Conclusion</h5>
-        <p>Frequency reuse stays the biggest capacity booster in any radio system. Cut N in half, roughly double the channels per cell. But you also cut Q, shorten the co-channel distance, and weaken S/I. Operators balance these against user density, tower height, and modulation strength. Modern networks push reuse to the limit with universal reuse and smart clash control, but the basics shown above (<code>N = i² + ij + j²</code>, <code>D = R√(3N)</code>) still set the cell plan.</p>
-
-      </div>
-    </div>
-
-    <!-- Q8 — Complete GSM call flow -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q10</span><span class="tag year">Unit 1 + 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q3(a) · 2×</span></div>
-      <div class="qbody"><b>Explain the complete GSM call-setup flow for a mobile-originated call. Name every network element involved (MS, BTS, BSC, MSC, HLR, VLR, AuC) and trace the signalling step by step from dialling to a connected voice path.</b></div>
-      <div class="ans">
-        <figure class="diagram-fig">
-          <img src="wc-images/08-gsm-call-flow.png" alt="GSM mobile-originated call flow sequence diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-          <figcaption><b>Fig 8.1</b> &middot; Mobile-originated GSM call sequence &mdash; signalling sequence flow from Mobile Station (MS) up through BTS, BSC, MSC and VLR/HLR to PSTN.</figcaption>
-        </figure>
-
-        <h5>Introduction</h5>
-        <p>A <mark>GSM</mark> call is not a single wire from caller to callee. It is a chain of <mark>signalling messages</mark> across three subsystems — the <b>Mobile Station (MS)</b>, the <b>Base Station Subsystem (BSS)</b> = BTS + BSC, and the <b>Network Switching Subsystem (NSS)</b> = MSC + HLR + VLR + AuC. Setting up a <b>mobile-originated call (MOC)</b> involves channel request, authentication against the security triplet, ciphering, and finally traffic-channel assignment. The same registries (<mark>HLR/VLR</mark>) that track a roaming user are what make this harder than a fixed PSTN call.</p>
-
-
-        <h5>Step-by-Step Call Setup (Mobile-Originated)</h5>
-        <div class="steps">
-          <div class="step"><span class="k">1</span><div class="body"><b>Channel request:</b> the user dials and presses send. The MS sends a <mark>CHANNEL REQUEST</mark> on the <b>RACH</b> (random-access channel, a slotted-ALOHA uplink). The network replies on the <b>AGCH</b> assigning an <b>SDCCH</b> (dedicated signalling channel).</div></div>
-          <div class="step"><span class="k">2</span><div class="body"><b>Service request &amp; identification:</b> on the SDCCH the MS sends a CM Service Request carrying its <mark>TMSI/IMSI</mark>. The BTS relays it via the BSC to the <b>MSC</b>.</div></div>
-          <div class="step"><span class="k">3</span><div class="body"><b>Authentication:</b> the MSC asks the <mark>VLR</mark>; if the subscriber's triplet is not cached, the VLR fetches it from the <mark>HLR/AuC</mark>. The AuC has generated the triplet <code>(RAND, SRES, Kc)</code> using the A3/A8 algorithms and the secret key Ki. The MSC sends <code>RAND</code> to the MS; the SIM computes <code>SRES'</code> and returns it. If <code>SRES' = SRES</code>, the user is genuine.</div></div>
-          <div class="step"><span class="k">4</span><div class="body"><b>Ciphering:</b> both sides switch on A5 encryption using the cipher key <code>Kc</code>. From here the air interface is protected.</div></div>
-          <div class="step"><span class="k">5</span><div class="body"><b>TCH assignment:</b> the MSC orders the BSC to assign a <mark>traffic channel (TCH)</mark>. The SDCCH is released and the call moves to the TCH on an allotted time slot of a 200 kHz carrier.</div></div>
-          <div class="step"><span class="k">6</span><div class="body"><b>Routing onward:</b> the MSC routes the dialled number — into the <b>PSTN</b> if it is a landline, or to the <b>destination MSC</b> if it is another mobile (which then pages the called handset). The called side answers and a two-way voice path is established.</div></div>
-          <div class="step"><span class="k">7</span><div class="body"><b>Conversation &amp; release:</b> during the call the <b>SACCH</b> carries power-control and timing-advance orders; handover commands (if the user moves) steal TCH bursts via the <b>FACCH</b>. On hang-up a release message frees the TCH.</div></div>
-        </div>
-
-        <h5>Role of Each Network Element</h5>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Element</th><th>Subsystem</th><th>Role in the call</th></tr>
-            <tr><td><b>MS (handset + SIM)</b></td><td>MS</td><td>Sends channel request; SIM runs A3/A8 to answer the authentication challenge.</td></tr>
-            <tr><td><b>BTS</b></td><td>BSS</td><td>Radio transceiver over the Um air interface; relays bursts to/from the MS.</td></tr>
-            <tr><td><b>BSC</b></td><td>BSS</td><td>Controls many BTSs; allocates radio channels, manages handover within its area.</td></tr>
-            <tr><td><b>MSC</b></td><td>NSS</td><td>The switching brain; runs authentication, ciphering, TCH assignment and call routing.</td></tr>
-            <tr><td><b>VLR</b></td><td>NSS</td><td>Local cache of subscribers currently in the MSC area; holds the working triplet.</td></tr>
-            <tr><td><b>HLR</b></td><td>NSS</td><td>Permanent home database; knows the user's profile and current VLR location.</td></tr>
-            <tr><td><b>AuC</b></td><td>NSS</td><td>Generates the security triplet (RAND, SRES, Kc) from the secret key Ki.</td></tr>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <span class="label">Examiner Trap — name the channels and the triplet</span>
-          A bare "MS talks to BTS talks to MSC" loses half the marks. The marks sit in the <em>named</em> steps: <b>RACH → AGCH → SDCCH</b> for setup, the <b>(RAND, SRES, Kc)</b> triplet for authentication, A5 for ciphering, and the <b>SDCCH → TCH</b> switch. Always state that the VLR caches the triplet so the HLR/AuC is not queried on every call.
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>The same registry idea survives in 4G/5G: the <mark>HLR/AuC</mark> became the <b>HSS/UDM</b>, the MSC's packet role became the <b>MME/AMF</b>, and authentication moved to the stronger <b>AKA</b> (Authentication and Key Agreement) with mutual authentication, fixing GSM's flaw where the network never proved itself to the phone (which enabled fake-tower IMSI-catcher attacks).</p>
-
-        <h5>Conclusion</h5>
-        <p>A GSM call setup is a disciplined hand-off of control between MS, BSS and NSS: request a signalling channel, prove identity with the AuC triplet, switch on ciphering, then assign a traffic channel and route the call. Naming every element and every channel in order is what banks the full 15 marks.</p>
-
-      </div>
-    </div>
-
-    <!-- Q9 — Generation comparison 1G–4G -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q11</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
-      <div class="qbody"><b>Compare the first four generations of mobile cellular networks (1G, 2G, 3G, 4G) in detail. Use a comparison table across access scheme, switching, data rate, security and key services, and explain the driving force behind each generational jump.</b></div>
-      <div class="ans">
-        <figure class="diagram-fig">
-          <img src="wc-images/09-evolution-1g-5g.png" alt="1G to 5G cellular evolution timeline diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-          <figcaption><b>Fig 9.1</b> &middot; 1G to 5G evolution timeline &mdash; showing primary access technologies, years of introduction, and key features of each generation.</figcaption>
-        </figure>
-
-        <h5>Introduction</h5>
-        <p>Mobile cellular has evolved roughly one generation per decade, each defined by a leap in the <mark>multiple-access scheme</mark>, the <mark>switching mode</mark> (circuit vs packet), and the headline <mark>data rate</mark>. The ladder runs <b>FDMA → TDMA → CDMA → OFDMA</b>, while switching moved from pure <mark>circuit-switched</mark> voice to an <mark>all-IP packet</mark> core. Each jump was pulled by a real-world need: capacity, then security, then mobile internet, then true broadband.</p>
-
-
-        <h5>Generational Comparison</h5>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Parameter</th><th>1G</th><th>2G</th><th>3G</th><th>4G</th></tr>
-            <tr><td><b>Era</b></td><td>1980s</td><td>1990s</td><td>2000s</td><td>2010s</td></tr>
-            <tr><td><b>Signal</b></td><td>Analog (FM voice)</td><td>Digital (vocoder bits)</td><td>Digital</td><td>Digital, all-IP</td></tr>
-            <tr><td><b>Access scheme</b></td><td><mark>FDMA</mark></td><td><mark>TDMA</mark> / CDMA (IS-95)</td><td><mark>WCDMA</mark></td><td><mark>OFDMA</mark> (DL), SC-FDMA (UL)</td></tr>
-            <tr><td><b>Switching</b></td><td>Circuit</td><td>Circuit (packet in 2.5G GPRS)</td><td>Circuit + packet</td><td>All-IP packet</td></tr>
-            <tr><td><b>Data rate</b></td><td>~2.4 kbps</td><td>~64 kbps (GPRS ~144 kbps)</td><td>~2 Mbps (HSPA up to 21 Mbps)</td><td>~100 Mbps–1 Gbps</td></tr>
-            <tr><td><b>Security</b></td><td>None (cloning rife)</td><td>SIM auth A3/A8, A5 ciphering</td><td>Mutual auth (AKA), USIM</td><td>Strengthened AKA, IPsec core</td></tr>
-            <tr><td><b>Key services</b></td><td>Voice only</td><td>Voice + SMS, encryption</td><td>Video calls, mobile internet</td><td>HD video, VoLTE, IoT, gaming</td></tr>
-            <tr><td><b>Standard examples</b></td><td>AMPS, TACS, NMT</td><td>GSM, IS-95, IS-136</td><td>UMTS, CDMA2000</td><td>LTE, LTE-Advanced</td></tr>
-          </table>
-        </div>
-
-        <h5>Driving Force Behind Each Jump</h5>
-        <ul>
-          <li><b>1G → 2G:</b> driven by <mark>capacity and security</mark>. Analog systems ran out of channels and could be cloned with a $50 scanner. Going digital tripled capacity and added SIM-based authentication and air-interface encryption.</li>
-          <li><b>2G → 3G:</b> driven by the demand for <mark>mobile internet</mark>. TDMA voice slots could not carry web/video; WCDMA's wide band and packet switching delivered Mbps-class data and video calls.</li>
-          <li><b>3G → 4G:</b> driven by <mark>true broadband and all-IP</mark>. Smartphones needed streaming-grade speed and low latency, so LTE adopted OFDMA + MIMO and dropped the circuit-switched domain entirely (VoLTE).</li>
-        </ul>
-
-        <div class="box warn">
-          <span class="label">Examiner Trap — name the access scheme per generation</span>
-          The most marks-dense fact is the <mark>access ladder FDMA → TDMA → WCDMA → OFDMA</mark>. Students who only write "1G is old, 4G is fast" lose the technical marks. Tie each generation to its access scheme, switching mode, and one headline service.
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>5G (2020s) extends the ladder with <mark>OFDMA + Massive-MIMO (SDMA)</mark>, mmWave bands, and network slicing for sub-1 ms latency. In India, Jio and Airtel rolled out 5G NR on this base over 2022–24, while 2G GSM still carries fallback voice and IoT in rural areas — so all four generations coexist.</p>
-
-        <h5>Conclusion</h5>
-        <p>From analog FDMA voice to all-IP OFDMA broadband, each cellular generation answered a concrete pressure — capacity, security, internet, then speed. Memorising the access-scheme ladder and the one-line driver per jump turns this into a reliable 15-mark answer.</p>
-
-      </div>
-    </div>
-
-    <!-- Q10 — Mixed numerical bank -->
     <div class="qcard predicted">
       <div class="qhead"><span class="qnum">Q12</span><span class="tag year">Unit 2 + 3 Numerical</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q3(b) · numerical</span></div>
       <div class="qbody"><b>Solve the following cellular-engineering numericals (show full working and box each answer):
@@ -3823,145 +3778,8 @@ B(n, A) = ----------------------
       </div>
     </div>
 
-    <!-- Q11 — ISDN architecture + ISDN vs AIN (Unit 4) -->
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q13</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M (7.5+7.5)</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BTech Q6(a) · 2×</span></div>
-      <div class="qbody"><b>(a) Describe the architecture of an ISDN (Integrated Services Digital Network). Name the functional groupings (TE1, TE2, TA, NT1, NT2) and the reference points (R, S, T, U), and explain the B-channel / D-channel structure with BRI and PRI access. [7.5M]
-        <br>(b) Differentiate between ISDN and AIN (Advanced Intelligent Network) using a comparison matrix. [7.5M]</b></div>
-      <div class="ans">
-        <figure class="diagram-fig">
-          <div style="display:flex;flex-direction:column;gap:0;align-items:stretch;max-width:620px;margin:6px auto;font-size:11px;">
-            <!-- Equipment row -->
-            <div style="display:flex;align-items:stretch;flex-wrap:nowrap;gap:0;overflow-x:auto;">
-              <div style="flex:1;min-width:74px;background:#fff;border:1.5px solid var(--ink);border-radius:4px;padding:7px 5px;text-align:center;">
-                <div style="font-weight:700;color:var(--ink);">TE2</div>
-                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">non-ISDN<br>(PC, analog phone)</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">R</div>
-                <div style="color:var(--brand);font-weight:700;">→</div>
-              </div>
-              <div style="flex:1;min-width:64px;background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:7px 5px;text-align:center;">
-                <div style="font-weight:700;color:var(--ink);">TA</div>
-                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">Terminal<br>Adapter</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">S</div>
-                <div style="color:var(--brand);font-weight:700;">→</div>
-              </div>
-              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
-                <div style="font-weight:700;color:var(--brand-deep);">NT2</div>
-                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">PBX /<br>LAN router</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">T</div>
-                <div style="color:var(--brand);font-weight:700;">→</div>
-              </div>
-              <div style="flex:1;min-width:64px;background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:7px 5px;text-align:center;">
-                <div style="font-weight:700;color:var(--brand-deep);">NT1</div>
-                <div style="font-size:9px;color:var(--muted);line-height:1.2;margin-top:2px;">line<br>termination</div>
-              </div>
-              <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 3px;min-width:30px;">
-                <div style="font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;color:var(--auburn);">U</div>
-                <div style="color:var(--brand);font-weight:700;">→</div>
-              </div>
-              <div style="flex:1;min-width:74px;background:var(--brand);color:var(--paper);border:1.5px solid var(--brand-deep);border-radius:4px;padding:7px 5px;text-align:center;">
-                <div style="font-weight:700;">LE</div>
-                <div style="font-size:9px;color:var(--brand-soft);line-height:1.2;margin-top:2px;">Local Exchange<br>(ISDN switch)</div>
-              </div>
-            </div>
-            <!-- TE1 direct branch note -->
-            <div style="margin-top:8px;display:flex;align-items:center;justify-content:center;gap:7px;flex-wrap:wrap;">
-              <div style="background:#fff;border:1.5px dashed var(--ink);border-radius:4px;padding:5px 9px;text-align:center;">
-                <div style="font-weight:700;color:var(--ink);font-size:11px;">TE1</div>
-                <div style="font-size:9px;color:var(--muted);">native ISDN phone</div>
-              </div>
-              <div style="font-size:10px;color:var(--ink-soft);">joins directly at the <b>S</b> reference point (no TA needed)</div>
-            </div>
-            <!-- Channel make-up strip -->
-            <div style="margin-top:10px;display:flex;gap:6px;flex-wrap:wrap;justify-content:center;">
-              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · voice/data payload</div>
-              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>B</b> · 64 kbps · 2nd bearer</div>
-              <div style="background:var(--gold-soft);border:1.5px solid var(--gold);border-radius:4px;padding:5px 9px;font-size:10.5px;"><b>D</b> · 16 kbps · signalling (out-of-band)</div>
-            </div>
-          </div>
-          <figcaption><b>Fig 11.1</b> · ISDN functional groupings (TE1/TE2/TA/NT2/NT1) and reference points (R · S · T · U) from terminal to local exchange; one BRI 2B+D access shown below</figcaption>
-        </figure>
-
-        <h5>(a) ISDN Architecture</h5>
-        <p><mark>ISDN</mark> (Integrated Services Digital Network) is a fully <mark>digital end-to-end</mark> network that carries voice, data and signalling over the ordinary local-loop copper pair. It replaces the analog local loop with a digital pipe split into <mark>bearer (B) channels</mark> for user payload and a separate <mark>delta (D) channel</mark> for out-of-band call control. The architecture is defined by <b>functional groupings</b> (the equipment roles) joined at standardised <b>reference points</b>.</p>
-
-
-        <h5>Functional Groupings (Equipment Roles)</h5>
-        <ul>
-          <li><b><mark>TE1</mark> (Terminal Equipment type 1)</b>: a native ISDN device (ISDN telephone, ISDN fax) with a built-in S-interface. Connects directly at the <b>S</b> point.</li>
-          <li><b><mark>TE2</mark> (Terminal Equipment type 2)</b>: a non-ISDN device (analog phone, ordinary PC with RS-232/V.35). Cannot speak ISDN, so it needs a converter.</li>
-          <li><b><mark>TA</mark> (Terminal Adapter)</b>: converts a TE2's non-ISDN signalling into ISDN format, sitting between the <b>R</b> and <b>S</b> points.</li>
-          <li><b><mark>NT2</mark> (Network Termination 2)</b>: customer-side smart node — a <mark>PBX</mark>, LAN router or multiplexer doing OSI layer-2/3 switching and concentration. Often omitted in a home BRI.</li>
-          <li><b><mark>NT1</mark> (Network Termination 1)</b>: terminates the physical 2-wire <b>U</b> loop from the exchange and presents the 4-wire <b>S/T</b> bus to the premises. Handles layer-1 line coding and power feeding.</li>
-        </ul>
-
-        <h5>Reference Points (Interfaces)</h5>
-        <ul>
-          <li><b><mark>R</mark></b>: between TE2 and TA (non-ISDN to adapter).</li>
-          <li><b><mark>S</mark></b>: between terminals (TE1/TA) and NT2 — the user "bus" that can carry up to 8 devices.</li>
-          <li><b><mark>T</mark></b>: between NT2 and NT1 (S and T are electrically identical, so often called the <b>S/T</b> bus when NT2 is absent).</li>
-          <li><b><mark>U</mark></b>: the 2-wire digital local loop between NT1 and the <mark>Local Exchange (LE)</mark>.</li>
-        </ul>
-
-        <h5>Channel Structure &amp; Access Types</h5>
-        <ul>
-          <li><b><mark>B-channel (Bearer)</mark></b>: a clear <mark>64 kbps</mark> circuit-switched pipe for user payload — digitised voice or data.</li>
-          <li><b><mark>D-channel (Delta)</mark></b>: out-of-band signalling (call setup/teardown via Q.931) — 16 kbps in BRI, 64 kbps in PRI. When idle it can also carry low-rate X.25 packet data.</li>
-          <li><b><mark>BRI</mark> (Basic Rate Interface)</b>: <mark>2B + D</mark> = 2×64 + 16 = 144 kbps payload. For home / small office.</li>
-          <li><b><mark>PRI</mark> (Primary Rate Interface)</b>: <mark>30B + D</mark> (Europe E1) or 23B + D (US T1) for a business PBX trunk.</li>
-        </ul>
-        <figure class="diagram-fig">
-          <img src="wc-images/11-isdn-bri-pri.png" alt="ISDN channel structures: BRI (2B+D) vs PRI (30B+D) block diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
-          <figcaption><b>Fig 11.2</b> &middot; Channel Structure of ISDN Access &mdash; Basic Rate Interface (2B+D) vs Primary Rate Interface (30B+D).</figcaption>
-        </figure>
-
-        <h5>Worked Example — line rates</h5>
-        <div class="steps">
-          <div class="step"><span class="k">BRI</span><div class="body"><b>Payload</b> = 2 B-channels + 1 D-channel = <code>2×64 + 16 = 144 kbps</code>. The physical <b>line rate</b> adds 48 kbps of framing/synchronisation → <code>144 + 48 = 192 kbps</code> on the U loop.</div></div>
-          <div class="step"><span class="k">PRI (E1)</span><div class="body">European PRI rides an E1 frame of 32 timeslots × 64 kbps = <code>2.048 Mbps</code>. Slot 0 is framing, slot 16 is the 64 kbps D-channel, leaving <code>30 × 64 = 1920 kbps</code> of bearer = <b>30B + D</b>.</div></div>
-          <div class="step"><span class="k">PRI (T1)</span><div class="body">US PRI rides a T1 frame of 24 timeslots × 64 = <code>1.544 Mbps</code>; one slot is the D-channel, leaving <code>23 × 64 = 1472 kbps</code> bearer = <b>23B + D</b>.</div></div>
-        </div>
-        <p><b>Boxed answer:</b> <mark><b>BRI = 144 kbps payload (192 kbps line); E1 PRI = 30B+D on 2.048 Mbps; T1 PRI = 23B+D on 1.544 Mbps.</b></mark></p>
-
-        <h5>(b) ISDN vs AIN — Comparison Matrix</h5>
-        <p><mark>AIN</mark> (Advanced Intelligent Network) is <em>not</em> a replacement for ISDN — it is a control-plane overlay. ISDN defines the <b>access pipe</b> to the subscriber; AIN defines <b>where the call-routing intelligence lives</b> inside the network. The two answer different questions, so the contrast is best shown axis by axis.</p>
-        <div class="table-wrap">
-          <table>
-            <tr><th>Axis</th><th>ISDN</th><th>AIN</th></tr>
-            <tr><td><b>Full form / nature</b></td><td>Integrated Services Digital Network — a digital <em>access technology</em> for the local loop.</td><td>Advanced Intelligent Network — a <em>service-control architecture</em> layered on the SS7 signalling network.</td></tr>
-            <tr><td><b>Primary goal</b></td><td>Carry voice + data digitally end-to-end over one subscriber line (B + D channels).</td><td>Decouple call-routing logic from physical switches so new services deploy fast.</td></tr>
-            <tr><td><b>Plane of operation</b></td><td>Mostly <mark>user / bearer plane</mark> — the actual 64 kbps payload pipe, plus D-channel signalling to its own exchange.</td><td>Pure <mark>control plane</mark> — no user payload; it only answers "how should this call be routed?".</td></tr>
-            <tr><td><b>Key network elements</b></td><td>TE1/TE2, TA, NT1/NT2, LE (Local Exchange).</td><td><mark>SSP</mark> (Service Switching Point), <mark>SCP</mark> (Service Control Point), <mark>STP</mark> (Signal Transfer Point), plus SS7 links.</td></tr>
-            <tr><td><b>Where intelligence sits</b></td><td>Distributed in each local exchange's software.</td><td>Centralised in SCP databases queried via SS7 — switches stay "dumb".</td></tr>
-            <tr><td><b>Service deployment</b></td><td>New service often needs every switch re-programmed.</td><td>Add a row in the SCP and the service is live network-wide instantly.</td></tr>
-            <tr><td><b>Typical services</b></td><td>Digital voice, BRI/PRI data, videoconferencing, dial-up to ISP.</td><td>Toll-free 1-800, number portability, call forwarding, prepaid/calling-card, VPN dialling.</td></tr>
-            <tr><td><b>Relationship</b></td><td>The access leg that delivers a call to the network.</td><td>The brain that decides what to do with that call once it arrives.</td></tr>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <span class="label">Examiner Traps</span>
-          (1) S and T reference points are electrically the same bus — don't lose a mark calling them two different physical interfaces; NT2 is what separates them. (2) The D-channel is <em>16 kbps in BRI but 64 kbps in PRI</em> — students often write 16 kbps for both. (3) Don't say "AIN replaces ISDN" — ISDN is access, AIN is control; they coexist. (4) In AIN the switch is the <b>SSP</b>, the database is the <b>SCP</b>, and the router of SS7 messages is the <b>STP</b> — mixing these up loses the matrix marks.
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>Legacy ISDN local loops have largely been retired (BSNL and most European telcos shut down BRI/PRI by the mid-2020s in favour of <mark>SIP trunking</mark> and <mark>VoLTE</mark>), but the <b>2B+D / 64 kbps DS0</b> granularity it standardised still underlies E1/T1 carrier circuits. The AIN concept of moving service logic out of switches into a central database is the direct ancestor of today's <mark>IMS</mark> (IP Multimedia Subsystem) and <mark>SDN/NFV</mark> control planes used by Jio and Airtel, where a centralised controller programs forwarding behaviour on demand.</p>
-
-        <h5>Conclusion</h5>
-        <p>ISDN answers <em>how the subscriber connects digitally</em> (B + D channels across the R/S/T/U reference points), while AIN answers <em>where the routing intelligence lives</em> (centralised SCP over SS7). One is the access pipe, the other the brain — together they made services like toll-free and number-portability possible long before the all-IP era.</p>
-
-      </div>
-    </div>
-
-    <!-- Q12 — Traffic routing + CCS/SS7 + AIN (Unit 4) -->
-    <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q14</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q5(b)</span></div>
+      <div class="qhead"><span class="qnum">Q13</span><span class="tag year">Unit 4 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">⟲ BCA May-25 Q5(b)</span></div>
       <div class="qbody"><b>Explain traffic routing in a wireless network. Trace the mobile-originated call (MOC) and mobile-terminated call (MTC) flows, including the HLR/VLR lookups, and describe the role of Common Channel Signalling (CCS/SS7) and the Advanced Intelligent Network (AIN).</b></div>
       <div class="ans">
         <figure class="diagram-fig">
@@ -4094,6 +3912,55 @@ B(n, A) = ----------------------
 
         <h5>Conclusion</h5>
         <p>Wireless traffic routing splits into the outbound <mark>MOC</mark> (MS&rarr;BTS&rarr;BSC&rarr;MSC&rarr;GMSC&rarr;PSTN) and the inbound <mark>MTC</mark>, where the GMSC must first interrogate the <mark>HLR</mark>, which fetches an <mark>MSRN</mark> from the serving <mark>VLR</mark> before the MS can be paged &mdash; this is how roaming stays transparent to the caller. The whole exchange of setup messages rides the out-of-band <mark>SS7</mark> network, and the <mark>AIN</mark> trio <mark>SSP</mark> (trigger) / <mark>STP</mark> (route) / <mark>SCP</mark> (decide) centralises the service intelligence, a pattern that survives today as Diameter and IMS in LTE.</p>
+
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q14</span><span class="tag year">Unit 1 Highlight</span><span class="tag marks">15M</span><span class="tag year" style="opacity:.72;background:#dcfce7;color:var(--brand-deep);border-color:var(--brand);">★ high-freq topic</span></div>
+      <div class="qbody"><b>Compare the first four generations of mobile cellular networks (1G, 2G, 3G, 4G) in detail. Use a comparison table across access scheme, switching, data rate, security and key services, and explain the driving force behind each generational jump.</b></div>
+      <div class="ans">
+        <figure class="diagram-fig">
+          <img src="wc-images/09-evolution-1g-5g.png" alt="1G to 5G cellular evolution timeline diagram" loading="lazy" style="width:100%;max-width:720px;height:auto;border-radius:5px;">
+          <figcaption><b>Fig 9.1</b> &middot; 1G to 5G evolution timeline &mdash; showing primary access technologies, years of introduction, and key features of each generation.</figcaption>
+        </figure>
+
+        <h5>Introduction</h5>
+        <p>Mobile cellular has evolved roughly one generation per decade, each defined by a leap in the <mark>multiple-access scheme</mark>, the <mark>switching mode</mark> (circuit vs packet), and the headline <mark>data rate</mark>. The ladder runs <b>FDMA → TDMA → CDMA → OFDMA</b>, while switching moved from pure <mark>circuit-switched</mark> voice to an <mark>all-IP packet</mark> core. Each jump was pulled by a real-world need: capacity, then security, then mobile internet, then true broadband.</p>
+
+
+        <h5>Generational Comparison</h5>
+        <div class="table-wrap">
+          <table>
+            <tr><th>Parameter</th><th>1G</th><th>2G</th><th>3G</th><th>4G</th></tr>
+            <tr><td><b>Era</b></td><td>1980s</td><td>1990s</td><td>2000s</td><td>2010s</td></tr>
+            <tr><td><b>Signal</b></td><td>Analog (FM voice)</td><td>Digital (vocoder bits)</td><td>Digital</td><td>Digital, all-IP</td></tr>
+            <tr><td><b>Access scheme</b></td><td><mark>FDMA</mark></td><td><mark>TDMA</mark> / CDMA (IS-95)</td><td><mark>WCDMA</mark></td><td><mark>OFDMA</mark> (DL), SC-FDMA (UL)</td></tr>
+            <tr><td><b>Switching</b></td><td>Circuit</td><td>Circuit (packet in 2.5G GPRS)</td><td>Circuit + packet</td><td>All-IP packet</td></tr>
+            <tr><td><b>Data rate</b></td><td>~2.4 kbps</td><td>~64 kbps (GPRS ~144 kbps)</td><td>~2 Mbps (HSPA up to 21 Mbps)</td><td>~100 Mbps–1 Gbps</td></tr>
+            <tr><td><b>Security</b></td><td>None (cloning rife)</td><td>SIM auth A3/A8, A5 ciphering</td><td>Mutual auth (AKA), USIM</td><td>Strengthened AKA, IPsec core</td></tr>
+            <tr><td><b>Key services</b></td><td>Voice only</td><td>Voice + SMS, encryption</td><td>Video calls, mobile internet</td><td>HD video, VoLTE, IoT, gaming</td></tr>
+            <tr><td><b>Standard examples</b></td><td>AMPS, TACS, NMT</td><td>GSM, IS-95, IS-136</td><td>UMTS, CDMA2000</td><td>LTE, LTE-Advanced</td></tr>
+          </table>
+        </div>
+
+        <h5>Driving Force Behind Each Jump</h5>
+        <ul>
+          <li><b>1G → 2G:</b> driven by <mark>capacity and security</mark>. Analog systems ran out of channels and could be cloned with a $50 scanner. Going digital tripled capacity and added SIM-based authentication and air-interface encryption.</li>
+          <li><b>2G → 3G:</b> driven by the demand for <mark>mobile internet</mark>. TDMA voice slots could not carry web/video; WCDMA's wide band and packet switching delivered Mbps-class data and video calls.</li>
+          <li><b>3G → 4G:</b> driven by <mark>true broadband and all-IP</mark>. Smartphones needed streaming-grade speed and low latency, so LTE adopted OFDMA + MIMO and dropped the circuit-switched domain entirely (VoLTE).</li>
+        </ul>
+
+        <div class="box warn">
+          <span class="label">Examiner Trap — name the access scheme per generation</span>
+          The most marks-dense fact is the <mark>access ladder FDMA → TDMA → WCDMA → OFDMA</mark>. Students who only write "1G is old, 4G is fast" lose the technical marks. Tie each generation to its access scheme, switching mode, and one headline service.
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>5G (2020s) extends the ladder with <mark>OFDMA + Massive-MIMO (SDMA)</mark>, mmWave bands, and network slicing for sub-1 ms latency. In India, Jio and Airtel rolled out 5G NR on this base over 2022–24, while 2G GSM still carries fallback voice and IoT in rural areas — so all four generations coexist.</p>
+
+        <h5>Conclusion</h5>
+        <p>From analog FDMA voice to all-IP OFDMA broadband, each cellular generation answered a concrete pressure — capacity, security, internet, then speed. Memorising the access-scheme ladder and the one-line driver per jump turns this into a reliable 15-mark answer.</p>
 
       </div>
     </div>

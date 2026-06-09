@@ -4347,163 +4347,9 @@ ggplot(data = df, aes(x = height, y = weight)) +
   <div class="part-head">Section B · Long Answers · <span class="pt-sub">15 Marks each · ranked Very Likely → Possible</span></div>
 
   <!-- P1 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P1</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(a) · 2×</span></div>
-    <div class="qbody">
-      <p class="q">Explain hypothesis testing with steps, types, and an R worked example using a two-sample t-test (or chi-square).</p>
-      <div class="ans">
-        <h5>Definition</h5>
-        <p><mark><b>Hypothesis testing</b></mark> is a formal statistical procedure to decide between two competing claims about a population parameter using sample data and a chosen significance level <mark>&alpha;</mark>.</p>
-        <h5>The six steps (in order)</h5>
-        <ol>
-          <li><b>State H&#8320; &amp; H&#8321;</b> — null (<mark>no effect / equality</mark>) and alternative (the claim to test).</li>
-          <li><b>Choose &alpha;</b> — significance level, typically <mark>0.05</mark> (5%), fixed <i>before</i> seeing data.</li>
-          <li><b>Select the test statistic</b> — z, t, &chi;&sup2;, F, depending on the data.</li>
-          <li><b>Compute the statistic &amp; p-value</b> from the sample.</li>
-          <li><b>Decision rule</b> — <mark>reject H&#8320; if p &lt; &alpha;</mark> (or |stat| &gt; critical value).</li>
-          <li><b>Interpret in context</b> — translate the result back to the original problem.</li>
-        </ol>
-        <h5>Types of test (pick by data)</h5>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Test</th><th>Use when</th><th>R call</th></tr></thead>
-          <tbody>
-            <tr><td>One-sample t</td><td>Sample mean vs a known value (n &lt; 30)</td><td><code>t.test(x, mu=50)</code></td></tr>
-            <tr><td>Two-sample t</td><td>Compare means of two independent groups</td><td><code>t.test(x, y)</code></td></tr>
-            <tr><td>Paired t</td><td>Before/after on the same units</td><td><code>t.test(x, y, paired=TRUE)</code></td></tr>
-            <tr><td>Z-test</td><td>n &#8805; 30 and &sigma; known</td><td><code>BSDA::z.test()</code></td></tr>
-            <tr><td>Chi-square</td><td>Independence / goodness-of-fit</td><td><code>chisq.test(tbl)</code></td></tr>
-            <tr><td>ANOVA</td><td>Compare 3+ group means</td><td><code>aov(y ~ group)</code></td></tr>
-          </tbody>
-        </table></div>
-        <h5>R worked example — two-sample (rotation variant)</h5>
-        <pre><code># Are the mean marks of Section A and Section B different?
-A <- c(78, 85, 90, 72, 88, 91, 76)
-B <- c(70, 75, 68, 80, 72, 74, 69)
-
-t.test(A, B, var.equal = FALSE)
-# Welch t = 3.18, df = 9.4, p-value = 0.011
-# 95% CI of mean diff: [3.0, 17.6]
-# p < 0.05  →  reject H0.
-# Conclusion: section means differ significantly.</code></pre>
-        <p>Mention: paired version uses <code>paired=TRUE</code>; variance equality testable with <code>var.test()</code>.</p>
-        <figure class="diagram-fig">
-          <div style="display:flex; flex-direction:column; align-items:center; gap:0; max-width:360px; margin:0 auto;">
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:8px 14px; font-weight:700; font-size:12.5px; width:100%; box-sizing:border-box;">1 · State H&#8320; (no effect) &amp; H&#8321; (effect)</div>
-            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">2 · Choose significance level &alpha; = 0.05</div>
-            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">3 · Compute test statistic (t / &chi;&sup2; / z)</div>
-            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">4 · Find the p-value</div>
-            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
-            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%;">
-              <div style="background:#fee2e2; color:#7c2d12; border:1.5px solid #9f1239; border-radius:6px; padding:8px 10px; font-size:11.5px; font-weight:700;">p &lt; &alpha;<br><span style="font-weight:600;">Reject H&#8320;</span></div>
-              <div style="background:#dcfce7; color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 10px; font-size:11.5px; font-weight:700;">p &#8805; &alpha;<br><span style="font-weight:600;">Fail to reject H&#8320;</span></div>
-            </div>
-          </div>
-          <figcaption><b>Fig P1.1</b> · Six-step hypothesis-testing decision flow with the p-vs-&alpha; branch</figcaption>
-        </figure>
-        <div class="score">
-          <b>Mark allocation (10 M)</b>
-          <ul>
-            <li><span>Definition + state H&#8320; / H&#8321;</span><span>2 M</span></li>
-            <li><span>Six steps + significance level &amp; p-value</span><span>3 M</span></li>
-            <li><span>Test types (t / z / &chi;&sup2;) + two-sample vs paired</span><span>2 M</span></li>
-            <li><span>R worked example (<code>t.test</code> output &amp; decision)</span><span>3 M</span></li>
-          </ul>
-        </div>
-        <div class="box tip" style="margin-top:14px">
-          <span class="label">Key takeaways · revise these 5</span>
-          <ul style="margin:6px 0 0 18px">
-            <li><b>Two-sample t-test</b> compares <i>two independent</i> sample means: <code>t.test(A, B)</code> defaults to Welch (unequal variances) — safer than Student's pooled t.</li>
-            <li><b>Welch vs Student:</b> set <code>var.equal=TRUE</code> only after verifying with <code>var.test(A, B)</code> that variances are similar.</li>
-            <li><b>Paired variant</b> for matched-pair / before-after designs: <code>t.test(before, after, paired=TRUE)</code> — much higher power than independent.</li>
-            <li><b>χ² independence:</b> <code>chisq.test(table(x, y))</code> handles two categorical variables; useful when the rotation drops t for chi-square.</li>
-            <li><b>Reading output:</b> reject H₀ when p &lt; α; the 95% CI of the mean difference excluding 0 corroborates the rejection.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- P2 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P2</span> · <span class="u">U3</span> · <span class="mk">5–10 M</span> <span class="src">⟲ BTech Jul-25 Q5(a) · 3×</span></div>
-    <div class="qbody">
-      <p class="q">Compare apply, lapply, sapply, tapply and mapply with examples. When would you pick each?</p>
-      <div class="ans">
-        <h5>The five members compared</h5>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Pick it when…</th></tr></thead>
-          <tbody>
-            <tr><td><code>apply(X, M, FN)</code></td><td>matrix / data frame</td><td>vector / matrix</td><td>row-wise (<mark>M=1</mark>) or col-wise (<mark>M=2</mark>) over 2-D data</td></tr>
-            <tr><td><code>lapply(X, FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>results <mark>differ in length / type</mark> — keep structure</td></tr>
-            <tr><td><code>sapply(X, FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>results are <mark>uniform scalars</mark> — cleaner lapply</td></tr>
-            <tr><td><code>tapply(X, INDEX, FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td><mark>group-wise summary</mark> (e.g. mean by dept)</td></tr>
-            <tr><td><code>mapply(FN, ...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td><mark>multi-arg parallel</mark> apply over N streams</td></tr>
-          </tbody>
-        </table></div>
-        <h5>Worked comparison — same task on small data</h5>
-        <pre><code># Worked comparison on the same task — square root
-nums <- 1:4
-sapply(nums, sqrt)              # vector  c(1,1.41,1.73,2)
-lapply(nums, sqrt)              # list of 4
-apply(matrix(1:9,3,3), 2, sum)  # col sums  c(6,15,24)
-tapply(c(80,90,75,85),          # grouped mean
-       c("A","A","B","B"),
-       mean)                    # A=85, B=80
-mapply(function(a,b) a*b,
-       1:3, 4:6)                # c(4,10,18)</code></pre>
-        <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:560px; margin:0 auto;">
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">apply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>matrix / array</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / array</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">lapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>list (always)</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">sapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / matrix</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">tapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>grouped vector</b><br><span style="color:var(--brand);">&#8595;</span><br>table by group</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">mapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>multiple args</b><br><span style="color:var(--brand);">&#8595;</span><br>vector</div>
-            </div>
-          </div>
-          <figcaption><b>Fig P2.1</b> · The apply family by input &#8594; output type</figcaption>
-        </figure>
-        <div class="score">
-          <b>Mark allocation (10 M)</b>
-          <ul>
-            <li><span>Role of each: apply / lapply / sapply / tapply / mapply</span><span>4 M</span></li>
-            <li><span>Comparison by input &#8594; output type</span><span>3 M</span></li>
-            <li><span>Worked R examples + "when to pick each"</span><span>3 M</span></li>
-          </ul>
-        </div>
-        <div class="box tip" style="margin-top:14px">
-          <span class="label">Key takeaways · revise these 5</span>
-          <ul style="margin:6px 0 0 18px">
-            <li><b><code>apply(M, MARGIN, FN)</code></b> — for matrices / arrays; MARGIN 1 = rows, 2 = cols, c(1,2) = each cell.</li>
-            <li><b><code>lapply(X, FN)</code></b> — always list output; pick when results vary in length/type.</li>
-            <li><b><code>sapply(X, FN)</code></b> — simplified lapply; vector when scalars, matrix when same-length vectors, list otherwise.</li>
-            <li><b><code>tapply(x, INDEX, FN)</code></b> — group-wise summary; e.g. mean salary by department. Categorical INDEX drives splits.</li>
-            <li><b><code>mapply(FN, A, B, ...)</code></b> — multi-arg parallel apply; treats N vectors as N argument streams to FN.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- P3 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P3</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q5(b) · 3×</span></div>
+  <!-- P1 (was P2) -->
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P1</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q5(b) · 3×</span></div>
     <div class="qbody">
       <p class="q">Write an R program to create a data frame of employees (name, dept, salary, joining_year). Perform: add a "bonus" column equal to 10% of salary; filter employees in "IT" with salary &gt; 50000; export to CSV; read it back and verify.</p>
       <div class="ans">
@@ -4572,101 +4418,8 @@ aggregate(salary ~ dept, data = emp, mean)</code></pre>
     </div>
   </div>
 
-  <!-- P4 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P4</span> · <span class="u">U3</span> · <span class="mk">10–15 M</span> <span class="src">⟲ BCA May-25 Q3(b) · 2×</span></div>
-    <div class="qbody">
-      <p class="q">Compare S3, S4 and Reference Classes (R5) in R. Build a "Bank Account" example in all three systems.</p>
-      <div class="ans">
-        <h5>S3 vs S4 vs R5 — full contrast</h5>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Feature</th><th>S3</th><th>S4</th><th>Reference (R5)</th></tr></thead>
-          <tbody>
-            <tr><td>Formality</td><td>Informal</td><td>Formal</td><td>Formal</td></tr>
-            <tr><td>Class definition</td><td><code>class(x)&lt;-"X"</code></td><td><code>setClass()</code></td><td><code>setRefClass()</code></td></tr>
-            <tr><td>Slot access</td><td><code>$</code></td><td><code>@</code></td><td><code>$</code></td></tr>
-            <tr><td>Type validation</td><td>None</td><td>Built-in</td><td>Built-in</td></tr>
-            <tr><td>Mutability</td><td>Copy-on-modify</td><td>Copy-on-modify</td><td><mark><b>Mutable</b></mark> (<code>&lt;&lt;-</code>)</td></tr>
-            <tr><td>Dispatch</td><td>Name lookup <code>fn.cls</code></td><td><code>setMethod()</code></td><td>Method inside class</td></tr>
-            <tr><td>Speed</td><td>Fastest</td><td>Slower (validation)</td><td>Slowest</td></tr>
-            <tr><td>Used in</td><td>Base R + tidyverse</td><td>Bioconductor, Matrix</td><td>R6 packages, Shiny</td></tr>
-          </tbody>
-        </table></div>
-        <h5>"BankAccount" built three ways</h5>
-        <p>Implementing the same class in all three systems shows that <mark>S3 is informal and copy-on-modify</mark>, <mark>S4 enforces typed slots</mark>, and <mark>R5 alone supports true mutation</mark> via <code>&lt;&lt;-</code>:</p>
-        <pre><code># --- S3 (immutable) ---
-deposit_s3 <- function(acc, x) { acc$bal <- acc$bal + x; acc }
-acc1 <- structure(list(bal=100), class="acc")
-acc1 <- deposit_s3(acc1, 50)        # must reassign
-
-# --- S4 (slot-validated, still copy-on-modify) ---
-setClass("Acc", representation(bal="numeric"))
-acc2 <- new("Acc", bal=100)
-acc2@bal <- acc2@bal + 50           # creates a copy in fn scope
-
-# --- Reference Class (mutable in place) ---
-Acc <- setRefClass("Acc",
-  fields=list(bal="numeric"),
-  methods=list(deposit=function(x) bal <<- bal + x))
-acc3 <- Acc$new(bal=100)
-acc3$deposit(50); acc3$bal          # 150 — mutated</code></pre>
-        <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:560px; margin:0 auto;">
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">S3 — informal</div>
-              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
-                <li>list + <code>class</code> attribute</li>
-                <li>dispatch via <code>UseMethod</code></li>
-                <li>no slot validation</li>
-                <li>copy-on-modify</li>
-              </ul>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">S4 — formal</div>
-              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
-                <li><code>setClass</code> typed slots</li>
-                <li><code>setGeneric</code> / <code>setMethod</code></li>
-                <li>validated at construction</li>
-                <li>copy-on-modify</li>
-              </ul>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">R5 — reference</div>
-              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
-                <li><code>setRefClass</code> fields</li>
-                <li>methods bundled inside</li>
-                <li><b>mutable</b> via <code>&lt;&lt;-</code></li>
-                <li>Java-like / stateful</li>
-              </ul>
-            </div>
-          </div>
-          <figcaption><b>Fig P4.1</b> · Three R OOP systems: S3 informal &#183; S4 typed &amp; validated &#183; R5 mutable in place</figcaption>
-        </figure>
-        <div class="score">
-          <b>Mark allocation (15 M)</b>
-          <ul>
-            <li><span>S3 vs S4 vs R5 contrast (7 rows)</span><span>5 M</span></li>
-            <li><span>BankAccount built in all three systems</span><span>6 M</span></li>
-            <li><span>Diagram + method dispatch + pick-by-need</span><span>4 M</span></li>
-          </ul>
-        </div>
-        <div class="box tip" style="margin-top:14px">
-          <span class="label">Key takeaways · revise these 5</span>
-          <ul style="margin:6px 0 0 18px">
-            <li><b>S3 BankAccount</b>: a plain list with <code>class&lt;-"acc"</code>; mutation requires reassigning the whole object — copy-on-modify.</li>
-            <li><b>S4 BankAccount</b>: <code>setClass("Acc", representation(bal="numeric"))</code>; slot-validated at construction; still copy-on-modify.</li>
-            <li><b>R5 BankAccount</b>: <code>setRefClass</code> with <code>fields</code> and <code>methods</code>; only R5 supports <code>&lt;&lt;-</code> mutation persisting across method calls.</li>
-            <li><b>Method dispatch:</b> S3 looks up <code>fn.class</code> by name; S4 / R5 use formal generics — S4 enforces argument types at registration.</li>
-            <li><b>Pick by need:</b> S3 for quick prototypes, S4 for typed reproducible packages (Bioconductor), R5 for stateful objects (DB handles, GUIs).</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- P5 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P5</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q5(b) · 3×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P2</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q5(b) · 3×</span></div>
     <div class="qbody">
       <p class="q">Explain measures of dispersion (range, variance, SD, IQR) along with measures of central tendency. Apply all on a real dataset in R.</p>
       <div class="ans">
@@ -4758,166 +4511,252 @@ summary(x)                        # 5-number summary</code></pre>
     </div>
   </div>
 
-  <!-- P6 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P6</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">BTech Jul-25 Q4</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P3</span> · <span class="u">U3</span> · <span class="mk">5–10 M</span> <span class="src">⟲ BTech Jul-25 Q5(a) · 3×</span></div>
     <div class="qbody">
-      <p class="q">Build a complete data-science pipeline in R: read a CSV, clean missing values, compute summary statistics, visualise with ggplot2, and run a hypothesis test.</p>
+      <p class="q">Compare apply, lapply, sapply, tapply and mapply with examples. When would you pick each?</p>
       <div class="ans">
-        <h5>Model answer — end-to-end pipeline</h5>
-        <pre><code># 1. Read
-df <- read.csv("students.csv", stringsAsFactors=FALSE,
-               na.strings = c("","NA"))
-
-# 2. Clean — drop rows with NA marks
-df <- df[!is.na(df$marks), ]
-df$marks[df$marks < 0] <- NA      # sentinel cleanup
-
-# 3. Summarise
-summary(df$marks); sd(df$marks, na.rm=TRUE)
-
-# 4. Visualise — histogram of marks
-library(ggplot2)
-ggplot(df, aes(x = marks)) +
-  geom_histogram(binwidth=5, fill="#166534") +
-  geom_vline(xintercept = mean(df$marks, na.rm=TRUE),
-             linetype="dashed", color="red") +
-  labs(title="Distribution of marks", x="Marks", y="Count")
-
-# 5. Hypothesis test — is mean marks > 60?
-t.test(df$marks, mu = 60, alternative = "greater")
-# Decide based on p-value vs alpha = 0.05</code></pre>
-        <p>Highlight the full pipeline (read → clean → summarise → visualise → test → decide) maps to the Unit-1 data processing chain (Fig 1.3) — circling back to first principles is a 1-mark bonus.</p>
-        <h5>Pipeline stages — function and purpose</h5>
+        <h5>The five members compared</h5>
         <div class="table-wrap"><table>
-          <thead><tr><th>Stage</th><th>R function</th><th>Purpose</th></tr></thead>
+          <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Pick it when…</th></tr></thead>
           <tbody>
-            <tr><td><mark>Read</mark></td><td><code>read.csv(na.strings=c("","NA"))</code></td><td>Import raw data; convert empties to NA on entry</td></tr>
-            <tr><td><mark>Clean</mark></td><td><code>df[!is.na(df$col),]</code> · <code>as.numeric()</code></td><td>Drop or impute missing values; fix types &amp; sentinels</td></tr>
-            <tr><td>Summarise</td><td><code>summary()</code> · <code>sd()</code></td><td>Describe centre &amp; spread before any modelling</td></tr>
-            <tr><td>Visualise</td><td><code>ggplot() + geom_histogram</code></td><td>Inspect distribution shape &amp; relationships visually</td></tr>
-            <tr><td>Model / Test</td><td><code>t.test()</code> · <code>lm()</code></td><td>Infer or model; produce p-value, 95% CI</td></tr>
-            <tr><td>Communicate</td><td>report / decision</td><td>Compare p-value vs <mark>α = 0.05</mark>; state conclusion</td></tr>
+            <tr><td><code>apply(X, M, FN)</code></td><td>matrix / data frame</td><td>vector / matrix</td><td>row-wise (<mark>M=1</mark>) or col-wise (<mark>M=2</mark>) over 2-D data</td></tr>
+            <tr><td><code>lapply(X, FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>results <mark>differ in length / type</mark> — keep structure</td></tr>
+            <tr><td><code>sapply(X, FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>results are <mark>uniform scalars</mark> — cleaner lapply</td></tr>
+            <tr><td><code>tapply(X, INDEX, FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td><mark>group-wise summary</mark> (e.g. mean by dept)</td></tr>
+            <tr><td><code>mapply(FN, ...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td><mark>multi-arg parallel</mark> apply over N streams</td></tr>
           </tbody>
         </table></div>
+        <h5>Worked comparison — same task on small data</h5>
+        <pre><code># Worked comparison on the same task — square root
+nums <- 1:4
+sapply(nums, sqrt)              # vector  c(1,1.41,1.73,2)
+lapply(nums, sqrt)              # list of 4
+apply(matrix(1:9,3,3), 2, sum)  # col sums  c(6,15,24)
+tapply(c(80,90,75,85),          # grouped mean
+       c("A","A","B","B"),
+       mean)                    # A=85, B=80
+mapply(function(a,b) a*b,
+       1:3, 4:6)                # c(4,10,18)</code></pre>
         <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:6px; align-items:stretch; max-width:580px; margin:0 auto;">
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Import<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">read.csv</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Clean<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">NA handling</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Explore<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">summary()</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Visualise<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">ggplot2</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Model<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">t.test / lm</span></div>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:2px solid var(--brand); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Communicate<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">report</span></div>
+          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:560px; margin:0 auto;">
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">apply</div>
+              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>matrix / array</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / array</div>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">lapply</div>
+              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>list (always)</div>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">sapply</div>
+              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / matrix</div>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">tapply</div>
+              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>grouped vector</b><br><span style="color:var(--brand);">&#8595;</span><br>table by group</div>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">mapply</div>
+              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>multiple args</b><br><span style="color:var(--brand);">&#8595;</span><br>vector</div>
+            </div>
           </div>
-          <div style="font-size:13px; color:var(--brand); letter-spacing:.45em; margin-top:4px;">&#8594; &#8594; &#8594; &#8594; &#8594;</div>
-          <figcaption><b>Fig P6.1</b> · The canonical data-science pipeline: import &#8594; clean &#8594; explore &#8594; visualise &#8594; model &#8594; communicate</figcaption>
+          <figcaption><b>Fig P2.1</b> · The apply family by input &#8594; output type</figcaption>
         </figure>
         <div class="score">
           <b>Mark allocation (10 M)</b>
           <ul>
-            <li><span>Read CSV + clean missing values</span><span>3 M</span></li>
-            <li><span>Summary statistics</span><span>2 M</span></li>
-            <li><span>Visualise with ggplot2</span><span>2 M</span></li>
-            <li><span>Hypothesis test + decision</span><span>3 M</span></li>
+            <li><span>Role of each: apply / lapply / sapply / tapply / mapply</span><span>4 M</span></li>
+            <li><span>Comparison by input &#8594; output type</span><span>3 M</span></li>
+            <li><span>Worked R examples + "when to pick each"</span><span>3 M</span></li>
           </ul>
         </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
-            <li><b>Stage 1 (Read):</b> <code>read.csv(file, stringsAsFactors=FALSE, na.strings=c("","NA"))</code> — converts empties to NA on import.</li>
-            <li><b>Stage 2 (Clean):</b> drop NAs with <code>df[!is.na(df$col), ]</code> or impute (mean/median); coerce types with <code>as.numeric()</code>.</li>
-            <li><b>Stage 3 (Summarise):</b> <code>summary()</code>, <code>sd()</code>, <code>aggregate()</code> — descriptive statistics before any modelling.</li>
-            <li><b>Stage 4 (Visualise):</b> <code>ggplot()</code> with <code>geom_histogram</code> for distribution shape, <code>geom_point + geom_smooth</code> for relationships.</li>
-            <li><b>Stage 5 (Test):</b> <code>t.test()</code>, <code>chisq.test()</code> or <code>lm()</code> to infer or model; report p-value + 95% CI + decision.</li>
+            <li><b><code>apply(M, MARGIN, FN)</code></b> — for matrices / arrays; MARGIN 1 = rows, 2 = cols, c(1,2) = each cell.</li>
+            <li><b><code>lapply(X, FN)</code></b> — always list output; pick when results vary in length/type.</li>
+            <li><b><code>sapply(X, FN)</code></b> — simplified lapply; vector when scalars, matrix when same-length vectors, list otherwise.</li>
+            <li><b><code>tapply(x, INDEX, FN)</code></b> — group-wise summary; e.g. mean salary by department. Categorical INDEX drives splits.</li>
+            <li><b><code>mapply(FN, A, B, ...)</code></b> — multi-arg parallel apply; treats N vectors as N argument streams to FN.</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- P7 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P7</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">BCA May-25 Q7(a)</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P4</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(a) · 2×</span></div>
     <div class="qbody">
-      <p class="q">Differentiate Database vs Data Warehouse. Discuss the ETL process and explain why data scientists prefer warehouses for analytics.</p>
+      <p class="q">Explain hypothesis testing with steps, types, and an R worked example using a two-sample t-test (or chi-square).</p>
       <div class="ans">
-        <h5>Model answer</h5>
-        <p>DB vs DW contrast for the differentiator:</p>
+        <h5>Definition</h5>
+        <p><mark><b>Hypothesis testing</b></mark> is a formal statistical procedure to decide between two competing claims about a population parameter using sample data and a chosen significance level <mark>&alpha;</mark>.</p>
+        <h5>The six steps (in order)</h5>
+        <ol>
+          <li><b>State H&#8320; &amp; H&#8321;</b> — null (<mark>no effect / equality</mark>) and alternative (the claim to test).</li>
+          <li><b>Choose &alpha;</b> — significance level, typically <mark>0.05</mark> (5%), fixed <i>before</i> seeing data.</li>
+          <li><b>Select the test statistic</b> — z, t, &chi;&sup2;, F, depending on the data.</li>
+          <li><b>Compute the statistic &amp; p-value</b> from the sample.</li>
+          <li><b>Decision rule</b> — <mark>reject H&#8320; if p &lt; &alpha;</mark> (or |stat| &gt; critical value).</li>
+          <li><b>Interpret in context</b> — translate the result back to the original problem.</li>
+        </ol>
+        <h5>Types of test (pick by data)</h5>
         <div class="table-wrap"><table>
-          <thead><tr><th>Aspect</th><th>Database (OLTP)</th><th>Data Warehouse (OLAP)</th></tr></thead>
+          <thead><tr><th>Test</th><th>Use when</th><th>R call</th></tr></thead>
           <tbody>
-            <tr><td>Purpose</td><td>Day-to-day transactions</td><td>Historical analysis &amp; reporting</td></tr>
-            <tr><td>Operations</td><td>INSERT · UPDATE · DELETE</td><td>SELECT-heavy analytical queries</td></tr>
-            <tr><td>Schema</td><td>Normalised (3NF)</td><td>Denormalised (Star / Snowflake)</td></tr>
-            <tr><td>Data</td><td>Current, real-time</td><td>Historical, aggregated</td></tr>
-            <tr><td>Users</td><td>Clerks, applications</td><td>Analysts, data scientists</td></tr>
-            <tr><td>Size</td><td>MBs–GBs · ms response</td><td>GBs–PBs · sec–min response</td></tr>
+            <tr><td>One-sample t</td><td>Sample mean vs a known value (n &lt; 30)</td><td><code>t.test(x, mu=50)</code></td></tr>
+            <tr><td>Two-sample t</td><td>Compare means of two independent groups</td><td><code>t.test(x, y)</code></td></tr>
+            <tr><td>Paired t</td><td>Before/after on the same units</td><td><code>t.test(x, y, paired=TRUE)</code></td></tr>
+            <tr><td>Z-test</td><td>n &#8805; 30 and &sigma; known</td><td><code>BSDA::z.test()</code></td></tr>
+            <tr><td>Chi-square</td><td>Independence / goodness-of-fit</td><td><code>chisq.test(tbl)</code></td></tr>
+            <tr><td>ANOVA</td><td>Compare 3+ group means</td><td><code>aov(y ~ group)</code></td></tr>
           </tbody>
         </table></div>
-        <p><b>ETL pipeline</b>:</p>
-        <ul>
-          <li><b>Extract</b> — pull from heterogeneous sources (OLTP DBs, APIs, flat files).</li>
-          <li><b>Transform</b> — clean (deduplicate, fix types), enrich (lookups), aggregate (rollups), conform (common dimensions).</li>
-          <li><b>Load</b> — bulk insert into the warehouse, usually as star schema (fact + dimension tables).</li>
-        </ul>
-        <p><b>Why DS prefers DW</b>:</p>
-        <ul>
-          <li><mark>historical depth</mark></li>
-          <li>denormalised reads are fast</li>
-          <li>pre-computed aggregates</li>
-          <li>separation from transactional load</li>
-          <li><mark>single source of truth</mark> across business units</li>
-        </ul>
-        <p>(Include Fig 1.7 architecture diagram.)</p>
+        <h5>R worked example — two-sample (rotation variant)</h5>
+        <pre><code># Are the mean marks of Section A and Section B different?
+A <- c(78, 85, 90, 72, 88, 91, 76)
+B <- c(70, 75, 68, 80, 72, 74, 69)
+
+t.test(A, B, var.equal = FALSE)
+# Welch t = 3.18, df = 9.4, p-value = 0.011
+# 95% CI of mean diff: [3.0, 17.6]
+# p < 0.05  →  reject H0.
+# Conclusion: section means differ significantly.</code></pre>
+        <p>Mention: paired version uses <code>paired=TRUE</code>; variance equality testable with <code>var.test()</code>.</p>
         <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(2,auto) 1fr; gap:8px; align-items:center; justify-content:center; max-width:560px; margin:0 auto;">
-            <div style="display:flex; flex-direction:column; gap:4px;">
-              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">DB&#8321; (OLTP)</div>
-              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">DB&#8322; / APIs</div>
-              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">Flat files</div>
-            </div>
-            <span style="color:var(--brand); font-size:20px;">&#8594;</span>
-            <div style="display:grid; grid-template-columns:repeat(3,1fr) auto repeat(2,1fr); gap:6px; align-items:center;">
-              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Extract</div>
-              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
-              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Transform<br><span style="font-size:8px; font-weight:500;">clean · aggregate</span></div>
-              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
-              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Load</div>
-              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
+          <div style="display:flex; flex-direction:column; align-items:center; gap:0; max-width:360px; margin:0 auto;">
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:8px 14px; font-weight:700; font-size:12.5px; width:100%; box-sizing:border-box;">1 · State H&#8320; (no effect) &amp; H&#8321; (effect)</div>
+            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
+            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">2 · Choose significance level &alpha; = 0.05</div>
+            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
+            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">3 · Compute test statistic (t / &chi;&sup2; / z)</div>
+            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
+            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:12px; width:100%; box-sizing:border-box;">4 · Find the p-value</div>
+            <div style="color:var(--brand); font-size:18px; line-height:1.1; margin:3px 0;">&#8595;</div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%;">
+              <div style="background:#fee2e2; color:#7c2d12; border:1.5px solid #9f1239; border-radius:6px; padding:8px 10px; font-size:11.5px; font-weight:700;">p &lt; &alpha;<br><span style="font-weight:600;">Reject H&#8320;</span></div>
+              <div style="background:#dcfce7; color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 10px; font-size:11.5px; font-weight:700;">p &#8805; &alpha;<br><span style="font-weight:600;">Fail to reject H&#8320;</span></div>
             </div>
           </div>
-          <div style="display:flex; gap:10px; align-items:center; justify-content:center; max-width:560px; margin:10px auto 0;">
-            <div style="background:var(--brand-deep); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:8px 14px; font-size:11.5px; font-weight:700;">Data Warehouse<br><span style="font-size:8.5px; font-weight:500;">star schema</span></div>
-            <span style="color:var(--brand); font-size:20px;">&#8594;</span>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:11.5px; font-weight:700;">BI / Analytics</div>
-          </div>
-          <figcaption><b>Fig P7.1</b> · ETL flow: OLTP sources &#8594; Extract-Transform-Load &#8594; warehouse &#8594; BI / analytics</figcaption>
+          <figcaption><b>Fig P1.1</b> · Six-step hypothesis-testing decision flow with the p-vs-&alpha; branch</figcaption>
         </figure>
         <div class="score">
           <b>Mark allocation (10 M)</b>
           <ul>
-            <li><span>Database vs Data Warehouse comparison table</span><span>4 M</span></li>
-            <li><span>ETL process (Extract / Transform / Load)</span><span>3 M</span></li>
-            <li><span>Why data scientists prefer warehouses</span><span>3 M</span></li>
+            <li><span>Definition + state H&#8320; / H&#8321;</span><span>2 M</span></li>
+            <li><span>Six steps + significance level &amp; p-value</span><span>3 M</span></li>
+            <li><span>Test types (t / z / &chi;&sup2;) + two-sample vs paired</span><span>2 M</span></li>
+            <li><span>R worked example (<code>t.test</code> output &amp; decision)</span><span>3 M</span></li>
           </ul>
         </div>
         <div class="box tip" style="margin-top:14px">
           <span class="label">Key takeaways · revise these 5</span>
           <ul style="margin:6px 0 0 18px">
-            <li><b>Purpose split:</b> DB runs the business (OLTP); DW understands the business (OLAP) — different optimisation targets.</li>
-            <li><b>Schema split:</b> DB is normalised (3NF) for write integrity; DW is denormalised (star/snowflake) for read speed and aggregation.</li>
-            <li><b>ETL pipeline:</b> Extract from heterogeneous OLTP sources → Transform (clean, conform, aggregate) → Load into warehouse fact + dimension tables.</li>
-            <li><b>Latency profile:</b> DB answers in milliseconds; DW answers in seconds to minutes — but on terabytes of history.</li>
-            <li><b>Why DS chooses DW:</b> historical depth, pre-computed aggregates, no contention with live transactions, single source of truth across business units.</li>
+            <li><b>Two-sample t-test</b> compares <i>two independent</i> sample means: <code>t.test(A, B)</code> defaults to Welch (unequal variances) — safer than Student's pooled t.</li>
+            <li><b>Welch vs Student:</b> set <code>var.equal=TRUE</code> only after verifying with <code>var.test(A, B)</code> that variances are similar.</li>
+            <li><b>Paired variant</b> for matched-pair / before-after designs: <code>t.test(before, after, paired=TRUE)</code> — much higher power than independent.</li>
+            <li><b>χ² independence:</b> <code>chisq.test(table(x, y))</code> handles two categorical variables; useful when the rotation drops t for chi-square.</li>
+            <li><b>Reading output:</b> reject H₀ when p &lt; α; the 95% CI of the mean difference excluding 0 corroborates the rejection.</li>
           </ul>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- P8 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P8</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q6(b) · 2×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P5</span> · <span class="u">U3</span> · <span class="mk">10–15 M</span> <span class="src">⟲ BCA May-25 Q3(b) · 2×</span></div>
+    <div class="qbody">
+      <p class="q">Compare S3, S4 and Reference Classes (R5) in R. Build a "Bank Account" example in all three systems.</p>
+      <div class="ans">
+        <h5>S3 vs S4 vs R5 — full contrast</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>S3</th><th>S4</th><th>Reference (R5)</th></tr></thead>
+          <tbody>
+            <tr><td>Formality</td><td>Informal</td><td>Formal</td><td>Formal</td></tr>
+            <tr><td>Class definition</td><td><code>class(x)&lt;-"X"</code></td><td><code>setClass()</code></td><td><code>setRefClass()</code></td></tr>
+            <tr><td>Slot access</td><td><code>$</code></td><td><code>@</code></td><td><code>$</code></td></tr>
+            <tr><td>Type validation</td><td>None</td><td>Built-in</td><td>Built-in</td></tr>
+            <tr><td>Mutability</td><td>Copy-on-modify</td><td>Copy-on-modify</td><td><mark><b>Mutable</b></mark> (<code>&lt;&lt;-</code>)</td></tr>
+            <tr><td>Dispatch</td><td>Name lookup <code>fn.cls</code></td><td><code>setMethod()</code></td><td>Method inside class</td></tr>
+            <tr><td>Speed</td><td>Fastest</td><td>Slower (validation)</td><td>Slowest</td></tr>
+            <tr><td>Used in</td><td>Base R + tidyverse</td><td>Bioconductor, Matrix</td><td>R6 packages, Shiny</td></tr>
+          </tbody>
+        </table></div>
+        <h5>"BankAccount" built three ways</h5>
+        <p>Implementing the same class in all three systems shows that <mark>S3 is informal and copy-on-modify</mark>, <mark>S4 enforces typed slots</mark>, and <mark>R5 alone supports true mutation</mark> via <code>&lt;&lt;-</code>:</p>
+        <pre><code># --- S3 (immutable) ---
+deposit_s3 <- function(acc, x) { acc$bal <- acc$bal + x; acc }
+acc1 <- structure(list(bal=100), class="acc")
+acc1 <- deposit_s3(acc1, 50)        # must reassign
+
+# --- S4 (slot-validated, still copy-on-modify) ---
+setClass("Acc", representation(bal="numeric"))
+acc2 <- new("Acc", bal=100)
+acc2@bal <- acc2@bal + 50           # creates a copy in fn scope
+
+# --- Reference Class (mutable in place) ---
+Acc <- setRefClass("Acc",
+  fields=list(bal="numeric"),
+  methods=list(deposit=function(x) bal <<- bal + x))
+acc3 <- Acc$new(bal=100)
+acc3$deposit(50); acc3$bal          # 150 — mutated</code></pre>
+        <figure class="diagram-fig">
+          <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:12px; max-width:560px; margin:0 auto;">
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">S3 — informal</div>
+              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
+                <li>list + <code>class</code> attribute</li>
+                <li>dispatch via <code>UseMethod</code></li>
+                <li>no slot validation</li>
+                <li>copy-on-modify</li>
+              </ul>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">S4 — formal</div>
+              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
+                <li><code>setClass</code> typed slots</li>
+                <li><code>setGeneric</code> / <code>setMethod</code></li>
+                <li>validated at construction</li>
+                <li>copy-on-modify</li>
+              </ul>
+            </div>
+            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden; text-align:left;">
+              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 8px; text-align:center;">R5 — reference</div>
+              <ul style="margin:0; padding:8px 8px 8px 22px; font-size:10.5px; line-height:1.55; color:var(--ink);">
+                <li><code>setRefClass</code> fields</li>
+                <li>methods bundled inside</li>
+                <li><b>mutable</b> via <code>&lt;&lt;-</code></li>
+                <li>Java-like / stateful</li>
+              </ul>
+            </div>
+          </div>
+          <figcaption><b>Fig P4.1</b> · Three R OOP systems: S3 informal &#183; S4 typed &amp; validated &#183; R5 mutable in place</figcaption>
+        </figure>
+        <div class="score">
+          <b>Mark allocation (15 M)</b>
+          <ul>
+            <li><span>S3 vs S4 vs R5 contrast (7 rows)</span><span>5 M</span></li>
+            <li><span>BankAccount built in all three systems</span><span>6 M</span></li>
+            <li><span>Diagram + method dispatch + pick-by-need</span><span>4 M</span></li>
+          </ul>
+        </div>
+        <div class="box tip" style="margin-top:14px">
+          <span class="label">Key takeaways · revise these 5</span>
+          <ul style="margin:6px 0 0 18px">
+            <li><b>S3 BankAccount</b>: a plain list with <code>class&lt;-"acc"</code>; mutation requires reassigning the whole object — copy-on-modify.</li>
+            <li><b>S4 BankAccount</b>: <code>setClass("Acc", representation(bal="numeric"))</code>; slot-validated at construction; still copy-on-modify.</li>
+            <li><b>R5 BankAccount</b>: <code>setRefClass</code> with <code>fields</code> and <code>methods</code>; only R5 supports <code>&lt;&lt;-</code> mutation persisting across method calls.</li>
+            <li><b>Method dispatch:</b> S3 looks up <code>fn.class</code> by name; S4 / R5 use formal generics — S4 enforces argument types at registration.</li>
+            <li><b>Pick by need:</b> S3 for quick prototypes, S4 for typed reproducible packages (Bioconductor), R5 for stateful objects (DB handles, GUIs).</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P6</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q6(b) · 2×</span></div>
     <div class="qbody">
       <p class="q">Explain the grammar of graphics. Describe the layers of a ggplot2 plot and build a complete chart with R code.</p>
       <div class="ans">
@@ -4975,9 +4814,8 @@ ggplot(data = mpg, aes(x = displ, y = hwy, colour = drv)) +  # 1 data + 2 aes
     </div>
   </div>
 
-  <!-- P9 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P9</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-24 Q2(b) · 2×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P7</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-24 Q2(b) · 2×</span></div>
     <div class="qbody">
       <p class="q">Compare vector, list, matrix and data frame in R. Give the creation syntax and one access example for each, and state when to use which.</p>
       <div class="ans">
@@ -5049,9 +4887,8 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
     </div>
   </div>
 
-  <!-- P10 -->
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P10</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(b) · 2×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P8</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q4(b) · 2×</span></div>
     <div class="qbody">
       <p class="q">Explain the d / p / q / r function family in R (<code>dnorm</code>, <code>pnorm</code>, <code>qnorm</code>, <code>rnorm</code>). Hence fit a Poisson distribution to the data x = 0,1,2,3,4 with frequencies f = 18, 22, 16, 10, 4 and compute the expected frequencies.</p>
       <div class="ans">
@@ -5158,8 +4995,8 @@ sum(expected)                 # 70  == N</code></pre>
     </div>
   </div>
 
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P11</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q7(a) · 2×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P9</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q7(a) · 2×</span></div>
     <div class="qbody">
       <p class="q">Explain the debugging techniques available in R (<code>traceback()</code>, <code>debug()</code>, <code>browser()</code>, <code>trace()</code>, <code>options(error)</code>) with examples.</p>
       <div class="ans">
@@ -5255,8 +5092,8 @@ options(error = NULL)   # restore default</code></pre>
     </div>
   </div>
 
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P12</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q3(b) · 2×</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P10</span> · <span class="u">U3</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q3(b) · 2×</span></div>
     <div class="qbody">
       <p class="q">Differentiate between <code>if</code>, <code>if-else</code>, <code>ifelse()</code> and <code>switch()</code> in R. Explain each with a worked example.</p>
       <div class="ans">
@@ -5340,8 +5177,87 @@ switch(grade,
     </div>
   </div>
 
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P13</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q2(b)</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P11</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">BCA May-25 Q7(a)</span></div>
+    <div class="qbody">
+      <p class="q">Differentiate Database vs Data Warehouse. Discuss the ETL process and explain why data scientists prefer warehouses for analytics.</p>
+      <div class="ans">
+        <h5>Model answer</h5>
+        <p>DB vs DW contrast for the differentiator:</p>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Aspect</th><th>Database (OLTP)</th><th>Data Warehouse (OLAP)</th></tr></thead>
+          <tbody>
+            <tr><td>Purpose</td><td>Day-to-day transactions</td><td>Historical analysis &amp; reporting</td></tr>
+            <tr><td>Operations</td><td>INSERT · UPDATE · DELETE</td><td>SELECT-heavy analytical queries</td></tr>
+            <tr><td>Schema</td><td>Normalised (3NF)</td><td>Denormalised (Star / Snowflake)</td></tr>
+            <tr><td>Data</td><td>Current, real-time</td><td>Historical, aggregated</td></tr>
+            <tr><td>Users</td><td>Clerks, applications</td><td>Analysts, data scientists</td></tr>
+            <tr><td>Size</td><td>MBs–GBs · ms response</td><td>GBs–PBs · sec–min response</td></tr>
+          </tbody>
+        </table></div>
+        <p><b>ETL pipeline</b>:</p>
+        <ul>
+          <li><b>Extract</b> — pull from heterogeneous sources (OLTP DBs, APIs, flat files).</li>
+          <li><b>Transform</b> — clean (deduplicate, fix types), enrich (lookups), aggregate (rollups), conform (common dimensions).</li>
+          <li><b>Load</b> — bulk insert into the warehouse, usually as star schema (fact + dimension tables).</li>
+        </ul>
+        <p><b>Why DS prefers DW</b>:</p>
+        <ul>
+          <li><mark>historical depth</mark></li>
+          <li>denormalised reads are fast</li>
+          <li>pre-computed aggregates</li>
+          <li>separation from transactional load</li>
+          <li><mark>single source of truth</mark> across business units</li>
+        </ul>
+        <p>(Include Fig 1.7 architecture diagram.)</p>
+        <figure class="diagram-fig">
+          <div style="display:grid; grid-template-columns:repeat(2,auto) 1fr; gap:8px; align-items:center; justify-content:center; max-width:560px; margin:0 auto;">
+            <div style="display:flex; flex-direction:column; gap:4px;">
+              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">DB&#8321; (OLTP)</div>
+              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">DB&#8322; / APIs</div>
+              <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:5px; padding:5px 8px; font-size:10px; font-weight:600;">Flat files</div>
+            </div>
+            <span style="color:var(--brand); font-size:20px;">&#8594;</span>
+            <div style="display:grid; grid-template-columns:repeat(3,1fr) auto repeat(2,1fr); gap:6px; align-items:center;">
+              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Extract</div>
+              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
+              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Transform<br><span style="font-size:8px; font-weight:500;">clean · aggregate</span></div>
+              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
+              <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:5px; padding:7px 4px; font-size:10px; font-weight:700;">Load</div>
+              <span style="color:var(--brand); font-size:16px; text-align:center;">&#8594;</span>
+            </div>
+          </div>
+          <div style="display:flex; gap:10px; align-items:center; justify-content:center; max-width:560px; margin:10px auto 0;">
+            <div style="background:var(--brand-deep); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:8px 14px; font-size:11.5px; font-weight:700;">Data Warehouse<br><span style="font-size:8.5px; font-weight:500;">star schema</span></div>
+            <span style="color:var(--brand); font-size:20px;">&#8594;</span>
+            <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:11.5px; font-weight:700;">BI / Analytics</div>
+          </div>
+          <figcaption><b>Fig P7.1</b> · ETL flow: OLTP sources &#8594; Extract-Transform-Load &#8594; warehouse &#8594; BI / analytics</figcaption>
+        </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Database vs Data Warehouse comparison table</span><span>4 M</span></li>
+            <li><span>ETL process (Extract / Transform / Load)</span><span>3 M</span></li>
+            <li><span>Why data scientists prefer warehouses</span><span>3 M</span></li>
+          </ul>
+        </div>
+        <div class="box tip" style="margin-top:14px">
+          <span class="label">Key takeaways · revise these 5</span>
+          <ul style="margin:6px 0 0 18px">
+            <li><b>Purpose split:</b> DB runs the business (OLTP); DW understands the business (OLAP) — different optimisation targets.</li>
+            <li><b>Schema split:</b> DB is normalised (3NF) for write integrity; DW is denormalised (star/snowflake) for read speed and aggregation.</li>
+            <li><b>ETL pipeline:</b> Extract from heterogeneous OLTP sources → Transform (clean, conform, aggregate) → Load into warehouse fact + dimension tables.</li>
+            <li><b>Latency profile:</b> DB answers in milliseconds; DW answers in seconds to minutes — but on terabytes of history.</li>
+            <li><b>Why DS chooses DW:</b> historical depth, pre-computed aggregates, no contention with live transactions, single source of truth across business units.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P12</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q2(b)</span></div>
     <div class="qbody">
       <p class="q">Differentiate between supervised and unsupervised learning with examples (classification, regression, clustering).</p>
       <div class="ans">
@@ -5428,8 +5344,8 @@ table(km$cluster, iris$Species)          # compare groups AFTER, just to inspect
     </div>
   </div>
 
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P14</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q2(a)</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P13</span> · <span class="u">U1</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-25 Q2(a)</span></div>
     <div class="qbody">
       <p class="q">Define Data Science. Explain its key components / pillars and give real-world applications.</p>
       <div class="ans">
@@ -5485,8 +5401,8 @@ coef(model)                         # insight: mpg falls as weight rises
     </div>
   </div>
 
-  <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P15</span> · <span class="u">U2</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q6(b)</span></div>
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P14</span> · <span class="u">U2</span> · <span class="mk">10 M</span> <span class="src">⟲ BCA May-23 Q6(b)</span></div>
     <div class="qbody">
       <p class="q">Explain how to create a matrix in R. Demonstrate element-wise multiplication, matrix multiplication (%*%), and combining matrices with cbind()/rbind().</p>
       <div class="ans">
@@ -5559,6 +5475,82 @@ dim(rbind(A, B))   # 4 2</code></pre>
             <li><b><code>A %*% B</code></b> — true matrix product, needs <code>cols(A)=rows(B)</code>; row&times;column dot-products.</li>
             <li><b><code>cbind()</code></b> appends columns (matching rows) &#8594; wider; <b><code>rbind()</code></b> stacks rows (matching columns) &#8594; taller.</li>
             <li><b>Inspect</b> with <code>dim()</code>, <code>nrow()</code>, <code>ncol()</code>, <code>t()</code> (transpose); never confuse <code>*</code> with <code>%*%</code> in the exam.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+    <div class="qcard predicted">
+    <div class="qhead"><span class="yr">P15</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">BTech Jul-25 Q4</span></div>
+    <div class="qbody">
+      <p class="q">Build a complete data-science pipeline in R: read a CSV, clean missing values, compute summary statistics, visualise with ggplot2, and run a hypothesis test.</p>
+      <div class="ans">
+        <h5>Model answer — end-to-end pipeline</h5>
+        <pre><code># 1. Read
+df <- read.csv("students.csv", stringsAsFactors=FALSE,
+               na.strings = c("","NA"))
+
+# 2. Clean — drop rows with NA marks
+df <- df[!is.na(df$marks), ]
+df$marks[df$marks < 0] <- NA      # sentinel cleanup
+
+# 3. Summarise
+summary(df$marks); sd(df$marks, na.rm=TRUE)
+
+# 4. Visualise — histogram of marks
+library(ggplot2)
+ggplot(df, aes(x = marks)) +
+  geom_histogram(binwidth=5, fill="#166534") +
+  geom_vline(xintercept = mean(df$marks, na.rm=TRUE),
+             linetype="dashed", color="red") +
+  labs(title="Distribution of marks", x="Marks", y="Count")
+
+# 5. Hypothesis test — is mean marks > 60?
+t.test(df$marks, mu = 60, alternative = "greater")
+# Decide based on p-value vs alpha = 0.05</code></pre>
+        <p>Highlight the full pipeline (read → clean → summarise → visualise → test → decide) maps to the Unit-1 data processing chain (Fig 1.3) — circling back to first principles is a 1-mark bonus.</p>
+        <h5>Pipeline stages — function and purpose</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Stage</th><th>R function</th><th>Purpose</th></tr></thead>
+          <tbody>
+            <tr><td><mark>Read</mark></td><td><code>read.csv(na.strings=c("","NA"))</code></td><td>Import raw data; convert empties to NA on entry</td></tr>
+            <tr><td><mark>Clean</mark></td><td><code>df[!is.na(df$col),]</code> · <code>as.numeric()</code></td><td>Drop or impute missing values; fix types &amp; sentinels</td></tr>
+            <tr><td>Summarise</td><td><code>summary()</code> · <code>sd()</code></td><td>Describe centre &amp; spread before any modelling</td></tr>
+            <tr><td>Visualise</td><td><code>ggplot() + geom_histogram</code></td><td>Inspect distribution shape &amp; relationships visually</td></tr>
+            <tr><td>Model / Test</td><td><code>t.test()</code> · <code>lm()</code></td><td>Infer or model; produce p-value, 95% CI</td></tr>
+            <tr><td>Communicate</td><td>report / decision</td><td>Compare p-value vs <mark>α = 0.05</mark>; state conclusion</td></tr>
+          </tbody>
+        </table></div>
+        <figure class="diagram-fig">
+          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:6px; align-items:stretch; max-width:580px; margin:0 auto;">
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Import<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">read.csv</span></div>
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Clean<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">NA handling</span></div>
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Explore<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">summary()</span></div>
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Visualise<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">ggplot2</span></div>
+            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Model<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">t.test / lm</span></div>
+            <div style="background:var(--brand-soft); color:var(--brand-deep); border:2px solid var(--brand); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Communicate<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">report</span></div>
+          </div>
+          <div style="font-size:13px; color:var(--brand); letter-spacing:.45em; margin-top:4px;">&#8594; &#8594; &#8594; &#8594; &#8594;</div>
+          <figcaption><b>Fig P6.1</b> · The canonical data-science pipeline: import &#8594; clean &#8594; explore &#8594; visualise &#8594; model &#8594; communicate</figcaption>
+        </figure>
+        <div class="score">
+          <b>Mark allocation (10 M)</b>
+          <ul>
+            <li><span>Read CSV + clean missing values</span><span>3 M</span></li>
+            <li><span>Summary statistics</span><span>2 M</span></li>
+            <li><span>Visualise with ggplot2</span><span>2 M</span></li>
+            <li><span>Hypothesis test + decision</span><span>3 M</span></li>
+          </ul>
+        </div>
+        <div class="box tip" style="margin-top:14px">
+          <span class="label">Key takeaways · revise these 5</span>
+          <ul style="margin:6px 0 0 18px">
+            <li><b>Stage 1 (Read):</b> <code>read.csv(file, stringsAsFactors=FALSE, na.strings=c("","NA"))</code> — converts empties to NA on import.</li>
+            <li><b>Stage 2 (Clean):</b> drop NAs with <code>df[!is.na(df$col), ]</code> or impute (mean/median); coerce types with <code>as.numeric()</code>.</li>
+            <li><b>Stage 3 (Summarise):</b> <code>summary()</code>, <code>sd()</code>, <code>aggregate()</code> — descriptive statistics before any modelling.</li>
+            <li><b>Stage 4 (Visualise):</b> <code>ggplot()</code> with <code>geom_histogram</code> for distribution shape, <code>geom_point + geom_smooth</code> for relationships.</li>
+            <li><b>Stage 5 (Test):</b> <code>t.test()</code>, <code>chisq.test()</code> or <code>lm()</code> to infer or model; report p-value + 95% CI + decision.</li>
           </ul>
         </div>
       </div>
