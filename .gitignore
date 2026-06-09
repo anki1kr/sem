@@ -15,20 +15,7 @@ $RECYCLE.BIN/
 # Claude Code workspace
 .claude/
 CLAUDE.md
-prompt.md
-.claude-flow
-.swarm
 ruvector.db
-
-# Personal reference / source material (PYQs, syllabi, scans)
-reference/
-reference/**
-
-# MCP plugin databases (ruflo/ruvector etc — not part of site)
-*.db
-*.db-journal
-*.db-wal
-*.db-shm
 
 # Env / secrets
 .env
@@ -44,8 +31,9 @@ build/
 
 # Service-worker generated artifacts (none right now, but reserved)
 workbox-*.js
-loc.md
 .playwright-mcp
 dbms-exam-guide.html
 ctrc-exam-guide.html
 iks-exam-guide.html
+loc-exam-guide.html
+*.bak*
