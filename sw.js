@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v42';
+const CACHE_VERSION = 'bca-prep-v43';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -38,7 +38,22 @@ const PRECACHE_URLS = [
   './wc-images/3g-umts-architecture.png',
   './wc-images/4g-lte-architecture.png',
   './wc-images/basic-cellular-system.png',
-  './wc-images/frequency-reuse-n12.png'
+  './wc-images/frequency-reuse-n12.png',
+  './rds-images/supervised-vs-unsupervised.png',
+  './rds-images/data-processing-chain.png',
+  './rds-images/r-data-structures.png',
+  './rds-images/db-vs-warehouse.png',
+  './rds-images/ggplot2-layers.png',
+  './rds-images/apply-family.png',
+  './rds-images/central-tendency-dispersion.png',
+  './rds-images/oop-s3-s4-r5.png',
+  './rds-images/debugging-tools.png',
+  './rds-images/normal-curve-689599.png',
+  './rds-images/csv-io-flow.png',
+  './rds-images/dikw-pyramid.png',
+  './rds-images/rstudio-4panes.png',
+  './rds-images/ifelse-flowchart.png',
+  './rds-images/loops-three-panel.png'
 ];
 
 // Install: pre-cache all guides. Use individual put() so a single 404 does
