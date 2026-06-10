@@ -413,19 +413,25 @@ code{
 /* ---------- CODE ---------- */
 pre{
   font-family:"JetBrains Mono", monospace;
-  font-size:11.5px;
-  line-height:1.5;
-  background:#1a1209;
-  color:#f7f1e1;
-  padding:10px 12px;
-  border-radius:4px;
+  font-variant-ligatures:none;
+  font-size:12.5px;
+  line-height:1.7;
+  background:linear-gradient(135deg, #0f1d16 0%, #15261c 100%);
+  color:#e8f2e6;
+  padding:14px 16px;
+  border-radius:8px;
   overflow-x:auto;
-  margin:10px -2px;
-  border-left:3px solid var(--brand);
+  margin:12px -2px;
+  border:1px solid #2a4634;
+  border-left:4px solid var(--brand);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04), 2px 3px 0 rgba(15,29,22,.18);
   position:relative;
   white-space:pre;
   -webkit-overflow-scrolling:touch;
 }
+pre .cmt{ color:#8fb89a; font-style:italic; }
+pre .str{ color:#e9c98b; }
+pre .num{ color:#a8d8b9; }
 @media (min-width:600px){ pre{ font-size:13px; line-height:1.55; padding:14px 16px; margin:12px 0; } }
 pre code{ background:transparent; border:none; color:inherit; padding:0; font-size:inherit; }
 pre::before{
@@ -2168,21 +2174,22 @@ as.integer(3.9)       # 3   (truncates toward zero, does NOT round)</code></pre>
 
   <div class="topic" id="t-2-9">
     <h3>2.9 Math &amp; Pre-defined Functions <span class="tag fav">Part-A 2023(a), 2024(b,f)</span></h3>
+<p style="margin:16px 0 2px;"><b>1 · <mark>Arithmetic &amp; exponential</mark></b> — abs, sqrt, exp, log family</p>
 <pre><code># Arithmetic
 abs(-5)           # 5
 sqrt(16)          # 4
 exp(1)            # 2.718
 log(100)          # 4.605 (natural log)
 log10(100)        # 2
-log2(8)           # 3
-
-# Rounding
+log2(8)           # 3</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · Rounding</b> — ceiling, floor, round, signif</p>
+<pre><code># Rounding
 ceiling(2.3)      # 3
 floor(2.7)        # 2
 round(2.567, 1)   # 2.6
-signif(123.45, 3) # 123
-
-# Trig
+signif(123.45, 3) # 123</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · Trig &amp; <mark>aggregation</mark></b> — sin/cos/tan, sum/mean/sd</p>
+<pre><code># Trig
 sin(pi/2)         # 1
 cos(0); tan(pi/4)
 
@@ -2631,6 +2638,7 @@ ifelse(v >= 0, "non-neg", "neg")
       </tbody>
     </table>
     </div>
+<p style="margin:16px 0 2px;"><b>1 · <mark>Element-wise vs scalar short-circuit</mark></b> — &amp; / &amp;&amp; behaviour trap</p>
 <pre><code># Element-wise (&amp;) vs scalar short-circuit (&amp;&amp;) — the classic trap
 a &lt;- c(TRUE, FALSE, TRUE)
 b &lt;- c(TRUE, TRUE,  FALSE)
@@ -2639,9 +2647,9 @@ a &amp;&amp; b           # tests only a[1] &amp; b[1] -> in R >= 4.3 this ERRORS
 
 # Short-circuit avoids the costly / unsafe right side
 x &lt;- 0
-if (x != 0 &amp;&amp; 10 / x > 1) print("safe")   # 10/x never runs when x == 0
-
-# NA propagation — TRUE/FALSE can override an unknown
+if (x != 0 &amp;&amp; 10 / x > 1) print("safe")   # 10/x never runs when x == 0</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>NA propagation</mark> &amp; reducers</b> — NA &amp; FALSE/TRUE, all(), %in%, xor()</p>
+<pre><code># NA propagation — TRUE/FALSE can override an unknown
 NA &amp; FALSE        # FALSE  (one FALSE forces AND false)
 NA &amp; TRUE         # NA     (still unknown)
 NA | TRUE         # TRUE   (one TRUE forces OR true)
@@ -2765,14 +2773,15 @@ xor(TRUE, FALSE)                       # TRUE</code></pre>
       <figcaption><b>Fig 3.3b</b> · The three loops along init &rarr; condition &rarr; body &rarr; update. <code>for</code> bakes init/condition/update into one header; <code>while</code> and <code>repeat</code> need them by hand. Entry-controlled loops can skip the body entirely; the exit-controlled <code>repeat</code> always executes at least once.</figcaption>
     </figure>
 
+<p style="margin:16px 0 2px;"><b>1 · <mark>for / while</mark></b> — entry-controlled loops quick demo</p>
 <pre><code># for: cube of 1..7 (May-2023 Part-A j)
 for (i in 1:7) print(i^3)
 
 # while
 i <- 1
-while (i <= 5) { print(i); i <- i + 1 }
-
-# repeat
+while (i <= 5) { print(i); i <- i + 1 }</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>repeat</mark> &amp; next</b> — exit-controlled loop and skip keyword</p>
+<pre><code># repeat
 i <- 1
 repeat {
   if (i > 5) break
@@ -2792,6 +2801,7 @@ for (i in 1:5) {
     </div>
 
     <p><b>Worked answer — May-2023 Q1j (cubes of 1..7) in all three loop forms:</b></p>
+<p style="margin:16px 0 2px;"><b>1 · <mark>for loop</mark></b> — May-2023 Q1j verbatim, cubes with output</p>
 <pre><code class="language-r"># for — cube of 1..7 (May-2023 Q1j verbatim)
 for (i in 1:7) {
   print(i ^ 3)
@@ -2802,17 +2812,15 @@ for (i in 1:7) {
 # [1] 64
 # [1] 125
 # [1] 216
-# [1] 343
-
-# while — same task, manual counter
-i <- 1
+# [1] 343</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · while loop</b> — same task, manual counter</p>
+<pre><code class="language-r">i <- 1
 while (i <= 7) {
   cat(i ^ 3, " ")            # 1 8 27 64 125 216 343
   i <- i + 1
-}
-
-# repeat — runs forever, needs explicit break (May-2023 Q1g)
-i <- 1
+}</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>repeat loop</mark></b> — needs explicit break (May-2023 Q1g)</p>
+<pre><code class="language-r">i <- 1
 repeat {
   cat(i ^ 3, " ")
   i <- i + 1
@@ -2861,6 +2869,7 @@ calc("xor", 1, 1)        # "Unknown operation"  — falls to default</code></pre
 
   <div class="topic" id="t-3-5">
     <h3>3.5 Lists in R — operations <span class="tag hot">⭐ 2023 Q2a, 2024 Q3a</span></h3>
+<p style="margin:16px 0 2px;"><b>1 · <mark>Create &amp; access</mark></b> — heterogeneous list with 4 element types, 3 access syntaxes</p>
 <pre><code># Create a heterogeneous list (4 element types)
 student <- list(
   name   = "Ankit",          # character
@@ -2873,9 +2882,9 @@ names(student) <- c("name","marks","subj","passed")
 # Access (3 ways)
 student$name        # "Ankit"
 student[[2]]        # numeric vector itself
-student["subj"]     # sub-list (length 1)
-
-# Common operations
+student["subj"]     # sub-list (length 1)</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · Common operations &amp; <mark>recursive list</mark></b> — add/remove/sapply/class; list of lists</p>
+<pre><code># Common operations
 length(student)          # 4
 names(student)
 student$grade <- "A"     # add
@@ -2921,6 +2930,7 @@ area(4, 3)                         # 12</code></pre>
 
   <div class="topic" id="t-3-6">
     <h3>3.6 Data Frames — Common Operations</h3>
+<p style="margin:16px 0 2px;"><b>1 · <mark>Create &amp; inspect</mark></b> — data.frame(), str/head/summary/dim</p>
 <pre><code>df <- data.frame(
   name=c("A","B","C","D"),
   marks=c(80, 90, 65, 45),
@@ -2930,18 +2940,18 @@ area(4, 3)                         # 12</code></pre>
 str(df); head(df, 2); summary(df); dim(df)
 
 # Add column
-df$grade <- ifelse(df$marks >= 60, "Pass", "Fail")
-
-# Filter rows
+df$grade <- ifelse(df$marks >= 60, "Pass", "Fail")</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Filter, sort &amp; aggregate</mark></b> — row filter, order(), aggregate()</p>
+<pre><code># Filter rows
 df[df$marks > 70, ]
 
 # Sort
 df[order(-df$marks), ]   # descending
 
 # Aggregate
-aggregate(marks ~ grade, data=df, mean)
-
-# Bind
+aggregate(marks ~ grade, data=df, mean)</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · Bind &amp; <mark>export</mark></b> — rbind/cbind, write.csv</p>
+<pre><code># Bind
 rbind(df, data.frame(name="E", marks=88, grade="Pass"))
 cbind(df, bonus=df$marks * 0.1)
 
@@ -3284,6 +3294,7 @@ grepl("an", "banana")       # TRUE</code></pre>
       <li><code>grepl()</code> returns a <b>logical mask</b> of the same length as the input vector</li>
       <li><code>paste(..., collapse = ", ")</code> joins a whole vector into one string; without <code>collapse</code> it returns a vector</li>
     </ul>
+<p style="margin:16px 0 2px;"><b>1 · <mark>grep / grepl</mark> &amp; extract</b> — regex index/mask, regmatches</p>
 <pre><code>fruits <- c("apple", "banana", "cherry", "avocado")
 
 # grep / grepl — find matches (regex)
@@ -3294,9 +3305,9 @@ grepl("an", fruits)         # FALSE TRUE FALSE FALSE  (logical mask)
 # regmatches + regexpr — extract the matched part
 x <- "Order #4521 shipped"
 m <- regexpr("[0-9]+", x)
-regmatches(x, m)            # "4521"
-
-# paste vs paste0 (collapse joins a vector into ONE string)
+regmatches(x, m)            # "4521"</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>paste</mark> / paste0 &amp; format</b> — collapse, vectorised ID gen, formatC</p>
+<pre><code># paste vs paste0 (collapse joins a vector into ONE string)
 paste(fruits, collapse=", ")     # "apple, banana, cherry, avocado"
 paste0("ID_", 1:3)               # "ID_1" "ID_2" "ID_3"  (vectorised)
 
@@ -4894,22 +4905,23 @@ summary(x)                        # 5-number summary</code></pre>
       </figure>
       <div class="ans">
         <h5>Model answer</h5>
-        <pre><code>emp <- data.frame(
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Data frame</mark></b> — create employee table with 6 rows, 4 columns</p>
+<pre><code>emp <- data.frame(
   name        = c("Ankit","Bina","Chetan","Disha","Eshan","Fai"),
   dept        = c("IT","HR","IT","Finance","IT","HR"),
   salary      = c(60000, 45000, 52000, 70000, 48000, 55000),
   joining_year= c(2019, 2020, 2021, 2018, 2022, 2020),
   stringsAsFactors = FALSE
-)
-
-# 1. Bonus column
+)</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Bonus column + filter</mark></b> — add computed column, then subset IT dept with salary &gt; 50000</p>
+<pre><code># 1. Bonus column
 emp$bonus <- emp$salary * 0.10
 
 # 2. Filter: IT dept AND salary > 50000
 it_high <- emp[emp$dept == "IT" & emp$salary > 50000, ]
-print(it_high)        # Ankit, Chetan
-
-# 3. Export
+print(it_high)        # Ankit, Chetan</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>CSV export / re-read + aggregate</mark></b> — write to file, read back, verify, compute dept-wise mean</p>
+<pre><code># 3. Export
 write.csv(emp, "employees.csv", row.names = FALSE)
 
 # 4. Re-read
@@ -5246,7 +5258,8 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
           <li>Spots <b>outliers</b> — isolated points far from the main cluster.</li>
         </ul>
         <p><b>Example — study hours vs marks</b></p>
-        <pre><code># Base graphics
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Base graphics scatter</mark></b> — plot points + regression line with <code>plot()</code> and <code>abline()</code></p>
+<pre><code># Base graphics
 hours  <- c(2, 3, 5, 6, 7, 8, 9)
 marks  <- c(40, 50, 60, 65, 72, 80, 88)
 plot(hours, marks,
@@ -5256,9 +5269,9 @@ plot(hours, marks,
      col  = "steelblue",   # point colour
      pch  = 16,            # solid circle
      cex  = 1.4)
-abline(lm(marks ~ hours), col = "firebrick", lwd = 2)
-
-# ggplot2 equivalent
+abline(lm(marks ~ hours), col = "firebrick", lwd = 2)</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>ggplot2 scatter</mark></b> — same plot with <code>geom_point()</code> and <code>geom_smooth(method="lm")</code></p>
+<pre><code># ggplot2 equivalent
 library(ggplot2)
 df <- data.frame(hours, marks)
 ggplot(df, aes(x = hours, y = marks)) +
@@ -5703,11 +5716,12 @@ sum(expected)                 # 70  == N</code></pre>
         </table></div>
         <h5>Worked example</h5>
         <p><b>Scenario:</b> a faulty function divides by a column that may contain zero. Each tool below isolates the same bug from a different angle:</p>
-        <pre><code>f &lt;- function(x) g(x)
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Faulty function setup</mark></b> — define two functions where division-by-zero is the bug</p>
+<pre><code>f &lt;- function(x) g(x)
 g &lt;- function(x) x / (x - 5)   # error path when x == 5
-f(5)                            # produces Inf / NaN
-
-# 1. traceback() — post-mortem: which calls led here?
+f(5)                            # produces Inf / NaN</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>traceback() and debug()</mark></b> — post-mortem call stack, then step-through with <code>debug()</code></p>
+<pre><code># 1. traceback() — post-mortem: which calls led here?
 traceback()
 #   2: g(x) at #1
 #   1: f(5)
@@ -5715,9 +5729,9 @@ traceback()
 # 2. debug() — step through g() on its next call
 debug(g)
 f(5)            # enters g(); type n, n, ... ; inspect with: x
-undebug(g)      # stop debugging g()
-
-# 3. browser() — hard breakpoint inside the function
+undebug(g)      # stop debugging g()</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>browser(), trace(), options(error)</mark></b> — hard breakpoint, non-invasive inject, global error handler</p>
+<pre><code># 3. browser() — hard breakpoint inside the function
 g &lt;- function(x) { browser(); x / (x - 5) }
 f(5)            # pauses; at Browse&gt; prompt try:  x ;  x - 5
 
@@ -5788,7 +5802,8 @@ options(error = NULL)   # restore default</code></pre>
           </tbody>
         </table></div>
         <h5>Worked example — same grading task, four ways</h5>
-        <pre><code># --- 1. if : single condition, scalar only ---
+        <p style="margin:16px 0 2px;"><b>1 · <mark>if and if-else</mark></b> — scalar-only single-branch and two-branch statements</p>
+<pre><code># --- 1. if : single condition, scalar only ---
 marks &lt;- 72
 if (marks &gt;= 40) print("Pass")        # "Pass"
 
@@ -5798,14 +5813,14 @@ if (marks &gt;= 40) {
 } else {
   result &lt;- "Fail"
 }
-print(result)                          # "Pass"
-
-# --- 3. ifelse() : VECTORISED over a whole column ---
+print(result)                          # "Pass"</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>ifelse() vectorised</mark></b> — applies condition element-wise over a whole vector</p>
+<pre><code># --- 3. ifelse() : VECTORISED over a whole column ---
 scores &lt;- c(72, 35, 50, 28)
 ifelse(scores &gt;= 40, "Pass", "Fail")
-# c("Pass","Fail","Pass","Fail")  -- one result per element
-
-# --- 4. switch() : multi-way selection on a label ---
+# c("Pass","Fail","Pass","Fail")  -- one result per element</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>switch()</mark></b> — multi-way label selector with named cases and default fallback</p>
+<pre><code># --- 4. switch() : multi-way selection on a label ---
 grade &lt;- "B"
 switch(grade,
        A = "Excellent",
@@ -5886,7 +5901,8 @@ switch(grade,
           </tbody>
         </table></div>
         <h5>Programs for each loop type</h5>
-        <pre><code># ── for loop: print cubes of 1 to 7 ──────────────────────────
+        <p style="margin:16px 0 2px;"><b>1 · <mark>for loop</mark></b> — iterate over known sequence 1:7, print cubes with output</p>
+<pre><code># ── for loop: print cubes of 1 to 7 ──────────────────────────
 for (i in 1:7) {
   cat(i, "cubed =", i^3, "\n")
 }
@@ -5896,16 +5912,16 @@ for (i in 1:7) {
 #         4 cubed = 64
 #         5 cubed = 125
 #         6 cubed = 216
-#         7 cubed = 343
-
-# ── while loop: same task ─────────────────────────────────────
+#         7 cubed = 343</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>while loop</mark></b> — condition checked before each iteration; manual increment required</p>
+<pre><code># ── while loop: same task ─────────────────────────────────────
 i &lt;- 1
 while (i &lt;= 7) {
   cat(i, "cubed =", i^3, "\n")
   i &lt;- i + 1          # increment manually — or loop never ends
-}
-
-# ── repeat loop: same task ────────────────────────────────────
+}</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>repeat loop</mark></b> — body runs first; must use explicit <code>break</code> to exit</p>
+<pre><code># ── repeat loop: same task ────────────────────────────────────
 i &lt;- 1
 repeat {
   cat(i, "cubed =", i^3, "\n")
@@ -5984,18 +6000,17 @@ for (i in 1:7) {
           <li>Print each result with <code>cat()</code> for formatted, readable console output.</li>
         </ul>
         <h5>The Script</h5>
-        <pre><code># ── Student Grade Classifier in R ──────────────────────────────
-
-# 1. Data: student names and their marks in 3 subjects
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Data</mark></b> — data frame of 5 students with marks in 3 subjects</p>
+<pre><code># 1. Data: student names and their marks in 3 subjects
 students &lt;- data.frame(
   name    = c("Ankit", "Bina", "Chetan", "Disha", "Eshan"),
   math    = c(88, 45, 72, 55, 91),
   science = c(76, 38, 68, 60, 89),
   english = c(82, 50, 74, 58, 93),
   stringsAsFactors = FALSE
-)
-
-# 2. Function: classify average marks into a letter grade
+)</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Function</mark></b> — <code>calc_grade(avg)</code> uses if/else-if ladder to return A–F letter grade</p>
+<pre><code># 2. Function: classify average marks into a letter grade
 calc_grade &lt;- function(avg) {
   if (avg &gt;= 90) {
     return("A")
@@ -6008,9 +6023,9 @@ calc_grade &lt;- function(avg) {
   } else {
     return("F")
   }
-}
-
-# 3. Loop over each student, compute average, classify
+}</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>Loop + output</mark></b> — iterate over rows, compute average, print formatted table row</p>
+<pre><code># 3. Loop over each student, compute average, classify
 cat("Name      | Avg  | Grade\n")
 cat("----------+------+------\n")
 
@@ -6135,13 +6150,14 @@ class(mixed)                           # "numeric"</code></pre>
           <li><b>Inspection</b> — <code>levels(f)</code> returns the label vector; <code>nlevels(f)</code> returns the count; <code>table(f)</code> gives frequency per level.</li>
           <li><b><code>as.numeric()</code> trap</b> — <code>as.numeric(factor(c("10","20","5")))</code> returns <mark>1 2 3 (the integer codes), NOT the original numbers</mark>; use <code>as.numeric(as.character(f))</code> to recover values.</li>
         </ul>
-        <pre><code># ── Factor creation ──────────────────────────────────────────
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Factor creation</mark></b> — <code>factor()</code>, inspect with <code>levels()</code>, <code>nlevels()</code>, <code>table()</code></p>
+<pre><code># ── Factor creation ──────────────────────────────────────────
 grade &lt;- factor(c("B","A","C","A","B","F","C"))
 levels(grade)                          # "A" "B" "C" "F"
 nlevels(grade)                         # 4
-table(grade)                           # A:2  B:2  C:2  F:1
-
-# ── Ordered factor ────────────────────────────────────────────
+table(grade)                           # A:2  B:2  C:2  F:1</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Ordered factor + labels</mark></b> — encode ranks with <code>ordered=TRUE</code>; recode integers to labels</p>
+<pre><code># ── Ordered factor ────────────────────────────────────────────
 rating &lt;- factor(c("Med","High","Low","High","Low"),
                  levels  = c("Low","Med","High"),
                  ordered = TRUE)
@@ -6151,9 +6167,9 @@ rating[1] &lt; rating[2]                 # TRUE (Med &lt; High)
 code   &lt;- factor(c(1, 2, 1, 3),
                  levels = 1:3,
                  labels = c("Action","Romance","Thriller"))
-code                                   # Action Romance Action Thriller
-
-# ── The as.numeric trap ───────────────────────────────────────
+code                                   # Action Romance Action Thriller</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>as.numeric trap</mark></b> — <code>as.numeric(factor)</code> returns integer codes, not original values</p>
+<pre><code># ── The as.numeric trap ───────────────────────────────────────
 f &lt;- factor(c("10","20","5"))
 as.numeric(f)                          # 2 3 1  (codes — WRONG!)
 as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
@@ -6752,7 +6768,8 @@ dexp(1, rate=2)                 # PDF of Exp(lambda=2) at x=1</code></pre>
           <li><code>A %*% B</code> &mdash; <mark>true matrix product</mark>: inner dimensions must match (cols of A = rows of B); result is rows(A) &times; cols(B).</li>
         </ul>
         <h5>3. Worked R example</h5>
-        <pre><code># --- Create matrices (fill row-wise) ---
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Matrix creation + element-wise product</mark></b> — <code>matrix(..., byrow=TRUE)</code> then <code>A * B</code> (Hadamard product)</p>
+<pre><code># --- Create matrices (fill row-wise) ---
 A &lt;- matrix(1:4, nrow = 2, byrow = TRUE)   # [[1,2],[3,4]]
 B &lt;- matrix(c(5,6,7,8), nrow = 2, byrow = TRUE) # [[5,6],[7,8]]
 
@@ -6760,9 +6777,9 @@ B &lt;- matrix(c(5,6,7,8), nrow = 2, byrow = TRUE) # [[5,6],[7,8]]
 A * B
 #      [,1] [,2]
 # [1,]    5   12      # 1*5, 2*6
-# [2,]   21   32      # 3*7, 4*8
-
-# --- Matrix product  A %*% B ---
+# [2,]   21   32      # 3*7, 4*8</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Matrix product + combine</mark></b> — <code>A %*% B</code> (dot product), then <code>cbind()</code> / <code>rbind()</code></p>
+<pre><code># --- Matrix product  A %*% B ---
 A %*% B
 #      [,1] [,2]
 # [1,]   19   22      # 1*5+2*7, 1*6+2*8
@@ -6899,7 +6916,8 @@ mapply(function(a,b) a*b,
       <p class="q">Build a complete data-science pipeline in R: read a CSV, clean missing values, compute summary statistics, visualise with ggplot2, and run a hypothesis test.</p>
       <div class="ans">
         <h5>Model answer — end-to-end pipeline</h5>
-        <pre><code># 1. Read
+        <p style="margin:16px 0 2px;"><b>1 · <mark>Read + Clean</mark></b> — import CSV, handle NA sentinels, drop and fix missing values</p>
+<pre><code># 1. Read
 df <- read.csv("students.csv", stringsAsFactors=FALSE,
                na.strings = c("","NA"))
 
@@ -6908,9 +6926,9 @@ df <- df[!is.na(df$marks), ]
 df$marks[df$marks < 0] <- NA      # sentinel cleanup
 
 # 3. Summarise
-summary(df$marks); sd(df$marks, na.rm=TRUE)
-
-# 4. Visualise — histogram of marks
+summary(df$marks); sd(df$marks, na.rm=TRUE)</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Visualise + Hypothesis test</mark></b> — histogram with ggplot2, then one-sample t-test vs μ = 60</p>
+<pre><code># 4. Visualise — histogram of marks
 library(ggplot2)
 ggplot(df, aes(x = marks)) +
   geom_histogram(binwidth=5, fill="#166534") +
@@ -7213,6 +7231,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
     <span class="label">Panel 6 · 10-line R syntax quick-ref</span>
     <p style="margin:2px 0 0;">The lines worth writing verbatim — structures, stats, OOP, distributions.</p>
   </div>
+<p style="margin:16px 0 2px;"><b>1 · <mark>Core data structures</mark></b> — vector, matrix, data frame, list access patterns</p>
 <pre><code># 1 · vector + named access
 v &lt;- c(a=1, b=2, c=3);  v["b"]            # 2
 
@@ -7224,9 +7243,9 @@ df &lt;- data.frame(name=c("A","B"), marks=c(90,72))
 df[df$marks &gt; 80, ]                       # rows with marks &gt; 80
 
 # 4 · list — heterogeneous, $ / [[ ]] access
-L &lt;- list(id=1, scores=c(8,9));  L$scores
-
-# 5 · sapply vs lapply (same input)
+L &lt;- list(id=1, scores=c(8,9));  L$scores</code></pre>
+<p style="margin:16px 0 2px;"><b>2 · <mark>Apply family + stats</mark></b> — sapply/lapply, central tendency, frequency table, t-test</p>
+<pre><code># 5 · sapply vs lapply (same input)
 sapply(1:3, sqrt)        # vector 1.00 1.41 1.73
 lapply(1:3, sqrt)        # list of 3
 
@@ -7237,9 +7256,9 @@ mean(x); median(x); var(x); sd(x)
 table(factor(c("F","M","F")))             # F:2  M:1
 
 # 8 · one-sample t-test (hypothesis testing)
-t.test(scores, mu = 70)                   # reports t, df, p-value
-
-# 9 · S4 class with typed slot
+t.test(scores, mu = 70)                   # reports t, df, p-value</code></pre>
+<p style="margin:16px 0 2px;"><b>3 · <mark>OOP + distributions</mark></b> — S4 class definition and Normal distribution four-face functions</p>
+<pre><code># 9 · S4 class with typed slot
 setClass("Student", representation(name="character", marks="numeric"))
 
 # 10 · distribution four-faces (Normal)
@@ -7348,5 +7367,20 @@ dnorm(0); pnorm(1.96); qnorm(0.975); rnorm(5, 50, 10)</code></pre>
   })();
 </script>
 
+
+<script>
+/* code tint: comments sage, strings amber */
+(function(){
+  var reStr=new RegExp('("[^"\n]*")',"g");
+  var reCmt=new RegExp('(^|[\s;(){}=+,&])(#[^\n<]*)',"gm");
+  document.querySelectorAll("pre code").forEach(function(c){
+    if(c.dataset.tinted) return; c.dataset.tinted="1";
+    var h=c.innerHTML;
+    h=h.replace(reStr,'<span class="str">$1</span>');
+    h=h.replace(reCmt,'$1<span class="cmt">$2</span>');
+    c.innerHTML=h;
+  });
+})();
+</script>
 </body>
 </html>
