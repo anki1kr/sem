@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v43';
+const CACHE_VERSION = 'bca-prep-v44';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -44,7 +44,6 @@ const PRECACHE_URLS = [
   './rds-images/r-data-structures.png',
   './rds-images/db-vs-warehouse.png',
   './rds-images/ggplot2-layers.png',
-  './rds-images/apply-family.png',
   './rds-images/central-tendency-dispersion.png',
   './rds-images/oop-s3-s4-r5.png',
   './rds-images/debugging-tools.png',

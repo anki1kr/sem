@@ -2459,40 +2459,6 @@ mean(students$marks)               # 78.8</code></pre>
 
   </div>
 
-  <div class="topic" id="t-2-15">
-    <h3>2.15 Strings in R <span class="tag hot">⭐ B.Tech Part-A · string manipulation functions</span></h3>
-    <div class="box def">
-      <span class="label">Definition</span>
-      A <mark>string</mark> in R is a sequence of characters enclosed in single or double quotes. Strings are the <code>character</code> atomic type; R stores all strings internally as double-quoted values.
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <caption>Core string functions — one-liner purpose + example</caption>
-        <thead><tr><th>Function</th><th>Purpose</th><th>Example → Output</th></tr></thead>
-        <tbody>
-          <tr><td><mark><code>nchar(x)</code></mark></td><td>Length of string (number of characters)</td><td><code>nchar("hello")</code> → <code>5</code></td></tr>
-          <tr><td><mark><code>toupper(x)</code></mark></td><td>Convert to UPPERCASE</td><td><code>toupper("r lang")</code> → <code>"R LANG"</code></td></tr>
-          <tr><td><mark><code>tolower(x)</code></mark></td><td>Convert to lowercase</td><td><code>tolower("DATA")</code> → <code>"data"</code></td></tr>
-          <tr><td><mark><code>substr(x, start, stop)</code></mark></td><td>Extract substring by character positions</td><td><code>substr("DataScience", 1, 4)</code> → <code>"Data"</code></td></tr>
-          <tr><td><mark><code>paste(..., sep)</code></mark></td><td>Concatenate strings with separator (default <code>" "</code>)</td><td><code>paste("R", "lang")</code> → <code>"R lang"</code></td></tr>
-          <tr><td><mark><code>paste0(...)</code></mark></td><td>Concatenate with no separator (sep=&quot;&quot;)</td><td><code>paste0("col", 1:3)</code> → <code>"col1" "col2" "col3"</code></td></tr>
-          <tr><td><mark><code>gsub(pat, rep, x)</code></mark></td><td>Replace <b>all</b> pattern matches</td><td><code>gsub("a", "@", "banana")</code> → <code>"b@n@n@"</code></td></tr>
-          <tr><td><mark><code>sub(pat, rep, x)</code></mark></td><td>Replace <b>first</b> match only</td><td><code>sub("a", "@", "banana")</code> → <code>"b@nana"</code></td></tr>
-          <tr><td><mark><code>grepl(pat, x)</code></mark></td><td>Returns TRUE/FALSE — does pattern exist?</td><td><code>grepl("sci", "DataScience")</code> → <code>TRUE</code></td></tr>
-          <tr><td><mark><code>sprintf(fmt, ...)</code></mark></td><td>C-style formatted string</td><td><code>sprintf("Score: %.1f", 87.456)</code> → <code>"Score: 87.5"</code></td></tr>
-          <tr><td><mark><code>strsplit(x, split)</code></mark></td><td>Split string into a vector on delimiter</td><td><code>strsplit("a,b,c", ",")[[1]]</code> → <code>"a" "b" "c"</code></td></tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="box warn">
-      <span class="label">gsub vs sub — exam trap</span>
-      <code>gsub</code> replaces <b>every</b> occurrence; <code>sub</code> replaces only the <b>first</b>. Both accept regular-expression patterns, so <code>gsub("[aeiou]", "*", "banana")</code> replaces all vowels.
-    </div>
-
-  </div>
-
 </section>
 
 <!-- ============== UNIT 3 ============== -->
@@ -2540,7 +2506,7 @@ mean(students$marks)               # 78.8</code></pre>
   </div>
 
   <div class="topic" id="t-3-1">
-    <h3>3.1 Function Creation &amp; Scripts <span class="tag hot">⭐ Jul-2025 Q3b · May-2025 Q4</span></h3>
+    <h3>3.1 Function Creation &amp; Scripts <span class="tag hot">⭐ May-2025 Q4 (15M)</span></h3>
     <p><b>R is functional-first:</b></p><ul><li>Every operation is a <mark>function call</mark></li><li><mark>UDFs</mark> (user-defined functions) are <mark>first-class objects</mark> — can be passed as arguments, stored in lists, returned from other functions</li></ul>
 <pre><code># Anatomy: name <- function(args) { body }
 greet <- function(name="friend", greeting="Hello") {
@@ -2565,8 +2531,8 @@ sapply(1:5, \(x) x^2)</code></pre>
     </ul>
     <p><b>Scripts:</b> save as <code>.R</code>, run via <code>source("file.R")</code> or <code>Rscript file.R</code> from shell.</p>
 
-    <p><b>Worked answer — Jul-2025 Q3b (square fn) + May-2025 Q4 (grade classifier):</b></p>
-<pre><code class="language-r"># 1. Simple — square of a number (Jul-2025 Q3b)
+    <p><b>Worked examples — simple square fn + May-2025 Q4 (grade classifier):</b></p>
+<pre><code class="language-r"># 1. Simple — square of a number
 square <- function(x) {
   x * x                      # last expression is auto-returned
 }
@@ -2966,24 +2932,21 @@ write.csv(df, "students.csv", row.names=FALSE)</code></pre>
 
   <div class="topic" id="t-3-7">
     <h3>3.7 lapply &amp; sapply <span class="tag hot">⭐⭐ EVERY year (2023/24/25)</span></h3>
-    <p><b><mark>apply family</mark></b> — functional alternatives to loops:</p>
+    <p><b><mark>lapply() &amp; sapply()</mark></b> — functional alternatives to loops (the two functions named in the syllabus):</p>
     <ul>
-      <li>Operate over <mark>lists</mark>, vectors, and matrices element-wise</li>
+      <li>Operate over <mark>lists</mark> and vectors element-wise</li>
       <li>Written in C internally — <b>3–10× faster</b> than equivalent <code>for</code> loop</li>
       <li>Declarative style: "apply this function to each piece" rather than imperative looping</li>
-      <li>Five variants; pick by input shape and required output type</li>
+      <li>Same input, same call — they differ only in <mark>output shape</mark>: list vs simplified vector</li>
     </ul>
 
     <div class="table-wrap">
     <table>
-      <caption>The apply family (mention all 5 in 5M+ answers)</caption>
+      <caption>lapply() vs sapply() — asked every year (2023/24/25)</caption>
       <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Use case</th></tr></thead>
       <tbody>
-        <tr><td><code>apply(X, M, FN)</code></td><td>matrix / df</td><td>vector / matrix</td><td>row-wise (M=1) or col-wise (M=2)</td></tr>
         <tr><td><code>lapply(X, FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>element-wise, preserve structure</td></tr>
         <tr><td><code>sapply(X, FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>cleaner lapply when output is uniform</td></tr>
-        <tr><td><code>mapply(FN, ...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td>multivariate version of sapply</td></tr>
-        <tr><td><code>tapply(X, INDEX, FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td>group-wise summary</td></tr>
       </tbody>
     </table>
     </div>
@@ -2994,77 +2957,9 @@ lapply(1:3, sqrt)
 
 # sapply — same input, vector output
 sapply(1:3, sqrt)
-# 1.000 1.414 1.732
+# 1.000 1.414 1.732</code></pre>
 
-# apply on a matrix
-m <- matrix(1:9, 3, 3)
-apply(m, 1, sum)   # 12 15 18  (row sums)
-apply(m, 2, sum)   #  6 15 24  (col sums)
-apply(m, 1, mean)  # 4 5 6</code></pre>
 
-    <figure class="diagram-fig">
-    <svg viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <marker id="arrTree" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
-          <path d="M 0 0 L 10 5 L 0 10 z" fill="#166534"/>
-        </marker>
-      </defs>
-      <text x="300" y="22" text-anchor="middle" class="svg-text title">apply-family function tree — 5 dispatch variants</text>
-
-      <!-- Root node -->
-      <circle cx="300" cy="60" r="34" fill="#166534" stroke="#166534" stroke-width="2"/>
-      <text x="300" y="58" text-anchor="middle" class="svg-text mono" font-weight="700" fill="#fff">apply()</text>
-      <text x="300" y="72" text-anchor="middle" class="svg-text label" fill="#fff" font-size="9">family</text>
-
-      <!-- Branches to 5 children -->
-      <line x1="290" y1="92" x2="80"  y2="160" stroke="#166534" stroke-width="1.5" marker-end="url(#arrTree)"/>
-      <line x1="295" y1="94" x2="195" y2="160" stroke="#166534" stroke-width="1.5" marker-end="url(#arrTree)"/>
-      <line x1="300" y1="95" x2="300" y2="160" stroke="#166534" stroke-width="1.5" marker-end="url(#arrTree)"/>
-      <line x1="305" y1="94" x2="405" y2="160" stroke="#166534" stroke-width="1.5" marker-end="url(#arrTree)"/>
-      <line x1="310" y1="92" x2="520" y2="160" stroke="#166534" stroke-width="1.5" marker-end="url(#arrTree)"/>
-
-      <!-- Child 1: apply -->
-      <rect x="20" y="165" width="120" height="80" rx="4" fill="#dcfce7" stroke="#166534" stroke-width="1.5"/>
-      <text x="80" y="183" text-anchor="middle" class="svg-text mono" font-weight="700">apply()</text>
-      <text x="80" y="200" text-anchor="middle" class="svg-text label">matrix / array</text>
-      <text x="80" y="215" text-anchor="middle" class="svg-text label">MARGIN=1|2</text>
-      <text x="80" y="235" text-anchor="middle" class="svg-text label" font-weight="700">→ vec / mat</text>
-
-      <!-- Child 2: lapply -->
-      <rect x="148" y="165" width="100" height="80" rx="4" fill="#fff8e7" stroke="#a16207" stroke-width="1.5"/>
-      <text x="198" y="183" text-anchor="middle" class="svg-text mono" font-weight="700">lapply()</text>
-      <text x="198" y="200" text-anchor="middle" class="svg-text label">list / vector</text>
-      <text x="198" y="215" text-anchor="middle" class="svg-text label">always list</text>
-      <text x="198" y="235" text-anchor="middle" class="svg-text label" font-weight="700">→ list</text>
-
-      <!-- Child 3: sapply -->
-      <rect x="256" y="165" width="100" height="80" rx="4" fill="#fff8e7" stroke="#a16207" stroke-width="1.5"/>
-      <text x="306" y="183" text-anchor="middle" class="svg-text mono" font-weight="700">sapply()</text>
-      <text x="306" y="200" text-anchor="middle" class="svg-text label">list / vector</text>
-      <text x="306" y="215" text-anchor="middle" class="svg-text label">simplify if uniform</text>
-      <text x="306" y="235" text-anchor="middle" class="svg-text label" font-weight="700">→ vector</text>
-
-      <!-- Child 4: mapply -->
-      <rect x="364" y="165" width="100" height="80" rx="4" fill="#fce7f3" stroke="#9f1239" stroke-width="1.5"/>
-      <text x="414" y="183" text-anchor="middle" class="svg-text mono" font-weight="700">mapply()</text>
-      <text x="414" y="200" text-anchor="middle" class="svg-text label">multi-inputs</text>
-      <text x="414" y="215" text-anchor="middle" class="svg-text label">FN(x1, y1, …)</text>
-      <text x="414" y="235" text-anchor="middle" class="svg-text label" font-weight="700">→ vec / mat</text>
-
-      <!-- Child 5: tapply -->
-      <rect x="472" y="165" width="110" height="80" rx="4" fill="#fce7f3" stroke="#9f1239" stroke-width="1.5"/>
-      <text x="527" y="183" text-anchor="middle" class="svg-text mono" font-weight="700">tapply()</text>
-      <text x="527" y="200" text-anchor="middle" class="svg-text label">vector + factor</text>
-      <text x="527" y="215" text-anchor="middle" class="svg-text label">group-by aggregate</text>
-      <text x="527" y="235" text-anchor="middle" class="svg-text label" font-weight="700">→ grouped vec</text>
-
-      <!-- Legend -->
-      <text x="300" y="275" text-anchor="middle" class="svg-text label" font-weight="700">All return <tspan font-family="JetBrains Mono, monospace">FN</tspan> applied element-wise — no explicit <tspan font-family="JetBrains Mono, monospace">for</tspan> loop</text>
-      <text x="300" y="295" text-anchor="middle" class="svg-text label">Pick by INPUT shape (matrix / list / multi / grouped) and OUTPUT need (list vs vector)</text>
-      <text x="300" y="315" text-anchor="middle" class="svg-text mono" font-size="10">Mnemonic: A-L-S-M-T  (apply · lapply · sapply · mapply · tapply)</text>
-    </svg>
-    <figcaption><b>Fig 3.6</b> · apply-family tree — five dispatch variants chosen by input shape and required output type.</figcaption>
-    </figure>
 
     <figure class="diagram-fig">
     <svg viewBox="0 0 560 200" xmlns="http://www.w3.org/2000/svg">
@@ -3099,70 +2994,19 @@ apply(m, 1, mean)  # 4 5 6</code></pre>
     </figure>
 
     <div class="box why">
-      <span class="label">Why apply family beats loops</span>
+      <span class="label">Why lapply / sapply beat loops</span>
       <mark>Vectorised</mark>, written in C internally → <b>3–10× faster</b> than equivalent <code>for</code> loop for the same task. Encourages declarative ("apply this to each") over imperative thinking.
     </div>
 
     <div class="box eli5">
       <span class="label">Plain English</span>
-      All 5 variants do the same job: "<i>apply this function to each piece of my data</i>". They differ only in (a) what shape goes in (matrix? list? grouped vector?) and (b) what shape comes out (list? vector? matrix?). Pick the variant whose name fits your input shape — that's the whole trick.
+      Both functions do the same job: "<i>apply this function to each piece of my data</i>". The only difference is the output: <code>lapply</code> hands the results back as a list, <code>sapply</code> flattens them into a clean vector when every result is the same shape.
     </div>
 
-    <p><b>Worked answer — Jul-2025 Q5a verbatim:</b> demonstrate all 5 variants on small data so the contrast is visible.</p>
-<pre><code class="language-r"># 1. apply — matrix row/col operations (works on 2-D)
-m <- matrix(1:6, nrow = 2)
-#      [,1] [,2] [,3]
-# [1,]    1    3    5
-# [2,]    2    4    6
-apply(m, 1, sum)        # row sums  -> 9 12
-apply(m, 2, sum)        # col sums  -> 3 7 11
-
-# 2. lapply — always returns a list (one element per input element)
-lapply(1:3, function(x) x ^ 2)
-# [[1]] 1
-# [[2]] 4
-# [[3]] 9
-
-# 3. sapply — same as lapply but simplifies to vector when possible
-sapply(1:3, function(x) x ^ 2)      # 1 4 9   (vector, not list)
-
-# 4. tapply — group-wise summary (needs a factor as the grouping key)
-marks   <- c(80, 75, 90, 65, 88)
-section <- c("A", "B", "A", "B", "A")
-tapply(marks, section, mean)
-#    A    B
-# 86.0 70.0
-
-# 5. mapply — multi-argument parallel apply (sapply on 2+ vectors at once)
-mapply(function(a, b) a + b, 1:3, 4:6)    # 5 7 9</code></pre>
 
 
-    <h4>Beyond the big five — vapply &amp; the functional helpers</h4>
-    <p>Examiners reward students who know the apply family extends past the five core members. Drop one of these for a bonus point in a 10-mark answer.</p>
-<pre><code># vapply — like sapply but you DECLARE the return type/length
-#   -> safer: errors loudly instead of silently changing shape
-vapply(1:3, function(x) x ^ 2, numeric(1))   # 1 4 9 (guaranteed double, length 1)
 
-# Map — element-wise over several lists/vectors, ALWAYS returns a list
-Map(function(a, b) a + b, 1:3, 4:6)           # list: 5, 7, 9
 
-# Reduce — fold a binary function across a vector (cumulative collapse)
-Reduce(`+`, 1:5)                              # 15  ((((1+2)+3)+4)+5)
-Reduce(`+`, 1:5, accumulate = TRUE)           # 1 3 6 10 15 (running total)
-
-# Filter — keep elements where the predicate is TRUE
-Filter(function(x) x %% 2 == 0, 1:10)         # 2 4 6 8 10
-
-# do.call — call a function with an argument LIST assembled at runtime
-do.call(rbind, list(c(1,2), c(3,4), c(5,6)))  # stacks rows into a 3x2 matrix</code></pre>
-    <div class="box tip">
-      <span class="label">vapply vs sapply — the safety point</span>
-      <ul style="margin:4px 0 0; padding-left:18px;">
-        <li><code>sapply</code> — guesses the output shape; can <mark>silently return a list</mark> when one element has a different length than expected</li>
-        <li><code>vapply</code> — you declare the <mark>template</mark> (<code>numeric(1)</code>, <code>character(1)</code>…); a shape mismatch throws an error immediately at the point of failure</li>
-        <li>Preferred in production code — always worth a sentence in any apply-family answer</li>
-      </ul>
-    </div>
   </div>
 
   <div class="topic" id="t-3-8">
@@ -3270,56 +3114,6 @@ a$deposit(50); a$balance    # 150 — MUTATED in-place</code></pre>
 
   </div>
 
-  <div class="topic" id="t-3-9">
-    <h3>3.9 Strings in R</h3>
-<pre><code>nchar("hello")              # 5
-toupper("abc")              # "ABC"
-tolower("ABC")              # "abc"
-paste("a","b", sep="-")     # "a-b"
-paste0("a","b")             # "ab"
-substr("Ankit",1,3)         # "Ank"
-strsplit("a,b,c", ",")      # list("a","b","c")
-gsub("a","X","banana")      # "bXnXnX"
-sub("a","X","banana")       # "bXnana" (first only)
-sprintf("%.2f", 3.14159)    # "3.14"
-trimws("  hi  ")            # "hi"
-startsWith("hello","he")    # TRUE
-grepl("an", "banana")       # TRUE</code></pre>
-
-    <h4>Pattern matching &amp; vectorised string work</h4>
-    <p><b><mark>Vectorised</mark> string functions</b> — key behaviours:</p>
-    <ul>
-      <li>Pass a whole <mark>character vector</mark> and get a vector back — no explicit loop needed</li>
-      <li><code>grep()</code> returns matching <b>indices</b>; add <code>value = TRUE</code> to get the matching strings instead</li>
-      <li><code>grepl()</code> returns a <b>logical mask</b> of the same length as the input vector</li>
-      <li><code>paste(..., collapse = ", ")</code> joins a whole vector into one string; without <code>collapse</code> it returns a vector</li>
-    </ul>
-<p style="margin:16px 0 2px;"><b>1 · <mark>grep / grepl</mark> &amp; extract</b> — regex index/mask, regmatches</p>
-<pre><code>fruits <- c("apple", "banana", "cherry", "avocado")
-
-# grep / grepl — find matches (regex)
-grep("^a", fruits)          # 1 4   -> indices starting with "a"
-grep("^a", fruits, value=TRUE)   # "apple" "avocado"
-grepl("an", fruits)         # FALSE TRUE FALSE FALSE  (logical mask)
-
-# regmatches + regexpr — extract the matched part
-x <- "Order #4521 shipped"
-m <- regexpr("[0-9]+", x)
-regmatches(x, m)            # "4521"</code></pre>
-<p style="margin:16px 0 2px;"><b>2 · <mark>paste</mark> / paste0 &amp; format</b> — collapse, vectorised ID gen, formatC</p>
-<pre><code># paste vs paste0 (collapse joins a vector into ONE string)
-paste(fruits, collapse=", ")     # "apple, banana, cherry, avocado"
-paste0("ID_", 1:3)               # "ID_1" "ID_2" "ID_3"  (vectorised)
-
-# format / formatC — pad &amp; align for tabular output
-formatC(7, width=3, flag="0")    # "007"
-format(1234567, big.mark=",")    # "1,234,567"</code></pre>
-
-    <div class="box tip">
-      <span class="label">sub vs gsub · regex flavour</span>
-      <code>sub()</code> replaces only the <i>first</i> match; <code>gsub()</code> replaces <i>all</i>. Both take regular expressions by default — set <code>fixed=TRUE</code> to treat the pattern as a literal string (needed when matching characters like <code>.</code> or <code>*</code> that are otherwise regex metacharacters).
-    </div>
-  </div>
 </section>
 
 <!-- ============== UNIT 4 ============== -->
@@ -3347,7 +3141,7 @@ ls(); rm(list=ls())             # list / clear</code></pre>
   </div>
 
   <div class="topic" id="t-4-2">
-    <h3>4.2 Import &amp; Export — CSV files <span class="tag hot">⭐⭐ May-2023 Q5b · May-2024 Q3b · Jul-2025 Q3a (10M × 3)</span></h3>
+    <h3>4.2 Import &amp; Export — CSV files <span class="tag hot">⭐⭐ May-2023 Q5b · May-2024 Q3b (10M × 2)</span></h3>
 <pre><code># Read
 df <- read.csv("students.csv",
                header=TRUE,
@@ -4463,7 +4257,7 @@ round(expected, 1)
       <tr><td><b><mark>Hypothesis testing — steps, types, t-test</mark></b></td><td>May-23 Q4(a) | May-24 Q5(b) | May-25 Q6(a)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">8 · 7 · 10M</td></tr>
       <tr><td><b><mark>Lists &amp; Data Frames — create, operations, CSV export</mark></b></td><td>May-23 Q2(a)+Q5(b) | May-24 Q3(a) | May-25 Q3(a)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">6+10 · 5 · 5M</td></tr>
       <tr><td><b><mark>Statistical distributions — Normal (d/p/q/r), Binomial, Poisson</mark></b></td><td>May-23 Q4(b) | May-24 Q5(a)+Q6(a)+Q4(b) | May-25 Q7(c)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">5 · 8+10+5 · 5M</td></tr>
-      <tr><td><b><mark>apply / lapply / sapply / tapply family</mark></b></td><td>May-23 Q1(h) | May-25 Q7(b) | BTech Q5(a)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">1.5 · 5 · 10M</td></tr>
+      <tr><td><b><mark>lapply() / sapply() functions</mark></b></td><td>May-23 Q1(h) | May-24 Q1(i) | May-25 Q7(b)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">1.5 · 1.5 · 5M</td></tr>
       <tr><td><b><mark>Correlation function &amp; cor.test()</mark></b></td><td>May-23 Q4(c) | May-24 Q1(d) | May-25 Q1(i)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">2 · 1.5 · 1.5M</td></tr>
       <tr><td><b><mark>ggplot2 / base graphics — scatter, histogram</mark></b></td><td>May-23 Q5(a) | May-24 Q4(a) | May-25 Q6(b)</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">5 · 10 · 5M</td></tr>
       <tr><td><b><mark>Loops (for/while/repeat) + switch + if-else</mark></b></td><td>May-23 Q3(a)+Q3(b) | May-25 Q4</td><td style="white-space:nowrap;"><b>3×</b></td><td style="white-space:nowrap;">7+8 · 15M</td></tr>
@@ -4784,17 +4578,7 @@ repeat {
     </div>
   </div>
 
-    <div class="qcard predicted">
-    <div class="qhead"><span class="yr">Q1(x)</span><span class="mk">1.5M</span><span class="src">⟲ BTech Jul-25 Q1(f)(g)</span></div>
-    <div class="qbody"><b>What is the function of summary() in R? What does is.na() check for?</b></div>
-    <div class="ans">
-      <ul>
-        <li><mark><code>summary(x)</code></mark> — produces a quick descriptive overview: for numeric data it returns <b>Min, Q1, Median, Mean, Q3, Max</b>; for factors it shows category counts; for data frames it summarises every column.</li>
-        <li><mark><code>is.na(x)</code></mark> — returns a logical vector of the same length as <code>x</code>, with <code>TRUE</code> wherever an element is <b>missing (NA)</b>.</li>
-        <li>Typical use: <code>sum(is.na(df))</code> counts total missing values; <code>df[!is.na(df$col), ]</code> drops rows with <code>NA</code> in a column.</li>
-      </ul>
-    </div>
-  </div>
+
 
     <div class="part-head">Section B · Long Answers · <span class="pt-sub">15 Marks each · ranked Very Likely → Possible</span></div>
 
@@ -6833,154 +6617,57 @@ dim(rbind(A, B))   # 4 2</code></pre>
   </div>
 
     <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P21</span> · <span class="u">U3</span> · <span class="mk">5–10 M</span> <span class="src">⟲ BTech Jul-25 Q5(a) · 3×</span></div>
+    <div class="qhead"><span class="yr">P21</span> · <span class="u">U3</span> · <span class="mk">5 M</span> <span class="src">⟲ BCA May-25 Q7(b) · 3×</span></div>
     <div class="qbody">
-      <p class="q">Compare apply, lapply, sapply, tapply and mapply with examples. When would you pick each?</p>
+      <p class="q">Write short notes on: lapply() and sapply() functions in R.</p>
       <figure class="diagram-fig">
-        <img src="rds-images/apply-family.png" alt="The apply family in R: apply works on matrix rows or columns with MARGIN, lapply maps a list to a list, sapply simplifies the result to a vector, tapply applies a function group-wise split by a factor, mapply runs over multiple lists in parallel; decision strip matrix→apply, want list→lapply, want vector→sapply, group-wise→tapply, many inputs→mapply" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>Fig P21.1</b> · apply / lapply / sapply / tapply / mapply — input shape → output shape + decision strip</figcaption>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; max-width:520px; margin:0 auto;">
+          <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+            <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 4px;">lapply(X, FN)</div>
+            <div style="padding:9px 6px; font-size:11px; color:var(--ink);"><b>list / vector in</b><br><span style="color:var(--brand);">&#8595;</span><br><b>list out — always</b><br><span style="font-family:monospace; font-size:10px;">[[1]] 1 · [[2]] 1.41 · [[3]] 1.73</span></div>
+          </div>
+          <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
+            <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12.5px; padding:6px 4px;">sapply(X, FN)</div>
+            <div style="padding:9px 6px; font-size:11px; color:var(--ink);"><b>list / vector in</b><br><span style="color:var(--brand);">&#8595;</span><br><b>vector out — simplified</b><br><span style="font-family:monospace; font-size:10px;">1.00 1.41 1.73</span></div>
+          </div>
+        </div>
+        <figcaption><b>Fig P21.1</b> · Same input, same function — lapply keeps a list, sapply simplifies to a vector</figcaption>
       </figure>
       <div class="ans">
-        <h5>The five members compared</h5>
+        <h5>lapply()</h5>
+        <ul>
+          <li><mark><code>lapply(X, FN)</code></mark> applies function <code>FN</code> to <b>every element</b> of a list or vector <code>X</code>.</li>
+          <li>Output is <b>always a list</b> of the same length as the input — structure preserved even when results differ in type or length.</li>
+          <li>Replaces an explicit <code>for</code> loop; runs in C internally, so shorter and faster.</li>
+        </ul>
+        <h5>sapply()</h5>
+        <ul>
+          <li><mark><code>sapply(X, FN)</code></mark> = <b>simplified lapply</b> — same call, but the result is collapsed when possible.</li>
+          <li>Returns a <b>vector</b> when every result is a scalar, a <b>matrix</b> when results are equal-length vectors, otherwise a list.</li>
+          <li>Pick it when output is uniform and a clean printable vector is wanted.</li>
+        </ul>
+        <h5>Worked example</h5>
+        <pre><code>nums &lt;- 1:3
+lapply(nums, sqrt)   # list:   [[1]] 1  [[2]] 1.414  [[3]] 1.732
+sapply(nums, sqrt)   # vector: 1.000 1.414 1.732
+
+scores &lt;- list(a=c(80,90), b=c(60,70,85))
+sapply(scores, mean) # a=85.00  b=71.67</code></pre>
+        <h5>Difference at a glance</h5>
         <div class="table-wrap"><table>
-          <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Pick it when…</th></tr></thead>
+          <thead><tr><th>Parameter</th><th>lapply()</th><th>sapply()</th></tr></thead>
           <tbody>
-            <tr><td><code>apply(X, M, FN)</code></td><td>matrix / data frame</td><td>vector / matrix</td><td>row-wise (<mark>M=1</mark>) or col-wise (<mark>M=2</mark>) over 2-D data</td></tr>
-            <tr><td><code>lapply(X, FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>results <mark>differ in length / type</mark> — keep structure</td></tr>
-            <tr><td><code>sapply(X, FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>results are <mark>uniform scalars</mark> — cleaner lapply</td></tr>
-            <tr><td><code>tapply(X, INDEX, FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td><mark>group-wise summary</mark> (e.g. mean by dept)</td></tr>
-            <tr><td><code>mapply(FN, ...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td><mark>multi-arg parallel</mark> apply over N streams</td></tr>
+            <tr><td>Output</td><td><b>List</b>, always</td><td>Vector / matrix (<mark>simplified</mark>)</td></tr>
+            <tr><td>When to pick</td><td>Results differ in length / type</td><td>Results are uniform scalars</td></tr>
+            <tr><td>Example result</td><td><code>[[1]] 1 [[2]] 4 [[3]] 9</code></td><td><code>1 4 9</code></td></tr>
           </tbody>
         </table></div>
-        <h5>Worked comparison — same task on small data</h5>
-        <pre><code># Worked comparison on the same task — square root
-nums <- 1:4
-sapply(nums, sqrt)              # vector  c(1,1.41,1.73,2)
-lapply(nums, sqrt)              # list of 4
-apply(matrix(1:9,3,3), 2, sum)  # col sums  c(6,15,24)
-tapply(c(80,90,75,85),          # grouped mean
-       c("A","A","B","B"),
-       mean)                    # A=85, B=80
-mapply(function(a,b) a*b,
-       1:3, 4:6)                # c(4,10,18)</code></pre>
-        <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px; max-width:560px; margin:0 auto;">
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">apply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>matrix / array</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / array</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">lapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>list (always)</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">sapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>list / vector</b><br><span style="color:var(--brand);">&#8595;</span><br>vector / matrix</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">tapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>grouped vector</b><br><span style="color:var(--brand);">&#8595;</span><br>table by group</div>
-            </div>
-            <div style="border:1.5px solid var(--brand); border-radius:6px; overflow:hidden;">
-              <div style="background:var(--brand); color:#fff; font-weight:700; font-size:12px; padding:5px 4px;">mapply</div>
-              <div style="padding:7px 5px; font-size:10.5px; color:var(--ink);"><b>multiple args</b><br><span style="color:var(--brand);">&#8595;</span><br>vector</div>
-            </div>
-          </div>
-          <figcaption><b>Fig P2.1</b> · The apply family by input &#8594; output type</figcaption>
-        </figure>
         <div class="score">
-          <b>Mark allocation (10 M)</b>
+          <b>Mark allocation (5 M)</b>
           <ul>
-            <li><span>Role of each: apply / lapply / sapply / tapply / mapply</span><span>4 M</span></li>
-            <li><span>Comparison by input &#8594; output type</span><span>3 M</span></li>
-            <li><span>Worked R examples + "when to pick each"</span><span>3 M</span></li>
-          </ul>
-        </div>
-        <div class="box tip" style="margin-top:14px">
-          <span class="label">Key takeaways · revise these 5</span>
-          <ul style="margin:6px 0 0 18px">
-            <li><b><code>apply(M, MARGIN, FN)</code></b> — for matrices / arrays; MARGIN 1 = rows, 2 = cols, c(1,2) = each cell.</li>
-            <li><b><code>lapply(X, FN)</code></b> — always list output; pick when results vary in length/type.</li>
-            <li><b><code>sapply(X, FN)</code></b> — simplified lapply; vector when scalars, matrix when same-length vectors, list otherwise.</li>
-            <li><b><code>tapply(x, INDEX, FN)</code></b> — group-wise summary; e.g. mean salary by department. Categorical INDEX drives splits.</li>
-            <li><b><code>mapply(FN, A, B, ...)</code></b> — multi-arg parallel apply; treats N vectors as N argument streams to FN.</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </div>
-
-    <div class="qcard predicted">
-    <div class="qhead"><span class="yr">P22</span> · <span class="u">U4</span> · <span class="mk">10 M</span> <span class="src">BTech Jul-25 Q4</span></div>
-    <div class="qbody">
-      <p class="q">Build a complete data-science pipeline in R: read a CSV, clean missing values, compute summary statistics, visualise with ggplot2, and run a hypothesis test.</p>
-      <div class="ans">
-        <h5>Model answer — end-to-end pipeline</h5>
-        <p style="margin:16px 0 2px;"><b>1 · <mark>Read + Clean</mark></b> — import CSV, handle NA sentinels, drop and fix missing values</p>
-<pre><code># 1. Read
-df <- read.csv("students.csv", stringsAsFactors=FALSE,
-               na.strings = c("","NA"))
-
-# 2. Clean — drop rows with NA marks
-df <- df[!is.na(df$marks), ]
-df$marks[df$marks < 0] <- NA      # sentinel cleanup
-
-# 3. Summarise
-summary(df$marks); sd(df$marks, na.rm=TRUE)</code></pre>
-<p style="margin:16px 0 2px;"><b>2 · <mark>Visualise + Hypothesis test</mark></b> — histogram with ggplot2, then one-sample t-test vs μ = 60</p>
-<pre><code># 4. Visualise — histogram of marks
-library(ggplot2)
-ggplot(df, aes(x = marks)) +
-  geom_histogram(binwidth=5, fill="#166534") +
-  geom_vline(xintercept = mean(df$marks, na.rm=TRUE),
-             linetype="dashed", color="red") +
-  labs(title="Distribution of marks", x="Marks", y="Count")
-
-# 5. Hypothesis test — is mean marks > 60?
-t.test(df$marks, mu = 60, alternative = "greater")
-# Decide based on p-value vs alpha = 0.05</code></pre>
-        <p>Highlight the full pipeline (read → clean → summarise → visualise → test → decide) maps to the Unit-1 data processing chain (Fig 1.3) — circling back to first principles is a 1-mark bonus.</p>
-        <h5>Pipeline stages — function and purpose</h5>
-        <div class="table-wrap"><table>
-          <thead><tr><th>Stage</th><th>R function</th><th>Purpose</th></tr></thead>
-          <tbody>
-            <tr><td><mark>Read</mark></td><td><code>read.csv(na.strings=c("","NA"))</code></td><td>Import raw data; convert empties to NA on entry</td></tr>
-            <tr><td><mark>Clean</mark></td><td><code>df[!is.na(df$col),]</code> · <code>as.numeric()</code></td><td>Drop or impute missing values; fix types &amp; sentinels</td></tr>
-            <tr><td>Summarise</td><td><code>summary()</code> · <code>sd()</code></td><td>Describe centre &amp; spread before any modelling</td></tr>
-            <tr><td>Visualise</td><td><code>ggplot() + geom_histogram</code></td><td>Inspect distribution shape &amp; relationships visually</td></tr>
-            <tr><td>Model / Test</td><td><code>t.test()</code> · <code>lm()</code></td><td>Infer or model; produce p-value, 95% CI</td></tr>
-            <tr><td>Communicate</td><td>report / decision</td><td>Compare p-value vs <mark>α = 0.05</mark>; state conclusion</td></tr>
-          </tbody>
-        </table></div>
-        <figure class="diagram-fig">
-          <div style="display:grid; grid-template-columns:repeat(6,1fr); gap:6px; align-items:stretch; max-width:580px; margin:0 auto;">
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Import<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">read.csv</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Clean<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">NA handling</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Explore<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">summary()</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Visualise<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">ggplot2</span></div>
-            <div style="background:var(--brand); color:#fff; border:2px solid var(--brand-deep); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Model<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">t.test / lm</span></div>
-            <div style="background:var(--brand-soft); color:var(--brand-deep); border:2px solid var(--brand); border-radius:6px; padding:9px 4px; font-size:11px; font-weight:700; display:flex; flex-direction:column; justify-content:center;">Communicate<br><span style="font-size:8.5px; font-weight:500; font-family:monospace;">report</span></div>
-          </div>
-          <div style="font-size:13px; color:var(--brand); letter-spacing:.45em; margin-top:4px;">&#8594; &#8594; &#8594; &#8594; &#8594;</div>
-          <figcaption><b>Fig P6.1</b> · The canonical data-science pipeline: import &#8594; clean &#8594; explore &#8594; visualise &#8594; model &#8594; communicate</figcaption>
-        </figure>
-        <div class="score">
-          <b>Mark allocation (10 M)</b>
-          <ul>
-            <li><span>Read CSV + clean missing values</span><span>3 M</span></li>
-            <li><span>Summary statistics</span><span>2 M</span></li>
-            <li><span>Visualise with ggplot2</span><span>2 M</span></li>
-            <li><span>Hypothesis test + decision</span><span>3 M</span></li>
-          </ul>
-        </div>
-        <div class="box tip" style="margin-top:14px">
-          <span class="label">Key takeaways · revise these 5</span>
-          <ul style="margin:6px 0 0 18px">
-            <li><b>Stage 1 (Read):</b> <code>read.csv(file, stringsAsFactors=FALSE, na.strings=c("","NA"))</code> — converts empties to NA on import.</li>
-            <li><b>Stage 2 (Clean):</b> drop NAs with <code>df[!is.na(df$col), ]</code> or impute (mean/median); coerce types with <code>as.numeric()</code>.</li>
-            <li><b>Stage 3 (Summarise):</b> <code>summary()</code>, <code>sd()</code>, <code>aggregate()</code> — descriptive statistics before any modelling.</li>
-            <li><b>Stage 4 (Visualise):</b> <code>ggplot()</code> with <code>geom_histogram</code> for distribution shape, <code>geom_point + geom_smooth</code> for relationships.</li>
-            <li><b>Stage 5 (Test):</b> <code>t.test()</code>, <code>chisq.test()</code> or <code>lm()</code> to infer or model; report p-value + 95% CI + decision.</li>
+            <li><span>lapply() — role + list output</span><span>2 M</span></li>
+            <li><span>sapply() — simplification rule</span><span>2 M</span></li>
+            <li><span>Worked R example of each</span><span>1 M</span></li>
           </ul>
         </div>
       </div>
@@ -6999,7 +6686,7 @@ t.test(df$marks, mu = 60, alternative = "greater")
 
   <!-- Panel D: diagram wall — every generated diagram in one scroll -->
   <div class="box def">
-    <span class="label">🖼️ Diagram Wall · all 11 visuals — one scroll, fast recall</span>
+    <span class="label">🖼️ Diagram Wall · all 14 visuals — one scroll, fast recall</span>
     <p style="margin:6px 0 0;">Last-hour visual sweep: scroll once, each picture re-fires the whole topic.</p>
   </div>
 
@@ -7023,47 +6710,44 @@ t.test(df$marks, mu = 60, alternative = "greater")
         <img src="rds-images/ggplot2-layers.png" alt="ggplot2 layers — DATA + aes() + geom_*() + stats/scales/facets/theme" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
         <figcaption><b>D5</b> · ggplot2 layers — DATA + aes() + geom_*() + stats/scales/facets/theme</figcaption>
       </figure>
-      <figure class="diagram-fig" style="margin:18px 0;">
-        <img src="rds-images/apply-family.png" alt="apply / lapply / sapply / tapply / mapply — decision strip" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D6</b> · apply / lapply / sapply / tapply / mapply — decision strip</figcaption>
-      </figure>
+
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/central-tendency-dispersion.png" alt="Mean·Median·Mode + Range·Variance/SD·IQR — formulas in one view" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D7</b> · Mean·Median·Mode + Range·Variance/SD·IQR — formulas in one view</figcaption>
+        <figcaption><b>D6</b> · Mean·Median·Mode + Range·Variance/SD·IQR — formulas in one view</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/oop-s3-s4-r5.png" alt="S3 vs S4 vs Reference Class — formality & mutability" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D8</b> · S3 vs S4 vs Reference Class — formality & mutability</figcaption>
+        <figcaption><b>D7</b> · S3 vs S4 vs Reference Class — formality & mutability</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/debugging-tools.png" alt="Debugging — traceback() → browser() → debug() → tryCatch()" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D9</b> · Debugging — traceback() → browser() → debug() → tryCatch()</figcaption>
+        <figcaption><b>D8</b> · Debugging — traceback() → browser() → debug() → tryCatch()</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/normal-curve-689599.png" alt="Normal curve — 68–95–99.7 rule, mean=median=mode" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D10</b> · Normal curve — 68–95–99.7 rule, mean=median=mode</figcaption>
+        <figcaption><b>D9</b> · Normal curve — 68–95–99.7 rule, mean=median=mode</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/csv-io-flow.png" alt="Data I/O — read.csv/readxl/RODBC in → write.csv/sqlSave out" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D11</b> · Data I/O — read.csv/readxl/RODBC in → write.csv/sqlSave out</figcaption>
+        <figcaption><b>D10</b> · Data I/O — read.csv/readxl/RODBC in → write.csv/sqlSave out</figcaption>
       </figure>
 
   
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/dikw-pyramid.png" alt="DIKW pyramid — data → information → knowledge → wisdom" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D12</b> · DIKW pyramid — data → information → knowledge → wisdom</figcaption>
+        <figcaption><b>D11</b> · DIKW pyramid — data → information → knowledge → wisdom</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/rstudio-4panes.png" alt="RStudio IDE — Source · Console · Environment · Files/Plots" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D13</b> · RStudio IDE — Source · Console · Environment · Files/Plots</figcaption>
+        <figcaption><b>D12</b> · RStudio IDE — Source · Console · Environment · Files/Plots</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/ifelse-flowchart.png" alt="if / else-if ladder — first TRUE wins (grade A/B/C/F)" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D14</b> · if / else-if ladder — first TRUE wins (grade A/B/C/F)</figcaption>
+        <figcaption><b>D13</b> · if / else-if ladder — first TRUE wins (grade A/B/C/F)</figcaption>
       </figure>
       <figure class="diagram-fig" style="margin:18px 0;">
         <img src="rds-images/loops-three-panel.png" alt="for vs while vs repeat — entry vs exit controlled" loading="lazy" style="width:100%;max-width:760px;height:auto;border-radius:5px;display:block;margin:0 auto;">
-        <figcaption><b>D15</b> · for vs while vs repeat — entry vs exit controlled</figcaption>
+        <figcaption><b>D14</b> · for vs while vs repeat — entry vs exit controlled</figcaption>
       </figure>
 
   <!-- Panel 0: Part-A quick-fire (mirrors predicted Part-A) -->
@@ -7093,7 +6777,6 @@ t.test(df$marks, mu = 60, alternative = "greater")
       <li><b>Histogram use:</b> shows <mark>shape/spread of one numeric variable</mark> (skew, modality, outliers) — <code>hist(x)</code>.</li>
       <li><b>df column access:</b> <code>df[, 2]</code> or <code>df$colname</code>; bind columns with <code>cbind(df, new)</code>.</li>
       <li><b>Cloud + DS:</b> <mark>elastic on-demand compute/storage</mark> — pay-as-you-use scaling for big datasets (AWS/GCP/Azure).</li>
-      <li><b>summary() / is.na():</b> <code>summary(df)</code> = min/quartiles/mean/max per column; <code>is.na(x)</code> = TRUE where values are <mark>missing (NA)</mark>.</li>
     </ul>
   </div>
 
@@ -7208,23 +6891,20 @@ t.test(df$marks, mu = 60, alternative = "greater")
 
   <!-- Panel 5: apply-family input→output table -->
   <div class="box def">
-    <span class="label">Panel 5 · apply-family — input → output</span>
+    <span class="label">Panel 5 · lapply vs sapply — input → output</span>
     <p style="margin:2px 0 0;"><mark>lapply vs sapply</mark> appears every year: same input, list vs vector output.</p>
   </div>
   <div class="table-wrap">
   <table>
-    <caption>apply-family — shape in, shape out</caption>
+    <caption>lapply vs sapply — shape in, shape out</caption>
     <thead><tr><th>Function</th><th>Input</th><th>Output</th><th>Behaviour</th></tr></thead>
     <tbody>
-      <tr><td><code>apply(X,M,FN)</code></td><td>matrix / df</td><td>vector / matrix</td><td>row-wise (M=1) or col-wise (M=2)</td></tr>
       <tr><td><code>lapply(X,FN)</code></td><td>list / vector</td><td><b>list</b> (always)</td><td>element-wise, structure preserved</td></tr>
       <tr><td><code>sapply(X,FN)</code></td><td>list / vector</td><td>vector (simplified)</td><td>cleaner lapply when output uniform</td></tr>
-      <tr><td><code>mapply(FN,...)</code></td><td>multiple vectors</td><td>vector / matrix</td><td>multivariate sapply</td></tr>
-      <tr><td><code>tapply(X,INDEX,FN)</code></td><td>vector + factor</td><td>grouped vector / array</td><td>group-wise summary</td></tr>
     </tbody>
   </table>
   </div>
-  <p class="mnem"><b>Recall:</b> A-L-S-M-T — apply · lapply · sapply · mapply · tapply.</p>
+  <p class="mnem"><b>Recall:</b> lapply = <b>L</b>ist out, always · sapply = <b>S</b>implified vector out.</p>
 
   <!-- Panel 6: 10-snippet R-syntax quick reference -->
   <div class="box def">
