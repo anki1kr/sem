@@ -547,9 +547,11 @@ th, td{
   padding:6px 8px;
   text-align:left;
   border-bottom:1px solid var(--rule);
+  border-right:1px solid var(--rule);
   vertical-align:top;
   line-height:1.4;
 }
+th:last-child, td:last-child{ border-right:none; }
 @media (min-width:600px){ th, td{ padding:9px 10px; line-height:1.45; } }
 th{
   font-family:"Fraunces", serif;
@@ -2020,17 +2022,16 @@ cat("R version:", R.version.string, "\n")</code></pre>
 
   <div class="topic" id="t-2-4">
     <h3>2.4 Package Installation — install vs library <span class="tag hot">⭐ Part-A 2025</span></h3>
-<pre><code># Install once (downloads to disk)
+<pre><code># install once from CRAN
 install.packages("dplyr")
 
-# Load every session (into RAM)
-library(dplyr)         # errors if missing
-require(dplyr)         # returns FALSE if missing
+# load every session before use
+library(dplyr)          # error if missing
+require(dplyr)          # FALSE if missing
 
-# House-keeping
-installed.packages()   # list everything
-update.packages()      # refresh from CRAN
-remove.packages("x")</code></pre>
+# package maintenance
+update.packages()
+remove.packages("dplyr")</code></pre>
 
     <figure class="diagram-fig">
     <svg viewBox="0 0 540 180" xmlns="http://www.w3.org/2000/svg">
@@ -2118,21 +2119,16 @@ remove.packages("x")</code></pre>
   <div class="topic" id="t-2-7">
     <h3>2.7 Objects &amp; Type Conversions <span class="tag fav">Part-A 2024(e)</span></h3>
     <p>R has <mark>6 atomic types</mark> — everything is an <b>object</b>:</p><ul><li><mark><code>logical</code></mark> — TRUE / FALSE</li><li><mark><code>integer</code></mark> — 5L</li><li><mark><code>double</code></mark> (numeric) — 3.14</li><li><mark><code>complex</code></mark> — 2+3i</li><li><mark><code>character</code></mark> — "hello"</li><li><code>raw</code> — raw bytes</li></ul>
-<pre><code># Inspect
-class(3.14)        # "numeric"
-typeof(3.14)       # "double"
-class(5L)          # "integer"
+<pre><code># inspect type
+class(3.14)             # "numeric"
+typeof(3.14)            # "double"
+class(5L)               # "integer"
 
-# Convert (coerce)
-as.integer("42")   # 42
-as.numeric("3.14") # 3.14
-as.character(99)   # "99"
-as.logical(0)      # FALSE
-as.logical(1)      # TRUE
-
-# Implicit coercion hierarchy:
-# logical < integer < numeric < complex < character
-c(TRUE, 2L, 3.5, "x")   # all become "x" (character)</code></pre>
+# convert type
+as.integer("42")        # 42
+as.numeric("3.14")      # 3.14
+as.character(99)        # "99"
+c(TRUE, 2L, 3.5, "x")   # all become character</code></pre>
 
     <div class="box def">
       <span class="label">Coercion rule — the single most-tested trap</span>
@@ -2238,18 +2234,16 @@ length(x)</code></pre>
   <div class="topic" id="t-2-10">
     <h3>2.10 Vectors &amp; Numbers <span class="tag hot">⭐ every year</span></h3>
     <p>The smallest, most-used object in R. 1-D, <mark>homogeneous</mark>.</p>
-<pre><code>v <- c(1, 2, 3)
-1:10               # 1..10
-seq(0, 1, by=.1)   # 0, 0.1, ..., 1.0
-seq_len(5)         # 1 2 3 4 5
-rep(0, 5)          # 0 0 0 0 0
+<pre><code># create vectors
+v <- c(1, 2, 3)
+seq(1, 5)           # 1 2 3 4 5
+rep(0, 3)           # 0 0 0
 
-# Indexing (4 styles)
-v[2]               # positive
-v[-2]              # negative (exclude)
-v[c(TRUE,FALSE,TRUE)] # logical
-v[v > 2]           # condition
-names(v) <- c("a","b","c"); v["b"]  # named</code></pre>
+# access values
+v[2]                # second value
+v[v > 2]            # condition filter
+names(v) <- c("a","b","c")
+v["b"]              # named access</code></pre>
 
     <div class="box warn">
       <span class="label">Recycling rule</span>
@@ -2292,17 +2286,14 @@ names(v) <- c("a","b","c"); v["b"]  # named</code></pre>
   <div class="topic" id="t-2-11">
     <h3>2.11 Matrices and Arrays <span class="tag hot">⭐ May-2023 Q6b (7.5M)</span></h3>
     <p><b><mark>Matrix</mark></b> = 2-D homogeneous (every cell same type). <b><mark>Array</mark></b> = N-D homogeneous.</p>
-<pre><code>m <- matrix(1:12, nrow=3, ncol=4, byrow=TRUE)
-m[2,3]; m[2,]; m[,3]   # element / row / column
+<pre><code># matrix: rows and columns
+m <- matrix(1:12, nrow=3, ncol=4, byrow=TRUE)
+m[2,3]                 # one cell
+m[2, ]                 # full row
+m[ ,3]                 # full column
 dim(m); nrow(m); ncol(m)
 t(m)                   # transpose
-m %*% t(m)             # matrix product
-solve(square_mat)      # inverse
-det(square_mat)        # determinant
-
-# Array (3-D)
-a <- array(1:24, dim=c(2,3,4))
-a[1,2,3]</code></pre>
+m %*% t(m)             # matrix product</code></pre>
 
     <p><b>Fill order — the <code>byrow</code> argument:</b></p><ul><li>Default <code>byrow=FALSE</code>: fills <mark>column-by-column</mark> (top → bottom, col 1 then col 2)</li><li><code>byrow=TRUE</code>: fills <mark>row-by-row</mark> (left → right, row 1 then row 2)</li><li>Same data <code>1:4</code> → two completely different layouts</li></ul>
 
@@ -2348,29 +2339,15 @@ a[1,2,3]</code></pre>
     </figure>
 
     <p><b>Worked answer — May-2023 Q6b verbatim:</b> two 3×3 matrices, element-wise <code>*</code> AND matrix product <code>%*%</code> in one program.</p>
-<pre><code class="language-r"># May-2023 Q6b — two 3x3 matrices, both multiplications
-A <- matrix(1:9, nrow = 3, ncol = 3)              # 1..9 column-wise
-B <- matrix(c(9,8,7,6,5,4,3,2,1), 3, 3)           # 9..1 column-wise
+<pre><code class="language-r"># two 3x3 matrices
+A <- matrix(1:9, nrow=3, ncol=3)
+B <- matrix(c(9,8,7,6,5,4,3,2,1), 3, 3)
 
-A
-#      [,1] [,2] [,3]
-# [1,]    1    4    7
-# [2,]    2    5    8
-# [3,]    3    6    9
-
-# (i) Element-wise (Hadamard) — same shape required, cell-by-cell
+# element-wise: same position cells multiply
 A * B
-#      [,1] [,2] [,3]
-# [1,]    9   24   21
-# [2,]   16   25   16
-# [3,]   21   24    9
 
-# (ii) True matrix multiplication — uses %*% (rows-of-A · cols-of-B)
-A %*% B
-#      [,1] [,2] [,3]
-# [1,]   90   54   18
-# [2,]  114   69   24
-# [3,]  138   84   30</code></pre>
+# matrix product: row of A x column of B
+A %*% B</code></pre>
 
   </div>
 
@@ -2386,19 +2363,16 @@ o <- factor(c("L","H","M"),
   levels=c("L","M","H"), ordered=TRUE)
 o[1] < o[2]                  # TRUE</code></pre>
 
-<pre><code># More factor operations
-nlevels(g)                   # 2  — number of distinct levels
-as.integer(g)                # 1 2 1 2  — underlying integer codes
-levels(g) <- c("Male","Female")   # rename levels in place
-droplevels(g[g == "Male"])   # drop unused levels after subsetting
+<pre><code># factor operations
+nlevels(g)                  # number of levels
+as.integer(g)               # internal codes
+levels(g) <- c("Male","Female")
 
-# cut() turns a numeric vector INTO a factor (binning)
+# cut(): numeric marks -> grade factor
 marks <- c(45, 72, 88, 55, 91)
-grade <- cut(marks,
-             breaks = c(0, 50, 70, 100),
-             labels = c("Fail", "Pass", "Distinction"))
-grade        # Fail Distinction Distinction Pass Distinction
-table(grade) # frequency per bin</code></pre>
+grade <- cut(marks, breaks=c(0,50,70,100),
+             labels=c("Fail","Pass","Distinction"))
+table(grade)                # frequency per grade</code></pre>
 
     <div class="box warn">
       <span class="label">The classic factor trap — as.numeric on a factor</span>
@@ -2431,24 +2405,15 @@ names(L)</code></pre>
     </div>
 
     <p><b>Worked answer — May-2023 Q2a verbatim:</b> build a list with 4 different element types and label them with <code>names()</code>.</p>
-<pre><code class="language-r"># vector + string + matrix + function — name them with names()
-lst <- list(
-  v = c(10, 20, 30),               # vector (1-D box, same type)
-  s = "Hello",                      # string
-  m = matrix(1:4, nrow = 2),        # matrix (2-D homogeneous)
-  f = function(x) x ^ 2             # function (yes, functions are objects)
-)
+<pre><code class="language-r"># list: vector + text + matrix + function
+lst <- list(nums=c(10,20,30),
+            greet="Hello",
+            grid=matrix(1:4, nrow=2),
+            square=function(x) x^2)
 
-names(lst) <- c("nums", "greet", "grid", "square")
-names(lst)
-# [1] "nums"   "greet"  "grid"   "square"
-
-lst$nums            # 10 20 30
-lst$square(5)       # 25  — call the function inside the list
-lst[["grid"]]
-#      [,1] [,2]
-# [1,]    1    3
-# [2,]    2    4</code></pre>
+names(lst)          # item names
+lst$nums            # vector item
+lst$square(5)       # function item gives 25</code></pre>
   </div>
 
   <div class="topic" id="t-2-14">
@@ -2465,26 +2430,16 @@ df[, c("name","marks")]  # column subset
 str(df); summary(df); head(df); nrow(df)</code></pre>
 
     <p><b>Worked answer — May-2025 Q3a:</b> build a student data frame, then:</p><ul><li>Add a <mark>new column</mark> (pass/fail grade via <code>ifelse</code>)</li><li><mark>Filter rows</mark> where marks &gt; 80</li><li>Compute <mark>mean marks</mark> of the class</li></ul>
-<pre><code class="language-r"># Student data frame
+<pre><code class="language-r"># create student data frame
 students <- data.frame(
-  name  = c("Anu", "Bobby", "Chitra", "Deepak", "Esha"),
-  marks = c(72, 85, 91, 58, 88),
-  stringsAsFactors = FALSE          # keep names as strings, not factors
-)
+  name=c("Anu","Bobby","Chitra"),
+  marks=c(72,85,91),
+  stringsAsFactors=FALSE)
 
-# (i) Add a new column — pass/fail grade
+# add column, filter rows, find mean
 students$grade <- ifelse(students$marks >= 60, "Pass", "Fail")
-
-# (ii) Filter rows where marks > 80
 top <- students[students$marks > 80, ]
-print(top)
-#     name marks grade
-# 2  Bobby    85  Pass
-# 3 Chitra    91  Pass
-# 5   Esha    88  Pass
-
-# (iii) Mean marks of the class
-mean(students$marks)               # 78.8</code></pre>
+mean(students$marks)</code></pre>
 
   </div>
 
@@ -2537,19 +2492,14 @@ mean(students$marks)               # 78.8</code></pre>
   <div class="topic" id="t-3-1">
     <h3>3.1 Function Creation &amp; Scripts <span class="tag hot">⭐ May-2025 Q4 (15M)</span></h3>
     <p><b>R is functional-first:</b></p><ul><li>Every operation is a <mark>function call</mark></li><li><mark>UDFs</mark> (user-defined functions) are <mark>first-class objects</mark> — can be passed as arguments, stored in lists, returned from other functions</li></ul>
-<pre><code># Anatomy: name <- function(args) { body }
-greet <- function(name="friend", greeting="Hello") {
-  paste(greeting, name)
+<pre><code># function syntax: name <- function(args) { body }
+greet <- function(name="friend") {
+  paste("Hello", name)
 }
-greet()              # "Hello friend"
-greet("Ankit")       # "Hello Ankit"
-greet(greeting="Hi", name="A")  # named args
 
-# Anonymous functions (lambda)
-sapply(1:5, function(x) x^2)   # 1 4 9 16 25
-
-# R 4.1+ lambda shorthand
-sapply(1:5, \(x) x^2)</code></pre>
+greet()                 # "Hello friend"
+greet("Ankit")          # "Hello Ankit"
+sapply(1:5, function(x) x^2)   # anonymous function</code></pre>
     <p><b>Function features:</b></p>
     <ul>
       <li><mark>Default args</mark> — parameters can carry a default value, overridable by the caller</li>
@@ -2561,30 +2511,24 @@ sapply(1:5, \(x) x^2)</code></pre>
     <p><b>Scripts:</b> save as <code>.R</code>, run via <code>source("file.R")</code> or <code>Rscript file.R</code> from shell.</p>
 
     <p><b>Worked examples — simple square fn + May-2025 Q4 (grade classifier):</b></p>
-<pre><code class="language-r"># 1. Simple — square of a number
+<pre><code class="language-r"># simple function: square
 square <- function(x) {
-  x * x                      # last expression is auto-returned
+  x * x                      # last expression returns
 }
-square(7)        # 49
-square(-4)       # 16
+square(7)                    # 49
 
-# 2. With default arg + if-else chain (May-2025 Q4 grade classifier)
-classify <- function(marks, pass_cut = 40) {
-  if (marks >= 75)            "A"
-  else if (marks >= 60)       "B"
-  else if (marks >= pass_cut) "C"
-  else                        "Fail"
-}
-classify(82)     # "A"
-classify(63)     # "B"
-classify(45)     # "C"
-classify(38)     # "Fail"
-classify(38, pass_cut = 35)   # "C"  — caller overrides default</code></pre>
+# grade classifier
+classify <- function(marks) {
+  if (marks >= 75) "A"
+  else if (marks >= 60) "B"
+  else if (marks >= 40) "C"
+  else "Fail"
+}</code></pre>
   </div>
 
   <div class="topic" id="t-3-2">
     <h3>3.2 Logical Operators &amp; Conditional Statements</h3>
-<pre><code># if / else if / else
+<pre><code># if / else if / else: one value
 x <- 5
 if (x > 0) {
   print("positive")
@@ -2594,13 +2538,9 @@ if (x > 0) {
   print("negative")
 }
 
-# Inline (ternary equivalent)
-sign <- if (x > 0) "pos" else "neg"
-
-# Vectorised: ifelse()
-v <- c(-1, 0, 5, -3)
-ifelse(v >= 0, "non-neg", "neg")
-# "neg" "non-neg" "non-neg" "neg"</code></pre>
+# vectorised ifelse(): many values
+v <- c(-1, 0, 5)
+ifelse(v >= 0, "non-neg", "neg")</code></pre>
     <div class="box tip">
       <span class="label">if vs ifelse — common 5M trap</span>
       <b>if</b> is a control-flow statement that takes <i>one scalar</i> condition. <b>ifelse()</b> is a <i>vectorised</i> function that returns a vector of the same length as its first argument. Inside <code>for</code>/<code>while</code> bodies, prefer <code>if</code>; for whole-vector decisions, <code>ifelse()</code>.
@@ -2776,7 +2716,7 @@ for (i in 1:7) print(i^3)
 i <- 1
 while (i <= 5) { print(i); i <- i + 1 }</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · <mark>repeat</mark> &amp; next</b> — exit-controlled loop and skip keyword</p>
-<pre><code># repeat
+<pre><code># repeat: runs until break
 i <- 1
 repeat {
   if (i > 5) break
@@ -2784,11 +2724,11 @@ repeat {
   i <- i + 1
 }
 
-# next (skip)
+# next: skip one round
 for (i in 1:5) {
   if (i == 3) next
   print(i)
-}                   # prints 1 2 4 5</code></pre>
+}</code></pre>
 
     <div class="box eli5">
       <span class="label">Plain English</span>
@@ -2843,41 +2783,34 @@ switch(day,
     </ul>
 
     <p><b>Worked answer — May-2023 Q3b verbatim:</b> a calculator using <code>switch()</code> as <mark>multi-way dispatch</mark>.</p>
-<pre><code class="language-r"># Calculator — replaces a long if-else if chain
+<pre><code class="language-r"># switch(): choose one case by name
 calc <- function(op, a, b) {
   switch(op,
     add = a + b,
     sub = a - b,
     mul = a * b,
     div = a / b,
-    "Unknown operation"          # default (unnamed last arg)
-  )
+    "Unknown operation")
 }
-
-calc("add", 5, 3)        # 8
-calc("sub", 10, 4)       # 6
-calc("mul", 4, 6)        # 24
-calc("div", 20, 5)       # 4
-calc("xor", 1, 1)        # "Unknown operation"  — falls to default</code></pre>
+calc("add", 5, 3)        # 8</code></pre>
 
   </div>
 
   <div class="topic" id="t-3-5">
     <h3>3.5 Lists in R — operations <span class="tag hot">⭐ 2023 Q2a, 2024 Q3a</span></h3>
 <p style="margin:16px 0 2px;"><b>1 · <mark>Create &amp; access</mark></b> — heterogeneous list with 4 element types, 3 access syntaxes</p>
-<pre><code># Create a heterogeneous list (4 element types)
+<pre><code># list can hold mixed data
 student <- list(
   name   = "Ankit",          # character
   marks  = c(80, 90, 75),    # numeric vector
-  subj   = matrix(1:6, 2, 3),# matrix
-  passed = function(m) all(m >= 40)  # function
+  subj   = matrix(1:6, 2, 3), # matrix
+  pass   = TRUE              # logical
 )
-names(student) <- c("name","marks","subj","passed")
 
-# Access (3 ways)
+# access list items
 student$name        # "Ankit"
-student[[2]]        # numeric vector itself
-student["subj"]     # sub-list (length 1)</code></pre>
+student[[2]]        # marks vector itself
+student["subj"]     # sub-list</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · Common operations &amp; <mark>recursive list</mark></b> — add/remove/sapply/class; list of lists</p>
 <pre><code># Common operations
 length(student)          # 4
@@ -3043,32 +2976,28 @@ sapply(1:3, sqrt)
     <p>R supports <b>three</b> OOP systems. Each defines classes &amp; method dispatch differently.</p>
 
     <h4>S3 — informal, the original</h4>
-<pre><code># Any object can become a class via class()
+<pre><code># S3: object + class label
 x <- list(name="A", marks=85)
 class(x) <- "Student"
 
-# Methods are functions named generic.class
+# method name pattern: generic.class
 print.Student <- function(o, ...) {
   cat("Student:", o$name, "Marks:", o$marks, "\n")
 }
-print(x)        # dispatches to print.Student
-
-# Inheritance via class vector
-class(x) <- c("HonorsStudent", "Student")</code></pre>
+print(x)        # calls print.Student()</code></pre>
 
     <h4>S4 — formal, slot-based</h4>
 <pre><code>setClass("Student",
   representation(name="character", marks="numeric"))
 s <- new("Student", name="A", marks=85)
-s@name; s@marks            # @ for slot access
+s@name; s@marks            # @ slot access
 
+# S4 method
 setGeneric("greet", function(x) standardGeneric("greet"))
 setMethod("greet", "Student",
   function(x) cat("Hi", x@name))
 greet(s)                   # "Hi A"
-
-isVirtualClass("Student")
-validObject(s)             # checks types</code></pre>
+validObject(s)             # checks slot types</code></pre>
 
     <h4>Reference Classes (R5) — mutable, Java-like</h4>
 <pre><code>Account <- setRefClass("Account",
@@ -3156,69 +3085,40 @@ a$deposit(50); a$balance    # 150 — MUTATED in-place</code></pre>
 
   <div class="topic" id="t-4-1">
     <h3>4.1 Saving &amp; Loading R Data</h3>
-<pre><code># Save / load single object
+<pre><code># one object: best exam example
 saveRDS(df, "students.rds")
 df2 <- readRDS("students.rds")
 
-# Save / load multiple objects (workspace)
+# many objects: workspace file
 save(df, model, file="session.RData")
 load("session.RData")           # restores names
-
-# Whole workspace
-save.image()                    # ".RData"
-ls(); rm(list=ls())             # list / clear</code></pre>
+ls()                            # list objects</code></pre>
   </div>
 
   <div class="topic" id="t-4-2">
     <h3>4.2 Import &amp; Export — CSV files <span class="tag hot">⭐⭐ May-2023 Q5b · May-2024 Q3b (10M × 2)</span></h3>
-<pre><code># Read
-df <- read.csv("students.csv",
-               header=TRUE,
-               stringsAsFactors=FALSE,
-               na.strings=c("","NA"))
+<pre><code># read CSV into data frame
+df <- read.csv("students.csv", header=TRUE,
+               stringsAsFactors=FALSE)
 
-# Write
+# write CSV without extra row-number column
 write.csv(df, "out.csv", row.names=FALSE)
 
-# Generic version (tab / pipe / etc.)
-read.table("file.tsv", sep="\t", header=TRUE)
-write.table(df, "out.tsv", sep="\t", quote=FALSE)
-
-# Faster (data.table)
-library(data.table)
-df <- fread("students.csv")
-fwrite(df, "out.csv")</code></pre>
+# tab-separated file
+tsv <- read.table("file.tsv", sep="\t", header=TRUE)</code></pre>
 
     <p><b>Worked answer — May-2023 Q5b verbatim:</b> Jon/Bill/Maria/Tom/Emma dataset, export to CSV, read back, verify.</p>
-<pre><code class="language-r"># May-2023 Q5b verbatim dataset
+<pre><code class="language-r"># create small data frame
 people <- data.frame(
-  name = c("Jon", "Bill", "Maria", "Tom", "Emma"),
-  age  = c(23, 41, 32, 55, 40),
-  stringsAsFactors = FALSE
-)
+  name=c("Jon","Bill","Maria"),
+  age=c(23,41,32),
+  stringsAsFactors=FALSE)
 
-# (i) Export to CSV — row.names=FALSE drops the extra index column
-write.csv(people, "people.csv", row.names = FALSE)
-
-# (ii) Read back from disk
-people2 <- read.csv("people.csv", stringsAsFactors = FALSE)
-
-# (iii) Verify round-trip is loss-less
-identical(people, people2)        # TRUE
-
-# (iv) Inspect structure
-str(people2)
-# 'data.frame': 5 obs. of 2 variables:
-#  $ name: chr  "Jon" "Bill" "Maria" "Tom" "Emma"
-#  $ age : int  23 41 32 55 40
-
-head(people2)
-#    name age
-# 1   Jon  23
-# 2  Bill  41
-# 3 Maria  32
-# 4   Tom  55
-# 5  Emma  40</code></pre>
+# write and read CSV
+write.csv(people, "people.csv", row.names=FALSE)
+people2 <- read.csv("people.csv",
+                    stringsAsFactors=FALSE)
+head(people2)</code></pre>
 
   </div>
 
@@ -3226,20 +3126,12 @@ head(people2)
     <h3>4.3 ODBC Connectivity</h3>
     <p><b>ODBC</b> (Open Database Connectivity) is a standard API that lets R read/write external databases (SQL Server, MySQL, Oracle, Postgres, MS Access).</p>
 <pre><code>library(RODBC)
-con <- odbcConnect("dsn_name",
-                   uid="user", pwd="pass")
 
-# SELECT into a data frame
+# connect using DSN, read, write, close
+con <- odbcConnect("dsn_name", uid="user", pwd="pass")
 students <- sqlQuery(con,
   "SELECT * FROM students WHERE marks > 60")
-
-# INSERT
-sqlQuery(con,
-  "INSERT INTO students VALUES('A', 80)")
-
-# Bulk write a data frame
 sqlSave(con, df, tablename="new_students")
-
 odbcClose(con)</code></pre>
     <p><b>Modern alternative — <code>DBI + odbc</code>:</b></p>
     <ul>
@@ -3280,27 +3172,13 @@ odbcClose(con)</code></pre>
 
 <pre><code>library(RODBC)
 
-# 1 Connect — uses the system ODBC DSN named "myDB"
-con &lt;- odbcConnect("myDB", uid = "admin", pwd = "secret")
-
-# 2a Read with SQL filter
-df &lt;- sqlQuery(con, "SELECT name, marks FROM students WHERE marks &gt; 60")
-
-# 2b Fetch entire table as data frame
-df2 &lt;- sqlFetch(con, "students")
-
-# 3 Write R data frame back (creates table if absent)
-sqlSave(con, df, tablename = "top_students", rownames = FALSE)
-
-# 4 Close — always close to free the server connection
-odbcClose(con)
-
-# Modern DBI/odbc equivalent (same four steps, type-safe)
-# library(DBI); library(odbc)
-# con2 &lt;- dbConnect(odbc(), Driver="MySQL", Server="localhost",
-#                   Database="school", UID="root", PWD="")
-# df3  &lt;- dbGetQuery(con2, "SELECT * FROM students")
-# dbDisconnect(con2)</code></pre>
+# connect -> query -> save -> close
+con &lt;- odbcConnect("myDB", uid="admin", pwd="secret")
+df &lt;- sqlQuery(con,
+  "SELECT name, marks FROM students WHERE marks &gt; 60")
+sqlSave(con, df, tablename="top_students",
+        rownames=FALSE)
+odbcClose(con)        # always close connection</code></pre>
 
   </div>
 
@@ -3325,24 +3203,15 @@ odbcClose(con)
     </table>
     </div>
 
-<pre><code># Inline breakpoint example
+<pre><code># browser(): pause inside function
 sumPositive <- function(v) {
   total <- 0
   for (x in v) {
-    if (x < 0) browser()    # pause here when x is negative
+    if (x < 0) browser()   # inspect x, total
     total <- total + x
   }
   total
-}
-
-# Graceful error handling
-safe_div <- function(a, b) {
-  tryCatch(a / b,
-    warning = function(w) { message("warn: ", w$message); NA },
-    error   = function(e) { message("err: ",  e$message); NA })
-}
-safe_div(10, 0)    # Inf (no error in R, but you can wrap)
-safe_div(10, "x")  # err: non-numeric ; NA</code></pre>
+}</code></pre>
 
     <div class="box eli5">
       <span class="label">Plain English</span>
@@ -3379,21 +3248,11 @@ barplot(table(df$grade))</code></pre>
     <h4>ggplot2 — <mark>grammar of graphics</mark></h4>
 <pre><code>library(ggplot2)
 
-ggplot(data = df, aes(x = marks, fill = grade)) +
+# histogram: one numeric column
+ggplot(df, aes(x = marks)) +
   geom_histogram(binwidth = 5) +
-  labs(title = "Marks distribution",
-       x = "Marks", y = "Frequency") +
-  theme_minimal()
-
-# Bar chart
-ggplot(df, aes(x = grade)) +
-  geom_bar(fill = "#166534") +
-  labs(title = "Grade counts")
-
-# Scatter
-ggplot(df, aes(x = hours, y = marks, color = grade)) +
-  geom_point(size = 3) +
-  geom_smooth(method = "lm")</code></pre>
+  labs(title="Marks distribution",
+       x="Marks", y="Frequency")</code></pre>
 
     <div class="table-wrap">
     <table>
@@ -3535,34 +3394,14 @@ ggplot(df, aes(x = hours, y = marks, color = grade)) +
 
     <p><b>Worked answer — May-2024 Q4a (scatter+histogram, 10M) + May-2025 Q6b (bar chart, 5M):</b></p>
 <pre><code class="language-r">library(ggplot2)
-set.seed(42)
-df <- data.frame(
-  student = paste0("S", 1:30),
-  hours   = round(runif(30, 1, 10), 1),
-  marks   = round(runif(30, 35, 95))
-)
 
-# 1. SCATTER (May-2024 Q4a) — hours vs marks with regression line
-ggplot(df, aes(x = hours, y = marks)) +
-  geom_point(size = 3, colour = "#166534") +
-  geom_smooth(method = "lm", se = FALSE) +
-  labs(title = "Study hours vs marks", x = "Hours", y = "Marks")
-# Output: scatter of 30 points with a green-on-fitted line trending upward
-
-# 2. HISTOGRAM (May-2024 Q4a) — marks distribution
-ggplot(df, aes(x = marks)) +
-  geom_histogram(binwidth = 10, fill = "#15803d", colour = "white") +
-  labs(title = "Marks distribution", x = "Marks", y = "Count")
-# Output: 6 bars covering 35-95 in 10-mark bins
-
-# 3. BAR CHART (May-2025 Q6b 5M) — count per grade
-df$grade <- cut(df$marks,
-                breaks = c(0, 50, 70, 100),
-                labels = c("Fail", "Pass", "Distinction"))
-ggplot(df, aes(x = grade)) +
-  geom_bar(fill = "#a16207") +
-  labs(title = "Grade counts", x = "Grade", y = "Students")
-# Output: 3 bars showing how many students fall in each grade band</code></pre>
+# question asks one clean scatter plot
+df <- data.frame(hours=c(2,4,6,8),
+                 marks=c(45,60,72,88))
+ggplot(df, aes(x=hours, y=marks)) +
+  geom_point(colour="#166534", size=3) +
+  labs(title="Study hours vs marks",
+       x="Hours", y="Marks")</code></pre>
 
     <h4>The common geoms — pick by data shape</h4>
     <div class="table-wrap">
@@ -3582,22 +3421,13 @@ ggplot(df, aes(x = grade)) +
     </div>
 
     <h4>Aesthetics — mapped vs set (the #1 ggplot exam trap)</h4>
-<pre><code># MAPPED — colour driven BY a column -> goes INSIDE aes(), gets a legend
-ggplot(df, aes(x = hours, y = marks, colour = grade)) +
+<pre><code># mapped colour: column -> legend
+ggplot(df, aes(x=hours, y=marks, colour=grade)) +
   geom_point()
 
-# SET — one fixed colour for ALL points -> goes OUTSIDE aes(), no legend
-ggplot(df, aes(x = hours, y = marks)) +
-  geom_point(colour = "darkgreen")
-
-# Common aesthetic channels:
-#   x, y      position
-#   colour    outline / point / line colour   (a column -> legend)
-#   fill      interior colour of bars/boxes
-#   size      point size / line thickness
-#   shape     point symbol (factor only)
-#   alpha     transparency 0..1
-#   linetype  solid / dashed / dotted (factor)</code></pre>
+# fixed colour: outside aes(), no legend
+ggplot(df, aes(x=hours, y=marks)) +
+  geom_point(colour="darkgreen")</code></pre>
     <div class="box warn">
       <span class="label">colour = "blue" inside vs outside aes()</span>
       Putting a literal colour <i>inside</i> <code>aes()</code> — e.g. <code>aes(colour = "blue")</code> — does <b>not</b> paint points blue; it creates a one-level factor called "blue" and lets ggplot pick its own (usually red) colour plus a legend. To set a constant colour, place it <i>outside</i> <code>aes()</code> in the geom: <code>geom_point(colour = "blue")</code>.
@@ -3642,17 +3472,13 @@ ggplot(df, aes(x = hours, y = marks)) +
     <h3>4.6 Max, Min, Frequency Distribution</h3>
 <pre><code>x <- c(12, 5, 8, 3, 19, 7, 5, 8)
 
-max(x); min(x); range(x)        # 19 ; 3 ; 3 19
-which.max(x); which.min(x)      # index of max/min
+# extremes and positions
+max(x); min(x); range(x)
+which.max(x); which.min(x)
 
-# Frequency distribution
+# frequency table and bins
 table(x)
-# x
-#  3  5  7  8 12 19
-#  1  2  1  2  1  1
-
-cut(x, breaks=c(0,5,10,20))     # bin into classes
-hist(x, breaks=5, plot=FALSE)$counts</code></pre>
+cut(x, breaks=c(0,5,10,20))</code></pre>
     <p><b><mark>Frequency distribution</mark></b> — what it tells you:</p>
     <ul>
       <li>Shows the <mark>count</mark> (or proportion) of values falling into each <mark>class interval</mark></li>
@@ -3736,22 +3562,16 @@ hist(x, breaks=5, plot=FALSE)$counts</code></pre>
     </table>
     </div>
 
-<pre><code># Sample dataset
+<pre><code># sample data
 x <- c(2, 4, 4, 4, 5, 5, 7, 9)
 
-mean(x)        # 5
-median(x)      # 4.5
-var(x)         # 4.571
-sd(x)          # 2.138
+# central tendency + spread
+mean(x); median(x)
+var(x); sd(x)
+summary(x)     # Min Q1 Median Mean Q3 Max
 
-# Mode via UDF (no built-in)
-getMode <- function(v) {
-  u <- unique(v)
-  u[which.max(tabulate(match(v, u)))]
-}
-getMode(x)     # 4 (appears 3 times)
-
-summary(x)     # Min Q1 Median Mean Q3 Max</code></pre>
+# mode: most frequent value
+names(which.max(table(x)))</code></pre>
 
     <div class="numeric">
       <p class="q">Compute <mark>mean</mark>, <mark>median</mark>, <mark>mode</mark>, SD for: 2, 4, 4, 4, 5, 5, 7, 9</p>
@@ -3861,6 +3681,10 @@ summary(x)     # Min Q1 Median Mean Q3 Max</code></pre>
         <tr><td>Correlation test</td><td>Test if r ≠ 0</td><td><code>cor.test(x, y)</code></td></tr>
       </tbody>
     </table>
+    </div>
+    <div class="box warn">
+      <span class="label">Exam scope — BCD-204-V</span>
+      The syllabus names only the <mark>t-test (one-sample, two-sample)</mark> explicitly, and all three past papers (May-23 Q4a, May-24 Q5b, May-25 Q6a) framed the hypothesis question around the t-test. Chi-square and ANOVA are listed above only so the "types of statistical hypothesis testing" answer is complete — know them as one-line definitions, drill the t-test in full.
     </div>
 
     <figure class="diagram-fig">
@@ -3988,26 +3812,14 @@ t.test(weights, mu = 50)
     </div>
 
     <p><b>Worked answer — May-2024 Q5b verbatim:</b> one-sample t-test, claim "class mean = 70", α = 0.05.</p>
-<pre><code class="language-r"># Claim: average score of the class is 70. Test at alpha = 0.05.
-scores <- c(68, 72, 75, 69, 71, 66, 74, 73, 70, 67)
+<pre><code class="language-r"># H0: mean = 70, H1: mean != 70
+scores <- c(68,72,75,69,71,66,74,73,70,67)
 
-# Step 1: H0: mu = 70   ·  H1: mu != 70 (two-sided)
-# Step 2: alpha = 0.05
-# Steps 3-4: compute t-statistic & p-value
-t.test(scores, mu = 70, conf.level = 0.95)
-#
-# One Sample t-test
-# data:  scores
-# t = 0.522, df = 9, p-value = 0.6141
-# alternative hypothesis: true mean is not equal to 70
-# 95 percent confidence interval:
-#  68.33  72.67
-# sample estimates:
-# mean of x
-#      70.5
-#
-# Step 5: Decision rule — p (0.6141) > alpha (0.05)  ->  FAIL TO REJECT H0
-# Step 6: Conclusion — no evidence the class mean differs from 70.</code></pre>
+# one-sample t-test
+ans <- t.test(scores, mu=70)
+ans$p.value
+
+# if p > 0.05: fail to reject H0</code></pre>
 
     <h4>One-tailed vs two-tailed</h4>
     <ul>
@@ -4084,26 +3896,14 @@ cov(x, y)                       # 1.5 (covariance)</code></pre>
     </div>
 
     <p><b>Worked answer — May-2024 Q1d/h verbatim:</b> compute cor, cor.test, and verify cor = cov ÷ (sd·sd).</p>
-<pre><code class="language-r"># Sample: study hours vs marks
-hours <- c(2, 3, 4, 5, 6, 7, 8)
-marks <- c(45, 55, 60, 70, 72, 80, 88)
+<pre><code class="language-r"># relation between study hours and marks
+hours <- c(2,3,4,5,6,7,8)
+marks <- c(45,55,60,70,72,80,88)
 
-cor(hours, marks)                          # 0.993  (Pearson, default)
-cor(hours, marks, method = "spearman")     # 1.000  (rank-based)
+cor(hours, marks)       # Pearson r
+cor.test(hours, marks)  # r + p-value
 
-cor.test(hours, marks)
-#         Pearson's product-moment correlation
-# t = 19.0, df = 5, p-value = 7.4e-06
-# alternative hypothesis: true correlation is not equal to 0
-# 95 percent confidence interval:
-#  0.953 0.999
-# sample estimates:
-#       cor
-# 0.993
-# -> p < 0.05  =>  reject H0 (correlation IS non-zero)
-
-# Manual relation: cor = cov / (sd_x * sd_y)
-cov(hours, marks) / (sd(hours) * sd(marks))   # 0.993 (matches cor())</code></pre>
+# p < 0.05 means correlation is significant</code></pre>
 
     <figure class="diagram-fig">
     <svg viewBox="0 0 640 230" xmlns="http://www.w3.org/2000/svg">
@@ -4191,21 +3991,15 @@ cov(hours, marks) / (sd(hours) * sd(marks))   # 0.993 (matches cor())</code></pr
     </table>
     </div>
 
-<pre><code># Normal — the four faces
-dnorm(0, mean=0, sd=1)         # 0.3989 — PDF at x=0
-pnorm(1.96)                    # 0.975  — CDF
-qnorm(0.975)                   # 1.96   — inverse CDF
-rnorm(5, mean=50, sd=10)       # 5 random samples
+<pre><code># normal: d, p, q, r family
+dnorm(0, mean=0, sd=1)       # density at x
+pnorm(1.96)                  # P(X <= 1.96)
+qnorm(0.975)                 # inverse CDF
+rnorm(5, mean=50, sd=10)     # random values
 
-# Binomial — P(exactly 3 heads in 5 tosses, fair coin)
-dbinom(3, size=5, prob=0.5)    # 0.3125
-
-# Poisson — P(exactly 2 calls in an hour, λ=3)
-dpois(2, lambda=3)             # 0.224
-
-# Random samples
-rpois(10, lambda=3)            # 10 Poisson draws
-runif(5, min=0, max=1)         # uniform sample</code></pre>
+# other distributions use same idea
+dbinom(3, size=5, prob=0.5)  # exact binomial
+dpois(2, lambda=3)           # exact Poisson</code></pre>
 
     <p class="mnem"><b>Mnemonic for 4 prefixes:</b> <i>"d</i>ensity · <i>p</i>robability · <i>q</i>uantile · <i>r</i>andom" — d·p·q·r in alphabetical order.</p>
 
@@ -4966,23 +4760,21 @@ ggplot(data = mpg, aes(x = displ, y = hwy, colour = drv)) +  # 1 data + 2 aes
             <tr><td><b>Data frame</b></td><td>2-D</td><td>Heterogeneous</td><td><code>data.frame(...)</code></td><td>Tabular datasets (rows = observations)</td></tr>
           </tbody>
         </table></div>
-<pre><code># 1. Vector — homogeneous, 1-D
-v <- c(10, 20, 30)
-v[2]                       # 20
+<pre><code># 1. Vector
+v <- c(10, 20, 30);  v[2]          # 20
 
-# 2. List — heterogeneous, 1-D, nestable
-L <- list(name = "Ankit", marks = c(80, 90), pass = TRUE)
-L$marks                    # 80 90    ($ or [[ ]] for the element itself)
+# 2. List
+L <- list(name="Ankit", marks=c(80,90))
+L$marks                             # 80 90
 
-# 3. Matrix — homogeneous, 2-D
-m <- matrix(1:6, nrow = 2)  # fills column-wise
-m[1, 3]                    # 5        ([row, col])
+# 3. Matrix — fills column-wise
+m <- matrix(1:6, nrow=2)
+m[1, 3]                             # 5
 
-# 4. Data frame — heterogeneous, 2-D (a list of equal-length columns)
-df <- data.frame(name = c("A","B"), marks = c(80, 90),
-                 stringsAsFactors = FALSE)
-df$marks                   # 80 90    (column access)
-df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
+# 4. Data frame
+df <- data.frame(name=c("A","B"), marks=c(80,90))
+df$marks                            # 80 90
+df[df$marks > 85, ]                 # row filter → "B" row</code></pre>
         <figure class="diagram-fig">
           <div style="max-width:440px; margin:0 auto;">
             <div style="display:grid; grid-template-columns:60px 1fr 1fr; gap:6px; align-items:center;">
@@ -5073,16 +4865,11 @@ df[df$marks > 85, ]        # row filter -> the "B" row</code></pre>
         <p><b>Example — study hours vs marks</b></p>
         <p style="margin:16px 0 2px;"><b>1 · <mark>Base graphics scatter</mark></b> — plot points + regression line with <code>plot()</code> and <code>abline()</code></p>
 <pre><code># Base graphics
-hours  <- c(2, 3, 5, 6, 7, 8, 9)
-marks  <- c(40, 50, 60, 65, 72, 80, 88)
-plot(hours, marks,
-     main = "Study hours vs Exam marks",
-     xlab = "Hours studied per day",
-     ylab = "Marks (%)",
-     col  = "steelblue",   # point colour
-     pch  = 16,            # solid circle
-     cex  = 1.4)
-abline(lm(marks ~ hours), col = "firebrick", lwd = 2)</code></pre>
+hours <- c(2, 3, 5, 6, 7, 8, 9)
+marks <- c(40, 50, 60, 65, 72, 80, 88)
+plot(hours, marks, main="Study hours vs Marks",
+     col="steelblue", pch=16)   # pch=16 solid circle
+abline(lm(marks ~ hours), col="firebrick", lwd=2)</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · <mark>ggplot2 scatter</mark></b> — same plot with <code>geom_point()</code> and <code>geom_smooth(method="lm")</code></p>
 <pre><code># ggplot2 equivalent
 library(ggplot2)
@@ -5103,20 +4890,15 @@ ggplot(df, aes(x = hours, y = marks)) +
         </ul>
         <p><b>Example — class heights (cm)</b></p>
         <pre><code># Base graphics
-heights <- c(152,155,158,160,160,162,163,165,165,167,
-             168,170,172,174,175,178,180,182,185,190)
-hist(heights,
-     breaks = 5,
-     main   = "Distribution of student heights",
-     xlab   = "Height (cm)",
-     col    = "skyblue",
-     border = "white")
+heights <- c(152,158,160,165,168,172,175,180,185,190)
+hist(heights, breaks=5, col="skyblue",
+     main="Student heights", xlab="Height (cm)")
 
 # ggplot2 equivalent
-df2 <- data.frame(h = heights)
-ggplot(df2, aes(x = h)) +
-  geom_histogram(bins = 5, fill = "skyblue", colour = "white") +
-  labs(title = "Distribution of student heights", x = "Height (cm)")</code></pre>
+df2 <- data.frame(h=heights)
+ggplot(df2, aes(x=h)) +
+  geom_histogram(bins=5, fill="skyblue") +
+  labs(title="Student heights", x="Height (cm)")</code></pre>
 
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px; max-width:560px; margin:0 auto;">
@@ -5151,14 +4933,14 @@ ggplot(df2, aes(x = h)) +
               <div style="padding:5px 10px 8px; font-size:10.5px; color:var(--ink);">Reveals shape, skew, &amp; outliers</div>
             </div>
           </div>
-          <figcaption><b>Fig Px.1</b> · Scatter plot (correlation trend) vs histogram (frequency distribution) — two fundamental EDA tools</figcaption>
+          <figcaption><b>Fig P6.1</b> · Scatter plot (correlation trend) vs histogram (frequency distribution) — two fundamental EDA tools</figcaption>
         </figure>
 
         <h5>Importance of scatter plots and histograms</h5>
         <ul>
           <li><b>First step in EDA</b> — before any model, visualising data spots data-entry errors, impossible values, and distributional assumptions that linear models require.</li>
           <li><b>Outlier detection</b> — scatter plot isolates extreme (x, y) pairs; histogram reveals values far from the central bins — both inform data-cleaning decisions.</li>
-          <li><b>Check normality before tests</b> — a bell-shaped histogram (or nearly symmetric distribution) supports the normality assumption required by t-tests and ANOVA.</li>
+          <li><b>Check normality before tests</b> — a bell-shaped histogram (or nearly symmetric distribution) supports the normality assumption required by t-tests.</li>
           <li><b>Understand correlation</b> — a tight diagonal cluster in a scatter plot indicates strong linear relationship; a horizontal cloud indicates no correlation — guiding feature selection for regression.</li>
         </ul>
 
@@ -5235,23 +5017,17 @@ ggplot(df2, aes(x = h)) +
         </ul>
 
         <h5>Worked snippet — readline + cat together</h5>
-        <pre><code># Interactive name-greeter
-name &lt;- readline("Enter your name: ")   # user types "Ankit"
-cat("Hello", name, "! Welcome to R.\n") # Hello Ankit ! Welcome to R.
+        <pre><code>name &lt;- readline("Enter your name: ")   # user types "Ankit"
+cat("Hello", name, "!\n")               # Hello Ankit !
 
-# min / max on a marks vector
-marks &lt;- c(72, 88, 55, 91, 63, 70)
-cat("Highest:", max(marks), "| Lowest:", min(marks), "\n")
-# Highest: 91 | Lowest: 55
+marks &lt;- c(72, 88, 55, 91)
+cat("Max:", max(marks), "Min:", min(marks), "\n") # 91  55
 
-# seq + paste + length pipeline
-students &lt;- paste("S", seq(1, 5), sep="")  # "S1" "S2" "S3" "S4" "S5"
-cat("Students:", length(students), "\n")    # Students: 5
+ids &lt;- paste("S", seq(1,5), sep="")    # "S1".."S5"
+cat("Count:", length(ids), "\n")        # 5
 
-# Quick data inspection trio
-head(mtcars, 3)     # first 3 rows
-str(mtcars)         # structure overview
-summary(mtcars$mpg) # 5-number + mean</code></pre>
+# Data inspection trio
+head(mtcars, 3); str(mtcars); summary(mtcars$mpg)</code></pre>
 
         <div class="box tip">
           <span class="label">Exam shortcuts to memorise</span>
@@ -5346,7 +5122,7 @@ t.test(A, B, var.equal = FALSE)
             <li><b>Two-sample t-test</b> compares <i>two independent</i> sample means: <code>t.test(A, B)</code> defaults to Welch (unequal variances) — safer than Student's pooled t.</li>
             <li><b>Welch vs Student:</b> set <code>var.equal=TRUE</code> only after verifying with <code>var.test(A, B)</code> that variances are similar.</li>
             <li><b>Paired variant</b> for matched-pair / before-after designs: <code>t.test(before, after, paired=TRUE)</code> — much higher power than independent.</li>
-            <li><b>χ² independence:</b> <code>chisq.test(table(x, y))</code> handles two categorical variables; useful when the rotation drops t for chi-square.</li>
+            <li><b>χ² independence:</b> <code>chisq.test(table(x, y))</code> handles two categorical variables — know it as a one-line definition only; every past paper's hypothesis question used the t-test.</li>
             <li><b>Reading output:</b> reject H₀ when p &lt; α; the 95% CI of the mean difference excluding 0 corroborates the rejection.</li>
           </ul>
         </div>
@@ -5406,17 +5182,13 @@ t.test(A, B, var.equal = FALSE)
           </tbody>
         </table></div>
         <p>The last cell folds the small <code>x &gt;= 4</code> tail into the final class so that <mark><b>Σ expected = N = 70</b></mark> exactly (it must always equal the observed total).</p>
-<pre><code># R verification
-x &lt;- 0:4
-f &lt;- c(18, 22, 16, 10, 4)
-N &lt;- sum(f)                    # 70
-lambda &lt;- sum(x * f) / N       # 1.4286
-expected &lt;- N * dpois(x, lambda)
-round(expected, 2)
-# 16.78  23.97  17.12  8.15  2.91   (open tail x>=5 holds the rest)
-# fold the tail so the column sums to N:
-expected[5] &lt;- N - sum(expected[1:4])   # 3.99
-sum(expected)                 # 70  == N</code></pre>
+<pre><code>x &lt;- 0:4;  f &lt;- c(18, 22, 16, 10, 4)
+N &lt;- sum(f)                       # 70
+lambda &lt;- sum(x * f) / N          # 1.4286
+E &lt;- N * dpois(x, lambda)
+E[5] &lt;- N - sum(E[1:4])           # fold tail so Σ = N
+round(E, 2)  # 16.78 23.97 17.12 8.15 3.99
+sum(E)                            # 70</code></pre>
 
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; max-width:520px; margin:0 auto;">
@@ -5715,17 +5487,11 @@ switch(grade,
         </table></div>
         <h5>Programs for each loop type</h5>
         <p style="margin:16px 0 2px;"><b>1 · <mark>for loop</mark></b> — iterate over known sequence 1:7, print cubes with output</p>
-<pre><code># ── for loop: print cubes of 1 to 7 ──────────────────────────
+<pre><code># for loop: print cubes of 1 to 7
 for (i in 1:7) {
   cat(i, "cubed =", i^3, "\n")
 }
-# Output: 1 cubed = 1
-#         2 cubed = 8
-#         3 cubed = 27
-#         4 cubed = 64
-#         5 cubed = 125
-#         6 cubed = 216
-#         7 cubed = 343</code></pre>
+# 1 cubed = 1 … 7 cubed = 343</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · <mark>while loop</mark></b> — condition checked before each iteration; manual increment required</p>
 <pre><code># ── while loop: same task ─────────────────────────────────────
 i &lt;- 1
@@ -5781,7 +5547,7 @@ for (i in 1:7) {
               <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">only explicit break</div>
             </div>
           </div>
-          <figcaption><b>Fig Px.2</b> · Three R loop types: <code>for</code> (sequence-driven) · <code>while</code> (condition-first) · <code>repeat</code> (break-only exit)</figcaption>
+          <figcaption><b>Fig P12.1</b> · Three R loop types: <code>for</code> (sequence-driven) · <code>while</code> (condition-first) · <code>repeat</code> (break-only exit)</figcaption>
         </figure>
         <div class="score">
           <b>Mark allocation (10 M)</b>
@@ -5814,13 +5580,12 @@ for (i in 1:7) {
         </ul>
         <h5>The Script</h5>
         <p style="margin:16px 0 2px;"><b>1 · <mark>Data</mark></b> — data frame of 5 students with marks in 3 subjects</p>
-<pre><code># 1. Data: student names and their marks in 3 subjects
+<pre><code># 1. Data: 5 students × 3 subjects
 students &lt;- data.frame(
-  name    = c("Ankit", "Bina", "Chetan", "Disha", "Eshan"),
-  math    = c(88, 45, 72, 55, 91),
-  science = c(76, 38, 68, 60, 89),
-  english = c(82, 50, 74, 58, 93),
-  stringsAsFactors = FALSE
+  name = c("Ankit","Bina","Chetan","Disha","Eshan"),
+  math = c(88, 45, 72, 55, 91),
+  sci  = c(76, 38, 68, 60, 89),
+  eng  = c(82, 50, 74, 58, 93)
 )</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · <mark>Function</mark></b> — <code>calc_grade(avg)</code> uses if/else-if ladder to return A–F letter grade</p>
 <pre><code># 2. Function: classify average marks into a letter grade
@@ -5838,16 +5603,12 @@ calc_grade &lt;- function(avg) {
   }
 }</code></pre>
 <p style="margin:16px 0 2px;"><b>3 · <mark>Loop + output</mark></b> — iterate over rows, compute average, print formatted table row</p>
-<pre><code># 3. Loop over each student, compute average, classify
-cat("Name      | Avg  | Grade\n")
-cat("----------+------+------\n")
-
+<pre><code># 3. Loop: compute average, classify, print
 for (i in 1:nrow(students)) {
-  avg   &lt;- mean(c(students$math[i],
-                   students$science[i],
-                   students$english[i]))
+  avg   &lt;- mean(c(students$math[i], students$sci[i],
+                   students$eng[i]))
   grade &lt;- calc_grade(avg)
-  cat(sprintf("%-9s | %5.1f | %s\n",
+  cat(sprintf("%-9s %5.1f %s\n",
               students$name[i], avg, grade))
 }</code></pre>
         <h5>Line-by-Line Explanation</h5>
@@ -5859,13 +5620,11 @@ for (i in 1:nrow(students)) {
           <li><b><code>cat(sprintf(...))</code></b> — <mark><code>sprintf()</code></mark> formats the output string with fixed-width fields (<code>%-9s</code> = left-aligned name, <code>%5.1f</code> = float to 1 decimal); <code>cat()</code> prints without extra newlines.</li>
         </ul>
         <h5>Sample Output</h5>
-        <pre><code>Name      | Avg  | Grade
-----------+------+------
-Ankit     |  82.0 | B
-Bina      |  44.3 | F
-Chetan    |  71.3 | C
-Disha     |  57.7 | D
-Eshan     |  91.0 | A</code></pre>
+        <pre><code>Ankit      82.0 B
+Bina       44.3 F
+Chetan     71.3 C
+Disha      57.7 D
+Eshan      91.0 A</code></pre>
         <h5>Variations the examiner may ask</h5>
         <ul>
           <li><b>While loop version</b> — replace <code>for (i in 1:nrow(...))</code> with <code>i &lt;- 1; while (i &lt;= nrow(students)) { ...; i &lt;- i + 1 }</code>; identical logic, different loop construct.</li>
@@ -5892,8 +5651,19 @@ Eshan     |  91.0 | A</code></pre>
             <div style="color:var(--brand); font-size:18px; line-height:1;">&#8595;</div>
             <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:0 0 6px 6px; padding:8px 16px; font-size:12px; width:100%; box-sizing:border-box;"><b>cat(sprintf(...))</b> — print formatted result</div>
           </div>
-          <figcaption><b>Fig Px.1</b> · Grade-classifier flow: data.frame &#8594; for-loop &#8594; mean &#8594; if/else-if ladder &#8594; A/B/C/D/F &#8594; cat output</figcaption>
+          <figcaption><b>Fig P13.2</b> · Grade-classifier flow: data.frame &#8594; for-loop &#8594; mean &#8594; if/else-if ladder &#8594; A/B/C/D/F &#8594; cat output</figcaption>
         </figure>
+        <h5>Grade boundaries — the table the ladder implements</h5>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Grade</th><th>Condition (avg)</th><th>Meaning</th><th>Ladder position</th></tr></thead>
+          <tbody>
+            <tr><td><b>A</b></td><td>avg ≥ 90</td><td>Outstanding</td><td>checked 1st</td></tr>
+            <tr><td><b>B</b></td><td>75 ≤ avg &lt; 90</td><td>Very good</td><td>checked 2nd</td></tr>
+            <tr><td><b>C</b></td><td>60 ≤ avg &lt; 75</td><td>Good</td><td>checked 3rd</td></tr>
+            <tr><td><b>D</b></td><td>45 ≤ avg &lt; 60</td><td>Pass</td><td>checked 4th</td></tr>
+            <tr><td><b>F</b></td><td>avg &lt; 45</td><td>Fail</td><td><code>else</code> branch</td></tr>
+          </tbody>
+        </table></div>
         <div class="box warn">
           <span class="label">Common slips — lose marks here</span>
           <ul>
@@ -5936,20 +5706,17 @@ Eshan     |  91.0 | A</code></pre>
           <li><b>Coercion hierarchy</b> — if you mix types, R silently coerces: <mark>logical &lt; integer &lt; double &lt; complex &lt; character</mark>; the "weakest" type wins.</li>
           <li><b>Subsetting</b> — positive index (<code>x[2]</code>), negative index (<code>x[-1]</code> = drop first), logical mask (<code>x[x &gt; 70]</code>).</li>
         </ul>
-        <pre><code># ── Vector creation ──────────────────────────────────────────
-marks &lt;- c(82, 45, 67, 90, 55)        # numeric vector
-names &lt;- c("Ankit", "Bina", "Chetan") # character vector
-evens &lt;- seq(2, 10, by = 2)           # 2 4 6 8 10
-rep3  &lt;- rep(0, times = 5)            # 0 0 0 0 0
+        <pre><code># Creation
+marks &lt;- c(82, 45, 67, 90, 55)
+evens &lt;- seq(2, 10, by=2)             # 2 4 6 8 10
+rep3  &lt;- rep(0, times=5)             # 0 0 0 0 0
 
-# ── Vectorised operations ─────────────────────────────────────
+# Vectorised ops + filter
 marks + 5                              # 87 50 72 95 60
-marks * 0.10                           # bonus = 10%
-marks[marks &gt;= 60]                    # 82 67 90  (filter)
+marks[marks &gt;= 60]                    # 82 67 90
 
-# ── Coercion example ─────────────────────────────────────────
-mixed &lt;- c(TRUE, 2L, 3.5)            # numeric wins: 1.0 2.0 3.5
-class(mixed)                           # "numeric"</code></pre>
+# Coercion: higher type wins
+mixed &lt;- c(TRUE, 2L, 3.5)            # numeric: 1.0 2.0 3.5</code></pre>
         <h5>Factors</h5>
         <p><mark>Factor</mark> — R's structure for categorical data:</p>
         <ul>
@@ -5964,28 +5731,24 @@ class(mixed)                           # "numeric"</code></pre>
           <li><b><code>as.numeric()</code> trap</b> — <code>as.numeric(factor(c("10","20","5")))</code> returns <mark>1 2 3 (the integer codes), NOT the original numbers</mark>; use <code>as.numeric(as.character(f))</code> to recover values.</li>
         </ul>
         <p style="margin:16px 0 2px;"><b>1 · <mark>Factor creation</mark></b> — <code>factor()</code>, inspect with <code>levels()</code>, <code>nlevels()</code>, <code>table()</code></p>
-<pre><code># ── Factor creation ──────────────────────────────────────────
-grade &lt;- factor(c("B","A","C","A","B","F","C"))
+<pre><code>grade &lt;- factor(c("B","A","C","A","B","F","C"))
 levels(grade)                          # "A" "B" "C" "F"
 nlevels(grade)                         # 4
 table(grade)                           # A:2  B:2  C:2  F:1</code></pre>
 <p style="margin:16px 0 2px;"><b>2 · <mark>Ordered factor + labels</mark></b> — encode ranks with <code>ordered=TRUE</code>; recode integers to labels</p>
-<pre><code># ── Ordered factor ────────────────────────────────────────────
-rating &lt;- factor(c("Med","High","Low","High","Low"),
-                 levels  = c("Low","Med","High"),
-                 ordered = TRUE)
+<pre><code># Ordered factor
+rating &lt;- factor(c("Med","High","Low"),
+                 levels=c("Low","Med","High"), ordered=TRUE)
 rating[1] &lt; rating[2]                 # TRUE (Med &lt; High)
 
-# ── Labels example (movie genre recoding) ────────────────────
-code   &lt;- factor(c(1, 2, 1, 3),
-                 levels = 1:3,
-                 labels = c("Action","Romance","Thriller"))
-code                                   # Action Romance Action Thriller</code></pre>
+# Labels: recode integers to names
+factor(c(1,2,1,3), levels=1:3,
+       labels=c("Action","Romance","Thriller"))
+# Action Romance Action Thriller</code></pre>
 <p style="margin:16px 0 2px;"><b>3 · <mark>as.numeric trap</mark></b> — <code>as.numeric(factor)</code> returns integer codes, not original values</p>
-<pre><code># ── The as.numeric trap ───────────────────────────────────────
-f &lt;- factor(c("10","20","5"))
-as.numeric(f)                          # 2 3 1  (codes — WRONG!)
-as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
+<pre><code>f &lt;- factor(c("10","20","5"))
+as.numeric(f)               # 2 3 1  (codes — WRONG!)
+as.numeric(as.character(f)) # 10 20 5  (correct)</code></pre>
         <h5>Vector vs Factor — differentiate table</h5>
         <div class="table-wrap"><table>
           <thead>
@@ -6024,7 +5787,7 @@ as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
               <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">category / label data</div>
             </div>
           </div>
-          <figcaption><b>Fig Px.3</b> · Vector stores raw values for computation · Factor stores category labels + integer codes for grouping</figcaption>
+          <figcaption><b>Fig P14.1</b> · Vector stores raw values for computation · Factor stores category labels + integer codes for grouping</figcaption>
         </figure>
         <div class="box tip">
           <span class="label">Memory hook</span>
@@ -6080,7 +5843,6 @@ as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
           <li>separation from transactional load</li>
           <li><mark>single source of truth</mark> across business units</li>
         </ul>
-        <p>(Include Fig 1.7 architecture diagram.)</p>
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:repeat(2,auto) 1fr; gap:8px; align-items:center; justify-content:center; max-width:560px; margin:0 auto;">
             <div style="display:flex; flex-direction:column; gap:4px;">
@@ -6103,7 +5865,7 @@ as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
             <span style="color:var(--brand); font-size:20px;">&#8594;</span>
             <div style="background:var(--brand-soft); color:var(--brand-deep); border:1.5px solid var(--brand); border-radius:6px; padding:8px 14px; font-size:11.5px; font-weight:700;">BI / Analytics</div>
           </div>
-          <figcaption><b>Fig P7.1</b> · ETL flow: OLTP sources &#8594; Extract-Transform-Load &#8594; warehouse &#8594; BI / analytics</figcaption>
+          <figcaption><b>Fig P15.1</b> · ETL flow: OLTP sources &#8594; Extract-Transform-Load &#8594; warehouse &#8594; BI / analytics</figcaption>
         </figure>
         <div class="score">
           <b>Mark allocation (10 M)</b>
@@ -6150,7 +5912,7 @@ as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
             <tr><td><b>Two sub-types</b></td><td><mark>Classification</mark> (categorical Y) &amp; <mark>Regression</mark> (numeric Y)</td><td><mark>Clustering</mark> (group rows) &amp; association / dimensionality reduction</td></tr>
             <tr><td><b>Typical algorithms</b></td><td>Decision tree, kNN, logistic regression, linear regression, SVM</td><td><mark>k-means</mark>, hierarchical clustering, PCA, Apriori</td></tr>
             <tr><td><b>Feedback / error</b></td><td>Error measurable — compare prediction vs true label (accuracy, RMSE)</td><td>No ground truth — judged by internal metrics (within-cluster SS, silhouette)</td></tr>
-            <tr><td><b>R example</b></td><td><code>lm()</code>, <code>glm()</code>, <code>rpart()</code>, <code>knn()</code></td><td><code>kmeans()</code>, <code>hclust()</code>, <code>prcomp()</code></td></tr>
+            <tr><td><b>R example</b></td><td><code>lm()</code> — fit on labelled data (base R)</td><td><code>kmeans()</code> — discover groups (base R)</td></tr>
             <tr><td><b>Example</b></td><td>Spam / not-spam (classification); house-price prediction (regression)</td><td>Customer segmentation into k buyer groups (clustering)</td></tr>
           </tbody>
         </table></div>
@@ -6158,10 +5920,6 @@ as.numeric(as.character(f))            # 10 20 5  (correct)</code></pre>
         <pre><code># SUPERVISED · regression — learn from labelled (x -> y)
 fit  &lt;- lm(dist ~ speed, data = cars)   # label = dist (known)
 predict(fit, data.frame(speed = 25))    # predict on unseen input
-
-# SUPERVISED · classification — known Species label
-m    &lt;- rpart(Species ~ ., data = iris) # label = Species
-predict(m, iris[1, ], type = "class")   # -&gt; setosa
 
 # UNSUPERVISED · clustering — NO label given
 km   &lt;- kmeans(iris[, 1:4], centers = 3) # finds 3 groups by itself
@@ -6194,7 +5952,7 @@ table(km$cluster, iris$Species)          # compare groups AFTER, just to inspect
               </div>
             </div>
           </div>
-          <figcaption><b>Fig P13.1</b> · Supervised learns a labelled X&#8594;Y mapping to predict; unsupervised gets only X and discovers groups on its own.</figcaption>
+          <figcaption><b>Fig P16.2</b> · Supervised learns a labelled X&#8594;Y mapping to predict; unsupervised gets only X and discovers groups on its own.</figcaption>
         </figure>
         <div class="score">
           <b>Mark allocation (10 M)</b>
@@ -6212,7 +5970,7 @@ table(km$cluster, iris$Species)          # compare groups AFTER, just to inspect
             <li><b>Supervised splits into two:</b> <mark>classification</mark> (categorical Y, e.g. spam) and <mark>regression</mark> (numeric Y, e.g. price).</li>
             <li><b>Unsupervised's headline task is <mark>clustering</mark></b> (k-means groups rows by similarity); also PCA &amp; association rules.</li>
             <li><b>Error is measurable only when supervised</b> — accuracy / RMSE need a true label; clustering uses within-cluster SS or silhouette instead.</li>
-            <li><b>R verbs:</b> <code>lm()</code> / <code>rpart()</code> / <code>knn()</code> are supervised; <code>kmeans()</code> / <code>hclust()</code> / <code>prcomp()</code> are unsupervised.</li>
+            <li><b>R verbs:</b> <code>lm()</code> fits supervised models on a labelled target; <code>kmeans()</code> clusters unlabelled rows — both base R, no package needed.</li>
           </ul>
         </div>
       </div>
@@ -6335,7 +6093,7 @@ coef(model)                         # insight: mpg falls as weight rises
         </ul>
         <div class="steps">
           <div class="step k">x=0: 70 · C(5,0) · (0.4543)<sup>0</sup> · (0.5457)<sup>5</sup> = 70 · 1 · 1 · 0.04839 = <b>3.39</b></div>
-          <div class="step k">x=1: 70 · C(5,1) · (0.4543)<sup>1</sup> · (0.5457)<sup>4</sup> = 70 · 5 · 0.4543 · 0.08869 = <b>14.10</b></div>
+          <div class="step k">x=1: 70 · C(5,1) · (0.4543)<sup>1</sup> · (0.5457)<sup>4</sup> = 70 · 5 · 0.4543 · 0.08868 = <b>14.10</b></div>
           <div class="step k">x=2: 70 · C(5,2) · (0.4543)<sup>2</sup> · (0.5457)<sup>3</sup> = 70 · 10 · 0.20638 · 0.16250 = <b>23.48</b></div>
           <div class="step k">x=3: 70 · C(5,3) · (0.4543)<sup>3</sup> · (0.5457)<sup>2</sup> = 70 · 10 · 0.09376 · 0.29778 = <b>19.54</b></div>
           <div class="step k">x=4: 70 · C(5,4) · (0.4543)<sup>4</sup> · (0.5457)<sup>1</sup> = 70 · 5 · 0.04260 · 0.5457 = <b>8.14</b></div>
@@ -6358,21 +6116,12 @@ coef(model)                         # insight: mpg falls as weight rises
         </table></div>
 
         <h5>R code for fitting</h5>
-        <pre><code>x &lt;- 0:5
-f &lt;- c(2, 16, 28, 12, 9, 3)
-N &lt;- sum(f)                      # 70
-n &lt;- 5
-x_bar &lt;- sum(x * f) / N          # 2.2714
-p_hat &lt;- x_bar / n               # 0.4543
-
-# Expected frequencies
-expected &lt;- N * dbinom(x, size = n, prob = p_hat)
-round(expected, 2)
-# 3.39  14.10  23.48  19.54  8.14  1.35
-
-# Comparison data frame
-data.frame(x = x, observed = f,
-           expected = round(expected, 2))</code></pre>
+        <pre><code>x &lt;- 0:5;  f &lt;- c(2, 16, 28, 12, 9, 3)
+N &lt;- sum(f)                       # 70
+p_hat &lt;- sum(x*f) / (N * 5)      # 0.4543  (= x_bar / n)
+E &lt;- N * dbinom(x, size=5, prob=p_hat)
+round(E, 2)  # 3.39 14.10 23.48 19.54 8.14 1.35
+sum(E)                            # 70</code></pre>
 
         <figure class="diagram-fig">
           <div style="display:grid; grid-template-columns:repeat(2,1fr); gap:10px; max-width:520px; margin:0 auto;">
@@ -6401,7 +6150,7 @@ data.frame(x = x, observed = f,
               <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">p̂ = 0.4543 · Σ E = 70</div>
             </div>
           </div>
-          <figcaption><b>Fig Px.1</b> · Observed vs Binomial-fitted frequencies. Both peak at x = 2; the fitted curve tracks the data, confirming p̂ = 0.4543 is a good moment estimate.</figcaption>
+          <figcaption><b>Fig P18.1</b> · Observed vs Binomial-fitted frequencies. Both peak at x = 2; the fitted curve tracks the data, confirming p̂ = 0.4543 is a good moment estimate.</figcaption>
         </figure>
 
         <div class="box warn">
@@ -6456,7 +6205,7 @@ data.frame(x = x, observed = f,
               <div style="font-size:9.5px; color:var(--muted); padding:0 8px 8px;">PDF: f(x) — uncountable outcomes</div>
             </div>
           </div>
-          <figcaption><b>Fig Px.2</b> · Five key distributions split by type: Binomial &amp; Poisson are discrete (PMF); Normal, Uniform &amp; Exponential are continuous (PDF).</figcaption>
+          <figcaption><b>Fig P19.1</b> · Five key distributions split by type: Binomial &amp; Poisson are discrete (PMF); Normal, Uniform &amp; Exponential are continuous (PDF).</figcaption>
         </figure>
 
         <h5>Master reference table</h5>

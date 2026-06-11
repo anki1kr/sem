@@ -217,15 +217,12 @@ switch("b", a = 10, b = 20, c = 30)   # 20 - picks one option</code></pre>
 <figure class="dg"><img src="rds-images/ifelse-flowchart.png" alt="if vs ifelse flowchart" loading="lazy"><figcaption><b>Fig U3.1</b> · if (scalar) vs ifelse (vectorised)</figcaption></figure>
 
 <h4>Loops — for · while · repeat <span class="chip hot">3× in papers</span></h4>
-<pre><code>for (i in 1:7)  print(i^3)        # cube of 1-7 (classic PYQ)
-
-i <- 1
-while (i <= 5) { print(i); i <- i + 1 }   # checks condition FIRST
-
-i <- 1
-repeat { print(i); i <- i + 1
-         if (i > 5) break }       # runs forever until break
-# break = exit loop · next = skip this round</code></pre>
+<p><b>Exam-copy:</b> write one loop fully, then name the other two.</p>
+<pre><code># for loop: fixed number of rounds
+for (i in 1:7) {
+  print(i^3)          # cube of each number
+}</code></pre>
+<p><b>Memory:</b> for = fixed count, while = condition first, repeat = runs until <code>break</code>.</p>
 <figure class="dg"><img src="rds-images/loops-three-panel.png" alt="for, while, repeat loops three panels" loading="lazy"><figcaption><b>Fig U3.2</b> · for = known count · while = check first · repeat = until break</figcaption></figure>
 <ul class="cap">
   <li>→ lapply/sapply full note: <a href="#b5"><b>B5</b></a> · OOP S3/S4/R5: <a href="#b4"><b>B4</b></a> · combined script: <a href="#b7"><b>B7</b></a>.</li>
@@ -346,25 +343,14 @@ t.test(scores, mu = 70)
   <div class="qbody"><b>Create a data frame, add column, filter, export to CSV, read back.</b></div>
   <div class="eli5"><span class="lbl">Like you're 5</span>A data frame is an Excel sheet inside R. CSV is how you save that sheet as a file.</div>
   <div class="ans">
-<pre><code># 1. Create (an Excel-like table)
-df <- data.frame(name = c("Jon","Bill","Maria","Tom","Emma"),
-                 age  = c(23, 41, 32, 55, 40))
-
-# 2. Add a new column
-df$marks <- c(85, 67, 92, 74, 88)
-
-# 3. Filter rows (students with marks > 80)
-top <- df[df$marks > 80, ]
-
-# 4. Mean of a column
-mean(df$marks)            # 81.2
-
-# 5. Export to CSV file
-write.csv(df, "students.csv", row.names = FALSE)
-
-# 6. Read it back
-d2 <- read.csv("students.csv")
-head(d2)</code></pre>
+<p><b>Exam-copy code:</b> create -> add -> filter -> save.</p>
+<pre><code># create data frame
+df <- data.frame(name=c("Jon","Bill","Maria"),
+                 age=c(23,41,32))
+df$marks <- c(85,67,92)          # add column
+top <- df[df$marks > 80, ]       # filter rows
+write.csv(df, "students.csv", row.names=FALSE)
+d2 <- read.csv("students.csv")   # read back</code></pre>
     <ul>
       <li><mark>data.frame()</mark> builds the table; every column is a vector of equal length.</li>
       <li><mark>df$new &lt;- ...</mark> adds a column; <mark>df[condition, ]</mark> filters rows.</li>
@@ -379,24 +365,19 @@ head(d2)</code></pre>
   <div class="qbody"><b>Explain OOP in R with S3, S4 and Reference class examples.</b></div>
   <div class="eli5"><span class="lbl">Like you're 5</span>Three ways to build a "thing": S3 = sticky note on a box (informal). S4 = official sealed form (strict slots). R5 = a real machine you can modify directly (reference).</div>
   <div class="ans">
-<pre><code># S3 - simplest: a list + a class label
-acc <- list(owner = "Ankit", balance = 5000)
-class(acc) <- "account"
-print.account <- function(a) cat(a$owner, "has Rs", a$balance)
-
-# S4 - formal: fixed slots, validity checking
-setClass("Account", representation(owner = "character",
-                                   balance = "numeric"))
-a4 <- new("Account", owner = "Ankit", balance = 5000)
-a4@balance                       # access with @
-
-# R5 (Reference) - mutable, methods live inside
+<p><b>Exam-copy code:</b> one tiny example per OOP system.</p>
+<pre><code># S3: object + class label
+acc <- list(owner="Ankit", balance=5000)
+class(acc) <- "account"</code></pre>
+<pre><code># S4: fixed slots
+setClass("Account", slots=c(owner="character", balance="numeric"))
+a4 <- new("Account", owner="Ankit", balance=5000)</code></pre>
+<pre><code># Reference class: mutable object
 AccountR5 <- setRefClass("AccountR5",
-  fields  = list(owner = "character", balance = "numeric"),
-  methods = list(
-    deposit = function(x){ balance <<- balance + x }))
-a5 <- AccountR5$new(owner = "Ankit", balance = 5000)
-a5$deposit(1000); a5$balance     # 6000 - object itself changed</code></pre>
+  fields=list(balance="numeric"),
+  methods=list(deposit=function(x) balance <<- balance + x))
+a5 <- AccountR5$new(balance=5000)
+a5$deposit(1000)                 # balance becomes 6000</code></pre>
     <div class="table-wrap"><table>
       <tr><th>Feature</th><th>S3</th><th>S4</th><th>R5 (Reference)</th></tr>
       <tr><td>Style</td><td>Informal</td><td>Formal, strict</td><td>Like Java/Python classes</td></tr>
@@ -460,29 +441,20 @@ round(sum(f) * dbinom(x, 5, p_hat), 2)  # 3.39 14.10 23.48 19.54 8.14 1.35</code
   <div class="qbody"><b>Write an R script using a function, conditional statements and a loop to classify student grades.</b></div>
   <div class="eli5"><span class="lbl">Like you're 5</span>One machine (function) reads a mark and stamps A/B/C/F; a loop feeds every student into the machine.</div>
   <div class="ans">
-<pre><code># Function: decide grade for one mark
+<p><b>Exam-copy code:</b> function + if ladder.</p>
+<pre><code># function: one mark -> one grade
 grade <- function(m) {
-  if (m >= 80)      return("A")
+  if (m >= 80) return("A")
   else if (m >= 60) return("B")
   else if (m >= 40) return("C")
-  else              return("F")
-}
-
-marks <- c(91, 72, 55, 38, 85)
-names <- c("Asha","Ravi","Meena","Sam","Jo")
-
-# Loop: classify every student
-for (i in 1:length(marks)) {
-  cat(names[i], ":", marks[i], "->", grade(marks[i]), "\n")
-}
-# Asha : 91 -> A
-# Ravi : 72 -> B
-# Meena: 55 -> C
-# Sam  : 38 -> F
-# Jo   : 85 -> A
-
-# Bonus mark: vectorised one-liner
-sapply(marks, grade)</code></pre>
+  else return("F")
+}</code></pre>
+<p><b>Loop line:</b> add this after function if question asks "using loop".</p>
+<pre><code># loop: classify every mark
+marks <- c(91, 72, 55, 38)
+for (m in marks) {
+  print(grade(m))
+}</code></pre>
     <ul>
       <li><mark>function()</mark> = reusable block with <code>return()</code> · <mark>if / else if / else</mark> = decision ladder · <mark>for loop</mark> = repeat per student.</li>
     </ul>
