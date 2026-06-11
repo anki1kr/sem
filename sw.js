@@ -6,13 +6,14 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v44';
+const CACHE_VERSION = 'bca-prep-v45';
 const PRECACHE_URLS = [
   './',
   './index.html',
   './ctrc-exam-guide.html',
   './probstats-exam-guide.html',
   './r-datascience-exam-guide.html',
+  './rds-crash-60.html',
   './loc-exam-guide.html',
   './loc-crash-60.html',
   './wc-exam-guide.html',

@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#166534">
+<title>R-DS Crash · Full Subject in 4.5 Hours · ELI5</title>
+<style>
+:root{
+  --paper:#fdfbf7; --paper-soft:#f7f3ea; --paper-deep:#f1ece0;
+  --ink:#1c1917; --ink-soft:#44403c; --muted:#78716c; --rule:#d6d3d1;
+  --brand:#166534; --brand-2:#15803d; --brand-soft:#dcfce7; --brand-deep:#14532d;
+  --highlighter:#fde047; --crimson:#9f1239;
+}
+*{ box-sizing:border-box; margin:0; padding:0; }
+html{ scroll-behavior:smooth; }
+body{ font-family:Georgia,'Times New Roman',serif; background:var(--paper); color:var(--ink); line-height:1.62; font-size:15px; padding:0 14px 90px; max-width:880px; margin:0 auto; }
+header{ padding:26px 0 14px; border-bottom:3px double var(--brand); margin-bottom:14px; }
+header h1{ font-size:25px; color:var(--brand-deep); line-height:1.25; }
+header p{ color:var(--muted); font-size:13px; margin-top:6px; }
+.chip{ display:inline-block; font-family:ui-monospace,Consolas,monospace; font-size:10.5px; font-weight:700; letter-spacing:.06em; background:var(--brand-soft); color:var(--brand-deep); border:1px solid var(--brand); border-radius:10px; padding:1px 9px; margin:2px 3px 2px 0; vertical-align:middle; }
+.chip.hot{ background:var(--highlighter); color:var(--ink); border-color:var(--ink); }
+nav.chips{ position:sticky; top:0; z-index:50; background:var(--paper); display:flex; gap:6px; overflow-x:auto; -webkit-overflow-scrolling:touch; padding:8px 0; border-bottom:1.5px solid var(--rule); margin-bottom:14px; }
+nav.chips a{ flex:0 0 auto; font-family:ui-monospace,Consolas,monospace; font-size:11px; font-weight:700; text-decoration:none; color:var(--ink); border:1.5px solid var(--rule); border-radius:14px; padding:4px 11px; background:#fff; }
+nav.chips a.live{ background:var(--brand); color:#fff; border-color:var(--brand-deep); }
+h2{ font-size:19px; color:var(--brand-deep); margin:30px 0 12px; padding-bottom:6px; border-bottom:2px solid var(--brand); }
+h3{ font-size:15.5px; margin:14px 0 6px; color:var(--ink); }
+h4{ font-size:14px; margin:12px 0 4px; color:var(--brand-deep); }
+mark{ background:linear-gradient(104deg, rgba(253,224,71,0) 1%, rgba(253,224,71,.85) 3%, rgba(253,224,71,.55) 96%, rgba(253,224,71,0) 99%); padding:0 3px; }
+th mark, thead mark{ background:transparent !important; color:inherit !important; padding:0 !important; }
+code{ font-family:ui-monospace,Consolas,monospace; font-size:12.5px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:3px; padding:1px 5px; }
+pre{ margin:10px 0; padding:10px 12px; background:#10231a; color:#e7f6ec; border:1px solid var(--brand-deep); border-radius:5px; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; font-size:12.5px; line-height:1.55; }
+pre code{ background:none; border:none; padding:0; font-size:inherit; white-space:pre; color:inherit; }
+.qcard{ background:#fff; border:1.5px solid var(--ink); border-radius:6px; padding:14px 16px; margin:14px 0; }
+.qhead{ font-family:ui-monospace,Consolas,monospace; font-size:11.5px; font-weight:700; color:var(--brand-deep); letter-spacing:.04em; margin-bottom:8px; padding-bottom:7px; border-bottom:1px dashed var(--rule); }
+.qbody{ font-size:15px; margin:8px 0 6px; }
+.ans{ margin-top:6px; }
+.ans ul{ margin:6px 0 8px 20px; }
+.ans li{ margin:3px 0; }
+.qcard .ans + .qbody{ margin-top:18px; padding-top:14px; border-top:1.5px dashed var(--rule); }
+ul.cap{ margin:6px 0 10px 20px; }
+ul.cap li{ margin:4px 0; }
+.eli5{ background:#fefce8; border:1.5px dashed #ca8a04; border-radius:5px; padding:8px 12px; margin:8px 0; font-size:13.5px; }
+.eli5 .lbl{ display:block; font-family:ui-monospace,Consolas,monospace; font-size:9.5px; font-weight:700; letter-spacing:.1em; color:#a16207; text-transform:uppercase; margin-bottom:3px; }
+.table-wrap{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:10px 0; }
+table{ border-collapse:collapse; width:100%; font-size:13px; background:#fff; }
+th{ background:var(--ink); color:var(--paper); padding:6px 9px; text-align:left; font-size:12px; border-right:1px solid #57534e; }
+td{ padding:6px 9px; border-bottom:1px solid var(--rule); border-right:1px solid var(--rule); vertical-align:top; }
+th:last-child, td:last-child{ border-right:none; }
+tr:nth-child(even) td{ background:var(--paper-soft); }
+.fbox{ background:var(--brand-soft); border:1.5px solid var(--brand); border-radius:6px; padding:10px 14px; margin:10px 0; }
+.fbox .f{ font-family:ui-monospace,Consolas,monospace; font-size:13px; display:block; margin:4px 0; color:var(--brand-deep); font-weight:700; }
+.final{ display:inline-block; background:var(--highlighter); border:1.5px solid var(--ink); border-radius:4px; padding:2px 10px; font-weight:700; margin-top:4px; }
+figure.dg{ position:relative; border:1.5px solid var(--ink); border-radius:5px; background:#fffefb; padding:10px 8px; margin:12px 0; text-align:center; cursor:zoom-in; }
+figure.dg::after{ content:"\2922 tap to zoom"; position:absolute; top:5px; right:6px; font-size:9px; font-weight:700; color:var(--paper); background:var(--brand); border-radius:9px; padding:1px 7px; opacity:.85; pointer-events:none; z-index:1; }
+figure.dg img{ width:100%; max-width:740px; height:auto; border-radius:4px; display:block; margin:0 auto; }
+figure.dg figcaption{ font-family:ui-monospace,Consolas,monospace; font-size:9.5px; letter-spacing:.1em; color:var(--muted); text-transform:uppercase; margin-top:8px; }
+#zoomov{ display:none; position:fixed; inset:0; z-index:99999; background:rgba(18,18,18,.93); }
+#zoomov.on{ display:block; }
+#zoomov .zoom-stage{ position:absolute; inset:0; overflow:hidden; touch-action:none; display:flex; align-items:center; justify-content:center; }
+#zoomov .zoom-content{ transform-origin:center center; will-change:transform; }
+#zoomov .zoom-content figure.dg{ margin:0; cursor:default; max-width:none; }
+#zoomov .zoom-content figure.dg::after{ display:none; }
+#zoomov .zoom-content img{ width:760px !important; max-width:none !important; height:auto !important; }
+#zoomov .zoom-close,#zoomov .zoom-ctrls button{ font-family:inherit; cursor:pointer; border:1.5px solid rgba(255,255,255,.85); background:rgba(0,0,0,.45); color:#fff; border-radius:9px; }
+#zoomov .zoom-close{ position:fixed; top:11px; right:13px; width:40px; height:40px; font-size:19px; z-index:3; }
+#zoomov .zoom-ctrls{ position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:3; }
+#zoomov .zoom-ctrls button{ width:48px; height:42px; font-size:21px; font-weight:700; }
+@media (max-width:480px){ body{ font-size:14.5px; } header h1{ font-size:21px; } }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>⚡ R-DS Crash · Full Subject, One Sitting</h1>
+  <p>BCD-204-V · Data Science Using R · 12 Jun 2026 · every important topic + diagram + simplest answers</p>
+  <div style="margin-top:8px;">
+    <span class="chip hot">⏱ 4.5 hr total</span>
+    <span class="chip hot">11 Part-B answers</span>
+    <span class="chip hot">24 Part-A flash</span>
+    <span class="chip">14 diagrams · tap to zoom</span>
+  </div>
+</header>
+
+<nav class="chips">
+  <a href="#hourmap">⏱ MAP</a>
+  <a href="#u1">U1</a>
+  <a href="#u2">U2</a>
+  <a href="#u3">U3</a>
+  <a href="#u4">U4</a>
+  <a href="#partb">PART-B</a>
+  <a href="#parta">PART-A</a>
+  <a href="#formulas">FORMULAS</a>
+</nav>
+
+<!-- ════════ HOUR MAP ════════ -->
+<h2 id="hourmap">⏱ 4.5-hour map</h2>
+<div class="table-wrap"><table>
+  <tr><th>Block</th><th>Time</th><th>Cover</th></tr>
+  <tr><td><b>1</b></td><td>40 min</td><td>Unit 1 sweep + B8 (supervised/unsupervised)</td></tr>
+  <tr><td><b>2</b></td><td>55 min</td><td>Unit 2 sweep (vectors → matrices → lists → df) + B3 (df + CSV)</td></tr>
+  <tr><td><b>3</b></td><td>50 min</td><td>Unit 3 sweep (loops/switch) + B4 (OOP) + B5 (lapply/sapply) + B7 (grade script)</td></tr>
+  <tr><td><b>4</b></td><td>70 min</td><td>Unit 4 sweep + B1 (central tendency) + B2 (hypothesis) + B6 (binomial)</td></tr>
+  <tr><td><b>5</b></td><td>30 min</td><td>B9 (ggplot2) + B10 (debugging) + B11 (dnorm family)</td></tr>
+  <tr><td><b>6</b></td><td>25 min</td><td>Part-A 24 flash + formula card — twice through</td></tr>
+</table></div>
+
+<!-- ════════ UNIT 1 ════════ -->
+<h2 id="u1">Unit 1 · Intro to Data Science <span class="chip">~8% of paper · mostly Part-A</span></h2>
+
+<h4>Data Science &amp; the DIKW ladder</h4>
+<ul class="cap">
+  <li><b>Data Science</b> = extracting <mark>knowledge and insight from data</mark> using statistics + programming + domain knowledge.</li>
+  <li><b>Data</b> = raw facts (23, "Jon") · <b>Information</b> = data with meaning (Jon is 23) · <b>Knowledge</b> = patterns (customers under 25 buy more) · <b>Wisdom</b> = right action.</li>
+  <li><b>Data types</b>: structured (tables), unstructured (images/text), semi-structured (JSON/XML).</li>
+  <li><b>Variable</b> = a named property that varies across records: <mark>qualitative</mark> (category: gender) or <mark>quantitative</mark> (number: age — discrete or continuous).</li>
+</ul>
+<figure class="dg"><img src="rds-images/dikw-pyramid.png" alt="DIKW pyramid: Data to Information to Knowledge to Wisdom" loading="lazy"><figcaption><b>Fig U1.1</b> · DIKW pyramid — data refines upward into wisdom</figcaption></figure>
+
+<h4>Data processing chain</h4>
+<ul class="cap">
+  <li><mark>Collect → Clean/Prepare → Store → Analyse → Visualise/Communicate</mark> — every DS project walks this chain.</li>
+  <li><b>Wholeness of data analytics</b>: all stages form ONE pipeline; a weak stage (dirty data) poisons every later stage.</li>
+</ul>
+<figure class="dg"><img src="rds-images/data-processing-chain.png" alt="Data processing chain stages" loading="lazy"><figcaption><b>Fig U1.2</b> · Data processing chain</figcaption></figure>
+
+<h4>Data mining · Data warehouse · DB vs DW</h4>
+<ul class="cap">
+  <li><b>Data mining</b> = digging through big data for <mark>hidden patterns</mark> (market-basket: "bread buyers also buy butter").</li>
+  <li><b>Data warehouse</b> = a <mark>central store of historical data</mark> from many sources, built for analysis (OLAP), not daily transactions.</li>
+</ul>
+<div class="table-wrap"><table>
+  <tr><th>Parameter</th><th>Database</th><th>Data Warehouse</th></tr>
+  <tr><td>Purpose</td><td>Daily operations (OLTP)</td><td>Analysis &amp; decisions (OLAP)</td></tr>
+  <tr><td>Data</td><td>Current, live</td><td><mark>Historical</mark>, integrated from many sources</td></tr>
+  <tr><td>Operations</td><td>Read + write (insert/update)</td><td>Mostly <mark>read-only</mark> queries</td></tr>
+  <tr><td>Design</td><td>Normalized tables</td><td>Denormalized (star schema)</td></tr>
+  <tr><td>Example</td><td>Bank account transactions</td><td>5-year sales trend analysis</td></tr>
+</table></div>
+<figure class="dg"><img src="rds-images/db-vs-warehouse.png" alt="Database vs data warehouse comparison" loading="lazy"><figcaption><b>Fig U1.3</b> · Database vs Data Warehouse</figcaption></figure>
+
+<h4>Cloud · AI · ML · Applications</h4>
+<ul class="cap">
+  <li><b>Cloud computing</b> = computing power + storage <mark>over the internet, on demand, pay-per-use</mark> (AWS, Azure, GCP). Key for DS: scale up for big data, no hardware purchase.</li>
+  <li><b>AI</b> = machines acting smart · <b>ML</b> = subset of AI, machines <mark>learn from data</mark> instead of being hard-coded · <b>DS</b> uses ML as a tool.</li>
+  <li><b>Applications</b>: fraud detection (banks), recommendations (Netflix/Amazon), disease prediction (healthcare), demand forecasting (retail), self-driving cars.</li>
+  <li><b>Advice for new data scientists</b>: master statistics + one language (R/Python), clean data well (80% of the job), ask business questions first, keep learning.</li>
+</ul>
+<p>→ Supervised vs Unsupervised: full table in <a href="#b8"><b>B8</b></a> below.</p>
+
+<!-- ════════ UNIT 2 ════════ -->
+<h2 id="u2">Unit 2 · Introduction to R <span class="chip hot">~29% · Part-A factory</span></h2>
+
+<h4>R basics — CRAN, RStudio, packages, help</h4>
+<ul class="cap">
+  <li><b>R</b> = free, open-source language for <mark>statistics + graphics</mark>, born 1993 (Ross Ihaka &amp; Robert Gentleman).</li>
+  <li><b>CRAN</b> = Comprehensive R Archive Network — official package library. <code>install.packages("ggplot2")</code> once, <code>library(ggplot2)</code> every session.</li>
+  <li><b>RStudio</b> = most popular IDE: 4 panes — Source (scripts), Console, Environment/History, Files/Plots/Help.</li>
+  <li><b>Help</b>: <code>?mean</code> or <code>help(mean)</code> · search: <code>??regression</code>.</li>
+</ul>
+<figure class="dg"><img src="rds-images/rstudio-4panes.png" alt="RStudio four panes layout" loading="lazy"><figcaption><b>Fig U2.1</b> · RStudio 4-pane layout</figcaption></figure>
+
+<h4>Special values &amp; operators</h4>
+<ul class="cap">
+  <li><mark>NA</mark> missing · <mark>NULL</mark> nothing/empty · <mark>NaN</mark> invalid maths (0/0) · <mark>Inf</mark> infinity (1/0). Check: <code>is.na(x)</code>.</li>
+  <li>Operators — arithmetic <code>+ − * / ^ %%</code>, relational <code>&gt; &lt; == !=</code>, logical <code>&amp; | !</code>, assignment <code>&lt;-</code>.</li>
+</ul>
+
+<h4>Vectors, math functions, type conversion</h4>
+<pre><code>x <- c(1, 2, 3, 4, 5)      # or 1:5
+x * 2                       # 2 4 6 8 10  (vectorised!)
+sqrt(16); abs(-3); round(2.567, 1)   # 4, 3, 2.6
+as.numeric("5"); as.character(5)     # conversion
+length(x); sum(x); sort(x); rev(x)</code></pre>
+
+<h4>Matrices — creation + BOTH multiplications <span class="chip">May-23 Q6(b) 7.5M</span></h4>
+<pre><code>A <- matrix(1:9, nrow = 3, ncol = 3)
+B <- matrix(9:1, nrow = 3)
+
+A * B        # ELEMENT-WISE: each cell times matching cell
+A %*% B      # MATRIX multiplication: rows x columns
+t(A)         # transpose · dim(A) -> 3 3
+cbind(A, 10:12); rbind(A, c(1,1,1))   # add col / row</code></pre>
+<ul class="cap">
+  <li><mark>A * B ≠ A %*% B</mark> — the single most-asked matrix trap. <code>*</code> = cell-by-cell, <code>%*%</code> = true matrix product.</li>
+</ul>
+
+<h4>Factors · Lists · Data frames — the structure family</h4>
+<ul class="cap">
+  <li><b>Factor</b> = categorical variable with fixed levels: <code>factor(c("M","F","M"))</code> — levels F, M. Used in modelling + plots.</li>
+  <li><b>List</b> = mixed-type container: <code>L &lt;- list(v = 1:3, s = "hi", m = matrix(1:4,2), f = function(x) x^2)</code> · name them: <code>names(L)</code> · access: <code>L$v</code> or <code>L[[1]]</code>.</li>
+  <li><b>Data frame</b> = table where each column is a vector (Excel sheet) — THE data-science structure. Full operations in <a href="#b3"><b>B3</b></a>.</li>
+</ul>
+<figure class="dg"><img src="rds-images/r-data-structures.png" alt="R data structures: vector, matrix, factor, list, data frame" loading="lazy"><figcaption><b>Fig U2.2</b> · R data structures — 1D/2D, same-type vs mixed</figcaption></figure>
+
+<!-- ════════ UNIT 3 ════════ -->
+<h2 id="u3">Unit 3 · Programming using R <span class="chip">~22% · code questions</span></h2>
+
+<h4>Functions &amp; scripts</h4>
+<pre><code>square <- function(x) {        # define
+  return(x^2)
+}
+square(7)                      # 49
+
+# script = .R file of commands; run with source("myfile.R")</code></pre>
+
+<h4>if / ifelse / switch</h4>
+<pre><code>if (m >= 40) print("Pass") else print("Fail")   # ONE value
+
+marks <- c(35, 80, 55)
+ifelse(marks >= 40, "Pass", "Fail")   # VECTORISED - whole vector at once
+
+switch("b", a = 10, b = 20, c = 30)   # 20 - picks one option</code></pre>
+<ul class="cap">
+  <li><mark>if</mark> = one decision · <mark>ifelse()</mark> = same decision applied to a whole vector · <mark>switch()</mark> = many-way pick.</li>
+</ul>
+<figure class="dg"><img src="rds-images/ifelse-flowchart.png" alt="if vs ifelse flowchart" loading="lazy"><figcaption><b>Fig U3.1</b> · if (scalar) vs ifelse (vectorised)</figcaption></figure>
+
+<h4>Loops — for · while · repeat <span class="chip hot">3× in papers</span></h4>
+<pre><code>for (i in 1:7)  print(i^3)        # cube of 1-7 (classic PYQ)
+
+i <- 1
+while (i <= 5) { print(i); i <- i + 1 }   # checks condition FIRST
+
+i <- 1
+repeat { print(i); i <- i + 1
+         if (i > 5) break }       # runs forever until break
+# break = exit loop · next = skip this round</code></pre>
+<figure class="dg"><img src="rds-images/loops-three-panel.png" alt="for, while, repeat loops three panels" loading="lazy"><figcaption><b>Fig U3.2</b> · for = known count · while = check first · repeat = until break</figcaption></figure>
+<ul class="cap">
+  <li>→ lapply/sapply full note: <a href="#b5"><b>B5</b></a> · OOP S3/S4/R5: <a href="#b4"><b>B4</b></a> · combined script: <a href="#b7"><b>B7</b></a>.</li>
+</ul>
+
+<!-- ════════ UNIT 4 ════════ -->
+<h2 id="u4">Unit 4 · Data Handling + Stats <span class="chip hot">~41% · BIGGEST unit</span></h2>
+
+<h4>Save / load R data</h4>
+<pre><code>save(df, file = "mydata.RData"); load("mydata.RData")     # many objects
+saveRDS(df, "df.rds");  df <- readRDS("df.rds")           # one object</code></pre>
+
+<h4>Import / export — CSV &amp; ODBC <span class="chip hot">3×</span></h4>
+<ul class="cap">
+  <li><b>CSV</b>: <code>write.csv(df, "f.csv", row.names=FALSE)</code> · <code>read.csv("f.csv")</code> — full pipeline in <a href="#b3"><b>B3</b></a>.</li>
+  <li><b>ODBC</b> = bridge to databases: <code>library(RODBC); con &lt;- odbcConnect("mydb"); sqlQuery(con, "SELECT * FROM t"); close(con)</code>.</li>
+  <li><b>Console I/O</b>: <code>readline("Name? ")</code> reads input · <code>print()</code> one object · <code>cat("a","b\n")</code> glues + prints.</li>
+</ul>
+<figure class="dg"><img src="rds-images/csv-io-flow.png" alt="CSV read write flow in R" loading="lazy"><figcaption><b>Fig U4.1</b> · CSV round-trip: data frame → write.csv → file → read.csv</figcaption></figure>
+
+<h4>Statistical graphics — base R</h4>
+<pre><code>plot(x, y)        # scatter - relationship of two numerics
+hist(x)           # histogram - shape/spread of one numeric
+barplot(table(g)) # bar chart - counts of categories
+boxplot(x)        # median + IQR + outliers
+# col = colour, pch = point shape (0-25)</code></pre>
+<ul class="cap">
+  <li>→ ggplot2 + base-vs-ggplot2 table: <a href="#b9"><b>B9</b></a> · debugging 5 tools: <a href="#b10"><b>B10</b></a>.</li>
+</ul>
+
+<h4>Descriptive stats &amp; summary()</h4>
+<pre><code>max(x); min(x); range(x)
+table(x)                  # frequency distribution
+summary(df)               # min, Q1, median, mean, Q3, max per column</code></pre>
+<ul class="cap">
+  <li>→ mean/median/mode + variance/SD worked: <a href="#b1"><b>B1</b></a> · hypothesis + t-test: <a href="#b2"><b>B2</b></a>.</li>
+  <li><b>Correlation</b>: <code>cor(x,y)</code> = strength+direction (−1…+1) · <code>cor.test(x,y)</code> = r + p-value · covariance = direction only, unit-bound.</li>
+</ul>
+
+<h4>Distributions — the bell curve &amp; friends</h4>
+<ul class="cap">
+  <li><b>Normal</b>: bell, symmetric, mean=median=mode; <mark>68–95–99.7</mark> rule within 1/2/3 SD.</li>
+  <li><b>Binomial</b>: count of successes in n yes/no trials — mean np, var npq. <b>Poisson</b>: count of rare events per interval — mean = var = λ.</li>
+  <li>R functions per distribution: <mark>d</mark>=density, <mark>p</mark>=probability(area), <mark>q</mark>=quantile, <mark>r</mark>=random → full table in <a href="#b11"><b>B11</b></a>; fitting numerical in <a href="#b6"><b>B6</b></a>.</li>
+</ul>
+<figure class="dg"><img src="rds-images/normal-curve-689599.png" alt="Normal curve with 68 95 99.7 rule" loading="lazy"><figcaption><b>Fig U4.2</b> · Normal curve — 68% / 95% / 99.7% within ±1/2/3 SD</figcaption></figure>
+
+<!-- ════════════════ PART-B ════════════════ -->
+<h2 id="partb">Part-B · Top 11 answers (attempt any 4 × 15 M)</h2>
+
+<!-- B1 -->
+<div class="qcard">
+  <div class="qhead">B1 · CENTRAL TENDENCY + DISPERSION · <span class="chip hot">3× — came EVERY year</span> · 10 M</div>
+  <div class="qbody"><b>Explain measures of central tendency and dispersion. Calculate them in R.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Centre = "where do most marks sit?" (mean/median/mode). Spread = "how far apart are the marks?" (range/variance/SD).</div>
+  <div class="ans">
+    <h3>Central tendency (the centre)</h3>
+    <ul>
+      <li><b>Mean</b> = sum ÷ count = <mark>Σx / n</mark> · R: <code>mean(x)</code></li>
+      <li><b>Median</b> = middle value after sorting · R: <code>median(x)</code></li>
+      <li><b>Mode</b> = value that appears most often (no built-in; use <code>table(x)</code> and pick the max)</li>
+    </ul>
+    <h3>Dispersion (the spread)</h3>
+    <ul>
+      <li><b>Range</b> = max − min</li>
+      <li><b>Variance</b> = average of squared distances from mean = <mark>Σ(x − x̄)² / (n−1)</mark> · R: <code>var(x)</code></li>
+      <li><b>SD</b> = √variance (same units as data) · R: <code>sd(x)</code></li>
+      <li><b>IQR</b> = Q3 − Q1, the middle 50% · R: <code>IQR(x)</code></li>
+    </ul>
+    <h3>Worked example — x = 2, 4, 4, 4, 5, 5, 7, 9</h3>
+    <ul>
+      <li>Mean = (2+4+4+4+5+5+7+9)/8 = 40/8 = <span class="final">5</span></li>
+      <li>Median = middle of 4 and 5 = <span class="final">4.5</span> · Mode = <span class="final">4</span> (appears 3 times)</li>
+      <li>Σ(x−5)² = 9+1+1+1+0+0+4+16 = 32 → Variance = 32/7 = <span class="final">4.571</span> → SD = <span class="final">2.138</span></li>
+      <li>Range = 9−2 = <span class="final">7</span></li>
+    </ul>
+<pre><code>x <- c(2, 4, 4, 4, 5, 5, 7, 9)
+mean(x); median(x)        # 5, 4.5
+var(x); sd(x); IQR(x)     # 4.571, 2.138, 1.5
+diff(range(x))            # 7</code></pre>
+    <figure class="dg"><img src="rds-images/central-tendency-dispersion.png" alt="central tendency and dispersion measures" loading="lazy"><figcaption><b>Fig B1.1</b> · Centre (mean/median/mode) + spread (range/var/SD/IQR)</figcaption></figure>
+  </div>
+</div>
+
+<!-- B2 -->
+<div class="qcard">
+  <div class="qhead">B2 · HYPOTHESIS TESTING + t-TEST · <span class="chip hot">3× — came EVERY year</span> · 10 M</div>
+  <div class="qbody"><b>What is hypothesis testing? Steps + t-test example in R.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>It's a court case. H₀ = "innocent" (nothing changed). Data = evidence. Strong evidence (p &lt; 0.05) → guilty (reject H₀). Weak evidence → let go (fail to reject).</div>
+  <div class="ans">
+    <p>A <mark>hypothesis test</mark> uses sample data to decide whether a claim about a population is believable.</p>
+    <h3>The 6 steps</h3>
+    <ul>
+      <li><b>1. State hypotheses</b> — H₀ (null: no difference, μ = 70) vs H₁ (alternative: μ ≠ 70)</li>
+      <li><b>2. Choose α</b> — significance level, normally <mark>0.05</mark></li>
+      <li><b>3. Compute test statistic</b> — t = (x̄ − μ) / (s/√n)</li>
+      <li><b>4. Find p-value</b> — R gives it directly</li>
+      <li><b>5. Decide</b> — <mark>p &lt; α → reject H₀</mark>; p ≥ α → fail to reject H₀</li>
+      <li><b>6. Conclude in words</b></li>
+    </ul>
+    <h3>Types</h3>
+    <ul>
+      <li><b>One-sample t</b>: one group vs known value · <code>t.test(x, mu = 70)</code></li>
+      <li><b>Two-sample t</b>: compare two groups · <code>t.test(x, y)</code></li>
+      <li><b>Paired t</b>: before vs after on same people · <code>t.test(x, y, paired = TRUE)</code></li>
+    </ul>
+    <h3>Worked example — claim: class average is 70</h3>
+<pre><code>scores <- c(68, 72, 75, 69, 71, 66, 74, 73, 70, 67)
+t.test(scores, mu = 70)
+# t = 0.522, df = 9, p-value = 0.614</code></pre>
+    <p>p (0.614) &gt; α (0.05) → <span class="final">fail to reject H₀ — class mean is 70</span></p>
+  </div>
+</div>
+
+<!-- B3 -->
+<div class="qcard" id="b3">
+  <div class="qhead">B3 · DATA FRAME + CSV EXPORT/IMPORT · <span class="chip hot">3× — came EVERY year</span> · 10 M</div>
+  <div class="qbody"><b>Create a data frame, add column, filter, export to CSV, read back.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>A data frame is an Excel sheet inside R. CSV is how you save that sheet as a file.</div>
+  <div class="ans">
+<pre><code># 1. Create (an Excel-like table)
+df <- data.frame(name = c("Jon","Bill","Maria","Tom","Emma"),
+                 age  = c(23, 41, 32, 55, 40))
+
+# 2. Add a new column
+df$marks <- c(85, 67, 92, 74, 88)
+
+# 3. Filter rows (students with marks > 80)
+top <- df[df$marks > 80, ]
+
+# 4. Mean of a column
+mean(df$marks)            # 81.2
+
+# 5. Export to CSV file
+write.csv(df, "students.csv", row.names = FALSE)
+
+# 6. Read it back
+d2 <- read.csv("students.csv")
+head(d2)</code></pre>
+    <ul>
+      <li><mark>data.frame()</mark> builds the table; every column is a vector of equal length.</li>
+      <li><mark>df$new &lt;- ...</mark> adds a column; <mark>df[condition, ]</mark> filters rows.</li>
+      <li><mark>write.csv() / read.csv()</mark> save and load. <code>row.names = FALSE</code> stops an extra index column.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- B4 -->
+<div class="qcard" id="b4">
+  <div class="qhead">B4 · OOP IN R — S3 / S4 / REFERENCE CLASSES · <span class="chip hot">2×</span> · 10–15 M</div>
+  <div class="qbody"><b>Explain OOP in R with S3, S4 and Reference class examples.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Three ways to build a "thing": S3 = sticky note on a box (informal). S4 = official sealed form (strict slots). R5 = a real machine you can modify directly (reference).</div>
+  <div class="ans">
+<pre><code># S3 - simplest: a list + a class label
+acc <- list(owner = "Ankit", balance = 5000)
+class(acc) <- "account"
+print.account <- function(a) cat(a$owner, "has Rs", a$balance)
+
+# S4 - formal: fixed slots, validity checking
+setClass("Account", representation(owner = "character",
+                                   balance = "numeric"))
+a4 <- new("Account", owner = "Ankit", balance = 5000)
+a4@balance                       # access with @
+
+# R5 (Reference) - mutable, methods live inside
+AccountR5 <- setRefClass("AccountR5",
+  fields  = list(owner = "character", balance = "numeric"),
+  methods = list(
+    deposit = function(x){ balance <<- balance + x }))
+a5 <- AccountR5$new(owner = "Ankit", balance = 5000)
+a5$deposit(1000); a5$balance     # 6000 - object itself changed</code></pre>
+    <div class="table-wrap"><table>
+      <tr><th>Feature</th><th>S3</th><th>S4</th><th>R5 (Reference)</th></tr>
+      <tr><td>Style</td><td>Informal</td><td>Formal, strict</td><td>Like Java/Python classes</td></tr>
+      <tr><td>Create</td><td><code>class(x) &lt;-</code></td><td><code>setClass() + new()</code></td><td><code>setRefClass()$new()</code></td></tr>
+      <tr><td>Access</td><td><code>$</code></td><td><code>@</code></td><td><code>$</code></td></tr>
+      <tr><td>Changes object?</td><td>Copy made</td><td>Copy made</td><td><mark>Modifies in place</mark></td></tr>
+    </table></div>
+    <figure class="dg"><img src="rds-images/oop-s3-s4-r5.png" alt="S3 vs S4 vs R5 reference classes" loading="lazy"><figcaption><b>Fig B4.1</b> · S3 informal · S4 formal slots · R5 mutable reference</figcaption></figure>
+  </div>
+</div>
+
+<!-- B5 -->
+<div class="qcard" id="b5">
+  <div class="qhead">B5 · lapply() &amp; sapply() · <span class="chip hot">3× — came EVERY year</span> · 5 M</div>
+  <div class="qbody"><b>Short notes on lapply() and sapply().</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Both say "do this to EVERY item, no loop needed". lapply hands results back in a list-box; sapply hands back a simple line of values.</div>
+  <div class="ans">
+    <ul>
+      <li><b>lapply(list, function)</b> — applies the function to <mark>each element</mark>, always returns a <b>LIST</b>.</li>
+      <li><b>sapply(list, function)</b> — same work, but <mark>simplifies</mark> the output to a <b>vector/matrix</b> when possible.</li>
+    </ul>
+<pre><code>nums <- list(a = 1:5, b = 6:10)
+lapply(nums, mean)   # list:  $a 3   $b 8
+sapply(nums, mean)   # vector:  a 3   b 8</code></pre>
+    <div class="table-wrap"><table>
+      <tr><th>Point</th><th>lapply()</th><th>sapply()</th></tr>
+      <tr><td>Returns</td><td>List</td><td>Vector / matrix</td></tr>
+      <tr><td>Use when</td><td>Results have different shapes</td><td>Each result is one value</td></tr>
+      <tr><td>Example</td><td><code>lapply(L, mean)</code></td><td><code>sapply(L, mean)</code></td></tr>
+    </table></div>
+  </div>
+</div>
+
+<!-- B6 -->
+<div class="qcard" id="b6">
+  <div class="qhead">B6 · FIT A BINOMIAL DISTRIBUTION (NUMERICAL) · <span class="chip">May-24 Q4(b)</span> · 5–10 M</div>
+  <div class="qbody"><b>Fit a Binomial distribution: x = 0–5, f = 2, 16, 28, 12, 9, 3.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Find the average → turn it into probability p → use the binomial formula to predict what the table SHOULD look like.</div>
+  <div class="ans">
+    <ul>
+      <li><b>Step 1:</b> N = Σf = 2+16+28+12+9+3 = <span class="final">70</span></li>
+      <li><b>Step 2:</b> Σfx = 0+16+56+36+36+15 = <span class="final">159</span> → mean x̄ = 159/70 = <span class="final">2.2714</span></li>
+      <li><b>Step 3:</b> <mark>p̂ = x̄ / n = 2.2714 / 5 = 0.4543</mark> (divide by n = 5 trials, NOT by 70!) · q̂ = 0.5457</li>
+      <li><b>Step 4:</b> Expected E(x) = 70 · C(5,x) · p̂ˣ · q̂⁵⁻ˣ</li>
+    </ul>
+    <div class="table-wrap"><table>
+      <tr><th>x</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr>
+      <tr><td>Observed f</td><td>2</td><td>16</td><td>28</td><td>12</td><td>9</td><td>3</td></tr>
+      <tr><td>Expected E(x)</td><td>3.39</td><td>14.10</td><td>23.48</td><td>19.54</td><td>8.14</td><td>1.35</td></tr>
+    </table></div>
+    <p>Check: Σ E = <span class="final">70 ✓</span></p>
+<pre><code>x <- 0:5; f <- c(2,16,28,12,9,3)
+p_hat <- (sum(x*f)/sum(f)) / 5          # 0.4543
+round(sum(f) * dbinom(x, 5, p_hat), 2)  # 3.39 14.10 23.48 19.54 8.14 1.35</code></pre>
+  </div>
+</div>
+
+<!-- B7 -->
+<div class="qcard" id="b7">
+  <div class="qhead">B7 · GRADE-CLASSIFIER SCRIPT (functions + if + loop) · <span class="chip">May-25 Q4 · 15 M</span></div>
+  <div class="qbody"><b>Write an R script using a function, conditional statements and a loop to classify student grades.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>One machine (function) reads a mark and stamps A/B/C/F; a loop feeds every student into the machine.</div>
+  <div class="ans">
+<pre><code># Function: decide grade for one mark
+grade <- function(m) {
+  if (m >= 80)      return("A")
+  else if (m >= 60) return("B")
+  else if (m >= 40) return("C")
+  else              return("F")
+}
+
+marks <- c(91, 72, 55, 38, 85)
+names <- c("Asha","Ravi","Meena","Sam","Jo")
+
+# Loop: classify every student
+for (i in 1:length(marks)) {
+  cat(names[i], ":", marks[i], "->", grade(marks[i]), "\n")
+}
+# Asha : 91 -> A
+# Ravi : 72 -> B
+# Meena: 55 -> C
+# Sam  : 38 -> F
+# Jo   : 85 -> A
+
+# Bonus mark: vectorised one-liner
+sapply(marks, grade)</code></pre>
+    <ul>
+      <li><mark>function()</mark> = reusable block with <code>return()</code> · <mark>if / else if / else</mark> = decision ladder · <mark>for loop</mark> = repeat per student.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- B8 -->
+<div class="qcard" id="b8">
+  <div class="qhead">B8 · SUPERVISED vs UNSUPERVISED · <span class="chip">May-25 Q2(b) · 10 M</span></div>
+  <div class="qbody"><b>Differentiate supervised and unsupervised learning with examples.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Supervised = learning with an answer key (teacher checks). Unsupervised = sorting your toys into groups yourself, nobody tells you the groups.</div>
+  <div class="ans">
+    <div class="table-wrap"><table>
+      <tr><th>Parameter</th><th>Supervised</th><th>Unsupervised</th></tr>
+      <tr><td>Training data</td><td><mark>Labelled</mark> (input + correct answer)</td><td><mark>Unlabelled</mark> (input only)</td></tr>
+      <tr><td>Goal</td><td>Predict output for new input</td><td>Discover hidden patterns / groups</td></tr>
+      <tr><td>Types</td><td>Classification, Regression</td><td>Clustering, Association</td></tr>
+      <tr><td>Example task</td><td>Spam vs not-spam email</td><td>Grouping customers by behaviour</td></tr>
+      <tr><td>Real life</td><td>House-price prediction, disease diagnosis</td><td>Market-basket analysis, user segments</td></tr>
+      <tr><td>Feedback</td><td>Has a "teacher" (known answers)</td><td>No teacher, no right answer given</td></tr>
+    </table></div>
+    <figure class="dg"><img src="rds-images/supervised-vs-unsupervised.png" alt="supervised vs unsupervised learning" loading="lazy"><figcaption><b>Fig B8.1</b> · Labelled prediction vs pattern discovery</figcaption></figure>
+  </div>
+</div>
+
+<!-- B9 -->
+<div class="qcard" id="b9">
+  <div class="qhead">B9 · ggplot2 + BASE vs ggplot2 · <span class="chip hot">3× (some form)</span> · 5–10 M</div>
+  <div class="qbody"><b>Explain ggplot2 with a bar-chart code. Differentiate base graphics and ggplot2.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Base plotting = drawing with a pen, one stroke at a time. ggplot2 = LEGO — stack ready-made layers (data + axes + bars) with +.</div>
+  <div class="ans">
+    <p><mark>ggplot2</mark> builds plots from layers: <b>data</b> + <b>aes()</b> (what goes on x/y) + <b>geom_*</b> (shape to draw).</p>
+<pre><code>library(ggplot2)
+df <- data.frame(subject = c("DBMS","LOC","WC","R"),
+                 marks   = c(72, 65, 80, 88))
+
+ggplot(df, aes(x = subject, y = marks)) +
+  geom_bar(stat = "identity", fill = "darkgreen") +
+  labs(title = "Marks per subject")</code></pre>
+    <div class="table-wrap"><table>
+      <tr><th>Point</th><th>Base graphics</th><th>ggplot2</th></tr>
+      <tr><td>Approach</td><td>Pen-style, command by command</td><td><mark>Grammar of graphics</mark> — layers with +</td></tr>
+      <tr><td>Function</td><td><code>plot(), hist(), barplot()</code></td><td><code>ggplot() + geom_*()</code></td></tr>
+      <tr><td>Look</td><td>Plain default</td><td>Polished, themed</td></tr>
+      <tr><td>Best for</td><td>Quick checks</td><td>Reports, complex plots</td></tr>
+    </table></div>
+    <p><b>col</b> = colour of points/bars · <b>pch</b> = point shape (0–25) in base graphics.</p>
+    <figure class="dg"><img src="rds-images/ggplot2-layers.png" alt="ggplot2 layer system" loading="lazy"><figcaption><b>Fig B9.1</b> · ggplot2 = data + aes + geom layers stacked with +</figcaption></figure>
+  </div>
+</div>
+
+<!-- B10 -->
+<div class="qcard" id="b10">
+  <div class="qhead">B10 · DEBUGGING TECHNIQUES · <span class="chip hot">2×</span> · 5–7.5 M</div>
+  <div class="qbody"><b>Explain debugging techniques in R.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Code crashed. Five torchlights: one shows WHERE it died, one walks line-by-line, one freezes the code mid-run so you can look around.</div>
+  <div class="ans">
+    <ul>
+      <li><b><code>traceback()</code></b> — run right after an error; shows the <mark>chain of calls</mark> that led to the crash.</li>
+      <li><b><code>debug(f)</code></b> — next call of f runs <mark>line-by-line</mark> (n = next). <code>undebug(f)</code> to stop.</li>
+      <li><b><code>browser()</code></b> — placed inside a function; execution <mark>pauses there</mark> to inspect variables.</li>
+      <li><b><code>trace()</code></b> — temporarily inject extra code (e.g. a print) into a function without editing it.</li>
+      <li><b><code>options(error = recover)</code></b> — on any error, choose a call frame to <mark>jump into and inspect</mark>.</li>
+    </ul>
+<pre><code>f <- function(x) { y <- x * 2; browser(); y + z }   # z missing!
+f(3)        # pauses at browser(); type ls(), y, then Q
+traceback() # after the error: shows f(3) caused it</code></pre>
+    <figure class="dg"><img src="rds-images/debugging-tools.png" alt="R debugging tools" loading="lazy"><figcaption><b>Fig B10.1</b> · 5 debugging tools — where, step, pause, inject, recover</figcaption></figure>
+  </div>
+</div>
+
+<!-- B11 -->
+<div class="qcard" id="b11">
+  <div class="qhead">B11 · dnorm / pnorm / qnorm / rnorm · <span class="chip hot">2×</span> · 5 M</div>
+  <div class="qbody"><b>Define dnorm, pnorm, qnorm, rnorm.</b></div>
+  <div class="eli5"><span class="lbl">Like you're 5</span>Four buttons on the bell-curve machine: d = height at a point, p = area up to a point (probability), q = reverse of p, r = random numbers.</div>
+  <div class="ans">
+    <div class="table-wrap"><table>
+      <tr><th>Function</th><th>Gives</th><th>Example</th></tr>
+      <tr><td><code>dnorm(x)</code></td><td><mark>Density</mark> — curve height at x</td><td><code>dnorm(0)</code> = 0.399</td></tr>
+      <tr><td><code>pnorm(q)</code></td><td><mark>Probability</mark> — area to the left of q</td><td><code>pnorm(1.96)</code> = 0.975</td></tr>
+      <tr><td><code>qnorm(p)</code></td><td><mark>Quantile</mark> — reverse of pnorm</td><td><code>qnorm(0.975)</code> = 1.96</td></tr>
+      <tr><td><code>rnorm(n)</code></td><td><mark>Random</mark> numbers from the bell curve</td><td><code>rnorm(5, mean=0, sd=1)</code></td></tr>
+    </table></div>
+    <p>Same letters for every distribution: <code>dbinom/pbinom</code> (Binomial), <code>dpois/ppois</code> (Poisson).</p>
+  </div>
+</div>
+
+<!-- ════════════════ PART-A ════════════════ -->
+<h2 id="parta">Part-A · 24 quick-fire definitions (1.5 M each)</h2>
+
+<div class="qcard">
+  <div class="qhead">PART-A FLASH · one line each · highest-repeat first</div>
+
+  <div class="qbody"><b>(1) What is CRAN? <span class="chip">2025</span></b></div>
+  <div class="ans"><mark>Comprehensive R Archive Network</mark> — the official online library of all R packages. <code>install.packages()</code> downloads from CRAN.</div>
+
+  <div class="qbody"><b>(2) Syntax to install &amp; load a package <span class="chip hot">2×</span></b></div>
+  <div class="ans"><code>install.packages("ggplot2")</code> — installs once. <code>library(ggplot2)</code> — loads it for use in every session.</div>
+
+  <div class="qbody"><b>(3) lapply() and sapply()? <span class="chip hot">3×</span></b></div>
+  <div class="ans"><mark>lapply()</mark> applies a function to every element of a list and returns a <b>list</b>. <mark>sapply()</mark> does the same but simplifies the result to a <b>vector</b>. <code>sapply(1:3, sqrt)</code> → 1.00 1.41 1.73</div>
+
+  <div class="qbody"><b>(4) Name one function to test correlation <span class="chip hot">3×</span></b></div>
+  <div class="ans"><mark><code>cor.test(x, y)</code></mark> — gives correlation coefficient r and p-value. (<code>cor(x,y)</code> gives only r.)</div>
+
+  <div class="qbody"><b>(5) What is a t-test? <span class="chip hot">2×</span></b></div>
+  <div class="ans">A statistical test that checks whether a <mark>sample mean equals a claimed value</mark> (or whether two means differ). R: <code>t.test(x, mu = 50)</code>.</div>
+
+  <div class="qbody"><b>(6) Create a numeric vector 1 to 5 <span class="chip">2025</span></b></div>
+  <div class="ans"><code>x &lt;- c(1, 2, 3, 4, 5)</code> &nbsp;or&nbsp; <code>x &lt;- 1:5</code></div>
+
+  <div class="qbody"><b>(7) Access 2nd column of data frame df <span class="chip">2025</span></b></div>
+  <div class="ans"><code>df[ , 2]</code> &nbsp;or&nbsp; <code>df$colname</code> &nbsp;or&nbsp; <code>df[[2]]</code></div>
+
+  <div class="qbody"><b>(8) Syntax of a for loop <span class="chip">2025</span></b></div>
+  <div class="ans"><code>for (i in 1:5) { print(i) }</code> — runs the body once for every value of i.</div>
+
+  <div class="qbody"><b>(9) Use of switch() <span class="chip hot">2×</span></b></div>
+  <div class="ans"><mark>switch()</mark> picks ONE result from many options based on a value: <code>switch("b", a=10, b=20, c=30)</code> → 20.</div>
+
+  <div class="qbody"><b>(10) ggplot2 syntax <span class="chip hot">2×</span></b></div>
+  <div class="ans"><code>ggplot(data, aes(x = ..., y = ...)) + geom_point()</code> — data + aesthetics + geometry layer.</div>
+
+  <div class="qbody"><b>(11) What is a histogram used for? <span class="chip hot">2×</span></b></div>
+  <div class="ans">Shows the <mark>shape and spread of numeric data</mark> by grouping values into bins. R: <code>hist(x)</code>.</div>
+
+  <div class="qbody"><b>(12) Data types in R <span class="chip hot">2×</span></b></div>
+  <div class="ans"><mark>numeric</mark> (3.14), <mark>integer</mark> (5L), <mark>character</mark> ("hi"), <mark>logical</mark> (TRUE/FALSE), <mark>complex</mark> (2+3i).</div>
+
+  <div class="qbody"><b>(13) Vector vs List</b></div>
+  <div class="ans">Vector = all elements of the <b>same type</b>. List = elements of <b>any mixed types</b> (vector, string, matrix, even a function).</div>
+
+  <div class="qbody"><b>(14) Special values NA, NULL, NaN, Inf</b></div>
+  <div class="ans"><mark>NA</mark> = missing value · <mark>NULL</mark> = empty, nothing exists · <mark>NaN</mark> = invalid maths (0/0) · <mark>Inf</mark> = infinity (1/0).</div>
+
+  <div class="qbody"><b>(15) Three math functions <span class="chip hot">2×</span></b></div>
+  <div class="ans"><code>sqrt(16)</code>→4 · <code>abs(-3)</code>→3 · <code>round(2.567, 1)</code>→2.6 · (also <code>log()</code>, <code>exp()</code>, <code>ceiling()</code>, <code>floor()</code>).</div>
+
+  <div class="qbody"><b>(16) Type conversion</b></div>
+  <div class="ans">Changing one type into another: <code>as.numeric("5")</code>→5 · <code>as.character(5)</code>→"5" · <code>as.logical(0)</code>→FALSE.</div>
+
+  <div class="qbody"><b>(17) Basic R operators</b></div>
+  <div class="ans">Arithmetic <code>+ − * / ^ %%</code> · Relational <code>&gt; &lt; == !=</code> · Logical <code>&amp; | !</code> · Assignment <code>&lt;-</code>.</div>
+
+  <div class="qbody"><b>(18) What is frequency distribution? <span class="chip">2025</span></b></div>
+  <div class="ans">A table showing <mark>how many times each value occurs</mark> in the data. R: <code>table(x)</code>.</div>
+
+  <div class="qbody"><b>(19) Explain Normal Distribution</b></div>
+  <div class="ans">A <mark>bell-shaped symmetric curve</mark> where mean = median = mode at the centre; most data lies near the mean (68% within ±1 SD).</div>
+
+  <div class="qbody"><b>(20) Covariance vs Correlation</b></div>
+  <div class="ans">Covariance shows only the <b>direction</b> of the relationship (units depend on data). Correlation shows <b>direction + strength</b> on a fixed scale <mark>−1 to +1</mark>.</div>
+
+  <div class="qbody"><b>(21) Supervised vs Unsupervised (one-liner)</b></div>
+  <div class="ans"><mark>Supervised</mark> learns from labelled data to predict answers (spam filter). <mark>Unsupervised</mark> finds hidden patterns in unlabelled data (customer grouping).</div>
+
+  <div class="qbody"><b>(22) One key feature of cloud computing <span class="chip">2025</span></b></div>
+  <div class="ans"><mark>On-demand scalability</mark> — storage and computing power over the internet, pay only for what you use.</div>
+
+  <div class="qbody"><b>(23) General format of a matrix</b></div>
+  <div class="ans"><code>matrix(1:6, nrow = 2, ncol = 3)</code> — same-type data arranged in rows × columns.</div>
+
+  <div class="qbody"><b>(24) repeat() mini program</b></div>
+  <div class="ans"><code>i &lt;- 1; repeat { print(i); i &lt;- i + 1; if (i &gt; 5) break }</code> — runs forever until <code>break</code>.</div>
+</div>
+
+<!-- formulas -->
+<h2 id="formulas">Last-minute formula card</h2>
+<div class="fbox">
+  <span class="f">Mean x̄ = Σx / n</span>
+  <span class="f">Variance s² = Σ(x − x̄)² / (n − 1) &nbsp;·&nbsp; SD = √s²</span>
+  <span class="f">t = (x̄ − μ) / (s / √n) &nbsp;·&nbsp; reject H₀ if p &lt; 0.05</span>
+  <span class="f">Binomial: P(X=x) = C(n,x) pˣ qⁿ⁻ˣ &nbsp;·&nbsp; mean = np · var = npq &nbsp;·&nbsp; p̂ = x̄/n</span>
+  <span class="f">Poisson: P(X=x) = e⁻ᴧ λˣ / x! &nbsp;·&nbsp; mean = var = λ</span>
+  <span class="f">Correlation r ∈ [−1, +1] · cor(x,y) · cor.test(x,y)</span>
+  <span class="f">Element-wise A * B &nbsp;≠&nbsp; Matrix product A %*% B</span>
+</div>
+
+<script>
+/* Scroll-spy (IKS pattern) */
+(function(){
+  var nav=document.querySelector('nav.chips'); if(!nav) return;
+  var map={}, targets=[];
+  nav.querySelectorAll('a[href^="#"]').forEach(function(a){
+    var id=a.getAttribute('href').slice(1), el=document.getElementById(id);
+    if(el){ map[id]=a; targets.push(el); }
+  });
+  function setLive(id){
+    nav.querySelectorAll('a').forEach(function(a){ a.classList.remove('live'); });
+    var a=map[id]; if(a){ a.classList.add('live'); nav.scrollTo({left:a.offsetLeft-12, behavior:'smooth'}); }
+  }
+  var visible=new Set();
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){ e.isIntersecting?visible.add(e.target):visible.delete(e.target); });
+    var best=null, bestY=Infinity;
+    visible.forEach(function(el){ var y=el.getBoundingClientRect().top; if(y<bestY){ bestY=y; best=el; } });
+    if(!best){ var nearY=-Infinity;
+      targets.forEach(function(el){ var y=el.getBoundingClientRect().top; if(y<120&&y>nearY){ nearY=y; best=el; } });
+    }
+    if(best) setLive(best.id);
+  }, { rootMargin:'-96px 0px -55% 0px', threshold:[0,0.25,0.5,1] });
+  targets.forEach(function(t){ io.observe(t); });
+})();
+
+/* Tap-to-zoom lightbox */
+(function(){
+  var ov=document.createElement('div'); ov.id='zoomov';
+  ov.innerHTML='<div class="zoom-stage"><div class="zoom-content"></div></div>'+
+    '<button class="zoom-close" aria-label="Close">✕</button>'+
+    '<div class="zoom-ctrls"><button data-z="out">−</button><button data-z="reset">⤢</button><button data-z="in">+</button></div>';
+  document.body.appendChild(ov);
+  var stage=ov.querySelector('.zoom-stage'), content=ov.querySelector('.zoom-content');
+  var scale=1, min=1, tx=0, ty=0;
+  function apply(){ content.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')'; }
+  function clamp(){ scale=Math.max(min, Math.min(scale, 8)); }
+  function open(fig){
+    content.innerHTML=''; content.appendChild(fig.cloneNode(true));
+    ov.classList.add('on'); document.body.style.overflow='hidden';
+    scale=1; min=1; tx=0; ty=0; apply();
+    requestAnimationFrame(function(){
+      var el=content.firstChild; var cw=(el&&el.offsetWidth)||content.offsetWidth||1;
+      var fit=Math.min(1,(stage.clientWidth*0.96)/cw);
+      min=fit; scale=fit; tx=0; ty=0; apply();
+    });
+  }
+  function close(){ ov.classList.remove('on'); document.body.style.overflow=''; content.innerHTML=''; }
+  ov.querySelector('.zoom-close').addEventListener('click', close);
+  ov.addEventListener('click', function(e){ if(e.target===ov||e.target===stage) close(); });
+  ov.querySelectorAll('.zoom-ctrls button').forEach(function(b){
+    b.addEventListener('click', function(ev){ ev.stopPropagation();
+      var z=b.getAttribute('data-z');
+      if(z==='in')scale*=1.3; else if(z==='out')scale/=1.3; else {scale=min;tx=0;ty=0;}
+      clamp(); apply(); });
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&ov.classList.contains('on')) close(); });
+  document.querySelectorAll('figure.dg').forEach(function(f){
+    f.addEventListener('click', function(){ if(!ov.classList.contains('on')) open(f); });
+  });
+  function dist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
+  var sd=0, ss=1, panning=false, lx=0, ly=0;
+  stage.addEventListener('touchstart', function(e){
+    if(e.touches.length===2){ sd=dist(e.touches); ss=scale; panning=false; }
+    else if(e.touches.length===1){ panning=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY; }
+  }, {passive:false});
+  stage.addEventListener('touchmove', function(e){
+    if(e.touches.length===2){ e.preventDefault(); scale=ss*dist(e.touches)/(sd||1); clamp(); apply(); }
+    else if(e.touches.length===1&&panning){ if(scale>min){ e.preventDefault(); tx+=e.touches[0].clientX-lx; ty+=e.touches[0].clientY-ly; } lx=e.touches[0].clientX; ly=e.touches[0].clientY; apply(); }
+  }, {passive:false});
+  stage.addEventListener('touchend', function(e){ panning=e.touches.length===1; if(panning){ lx=e.touches[0].clientX; ly=e.touches[0].clientY; } });
+  stage.addEventListener('wheel', function(e){ e.preventDefault(); scale*=(e.deltaY<0?1.15:0.87); clamp(); apply(); }, {passive:false});
+  var md=false, mx=0, my=0;
+  stage.addEventListener('mousedown', function(e){ md=true; mx=e.clientX; my=e.clientY; });
+  window.addEventListener('mousemove', function(e){ if(md&&scale>min){ tx+=e.clientX-mx; ty+=e.clientY-my; mx=e.clientX; my=e.clientY; apply(); } });
+  window.addEventListener('mouseup', function(){ md=false; });
+  content.addEventListener('dblclick', function(e){ e.stopPropagation(); if(scale>min){scale=min;tx=0;ty=0;}else{scale=Math.min(min*2.5,8);} clamp(); apply(); });
+})();
+</script>
+</body>
+</html>
