@@ -613,19 +613,6 @@ td code{ font-size:11.5px; }
 #zoomov .zoom-close{ position:fixed; top:11px; right:13px; width:40px; height:40px; font-size:19px; z-index:3; }
 #zoomov .zoom-ctrls{ position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:3; }
 #zoomov .zoom-ctrls button{ width:48px; height:42px; font-size:21px; font-weight:700; }
-/* ── STUDY INTERACTIONS: scroll progress + recall mode + done tracker ── */
-#progbar{ position:fixed; top:0; left:0; height:3px; background:var(--brand); width:0; z-index:9999; pointer-events:none; }
-#studybar{ position:fixed; bottom:14px; right:12px; z-index:9998; display:flex; gap:8px; }
-#studybar button{ font-family:inherit; font-weight:700; font-size:12.5px; border:1.5px solid var(--ink); background:var(--paper); color:var(--ink); border-radius:18px; padding:8px 14px; cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.18); }
-#studybar button.on{ background:var(--brand); color:#fff; border-color:var(--brand-deep); }
-body.recall .qcard .ans{ display:none; }
-body.recall .qcard .ans.revealed{ display:block; }
-.reveal-btn{ display:none; margin:10px 0 4px; font-family:inherit; font-weight:700; font-size:12px; border:1.5px dashed var(--brand); background:var(--brand-soft); color:var(--brand-deep); border-radius:6px; padding:7px 12px; cursor:pointer; width:100%; }
-body.recall .reveal-btn{ display:block; }
-body.recall .reveal-btn.used{ display:none; }
-.done-btn{ float:right; font-family:inherit; font-weight:800; font-size:13px; line-height:1; border:1.5px solid var(--rule); background:var(--paper); color:var(--muted); border-radius:50%; width:26px; height:26px; cursor:pointer; margin-left:8px; }
-.done-btn.on{ background:#16a34a; border-color:#15803d; color:#fff; }
-.qcard.card-done > *:not(.qhead){ opacity:.45; }
 
 .svg-text{ font-family:"Spectral", Georgia, serif; font-size:13px; font-weight:500; }
 .svg-text.mono{ font-family:"JetBrains Mono", monospace; font-size:11px; }
@@ -6894,61 +6881,6 @@ dnorm(0); pnorm(1.96); qnorm(0.975); rnorm(5, 50, 10)</code></pre>
   window.addEventListener('mousemove', function(e){ if(md&&scale>min){ tx+=e.clientX-mx; ty+=e.clientY-my; mx=e.clientX; my=e.clientY; apply(); } });
   window.addEventListener('mouseup', function(){ md=false; });
   content.addEventListener('dblclick', function(e){ e.stopPropagation(); if(scale>min){scale=min;tx=0;ty=0;}else{scale=Math.min(min*2.5,8);} clamp(); apply(); });
-})();
-
-/* Study interactions: scroll progress bar + recall (hide-answer) mode + per-card done tracker (localStorage). All DOM-injected — no content markup touched. */
-(function(){
-  var pb=document.createElement('div'); pb.id='progbar'; document.body.appendChild(pb);
-  var ticking=false;
-  window.addEventListener('scroll', function(){
-    if(!ticking){ requestAnimationFrame(function(){
-      var h=document.documentElement;
-      var max=h.scrollHeight-h.clientHeight;
-      pb.style.width=(max>0?((h.scrollTop||document.body.scrollTop)/max*100):0)+'%';
-      ticking=false; }); ticking=true; }
-  }, {passive:true});
-
-  var bar=document.createElement('div'); bar.id='studybar';
-  var doneCount=document.createElement('button'); doneCount.type='button';
-  var recall=document.createElement('button'); recall.type='button'; recall.textContent='🧠 Recall';
-  bar.appendChild(doneCount); bar.appendChild(recall); document.body.appendChild(bar);
-
-  document.querySelectorAll('.qcard .ans').forEach(function(ans){
-    var b=document.createElement('button'); b.type='button'; b.className='reveal-btn'; b.textContent='👁 Show answer';
-    b.addEventListener('click', function(){ ans.classList.add('revealed'); b.classList.add('used'); });
-    ans.parentNode.insertBefore(b, ans);
-  });
-  recall.addEventListener('click', function(){
-    var on=document.body.classList.toggle('recall');
-    recall.classList.toggle('on', on);
-    if(!on){
-      document.querySelectorAll('.ans.revealed').forEach(function(a){ a.classList.remove('revealed'); });
-      document.querySelectorAll('.reveal-btn.used').forEach(function(b){ b.classList.remove('used'); });
-    }
-  });
-
-  var KEY='rds-done-v1', saved={};
-  try{ saved=JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ saved={}; }
-  var total=0;
-  document.querySelectorAll('.qcard .qhead .yr').forEach(function(yr){
-    var id=(yr.textContent||'').trim();
-    if(!/^P\d+$/.test(id)) return;
-    var card=yr.closest('.qcard'), head=yr.closest('.qhead');
-    if(!card||!head) return;
-    total++;
-    var btn=document.createElement('button'); btn.type='button'; btn.className='done-btn'; btn.textContent='✓'; btn.title='Mark done';
-    if(saved[id]){ card.classList.add('card-done'); btn.classList.add('on'); }
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      var on=card.classList.toggle('card-done'); btn.classList.toggle('on', on);
-      if(on) saved[id]=1; else delete saved[id];
-      try{ localStorage.setItem(KEY, JSON.stringify(saved)); }catch(e2){}
-      upd();
-    });
-    head.appendChild(btn);
-  });
-  function upd(){ doneCount.textContent='✓ '+Object.keys(saved).length+'/'+total; }
-  upd();
 })();
 </script>
 </body>
