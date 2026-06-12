@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v45';
+const CACHE_VERSION = 'bca-prep-v47';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -53,7 +53,23 @@ const PRECACHE_URLS = [
   './rds-images/dikw-pyramid.png',
   './rds-images/rstudio-4panes.png',
   './rds-images/ifelse-flowchart.png',
-  './rds-images/loops-three-panel.png'
+  './rds-images/loops-three-panel.png',
+  './ps-images/correlation-gallery.png',
+  './ps-images/data-classification.png',
+  './ps-images/data-types.png',
+  './ps-images/expectation-balance.png',
+  './ps-images/exponential-density.png',
+  './ps-images/geometric-pmf.png',
+  './ps-images/kurtosis-shapes.png',
+  './ps-images/least-squares-line.png',
+  './ps-images/moments-ladder.png',
+  './ps-images/normal-empirical-rule.png',
+  './ps-images/pgf-pipeline.png',
+  './ps-images/pmf-pdf-cdf.png',
+  './ps-images/probability-rules.png',
+  './ps-images/skewness-shapes.png',
+  './ps-images/uniform-density.png',
+  './ps-images/variance-spread.png'
 ];
 
 // Install: pre-cache all guides. Use individual put() so a single 404 does

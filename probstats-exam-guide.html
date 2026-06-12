@@ -399,14 +399,14 @@ mark{
 th mark, thead mark{ background:transparent !important; color:inherit !important; padding:0 !important; }
 strong{ color:var(--ink); font-weight:700; }
 code{
-pre{ margin:12px 0; padding:10px 12px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; font-size:12.5px; line-height:1.5; }
-pre code{ background:none; border:none; padding:0; font-size:inherit; white-space:pre; }
   font-family:"JetBrains Mono",monospace;
   font-size:.86em;
   background:var(--paper-deep); color:var(--ink);
   padding:1px 6px; border-radius:3px;
   border:1px solid var(--rule);
 }
+pre{ margin:12px 0; padding:10px 12px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:4px; overflow-x:auto; -webkit-overflow-scrolling:touch; max-width:100%; font-size:12.5px; line-height:1.5; }
+pre code{ background:none; border:none; padding:0; font-size:inherit; white-space:pre; }
 
 /* ── FORMULA / MNEMONIC ── */
 .formula{
@@ -541,6 +541,7 @@ td code{ font-size:11.5px; }
   max-width:100%;
   display:block; margin:0 auto;
 }
+.diagram-fig img{ max-width:100%; height:auto; display:block; margin:0 auto; }
 @media(min-width:600px){
   .diagram-fig{ margin:18px -4px; padding:14px 8px 10px; }
   .diagram-fig svg{ max-width:600px; }
@@ -874,6 +875,66 @@ input,textarea,select{ font-size:16px; }
   a{ color:#000 !important; text-decoration:none; }
   .qcard.repeated,.qcard.predicted{ box-shadow:none !important; border:1.5pt solid #000 !important; }
 }
+
+/* ── INTERACTIVE-LAYER (remove-safe) ── */
+/* self-test toggle chip */
+nav.chips button.st-toggle{
+  flex-shrink:0; padding:6px 12px;
+  font-family:"JetBrains Mono",monospace;
+  font-size:11px; font-weight:700;
+  letter-spacing:.08em; color:var(--ink);
+  background:var(--paper-soft);
+  border:1.5px dashed var(--brand);
+  border-radius:0; white-space:nowrap;
+  text-transform:uppercase; cursor:pointer;
+}
+nav.chips button.st-toggle.on{ background:var(--brand); border-style:solid; border-color:var(--ink); color:var(--paper); }
+@media(max-width:480px){ nav.chips button.st-toggle{ font-size:10px; padding:6px 9px; min-height:38px; } }
+@media(max-width:360px){ nav.chips button.st-toggle{ font-size:9.5px; padding:5px 8px; } }
+/* active-recall: blurred answers */
+.qcard .ans.ans-hidden{ position:relative; cursor:pointer; min-height:72px; }
+.qcard .ans.ans-hidden > *{ filter:blur(7px); pointer-events:none; user-select:none; -webkit-user-select:none; transition:filter .25s ease; }
+.qcard .ans.ans-hidden.revealed{ cursor:auto; }
+.qcard .ans.ans-hidden.revealed > *{ filter:none; pointer-events:auto; user-select:auto; -webkit-user-select:auto; }
+.qcard .ans.ans-hidden::after{
+  content:"👁 tap to reveal";
+  position:absolute; top:16px; left:50%; transform:translateX(-50%);
+  padding:4px 12px; background:var(--highlighter);
+  border:1.5px solid var(--ink); border-radius:3px;
+  font-family:"JetBrains Mono",monospace; font-size:10px;
+  letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
+  white-space:nowrap; z-index:2; pointer-events:none;
+}
+.qcard .ans.ans-hidden.revealed::after{ content:none; }
+/* progress tracker (#imp-topics) */
+#il-progress{ margin:0 0 12px; }
+#il-progress .il-label{ display:block; margin:0 0 5px; font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--brand); }
+#il-progress .il-track{ height:6px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:99px; overflow:hidden; }
+#il-progress .il-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--brand), var(--brand-2)); border-radius:99px; transition:width .3s ease; }
+.il-chk{ display:inline-block; width:14px; height:14px; margin:0 7px 0 0; vertical-align:-2px; border:1.5px solid var(--brand); border-radius:3px; background:var(--paper); position:relative; cursor:pointer; }
+.il-chk.on{ background:var(--brand); }
+.il-chk.on::after{ content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--paper); line-height:1; }
+.il-chk:focus-visible{ outline:2.5px solid var(--crimson); outline-offset:2px; }
+#imp-topics a:has(> .il-chk.on){ opacity:.6; }
+/* back-to-top: hidden until scrolled (scoped to JS-added body class) */
+body.il-up-auto .up{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity .25s ease, visibility .25s ease, transform .25s ease; }
+body.il-up-auto .up.show{ opacity:1; visibility:visible; pointer-events:auto; }
+/* subtle polish (motion-safe) */
+@media (prefers-reduced-motion: no-preference){
+  .qcard{ transition:transform .18s ease, box-shadow .18s ease; }
+  nav.chips a:active, nav.chips button.st-toggle:active{ transform:translateY(1px) scale(.97); }
+  body.il-up-auto .up{ transform:translateY(10px); }
+  body.il-up-auto .up.show{ transform:none; }
+}
+@media (hover:hover) and (prefers-reduced-motion: no-preference){
+  .qcard:hover, .qcard:focus-within{ transform:translateY(-2px); box-shadow:0 5px 16px rgba(31,27,22,.12); }
+  .qcard.repeated:hover, .qcard.repeated:focus-within{ box-shadow:3px 3px 0 var(--crimson), 0 5px 16px rgba(31,27,22,.12); }
+}
+@media print{
+  nav.chips button.st-toggle, #il-progress, .il-chk{ display:none !important; }
+  .qcard .ans.ans-hidden > *{ filter:none !important; }
+  .qcard .ans.ans-hidden::after{ content:none !important; }
+}
 </style>
 </head>
 <body>
@@ -942,6 +1003,9 @@ input,textarea,select{ font-size:16px; }
       <a href="#t-1-10" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.6 Poisson Distribution &amp; Fit Poisson</a>
       <a href="#t-1-13" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.7 Normal Distribution</a>
       <a href="#t-1-1" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.1 Probability Definitions &amp; Rules</a>
+      <a href="#t-1-15" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.8 Geometric Distribution</a>
+      <a href="#t-1-16" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.9 Uniform Distribution</a>
+      <a href="#t-1-17" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">1.10 Exponential Distribution</a>
     </div>
   </div>
 
@@ -949,19 +1013,22 @@ input,textarea,select{ font-size:16px; }
     <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson); margin:0 0 6px;">Unit II · Moments &amp; MGF</div>
     <div style="display:flex; flex-wrap:wrap; gap:7px;">
       <a href="#t-2-3" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.1 Expectation &amp; Moments Transformation</a>
-      <a href="#t-2-6" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.3 Two-Dimensional RVs: Joint, Marginal &amp; Conditional</a>
-      <a href="#t-2-8" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.4 Covariance &amp; Correlation of Joint Discrete RVs</a>
-      <a href="#t-2-5" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.2 Moment Generating Function (MGF)</a>
+      <a href="#t-2-4" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.2 Probability Generating Function (PGF)</a>
+      <a href="#t-2-6" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.4 Two-Dimensional RVs: Joint, Marginal &amp; Conditional</a>
+      <a href="#t-2-8" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.5 Covariance &amp; Correlation of Joint Discrete RVs</a>
+      <a href="#t-2-5" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">2.3 Moment Generating Function (MGF)</a>
     </div>
   </div>
 
   <div style="margin:0 0 12px;">
     <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson); margin:0 0 6px;">Unit III · Descriptive Statistics</div>
     <div style="display:flex; flex-wrap:wrap; gap:7px;">
-      <a href="#t-3-5" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.2 Dispersion: Standard Deviation &amp; Variance</a>
-      <a href="#t-3-4" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.1 Central Tendency &amp; Means</a>
-      <a href="#t-3-7" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.3 Skewness &amp; AP Skewness</a>
-      <a href="#t-3-8" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.4 Kurtosis &amp; Peak Shape</a>
+      <a href="#t-3-1" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.1 Data: Primary &amp; Secondary</a>
+      <a href="#t-3-2" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.2 Classification of Data &amp; Frequency Distribution</a>
+      <a href="#t-3-5" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.4 Dispersion: Standard Deviation &amp; Variance</a>
+      <a href="#t-3-4" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.3 Central Tendency &amp; Means</a>
+      <a href="#t-3-7" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.5 Skewness &amp; AP Skewness</a>
+      <a href="#t-3-8" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">3.6 Kurtosis &amp; Peak Shape</a>
     </div>
   </div>
 
@@ -1004,6 +1071,43 @@ input,textarea,select{ font-size:16px; }
 Classical: equally likely outcomes.
 Statistical: P(E) = lim(n-&gt;inf) n_E / n
 Axiomatic: P(S)=1, P(E)&gt;=0, countable additivity.</div>
+
+    <h4>Multiplication (Product) Theorem of Probability</h4>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      The multiplication theorem answers "what is the chance that A <b>AND</b> B both happen?" Once A has happened, the world shrinks to only the outcomes inside A — so B's chance must be re-measured inside that smaller world. That re-measured chance is P(B|A), and multiplying re-scales it back to the original sample space.
+    </div>
+    <div class="formula">P(A ∩ B) = P(A) · P(B|A)
+Why multiply: P(B|A) lives inside the shrunken space A; multiplying by P(A) rescales to the full space.
+Independent events: P(B|A) = P(B), so P(A ∩ B) = P(A) · P(B).</div>
+    <ul>
+      <li><b>What it computes</b>: the joint chance of <mark>A and B together</mark> (the AND of two events).</li>
+      <li><b>Sum rule vs product rule</b>: OR (union) → <mark>add</mark> and subtract the overlap; AND (intersection) → <mark>multiply</mark> along the branch.</li>
+      <li><b>Conditional factor</b>: P(B|A) = P(A ∩ B) / P(A) is the chance of B measured <mark>inside the shrunken sample space</mark> where A already happened.</li>
+    </ul>
+
+    <h4>Tiny Worked Example: Two Cards Without Replacement</h4>
+    <p>Two cards are drawn one after the other from a 52-card pack <b>without replacement</b>. Find the probability that both are kings.</p>
+    <div class="steps">
+      <div class="step k">
+        <b>What is asked:</b> P(first king AND second king) — an AND of two events, so use the <mark>multiplication theorem</mark> P(A ∩ B) = P(A) · P(B|A).
+      </div>
+      <div class="step k">
+        <b>First draw P(A):</b> 4 kings among 52 cards, so P(A) = 4/52 = 1/13 (every card equally likely).
+      </div>
+      <div class="step k">
+        <b>Second draw P(B|A):</b> one king is gone and one card is gone — the sample space shrank to 51 cards holding 3 kings, so P(B|A) = 3/51 = 1/17.
+      </div>
+      <div class="step k">
+        <b>Multiply:</b> P(both kings) = (4/52) × (3/51) = 12/2652 = <mark><b>1/221 ≈ 0.0045</b></mark>.
+        <b>Meaning:</b> roughly 1 in every 221 two-card draws gives a pair of kings — rare because the second success must come from an already-thinned deck.
+      </div>
+    </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/probability-rules.png" alt="Sum rule shown as a Venn diagram of A union B versus product rule shown as a branch tree multiplying P(A) by P(B given A)" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.6</b> · Sum rule vs product rule. Left (OR): Venn circles — P(A∪B) = P(A) + P(B) − P(A∩B), subtracting the double-counted lens; mutually exclusive events just add. Right (AND): walk the branch Start → A → B and multiply P(A) × P(B|A); for independent events P(B|A) = P(B).</figcaption>
+    </figure>
 
     <h4>Worked Numerical Example: Two-Dice Union (May-2025 Q2b · 7 M)</h4>
     <p>Two dice are thrown. Find P(sum divisible by 2 or 3).</p>
@@ -1115,6 +1219,11 @@ Axiomatic: P(S)=1, P(E)&gt;=0, countable additivity.</div>
         </tbody>
       </table>
     </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/pmf-pdf-cdf.png" alt="Three panels: discrete PMF bars where the bar height is the probability, continuous PDF where the shaded area between a and b is the probability, and the CDF curve climbing from 0 to 1" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.7</b> · Three faces of one distribution. <b>PMF</b> (discrete): read the bar — P(X = 2) = 0.35. <b>PDF</b> (continuous): probability = shaded <b>area</b> between a and b, never the height. <b>CDF</b>: F(x) = P(X ≤ x) is the running total, climbing from 0 to 1.</figcaption>
+    </figure>
   </div>
 
   <div class="topic" id="t-1-5">
@@ -1523,6 +1632,125 @@ Mean: M, Variance: S^2, MGF: exp(M*t + 0.5 * S^2 * t^2)</div>
       </svg>
       <figcaption><b>Fig 1.5</b> · <b>Standardisation</b>: any Normal N(μ,σ²) maps to the standard N(0,1) by <b>Z = (X − μ)/σ</b>. The curve and the shaded probability are identical — only the axis relabels. Here raw <b>X = 15</b> (top) lines up with <b>Z = +1</b> (bottom), so a table lookup on Z gives the same probability as on X.</figcaption>
     </figure>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/normal-empirical-rule.png" alt="Normal bell curve with shaded bands at mu plus minus 1, 2 and 3 sigma holding 68.3, 95.4 and 99.7 percent, and an inset box with the z-score formula" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.8</b> · The 68–95–99.7 rule on the Normal curve: shaded bands hold <b>68.3%</b> within μ±1σ, <b>95.4%</b> within μ±2σ, <b>99.7%</b> within μ±3σ — area under the bell = probability. Inset: <b>z = (x − μ)/σ</b> converts any Normal to the standard N(0,1) so the Z-table can be read.</figcaption>
+    </figure>
+  </div>
+
+  <div class="topic" id="t-1-15">
+    <h3>1.8 Geometric Distribution <span class="tag fav">1.5M / 5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      The Geometric distribution is the <b>"waiting for the first success"</b> distribution. Repeat the same independent trial (success chance p each time) and count X = the trial number on which the FIRST success lands. Example: keep redialling a busy number until the call connects.
+    </div>
+    <div class="formula">PMF: P(X = k) = q^(k-1) · p,   k = 1, 2, 3, ...   (q = 1 - p)
+Why: the first success on trial k needs (k-1) failures THEN 1 success;
+the trials are independent, so multiply: q · q · ... · q (k-1 times) · p.
+Mean: E(X) = 1/p      Variance: Var(X) = q/p^2
+MGF: M_X(t) = p·e^t / (1 - q·e^t)</div>
+    <ul>
+      <li><b>Shape</b>: bars start at their tallest (k = 1) and <mark>decay by a factor q</mark> with every extra trial — each extra failure multiplies the chance by q.</li>
+      <li><b>Memoryless</b>: <mark>P(X &gt; s + t | X &gt; s) = P(X &gt; t)</mark> — past failures do not change the wait still ahead; the only discrete distribution with this property.</li>
+      <li><b>Mean intuition</b>: success chance p per trial → on average <mark>1/p trials</mark> are needed for the first success.</li>
+    </ul>
+
+    <h4>Worked Numerical Example: First Success on the 3rd Trial (p = 0.3)</h4>
+    <p>A salesman closes a sale with probability p = 0.3 on each independent call. Find the probability that his first sale happens on the 3rd call, and the average number of calls needed for the first sale.</p>
+    <div class="steps">
+      <div class="step k">
+        <b>What is asked:</b> the FIRST success exactly on trial k = 3 — a first-success wait, so use the <mark>Geometric</mark> PMF P(X = k) = q^(k−1) · p.
+      </div>
+      <div class="step k">
+        <b>Identify p and q:</b> p = 0.3 (success), q = 1 − 0.3 = 0.7 (failure) — q is needed because the first two calls must fail.
+      </div>
+      <div class="step k">
+        <b>Substitute k = 3:</b> P(X = 3) = (0.7)^(3−1) × 0.3 = (0.7)² × 0.3 — two failures then one success, multiplied because the calls are independent.
+      </div>
+      <div class="step k">
+        <b>Arithmetic:</b> (0.7)² = 0.49, then 0.49 × 0.3 = <mark><b>0.147</b></mark>.
+        <b>Meaning:</b> about 14.7% of salesmen with this skill land their first sale exactly on call 3.
+      </div>
+      <div class="step k">
+        <b>Average wait:</b> E(X) = 1/p = 1/0.3 = <mark><b>3.33 calls</b></mark> — with a 30% hit rate, the first sale needs about 3⅓ calls on average.
+      </div>
+    </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/geometric-pmf.png" alt="Geometric PMF bar chart for p equals 0.3: bars at k equals 1 to 8 decaying from 0.300 by a factor 0.7 each step, with a box stating mean 3.33, variance 7.78 and the memoryless property" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.9</b> · Geometric PMF for p = 0.3: P(X = k) = q^(k−1)·p starts at 0.300 (k = 1) and each extra failure multiplies the bar by q = 0.7 (0.210, 0.147, 0.103, …). Mean = 1/p = 3.33, Var = q/p² = 7.78 — and the distribution is memoryless: past failures don't matter.</figcaption>
+    </figure>
+  </div>
+
+  <div class="topic" id="t-1-16">
+    <h3>1.9 Uniform Distribution <span class="tag fav">1.5M / 5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      The continuous Uniform distribution says <b>every value in [a, b] is equally likely</b> — the density is one flat rectangle. Example: a random pick anywhere in a range, or the landing point of a fair spinner.
+    </div>
+    <div class="formula">PDF: f(x) = 1/(b - a)  for a &lt;= x &lt;= b,  0 elsewhere
+Why the height: total area must be 1; base = (b - a), so height = 1/(b - a).
+Mean: E(X) = (a + b)/2      Variance: Var(X) = (b - a)^2 / 12</div>
+
+    <h4>Worked Example From Zero: X ~ U[2, 8]</h4>
+    <p>X is uniformly distributed on [2, 8]. Write the pdf, and find the mean and variance.</p>
+    <div class="steps">
+      <div class="step k">
+        <b>What is asked:</b> the three standard facts of a <mark>Uniform</mark> RV — density height, centre, and spread — all read off a = 2, b = 8.
+      </div>
+      <div class="step k">
+        <b>Density height:</b> the rectangle's base is b − a = 8 − 2 = 6, and its area must equal 1, so the height is f(x) = 1/(b − a) = <mark><b>1/6</b></mark> for 2 ≤ x ≤ 8 (0 outside).
+      </div>
+      <div class="step k">
+        <b>Mean:</b> the rectangle is symmetric, so the balance point is its midpoint: E(X) = (a + b)/2 = (2 + 8)/2 = 10/2 = <mark><b>5</b></mark>.
+      </div>
+      <div class="step k">
+        <b>Variance:</b> Var(X) = (b − a)²/12 = (8 − 2)²/12 = 36/12 = <mark><b>3</b></mark> — wider base means more spread, and the 12 comes from integrating x² over the flat density.
+        <b>Meaning:</b> values centre on 5 with SD = √3 ≈ 1.73, and every point of [2, 8] is equally likely.
+      </div>
+    </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/uniform-density.png" alt="Uniform density on the interval 2 to 8 drawn as a flat shaded rectangle of height one sixth, with the mean 5 marked by a dashed line and f of x equal to zero outside the interval" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.10</b> · Uniform U[2, 8]: a flat rectangle of height 1/(b−a) = 1/6 over [2, 8] and f(x) = 0 outside. The dashed line marks the mean (a+b)/2 = 5; Var = (b−a)²/12 = 3. Every value in the interval is equally likely.</figcaption>
+    </figure>
+  </div>
+
+  <div class="topic" id="t-1-17">
+    <h3>1.10 Exponential Distribution <span class="tag fav">1.5M / 5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      The Exponential distribution measures the <b>waiting time between events</b> that occur at a steady average rate λ (it is the continuous partner of the Poisson count). Example: minutes until the next customer walks in.
+    </div>
+    <div class="formula">PDF: f(x) = λ·e^(-λx),  x &gt;= 0
+Tail: P(X &gt; x) = e^(-λx)
+Mean: E(X) = 1/λ      Variance: Var(X) = 1/λ^2      (so SD = 1/λ too)
+MGF: M_X(t) = λ/(λ - t),  t &lt; λ</div>
+    <ul>
+      <li><b>Shape</b>: starts highest at x = 0 and <mark>decays exponentially</mark> — short waits are always the most likely.</li>
+      <li><b>Memoryless</b>: <mark>P(X &gt; s + t | X &gt; s) = P(X &gt; t)</mark> — time already waited does not change the remaining wait; the only continuous distribution with this property.</li>
+      <li><b>Rate ↔ wait</b>: λ = events per unit time, so the average gap between events is <mark>1/λ</mark>.</li>
+    </ul>
+
+    <h4>Tiny Worked Example: P(X &gt; 4) when λ = 0.5</h4>
+    <div class="steps">
+      <div class="step k">
+        <b>What is asked:</b> the chance the wait exceeds 4 time-units — a right-tail probability, so use the <mark>tail formula</mark> P(X &gt; x) = e^(−λx).
+      </div>
+      <div class="step k">
+        <b>Substitute:</b> P(X &gt; 4) = e^(−0.5 × 4) = e^(−2) — the exponent is rate × time.
+      </div>
+      <div class="step k">
+        <b>Arithmetic:</b> e^(−2) ≈ <mark><b>0.135</b></mark>.
+        <b>Meaning:</b> only about 13.5% of waits run past 4 units when events arrive twice per unit time on average (mean wait = 1/λ = 2).
+      </div>
+    </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/exponential-density.png" alt="Exponential density curve for lambda 0.5 decaying from its peak at zero, with the mean 2 marked by a dashed line and the shaded tail beyond 4 labelled P of X greater than 4 approximately 0.14" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 1.11</b> · Exponential f(x) = λe^(−λx) with λ = 0.5: the density peaks at x = 0 and decays; the dashed line marks the mean 1/λ = 2, and the shaded tail beyond x = 4 is P(X &gt; 4) = e^(−4λ) ≈ 0.14. Memoryless: the past wait doesn't change the future wait.</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -1545,6 +1773,11 @@ Mean: M, Variance: S^2, MGF: exp(M*t + 0.5 * S^2 * t^2)</div>
 E(X) = ∫ x * f(x) dx  (Continuous)
 r-th Raw Moment: u_r' = E[(X - A)^r]
 r-th Central Moment: u_r = E[(X - Mean)^r]</div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/expectation-balance.png" alt="Probability bars of heights 0.05 to 0.30 sitting on a number line from 1 to 6 like weights on a plank, with a fulcrum at the balance point E of X equal to 3.9" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 2.1</b> · Expectation as the balance point: each probability p(x) is a weight sitting on the number line, and E(X) = Σ x·p(x) = 3.9 is where the plank balances. E(X) is the long-run average — not necessarily a value X can actually take.</figcaption>
+    </figure>
 
     <h4>Worked Numerical Example: Raw-to-Central Moments (Dec-2024 Q5a verbatim · 8 M)</h4>
     <p>The first four raw moments of a distribution about the value A = 4 are -1.5, 17, -30, and 108. Find the moments about the mean. Also determine skewness (β₁) and kurtosis (β₂).</p>
@@ -1579,10 +1812,73 @@ r-th Central Moment: u_r = E[(X - Mean)^r]</div>
         <b>Interpretation:</b> Since u_3 = +39.75 &gt; 0 (the third central moment is positive), the distribution is positively skewed (right-skewed) — β₁ itself is always ≥ 0, so the sign of u_3 is what fixes the direction. Since β₂ &lt; 3, it is platykurtic (flatter than a normal distribution).
       </div>
     </div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/moments-ladder.png" alt="Ladder of the four moments: first moment mean answers where is the centre, second moment variance answers how spread, third gives beta 1 tail lean, fourth gives beta 2 peakedness, with a key of the beta formulas" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 2.2</b> · The four-moment ladder — each rung answers one shape question: μ₁′ = Mean (WHERE is the centre), μ₂ = Variance (how SPREAD), μ₃ → β₁ = μ₃²/μ₂³ (which way the tail LEANS), μ₄ → β₂ = μ₄/μ₂² (how PEAKED). Central moments use deviations from the mean, so μ₁ = 0 always; for a Normal, β₁ = 0 and β₂ = 3.</figcaption>
+    </figure>
+  </div>
+
+  <div class="topic" id="t-2-4">
+    <h3>2.2 Probability Generating Function (PGF) <span class="tag fav">1.5M / 5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      The PGF is <b>a polynomial whose coefficients ARE the probabilities</b>. For a counting RV X (values 0, 1, 2, …), pack p₀, p₁, p₂, … as the coefficients of s⁰, s¹, s², … — one function now stores the whole distribution, and differentiating it pulls the mean and variance back out.
+    </div>
+    <div class="formula">PGF: P(s) = E(s^X) = Σ p_k · s^k    (sum over k = 0, 1, 2, ...)
+Why it works: differentiating brings the k down as a factor, and setting s = 1
+makes every s-power vanish — leaving sums like Σ k·p_k, which is E(X).
+Properties:
+1. P(1) = Σ p_k = 1                    (probabilities total 1)
+2. Mean = P'(1)                        (= Σ k·p_k = E(X))
+3. Var(X) = P''(1) + P'(1) - [P'(1)]^2  (P''(1) = E[X(X-1)], then re-assemble)</div>
+    <ul>
+      <li><b>Standard PGFs</b> (memorise the trio):
+        <ul>
+          <li><mark>Binomial</mark> B(n, p): P(s) = (q + ps)^n</li>
+          <li><mark>Poisson</mark>(λ): P(s) = e^(λ(s−1))</li>
+          <li><mark>Geometric</mark>(p): P(s) = ps / (1 − qs)</li>
+        </ul>
+      </li>
+      <li><b>Identification trick</b>: if an exam gives a PGF matching one of these shapes, name the distribution and read its parameter straight off — no summing needed.</li>
+      <li><b>PGF vs MGF</b>: PGF uses <mark>s^X</mark> (counting RVs only); MGF uses e^(tX) (any RV). Both generate moments by differentiation, PGF at s = 1, MGF at t = 0.</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/pgf-pipeline.png" alt="Pipeline of boxes: P of s equals expectation of s to the X, differentiate once and set s equal 1 to get the mean, differentiate twice for the variance combination, with the Binomial, Poisson and Geometric PGFs below" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 2.3</b> · PGF pipeline: P(s) = E(s^X) = Σ p_k·s^k stores the whole distribution → differentiate once, set s = 1 → P′(1) = Mean → differentiate twice → Var = P″(1) + P′(1) − [P′(1)]². Below: the standard PGFs — Binomial (q + ps)^n, Poisson e^(λ(s−1)), Geometric ps/(1 − qs).</figcaption>
+    </figure>
+
+    <h4>Worked Example From Zero: Identify the Distribution from P(s) = e^(2(s−1))</h4>
+    <p>A random variable X has PGF P(s) = e^(2(s−1)). Identify the distribution of X and find its mean and variance.</p>
+    <div class="steps">
+      <div class="step k">
+        <b>What is asked:</b> match the given PGF to a standard form, then pull the <mark>mean and variance</mark> out by differentiating at s = 1.
+      </div>
+      <div class="step k">
+        <b>Identify the shape:</b> the Poisson PGF is e^(λ(s−1)); the given e^(2(s−1)) matches it exactly with λ = 2 — so X ~ <mark>Poisson(λ = 2)</mark>.
+      </div>
+      <div class="step k">
+        <b>Sanity check P(1) = 1:</b> P(1) = e^(2(1−1)) = e^0 = 1 — a valid PGF, since the probabilities must total 1.
+      </div>
+      <div class="step k">
+        <b>First derivative (for the mean):</b> P′(s) = e^(2(s−1)) · 2 = 2e^(2(s−1)) (chain rule: derivative of the exponent 2(s−1) is 2).
+      </div>
+      <div class="step k">
+        <b>Mean:</b> E(X) = P′(1) = 2e^(2·0) = 2 × 1 = <mark><b>2</b></mark> — confirming the Poisson rule Mean = λ.
+      </div>
+      <div class="step k">
+        <b>Second derivative:</b> P″(s) = 2e^(2(s−1)) · 2 = 4e^(2(s−1)), so P″(1) = 4 × 1 = 4 (this is E[X(X−1)], the factorial moment).
+      </div>
+      <div class="step k">
+        <b>Variance:</b> Var(X) = P″(1) + P′(1) − [P′(1)]² = 4 + 2 − 2² = 6 − 4 = <mark><b>2</b></mark>.
+        <b>Meaning:</b> mean = variance = λ = 2 — the Poisson signature, recovered purely by differentiating the PGF.
+      </div>
+    </div>
   </div>
 
   <div class="topic" id="t-2-5">
-    <h3>2.2 Moment Generating Function (MGF) <span class="tag fav">7M / 8M</span></h3>
+    <h3>2.3 Moment Generating Function (MGF) <span class="tag fav">7M / 8M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       MGF is like a zip file of all moments. Instead of calculating ∑x^r * p(x) one by one, you find M_X(t), differentiate it r times at t=0, and get the r-th raw moment.
@@ -1620,7 +1916,7 @@ Raw Moment formula: u_r' = [ d^r/dt^r M_X(t) ] at t=0</div>
   </div>
 
   <div class="topic" id="t-2-6">
-    <h3>2.3 Two-Dimensional RVs: Joint, Marginal &amp; Conditional <span class="tag hot">⭐ 12M / 15M</span></h3>
+    <h3>2.4 Two-Dimensional RVs: Joint, Marginal &amp; Conditional <span class="tag hot">⭐ 12M / 15M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       When you measure two traits per subject (e.g., height X and weight Y), they form a two-dimensional variable. Marginal distributions show each trait alone. Conditional distributions show one trait's odds given the other trait's exact value.
@@ -1674,7 +1970,7 @@ Independence Test: X ⫫ Y iff f(x, y) = f_X(x) * f_Y(y)</div>
   </div>
 
   <div class="topic" id="t-2-8">
-    <h3>2.4 Covariance &amp; Correlation of Joint Discrete RVs <span class="tag hot">⭐ 8M</span></h3>
+    <h3>2.5 Covariance &amp; Correlation of Joint Discrete RVs <span class="tag hot">⭐ 8M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       Covariance measures the joint variation of two variables. If positive, they grow together. Correlation standardizes covariance into a tidy scale from -1 to +1.
@@ -1743,8 +2039,57 @@ E(XY) = ∑∑ x * y * P(X=x, Y=y)</div>
     <span class="priority">High-yield · 16/75 M · 1 Q in Part-B</span>
   </div>
 
+  <div class="topic" id="t-3-1">
+    <h3>3.1 Data: Primary &amp; Secondary <span class="tag fav">1.5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      Before any statistics, ask where the numbers came from. <b>Primary data</b> you collect yourself, first-hand, for your own study. <b>Secondary data</b> someone else already collected and published — you just reuse it.
+    </div>
+    <ul>
+      <li><b><mark>Primary data</mark></b>: collected first-hand by the investigator for the study at hand — via <b>surveys, experiments, interviews, observation</b>. Fresh and tailor-made, but <mark>costly and slow</mark>. Example: a questionnaire you run on 200 students.</li>
+      <li><b><mark>Secondary data</mark></b>: already collected and published by someone else — <b>census reports, journals, websites, office records</b>. <mark>Cheap and quick</mark>, but its reliability and fit must be checked before use. Example: literacy figures from the Census of India.</li>
+      <li><b>Relationship</b>: one study's primary data becomes the next study's secondary data.</li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/data-types.png" alt="Two side-by-side cards comparing primary data collected first-hand via surveys, experiments, interviews and observation against secondary data already published in census reports, journals, websites and office records" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 3.3</b> · Primary vs secondary data. Primary: collected first-hand by you (surveys, experiments, interviews, observation) — fresh but costly &amp; slow. Secondary: already collected &amp; published by someone else (census reports, journals, websites, office records) — cheap &amp; quick, but check reliability.</figcaption>
+    </figure>
+  </div>
+
+  <div class="topic" id="t-3-2">
+    <h3>3.2 Classification of Data &amp; Frequency Distribution <span class="tag fav">1.5M</span></h3>
+    <div class="box def">
+      <span class="label">Plain English</span>
+      Classification means sorting the same raw figures into groups so patterns show. There are exactly <b>four bases</b> to group by — place, time, attribute, or magnitude. When grouping by magnitude, the result table of "value → how many times" is a frequency distribution.
+    </div>
+    <ul>
+      <li><b><mark>Geographical</mark></b> — grouped by <b>place</b> (state-wise sales, district-wise rainfall).</li>
+      <li><b><mark>Chronological</mark></b> — grouped by <b>time</b> (year-wise population, month-wise revenue).</li>
+      <li><b><mark>Qualitative</mark></b> — grouped by <b>attribute</b> (gender, literacy, employment status).</li>
+      <li><b><mark>Quantitative</mark></b> — grouped by <b>magnitude</b> (marks, height, income classes).</li>
+    </ul>
+    <div class="formula">Frequency distribution: a table pairing each value (or class interval)
+with its frequency = how many observations fall there.</div>
+    <ul>
+      <li><b>How it is formed</b> (four steps):
+        <ul>
+          <li><b>Range</b>: find Range = Maximum − Minimum of the raw data.</li>
+          <li><b>Classes</b>: split the range into equal <mark>class intervals</mark> (commonly 5–15 classes).</li>
+          <li><b>Tally</b>: place a tally mark against the class each observation falls into.</li>
+          <li><b>Count</b>: total the tallies — each total is that class's <mark>frequency</mark>; the finished table is the frequency distribution.</li>
+        </ul>
+      </li>
+    </ul>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/data-classification.png" alt="Four cards for the four bases of classification: geographical grouped by place with state-wise sales, chronological grouped by time with year-wise population, qualitative grouped by attribute with gender and literacy, quantitative grouped by magnitude with marks and height" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 3.4</b> · The four bases of classification — same raw figures, four ways to group them: Geographical (by PLACE, e.g. state-wise sales), Chronological (by TIME, e.g. year-wise population), Qualitative (by ATTRIBUTE, e.g. gender, literacy), Quantitative (by MAGNITUDE, e.g. marks, height).</figcaption>
+    </figure>
+  </div>
+
   <div class="topic" id="t-3-4">
-    <h3>3.1 Central Tendency &amp; Means <span class="tag fav">1.5M / 5M</span></h3>
+    <h3>3.3 Central Tendency &amp; Means <span class="tag fav">1.5M / 5M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       Central tendency represents the "center of gravity" of your dataset. Mean is the algebraic center, Median is the physical middle point, and Mode is the most popular value.
@@ -1832,13 +2177,18 @@ Grouped Mode:   Mode   = L + [ (f1 − f0) / (2*f1 − f0 − f2) ] * h</div>
   </div>
 
   <div class="topic" id="t-3-5">
-    <h3>3.2 Dispersion: Standard Deviation &amp; Variance <span class="tag hot">⭐ 8M</span></h3>
+    <h3>3.4 Dispersion: Standard Deviation &amp; Variance <span class="tag hot">⭐ 8M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       SD measures how far, on average, the data points spread out from the mean. Standard deviation is the square root of the variance.
     </div>
     <div class="formula">Grouped Variance: s^2 = [ Sum(f * x^2) / N ] - Mean^2
 SD: s = sqrt(s^2)</div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/variance-spread.png" alt="Two bell curves sharing the same mean: a tall narrow curve labelled small sigma where values hug the mean, and a low wide curve labelled large sigma where values scatter far, with spread arrows below" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 3.5</b> · Variance = how far values scatter from the mean. Both curves share the same μ: the tall narrow one has small σ (values hug the mean), the low wide one has large σ (values scatter far). Var(X) = E(X²) − [E(X)]², and SD = √Var keeps the same units as X.</figcaption>
+    </figure>
 
     <h4>Worked Numerical Example: Standard Deviation from Grouped Data (Dec-2024 Q5b verbatim · 8 M)</h4>
     <p>Find the Mean and Standard Deviation of the following frequency distribution:</p>
@@ -1897,7 +2247,7 @@ SD: s = sqrt(s^2)</div>
   </div>
 
   <div class="topic" id="t-3-7">
-    <h3>3.3 Skewness &amp; AP Skewness <span class="tag fav">1.5M</span></h3>
+    <h3>3.5 Skewness &amp; AP Skewness <span class="tag fav">1.5M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       Skewness indicates the asymmetry of your dataset. If skewed right, it has a long positive tail. If skewed left, it has a long negative tail. For symmetric distributions (like any Arithmetic Progression), skewness is exactly 0.
@@ -2004,10 +2354,15 @@ Alternative: Sk_p = 3 * (Mean - Median) / SD</div>
       </svg>
       <figcaption><b>Fig 3.1</b> · Skewness shapes. Negative (left) skew: long left tail, Mean &lt; Median &lt; Mode. Symmetric: all three coincide. Positive (right) skew: long right tail, Mode &lt; Median &lt; Mean. The mean is always pulled toward the longer tail.</figcaption>
     </figure>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/skewness-shapes.png" alt="Three panels: negative skew with mean less than median less than mode, symmetric normal where all three coincide, and positive skew with mode less than median less than mean, each marking the three measures with dashed lines" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 3.6</b> · The TAIL names the skew. Negative skew: tail on the left, Mean &lt; Median &lt; Mode. Symmetric (Normal): Mean = Median = Mode, β₁ = 0. Positive skew: tail on the right, Mode &lt; Median &lt; Mean. The mean always chases the tail; the mode stays at the peak; the median sits between them.</figcaption>
+    </figure>
   </div>
 
   <div class="topic" id="t-3-8">
-    <h3>3.4 Kurtosis &amp; Peak Shape <span class="tag fav">1.5M / 5M</span></h3>
+    <h3>3.6 Kurtosis &amp; Peak Shape <span class="tag fav">1.5M / 5M</span></h3>
     <div class="box def">
       <span class="label">Plain English</span>
       Kurtosis tells us how pointy or flat the peak of a distribution is compared to a normal distribution, NOT how spread out.
@@ -2037,6 +2392,11 @@ Platykurtic (Flat peak, light tails): B2 &lt; 3</div>
       </svg>
       <figcaption><b>Fig 3.2</b> · Kurtosis (peakedness). Leptokurtic = sharp peak + heavy tails (β₂ &gt; 3); Mesokurtic = normal benchmark (β₂ = 3); Platykurtic = flat broad peak (β₂ &lt; 3). All three can share the same variance — kurtosis describes peak shape, not spread.</figcaption>
     </figure>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/kurtosis-shapes.png" alt="Three overlaid curves on one axis: a tall sharp leptokurtic curve with beta 2 greater than 3, a mesokurtic normal curve with beta 2 equal to 3, and a flat wide platykurtic curve with beta 2 less than 3, plus a legend" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 3.7</b> · Peaked or flat? β₂ = μ₄/μ₂². Leptokurtic: sharp peak, heavy tails (β₂ &gt; 3) — "lepto LEAPS up". Mesokurtic: the Normal benchmark (β₂ = 3). Platykurtic: flat plateau, thin tails (β₂ &lt; 3). Excess kurtosis = β₂ − 3 (+ve, 0, −ve respectively).</figcaption>
+    </figure>
   </div>
 </section>
 
@@ -2057,6 +2417,11 @@ Platykurtic (Flat peak, light tails): B2 &lt; 3</div>
     </div>
     <div class="formula">r = Cov(X,Y) / [ SD(X) * SD(Y) ]
 r = [ N*Sum(xy) - Sum(x)*Sum(y) ] / sqrt( [ N*Sum(x^2) - (Sum(x))^2 ] * [ N*Sum(y^2) - (Sum(y))^2 ] )</div>
+
+    <figure class="diagram-fig">
+      <img src="ps-images/correlation-gallery.png" alt="Five scatter plots labelled r equals plus 1 exact rising line, plus 0.7 loose rising cloud, 0 round cloud, minus 0.7 loose falling cloud, and minus 1 exact falling line" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 4.3</b> · Correlation gallery — how tight is the line? r = +1: exact rising line; r = +0.7: loose rising cloud; r = 0: round cloud (no trend); r = −0.7: loose falling cloud; r = −1: exact falling line. SIGN = direction, SIZE = tightness; r is unit-free and always in [−1, +1].</figcaption>
+    </figure>
 
     <h4>Worked Numerical Example: Correlation from Raw Paired Data (University PYQ · 8 M)</h4>
     <p>Calculate Karl Pearson's correlation coefficient for the following paired data:</p>
@@ -2332,6 +2697,11 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       Curve fitting is the math of finding the best line or curve that glides smoothly through a scatter of points. We use least-squares, minimizing the vertical deviations of all data points.
     </div>
 
+    <figure class="diagram-fig">
+      <img src="ps-images/least-squares-line.png" alt="Scatter points around the fitted line y equals a plus b x with dashed vertical gaps e i, a zoom-in showing one gap squared into a literal square e i squared, and a box with the two normal equations" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:4px;">
+      <figcaption><b>Fig 4.4</b> · Least squares: each point's vertical gap eᵢ to the line y = a + bx is squared (the zoomed square eᵢ²), and a, b are chosen so Σeᵢ² is smallest. Solving the two normal equations Σy = na + bΣx and Σxy = aΣx + bΣx² gives that best-fit line.</figcaption>
+    </figure>
+
     <h4>Worked Numerical Example: Fitting a Parabola (University PYQ · 15 M)</h4>
     <p>Fit a second-degree parabola y = a + bx + cx² to the following data using the method of least squares:</p>
     <div class="table-wrap">
@@ -2572,6 +2942,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <tr><td>Pearson correlation · Bayes probability</td><td>2/6</td><td>Q5(a) · Part-A</td></tr>
       </tbody>
     </table>
+    <p style="margin:8px 0 0; font-size:12.5px; color:var(--muted);">The <b>5/6</b> and <b>4/6</b> rows are <b>near-certain</b> — the same top types (continuous-pdf, MGF, Poisson-fit, Joint-RV, two-regression, Normal, Binomial, Bayes) recur in adjacent-stream university maths papers too, reinforcing the frequency.</p>
   </div>
 
     <div class="part-head">SECTION A (COMPULSORY · 15 MARKS)</div>
@@ -2703,6 +3074,55 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(k)</span><span class="tag marks">1.5M</span><span class="tag hot">★ data sources</span></div>
+      <div class="qbody"><b>(k) Define primary and secondary data with one example each.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b><mark>Primary data</mark></b>: collected first-hand by the investigator for the study itself. Example: a survey questionnaire run on 200 students.</li>
+          <li><b><mark>Secondary data</mark></b>: already collected and published by someone else, reused by the investigator. Example: literacy figures from a census report.</li>
+          <li><b>Key contrast</b>: primary is fresh but costly; secondary is cheap and quick but its reliability must be checked.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(l)</span><span class="tag marks">1.5M</span><span class="tag hot">★ classification</span></div>
+      <div class="qbody"><b>(l) Name the four bases of classification of data.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b><mark>Geographical</mark></b>: by place (state-wise sales).</li>
+          <li><b><mark>Chronological</mark></b>: by time (year-wise population).</li>
+          <li><b><mark>Qualitative</mark></b>: by attribute (gender, literacy).</li>
+          <li><b><mark>Quantitative</mark></b>: by magnitude (marks, height).</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(m)</span><span class="tag marks">1.5M</span><span class="tag hot">★ frequency table</span></div>
+      <div class="qbody"><b>(m) What is a frequency distribution? How is it formed?</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Definition</b>: a <mark>frequency distribution</mark> is a table pairing each value (or class interval) with its <mark>frequency</mark> — the number of observations falling there.</li>
+          <li><b>Formation</b>: find the range (max − min) → divide it into equal class intervals → tally each observation into its class → total the tallies as class frequencies.</li>
+          <li><b>Purpose</b>: condenses raw data so its shape (centre, spread, skew) becomes visible.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="qcard predicted">
+      <div class="qhead"><span class="qnum">Q1(n)</span><span class="tag marks">1.5M</span><span class="tag hot">★ PGF</span></div>
+      <div class="qbody"><b>(n) Define the probability generating function. State the relation giving the mean.</b></div>
+      <div class="ans">
+        <ul>
+          <li><b>Definition</b>: for a counting RV X, the <mark>probability generating function</mark> is P(s) = E(s^X) = Σ p_k·s^k — a power series whose coefficients are the probabilities.</li>
+          <li><b>Mean relation</b>: <mark><b>E(X) = P′(1)</b></mark> — differentiate once and set s = 1.</li>
+          <li><b>Check</b>: P(1) = 1, since the probabilities total 1.</li>
+        </ul>
+      </div>
+    </div>
+
     <div class="part-head">SECTION B (ANSWER ANY FOUR · 60 MARKS)</div>
 
     <!-- Q2 (Unit 1 — Binomial + MGF of continuous pdf) -->
@@ -2711,9 +3131,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q2 [15 M]</span>
         <span class="tag fav">Unit 1</span>
         <span class="tag hot">⭐ Binomial · MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q5(a) · MGF+SD Binomial 5M</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q2(b)</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q3(a)/Q3(b)</span>
       </div>
@@ -2722,6 +3140,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) Find the moment generating function (MGF) of the continuous random variable with pdf f(x) = 2e<sup>−2x</sup>, x ≥ 0. Hence state mean and variance. [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — B(n,p):</b> Mean = <b>np</b> · Var = <b>npq</b> · Mode = <b>⌊(n+1)p⌋</b> · MGF = <b>(q+pe<sup>t</sup>)<sup>n</sup></b><br>
+          <b>Exp(λ):</b> MGF = <b>λ/(λ−t)</b> · E(X) = <b>1/λ</b> · Var = <b>1/λ²</b> · (here λ=2 so E=½, Var=¼)
+        </div>
         <h5>(a) Binomial — Mean, Variance, Mode</h5>
         <p>The <mark>Binomial distribution</mark> counts "successes" in n independent <mark>Bernoulli trials</mark>. Each trial has success chance p and failure chance q = 1 − p. Think: n IPL matches, each with win-chance p. Write X ~ B(n, p):</p>
         <ul>
@@ -2890,6 +3312,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Normal Z:</b> standardise <b>Z = (X−μ)/σ</b> · Φ(−z) = <b>1−Φ(z)</b> · P(a&lt;X&lt;b) = <b>Φ(z₂)−Φ(z₁)</b><br>
+          <b>Poisson fit:</b> λ̂ = <b>x̄ = Σfx/N</b> · recursion <b>P(k) = (λ/k)·P(k−1)</b> · signature: <b>mean ≈ variance</b>
+        </div>
         <h5>(a) Normal Distribution — Z-table lookups</h5>
         <p>The Normal distribution N(μ, σ<sup>2</sup>) is the bell curve. Its pdf is f(x) = (1/σ√(2π)) · exp[−(x − μ)<sup>2</sup>/(2σ<sup>2</sup>)]. Think of student heights or exam marks — they cluster around a mean and taper on both sides. Key rules for every Z-problem:</p>
         <ul>
@@ -3035,9 +3461,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag fav">Unit 2</span>
         <span class="tag hot">⭐ Joint Distribution · Cov · ρ</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q4(a) · joint table marginal/cond ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q4(a) · Cov · ρ</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q4 · joint pdf k(x+y) 15M</span>
-      </div>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q4(a) · Cov · ρ</span>      </div>
       <div class="qbody">
         <b>(a) For the joint discrete distribution below, find: (i) marginal P(X), P(Y); (ii) E(X), E(Y), Var(X), Var(Y); (iii) Cov(X, Y) and correlation ρ(X, Y). [8 M]</b><br>
         <div class="table-wrap">
@@ -3055,6 +3479,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) The joint pdf of (X, Y) is f(x, y) = k(x + y), 0 ≤ x ≤ 1, 0 ≤ y ≤ 1, and 0 elsewhere. Find: (i) k, (ii) marginals f<sub>X</sub>(x), f<sub>Y</sub>(y), (iii) conditional f(y | x). [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Discrete:</b> P(X=x) = <b>Σ<sub>y</sub>P(x,y)</b> (row sum) · Cov = <b>E(XY)−E(X)E(Y)</b> · ρ = <b>Cov/(σ<sub>X</sub>σ<sub>Y</sub>)</b><br>
+          <b>Continuous:</b> f<sub>X</sub>(x) = <b>∫f(x,y)dy</b> · f(y|x) = <b>f(x,y)/f<sub>X</sub>(x)</b> · independent if f(x,y) = <b>f<sub>X</sub>(x)·f<sub>Y</sub>(y)</b>
+        </div>
         <h5>(a) Joint Discrete — Marginals, Cov, ρ</h5>
         <p>For a pair (X, Y) of discrete RVs, the <mark>marginal</mark> of X is the row sum of the <mark>joint distribution</mark>: P(X = x) = Σ<sub>y</sub> P(X = x, Y = y). <mark>Cov(X,Y)</mark> = E(XY) − E(X)E(Y) shows <mark>how they vary together</mark>. The <mark>correlation ρ</mark>(X, Y) = Cov / (σ<sub>X</sub> σ<sub>Y</sub>) scales it into [−1, +1]. <mark>Independence</mark> gives Cov = 0, but Cov = 0 does <i>not</i> mean independent — a key trap.</p>
 
@@ -3282,9 +3710,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag fav">Unit 4</span>
         <span class="tag hot">⭐ Karl Pearson · Regression</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(c) · Karl Pearson r (10 pairs) ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech Dec-23 Q4(a)/Q5(a) · fathers-sons</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a) · two regression eqns</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a) · two regression eqns</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q4(a) · Karl Pearson skewness</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q4(b) · grouped SD</span>
       </div>
@@ -3301,6 +3727,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) From the data in (a), fit both regression lines (Y on X and X on Y) by the method of least squares. [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — r:</b> <b>r = [nΣXY−ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b> · range −1 to +1<br>
+          <b>Regression Y on X:</b> y−ȳ = <b>b<sub>yx</sub>(x−x̄)</b>, b<sub>yx</sub> = <b>r·σ<sub>Y</sub>/σ<sub>X</sub></b> · <b>X on Y:</b> b<sub>xy</sub> = r·σ<sub>X</sub>/σ<sub>Y</sub> · check: <b>r² = b<sub>yx</sub>·b<sub>xy</sub></b>
+        </div>
         <h5>(a) Karl Pearson Correlation Coefficient</h5>
         <p>The <mark>Karl Pearson r</mark> shows the strength and direction of the <i>linear</i> link between two paired variables, fitted using the <mark>method of least squares</mark>. Think cricket batting averages vs strike rates. Key properties:</p>
         <ul>
@@ -3474,14 +3904,16 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q5(b) ALT [12 M]</span>
         <span class="tag fav">Unit 4</span>
         <span class="tag hot">⭐ Partially Destroyed Records</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-EL Dec-23 Q6(b) · partially destroyed</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a)</span>
       </div>
       <div class="qbody">
         <b>In a partially destroyed laboratory record, only the two regression lines survive: <mark>8X − 10Y + 66 = 0</mark> and <mark>40X − 18Y = 214</mark>. The variance of X is 9. Find: (a) the mean values X̄ and Ȳ; (b) which line is Y on X and which is X on Y, and the regression coefficients b<sub>yx</sub> and b<sub>xy</sub>; (c) the correlation coefficient r; (d) the standard deviation of Y. [12 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Destroyed Records:</b> two lines always cross at <b>(X̄, Ȳ)</b> → solve simultaneously<br>
+          <b>Admissibility:</b> try both slope assignments; keep the one where <b>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</b> · r = <b>+√(b<sub>yx</sub>·b<sub>xy</sub>)</b> (sign = sign of b) · σ<sub>Y</sub> = <b>b<sub>yx</sub>·σ<sub>X</sub>/r</b>
+        </div>
         <h5>Introduction</h5>
         <p>Each pair of variables has <mark>two regression lines</mark> — <mark>Y on X</mark> (predicts Y from X) and <mark>X on Y</mark> (predicts X from Y). They always cross at the <mark>mean point (X̄, Ȳ)</mark>, so solving the two equations <i>simultaneously</i> recovers the means even when the raw data is lost. The slopes satisfy b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> and b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>, hence the key identity <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark>. The slope assignment is fixed by the rule <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>: only the assignment whose product does not exceed 1 is admissible, because r² can never exceed 1.</p>
 
@@ -3630,9 +4062,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q6 [15 M]</span>
         <span class="tag fav">Unit 4 · Unit 1</span>
         <span class="tag hot">⭐ Curve Fit · Bayes</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q7(b) · parabola fit ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech Dec-23 Q7(a) · Bayes</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q6(a) · Bayes lost-card</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q7(b) · parabola fit ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q6(a) · Bayes lost-card</span>
       </div>
       <div class="qbody">
         <b>(a) Fit a second-degree parabola Y = a + bX + cX² to the following data by the method of least squares. [8 M]</b><br>
@@ -3647,6 +4077,11 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) A diagnostic test for a disease is 99% sensitive (P(+ | D) = 0.99) and 95% specific (P(− | D′) = 0.95). The prior prevalence is P(D) = 0.01. A randomly chosen person tests positive — what is P(D | +) ? [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Parabola Y=a+bX+cX²:</b> 3 normal eqs:<br>
+          (1) <b>ΣY = na + bΣX + cΣX²</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX² + cΣX³</b> &nbsp; (3) <b>ΣX²Y = aΣX² + bΣX³ + cΣX⁴</b><br>
+          <b>Straight line Y=a+bX:</b> (1) <b>ΣY = na + bΣX</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX²</b> · <b>Bayes:</b> P(H|E) = <b>P(E|H)·P(H)/P(E)</b>
+        </div>
         <h5>(a) Parabola Fit <mark>Y = a + bX + cX²</mark></h5>
         <p>The <mark>method of least squares</mark> picks (a, b, c) that make S = Σ(Y<sub>i</sub> − a − bX<sub>i</sub> − cX<sub>i</sub><sup>2</sup>)<sup>2</sup> as small as possible. Setting ∂S/∂a = ∂S/∂b = ∂S/∂c = 0 gives the three <mark>normal equations</mark> below. The same pattern grows: an n-degree polynomial gives n + 1 normal equations using sums of X<sup>k</sup>.</p>
 
@@ -3869,6 +4304,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) The joint pdf of (X, Y) is f(x, y) = 4xy for 0 ≤ x ≤ 1, 0 ≤ y ≤ 1, and 0 elsewhere. Find P(X &lt; ½ ∩ Y &lt; ½) and P(X + Y &lt; 1). [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Spearman:</b> ρ<sub>s</sub> = <b>1 − 6ΣD²/[n(n²−1)]</b> &nbsp;(D = R₁−R₂) · ties → average rank<br>
+          <b>Joint integral:</b> P(X&lt;a ∩ Y&lt;b) = <b>∫<sub>0</sub><sup>a</sup>∫<sub>0</sub><sup>b</sup> f(x,y) dy dx</b> · P(X+Y&lt;1) = <b>∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1−x</sup> f(x,y) dy dx</b>
+        </div>
         <h5>(a) <mark>Spearman rank correlation</mark></h5>
         <p><mark>Spearman rank correlation</mark> <mark>ρ<sub>s</sub></mark> is the <mark>rank-based</mark> Karl Pearson r, computed on the ranks of X and Y instead of raw values. Useful when you only have positions (1st, 2nd, 3rd) — like judges scoring a dance contest. Properties:</p>
         <ul>
@@ -4226,6 +4665,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>In a normal distribution, 31% of the items are below 45 and 8% are above 64. Find the mean and standard deviation. (Use Φ(0.50) = 0.69, Φ(1.40) = 0.92.)</b>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Inverse Normal:</b> set up two z-equations: (x₁−μ)/σ = z₁, (x₂−μ)/σ = z₂<br>
+          Subtract to eliminate μ: σ = <b>(x₂−x₁)/(z₂−z₁)</b> · then μ = <b>x₁ − z₁·σ</b> · symmetric dist (17% both sides) → z₁ = −z₂ so μ = (x₁+x₂)/2 first
+        </div>
         <p>This is an <mark>inverse Normal</mark> problem: instead of finding a probability from a z-value, we work backwards from given <mark>tail percentages</mark> to two z-values, set up two equations in μ and σ via the standardisation z = (x − μ)/σ, and solve the pair.</p>
 
         <figure class="diagram-fig">
@@ -4298,6 +4741,61 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
       <div class="ans">
         <p>When the <mark>median is given</mark> but one frequency is unknown, identify the <mark>median class</mark> (the class containing the given median value), plug the values into the grouped-data <mark>median formula</mark> M = L + [(N/2 − cf)/f]·h, and solve the resulting equation for the missing frequency x.</p>
+
+        <figure class="diagram-fig">
+          <svg viewBox="0 0 400 200" style="width:100%;height:auto;max-width:480px;" role="img" aria-label="Frequency histogram for grouped marks data; the median class 20-30 is highlighted; a dashed horizontal line marks the median value 24 inside that class">
+            <!-- y-axis -->
+            <line x1="50" y1="10" x2="50" y2="170" stroke="var(--svg-ink)" stroke-width="1.5"/>
+            <!-- x-axis -->
+            <line x1="50" y1="170" x2="375" y2="170" stroke="var(--svg-ink)" stroke-width="1.5"/>
+            <!-- arrowheads -->
+            <polygon points="375,170 368,166 368,174" fill="var(--svg-ink)"/>
+            <polygon points="50,10 46,17 54,17" fill="var(--svg-ink)"/>
+            <!-- y-axis ticks + labels (scale: 6px per unit, max=25 -> 150px height) -->
+            <line x1="46" y1="170" x2="54" y2="170" stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="42" y="173" text-anchor="end" fill="var(--muted)" font-size="9">0</text>
+            <line x1="46" y1="110" x2="54" y2="110" stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="42" y="113" text-anchor="end" fill="var(--muted)" font-size="9">10</text>
+            <line x1="46" y1="50" x2="54" y2="50" stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="42" y="53" text-anchor="end" fill="var(--muted)" font-size="9">20</text>
+            <text x="14" y="95" text-anchor="middle" fill="var(--ink)" font-size="10" transform="rotate(-90 14 95)">Frequency</text>
+            <!-- bar 0–10: f=5, height=30px, non-median class -->
+            <rect x="52" y="140" width="60" height="30" fill="var(--brand-2)" fill-opacity="0.45" stroke="var(--brand-deep)" stroke-width="1"/>
+            <text x="82" y="136" text-anchor="middle" fill="var(--brand-deep)" font-size="9" font-weight="700">5</text>
+            <!-- bar 10–20: f=25, height=150px, non-median class -->
+            <rect x="114" y="20" width="60" height="150" fill="var(--brand-2)" fill-opacity="0.45" stroke="var(--brand-deep)" stroke-width="1"/>
+            <text x="144" y="16" text-anchor="middle" fill="var(--brand-deep)" font-size="9" font-weight="700">25</text>
+            <!-- bar 20–30: f=25 (solved), MEDIAN CLASS — highlighted in brand color -->
+            <rect x="176" y="20" width="60" height="150" fill="var(--svg-brand)" fill-opacity="0.75" stroke="var(--brand-deep)" stroke-width="1.8"/>
+            <text x="206" y="16" text-anchor="middle" fill="var(--brand-deep)" font-size="9" font-weight="700">25 ✓</text>
+            <!-- bar 30–40: f=18, height=108px -->
+            <rect x="238" y="62" width="60" height="108" fill="var(--brand-2)" fill-opacity="0.45" stroke="var(--brand-deep)" stroke-width="1"/>
+            <text x="268" y="58" text-anchor="middle" fill="var(--brand-deep)" font-size="9" font-weight="700">18</text>
+            <!-- bar 40–50: f=7, height=42px -->
+            <rect x="300" y="128" width="60" height="42" fill="var(--brand-2)" fill-opacity="0.45" stroke="var(--brand-deep)" stroke-width="1"/>
+            <text x="330" y="124" text-anchor="middle" fill="var(--brand-deep)" font-size="9" font-weight="700">7</text>
+            <!-- dashed vertical line at Median=24 (24 is 40% into the 20-30 class: x = 176 + 0.4*60 = 200) -->
+            <line x1="200" y1="170" x2="200" y2="18" stroke="var(--gold)" stroke-width="1.8" stroke-dasharray="5 3"/>
+            <!-- partial fill to show (N/2 - cf)=10 out of f=25: height = 10*6=60, from bottom of bar -->
+            <rect x="176" y="110" width="60" height="60" fill="var(--gold)" fill-opacity="0.30"/>
+            <!-- annotation: N/2=40 -->
+            <text x="200" y="175" text-anchor="middle" fill="var(--gold)" font-size="8.5" font-weight="700">M = 24</text>
+            <!-- annotation label on partial fill -->
+            <text x="130" y="145" text-anchor="end" fill="var(--gold)" font-size="8.5" font-weight="700">N/2−cf=10</text>
+            <line x1="132" y1="143" x2="174" y2="140" stroke="var(--gold)" stroke-width="1" marker-end="none"/>
+            <!-- median class bracket -->
+            <text x="206" y="100" text-anchor="middle" fill="var(--paper)" font-size="8.5" font-weight="700">Median class</text>
+            <!-- x-axis tick labels -->
+            <text x="52"  y="183" text-anchor="start"  fill="var(--muted)" font-size="9">0</text>
+            <text x="114" y="183" text-anchor="start"  fill="var(--muted)" font-size="9">10</text>
+            <text x="176" y="183" text-anchor="start"  fill="var(--muted)" font-size="9">20</text>
+            <text x="238" y="183" text-anchor="start"  fill="var(--muted)" font-size="9">30</text>
+            <text x="300" y="183" text-anchor="start"  fill="var(--muted)" font-size="9">40</text>
+            <text x="362" y="183" text-anchor="start"  fill="var(--muted)" font-size="9">50</text>
+            <text x="210" y="196" text-anchor="middle" fill="var(--ink)" font-size="10">Marks</text>
+          </svg>
+          <figcaption><b>Fig 5.13</b> · Frequency histogram for the grouped marks data (x = 25 solved). The <b>gold-shaded lower portion</b> of the median class 20–30 represents the partial frequency N/2 − cf = 40 − 30 = 10 needed to reach the median; the gold dashed line at Marks = 24 is the computed <b>median M = 24</b>.</figcaption>
+        </figure>
 
         <div class="table-wrap">
           <table>
@@ -4372,6 +4870,57 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
       <div class="ans">
         <p>With two fair dice there are <mark>36 equally-likely</mark> outcomes. First build the <mark>probability distribution</mark> of D = |X − Y| by counting how many of the 36 pairs give each absolute difference, then use <mark>E(D) = Σ d·P(d)</mark> and <mark>Var(D) = E(D²) − [E(D)]²</mark>.</p>
+
+        <figure class="diagram-fig">
+          <svg viewBox="0 0 400 210" style="width:100%;height:auto;max-width:480px;" role="img" aria-label="Bar chart of probability distribution of D equals absolute X minus Y for two fair dice. Six bars for d equals 0 through 5 with probabilities 6 over 36, 10 over 36, 8 over 36, 6 over 36, 4 over 36, 2 over 36">
+            <!-- y-axis -->
+            <line x1="50" y1="10" x2="50" y2="170" stroke="var(--svg-ink)" stroke-width="1.5"/>
+            <!-- x-axis -->
+            <line x1="50" y1="170" x2="380" y2="170" stroke="var(--svg-ink)" stroke-width="1.5"/>
+            <!-- arrowheads -->
+            <polygon points="380,170 373,166 373,174" fill="var(--svg-ink)"/>
+            <polygon points="50,10 46,17 54,17" fill="var(--svg-ink)"/>
+            <!-- y-axis label -->
+            <text x="14" y="95" text-anchor="middle" fill="var(--ink)" font-size="10" transform="rotate(-90 14 95)">P(D)</text>
+            <!-- y-axis tick at 10/36 (max bar height = 120px; 10/36 -> 120px; tick labels as fractions) -->
+            <line x1="46" y1="50"  x2="54" y2="50"  stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="43" y="53"  text-anchor="end" fill="var(--muted)" font-size="8.5">10/36</text>
+            <line x1="46" y1="98"  x2="54" y2="98"  stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="43" y="101" text-anchor="end" fill="var(--muted)" font-size="8.5">6/36</text>
+            <line x1="46" y1="122" x2="54" y2="122" stroke="var(--svg-ink)" stroke-width="1"/>
+            <text x="43" y="125" text-anchor="end" fill="var(--muted)" font-size="8.5">4/36</text>
+            <!-- bar d=0: count=6, h=72, top=98; center x=82 -->
+            <rect x="58"  y="98"  width="48" height="72"  fill="var(--svg-brand)" fill-opacity="0.55" stroke="var(--brand-deep)" stroke-width="1.2"/>
+            <text x="82"  y="94"  text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">6/36</text>
+            <!-- bar d=1: count=10, h=120, top=50; center x=138 -->
+            <rect x="114" y="50"  width="48" height="120" fill="var(--svg-brand)" fill-opacity="0.85" stroke="var(--brand-deep)" stroke-width="1.8"/>
+            <text x="138" y="46"  text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">10/36</text>
+            <!-- bar d=2: count=8, h=96, top=74; center x=194 -->
+            <rect x="170" y="74"  width="48" height="96"  fill="var(--svg-brand)" fill-opacity="0.65" stroke="var(--brand-deep)" stroke-width="1.2"/>
+            <text x="194" y="70"  text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">8/36</text>
+            <!-- bar d=3: count=6, h=72, top=98; center x=250 -->
+            <rect x="226" y="98"  width="48" height="72"  fill="var(--svg-brand)" fill-opacity="0.55" stroke="var(--brand-deep)" stroke-width="1.2"/>
+            <text x="250" y="94"  text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">6/36</text>
+            <!-- bar d=4: count=4, h=48, top=122; center x=306 -->
+            <rect x="282" y="122" width="48" height="48"  fill="var(--svg-brand)" fill-opacity="0.45" stroke="var(--brand-deep)" stroke-width="1.2"/>
+            <text x="306" y="118" text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">4/36</text>
+            <!-- bar d=5: count=2, h=24, top=146; center x=362 -->
+            <rect x="338" y="146" width="48" height="24"  fill="var(--svg-brand)" fill-opacity="0.30" stroke="var(--brand-deep)" stroke-width="1.2"/>
+            <text x="362" y="142" text-anchor="middle" fill="var(--brand-deep)" font-size="9"  font-weight="700">2/36</text>
+            <!-- x-axis d labels -->
+            <text x="82"  y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">0</text>
+            <text x="138" y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">1</text>
+            <text x="194" y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">2</text>
+            <text x="250" y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">3</text>
+            <text x="306" y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">4</text>
+            <text x="362" y="183" text-anchor="middle" fill="var(--ink)" font-size="10" font-weight="700">5</text>
+            <text x="215" y="197" text-anchor="middle" fill="var(--ink)" font-size="10">D = |X − Y|</text>
+            <!-- E(D) dashed vertical line: E(D)=35/18≈1.944 → x = 114 + 0.944*56 ≈ 167 -->
+            <line x1="167" y1="170" x2="167" y2="15" stroke="var(--gold)" stroke-width="1.6" stroke-dasharray="5 3"/>
+            <text x="168" y="25" text-anchor="start" fill="var(--gold)" font-size="9" font-weight="700">E(D)≈1.94</text>
+          </svg>
+          <figcaption><b>Fig 5.14</b> · Distribution of D = |X − Y| for two fair dice (36 outcomes). Bar heights are proportional to <b>P(D = d)</b>; probabilities sum to <b>36/36 = 1 ✓</b>. The tallest bar at d = 1 (10 outcomes / 36) is most likely. The gold dashed line marks <b>E(D) = 35/18 ≈ 1.94</b>.</figcaption>
+        </figure>
 
         <div class="table-wrap">
           <table>
@@ -4794,6 +5343,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Skewness &amp; SD:</b> Sk = <b>(Mean−Mode)/σ</b> · alt: <b>3(Mean−Median)/σ</b><br>
+          Mean = A + (Σfd/N)·h · SD = h·<b>√[Σfd²/N − (Σfd/N)²]</b> · Mode = L + <b>(f₁−f₀)/(2f₁−f₀−f₂)·h</b>
+        </div>
         <h5>(a) Karl Pearson's Coefficient of Skewness</h5>
         <p><mark>Karl Pearson's coefficient</mark> Sk = (Mean − Mode)/σ. Use mid-values m, assumed mean A = 650, step h = 100, step-deviation d = (m − A)/h.</p>
         <div class="table-wrap">
@@ -4895,6 +5448,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         X: 0, 1, 2, 3, 4 &nbsp;&nbsp; Y: 1.0, 1.8, 3.3, 4.5, 6.3.
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Regression:</b> use deviations u=X−x̄, v=Y−ȳ so Σu=Σv=0<br>
+          b<sub>yx</sub> = <b>Σuv/Σu²</b> · b<sub>xy</sub> = <b>Σuv/Σv²</b> · <b>Y on X:</b> Y−ȳ = b<sub>yx</sub>(X−x̄) · <b>X on Y:</b> X−x̄ = b<sub>xy</sub>(Y−ȳ) · check r² = <b>b<sub>yx</sub>·b<sub>xy</sub></b>
+        </div>
         <h5>(a) Two Regression Equations</h5>
         <p>n = 8, ΣX = 544 ⇒ x̄ = 68; ΣY = 552 ⇒ ȳ = 69. Work with deviations u = X − 68, v = Y − 69.</p>
         <div class="table-wrap">
@@ -5002,6 +5559,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Inverse Normal (symmetric tails):</b> equal tails → <b>μ = (x₁+x₂)/2</b> first!<br>
+          Then σ = <b>(x₂−μ)/z</b> · Poisson: λ̂ = <b>Σfx/N</b>, base e<sup>−λ</sup>, recursion <b>T(k) = T(k−1)·λ/k</b>
+        </div>
         <h5>(a) Normal — Finding Mean and SD from Tail Areas</h5>
         <p>17% lies below 30 and 17% above 60. By the <mark>symmetry</mark> of the Normal curve, equal tail areas on both ends mean the two cut-points 30 and 60 are equidistant from the mean.</p>
         <div class="steps">
@@ -5119,6 +5680,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
       <div class="ans">
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Spearman (ties):</b> ρ<sub>s</sub> = <b>1 − 6[Σd² + ΣCF] / [n(n²−1)]</b> · CF per tie = <b>(m³−m)/12</b><br>
+          <b>Median:</b> L + [(N/2−cf)/f]·h · <b>Mode:</b> L + [(f₁−f₀)/(2f₁−f₀−f₂)]·h
+        </div>
         <h5>(a) Spearman's Rank Correlation with Tie Correction</h5>
         <p><mark>Spearman's ρ</mark> = 1 − 6[Σd² + ΣCF] / [n(n² − 1)], where d = rank difference and the <mark>tie correction</mark> CF = Σ(m³ − m)/12 over each tied group. Rank highest = 1, assign the <b>average rank</b> to ties. Ties: in X, 64 occurs 3 times (m = 3) and 75 occurs 2 times (m = 2); in Y, 68 occurs 2 times (m = 2).</p>
         <div class="table-wrap">
@@ -5592,6 +6157,118 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     targets.forEach(function(t){ io.observe(t); });
     chips.forEach(function(a){ a.addEventListener('click', function(){ setActive(a.getAttribute('href').slice(1)); }); });
   })();
+</script>
+
+<!-- INTERACTIVE-LAYER -->
+<script>
+(function(){
+  'use strict';
+  var store = null;
+  try{ localStorage.setItem('__il_probe','1'); localStorage.removeItem('__il_probe'); store = localStorage; }catch(err){ store = null; }
+  function lsGet(k){ if(!store){ return null; } try{ return store.getItem(k); }catch(err){ return null; } }
+  function lsSet(k,v){ if(!store){ return; } try{ store.setItem(k,v); }catch(err){} }
+
+  /* 1 - Self-Test active-recall mode */
+  try{
+    var navChips = document.querySelector('nav.chips');
+    var answers = Array.prototype.slice.call(document.querySelectorAll('.qcard .ans'));
+    if(navChips && answers.length){
+      var st = document.createElement('button');
+      st.type = 'button';
+      st.className = 'st-toggle';
+      st.setAttribute('aria-pressed','false');
+      st.textContent = '🧠 Self-Test';
+      navChips.appendChild(st);
+      var setMode = function(on){
+        answers.forEach(function(a){
+          a.classList.remove('revealed');
+          a.classList.toggle('ans-hidden', on);
+        });
+        st.classList.toggle('on', on);
+        st.setAttribute('aria-pressed', on ? 'true' : 'false');
+        lsSet('ps-selftest', on ? '1' : '0');
+      };
+      st.addEventListener('click', function(){ setMode(!st.classList.contains('on')); });
+      document.addEventListener('click', function(e){
+        if(!e.target || typeof e.target.closest !== 'function'){ return; }
+        var ans = e.target.closest('.ans-hidden');
+        if(ans && !ans.classList.contains('revealed')){ ans.classList.add('revealed'); }
+      });
+      if(lsGet('ps-selftest') === '1'){ setMode(true); }
+    }
+  }catch(err){}
+
+  /* 2 - Topic progress tracking (#imp-topics) */
+  try{
+    var imp = document.getElementById('imp-topics');
+    var links = imp ? Array.prototype.slice.call(imp.querySelectorAll('a[href^="#t-"]')) : [];
+    if(imp && links.length){
+      var done = [];
+      try{ done = JSON.parse(lsGet('ps-done') || '[]'); }catch(err){ done = []; }
+      if(!Array.isArray(done)){ done = []; }
+      var prog = document.createElement('div');
+      prog.id = 'il-progress';
+      var lab = document.createElement('span');
+      lab.className = 'il-label';
+      var track = document.createElement('div');
+      track.className = 'il-track';
+      var fill = document.createElement('div');
+      fill.className = 'il-fill';
+      track.appendChild(fill);
+      prog.appendChild(lab);
+      prog.appendChild(track);
+      var h4 = imp.querySelector('h4');
+      if(h4 && h4.parentNode === imp){ imp.insertBefore(prog, h4.nextSibling); }
+      else{ imp.insertBefore(prog, imp.firstChild); }
+      var refresh = function(){
+        var n = links.filter(function(a){ return done.indexOf(a.getAttribute('href')) !== -1; }).length;
+        lab.textContent = n + ' / ' + links.length + ' done';
+        fill.style.width = (links.length ? Math.round(n / links.length * 100) : 0) + '%';
+      };
+      links.forEach(function(a){
+        var key = a.getAttribute('href');
+        var chk = document.createElement('span');
+        chk.className = 'il-chk';
+        chk.setAttribute('role','checkbox');
+        chk.setAttribute('tabindex','0');
+        chk.setAttribute('aria-label','Mark topic done');
+        var sync = function(){
+          var on = done.indexOf(key) !== -1;
+          chk.classList.toggle('on', on);
+          chk.setAttribute('aria-checked', on ? 'true' : 'false');
+        };
+        var toggle = function(e){
+          e.preventDefault();
+          e.stopPropagation();
+          if(done.indexOf(key) === -1){ done = done.concat([key]); }
+          else{ done = done.filter(function(k){ return k !== key; }); }
+          lsSet('ps-done', JSON.stringify(done));
+          sync();
+          refresh();
+        };
+        chk.addEventListener('click', toggle);
+        chk.addEventListener('keydown', function(e){ if(e.key === ' ' || e.key === 'Enter'){ toggle(e); } });
+        a.insertBefore(chk, a.firstChild);
+        sync();
+      });
+      refresh();
+    }
+  }catch(err){}
+
+  /* 3 - Back-to-top appears after 800px */
+  try{
+    var up = document.querySelector('a.up');
+    if(up){
+      document.body.classList.add('il-up-auto');
+      var onScroll = function(){
+        var y = window.scrollY || document.documentElement.scrollTop || 0;
+        up.classList.toggle('show', y > 800);
+      };
+      window.addEventListener('scroll', onScroll, { passive:true });
+      onScroll();
+    }
+  }catch(err){}
+})();
 </script>
 
 </body>
