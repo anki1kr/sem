@@ -535,7 +535,9 @@ td code{ font-size:11.5px; }
   border-radius:4px;
   text-align:center;
   position:relative;
+  cursor:zoom-in;
 }
+.diagram-fig::after{ content:"\2922 tap to zoom"; position:absolute; top:5px; right:6px; font-size:9px; font-weight:700; letter-spacing:.02em; color:var(--paper); background:var(--brand); border-radius:9px; padding:1px 7px; opacity:.85; pointer-events:none; z-index:1; }
 .diagram-fig svg{
   width:100%; height:auto;
   max-width:100%;
@@ -553,6 +555,21 @@ td code{ font-size:11.5px; }
   margin-top:8px; padding:0 8px; line-height:1.4;
 }
 .diagram-fig figcaption b{ color:var(--crimson); font-weight:700; }
+
+/* ── TAP-TO-ZOOM LIGHTBOX (tap a diagram → fullscreen; pinch/scroll/buttons to zoom, drag to pan left-right & up-down) ── */
+#zoomov{ display:none; position:fixed; inset:0; z-index:99999; background:rgba(18,18,18,.93); }
+#zoomov.on{ display:block; }
+#zoomov .zoom-stage{ position:absolute; inset:0; overflow:hidden; touch-action:none; display:flex; align-items:center; justify-content:center; }
+#zoomov .zoom-content{ transform-origin:center center; will-change:transform; }
+#zoomov .zoom-content figure.diagram-fig{ margin:0; cursor:default; background:var(--paper); border-color:var(--rule); max-width:none; }
+#zoomov .zoom-content figure.diagram-fig::after{ display:none; }
+#zoomov .zoom-content .diagram-fig > div{ max-width:none !important; overflow:visible !important; }
+#zoomov .zoom-content img{ width:auto !important; max-width:none !important; height:auto !important; }
+#zoomov .zoom-hint{ position:fixed; top:14px; left:50%; transform:translateX(-50%); color:#fff; font-size:11px; opacity:.72; z-index:2; pointer-events:none; }
+#zoomov .zoom-close,#zoomov .zoom-ctrls button{ font-family:inherit; cursor:pointer; border:1.5px solid rgba(255,255,255,.85); background:rgba(0,0,0,.45); color:#fff; border-radius:9px; }
+#zoomov .zoom-close{ position:fixed; top:11px; right:13px; width:40px; height:40px; font-size:19px; z-index:3; }
+#zoomov .zoom-ctrls{ position:fixed; bottom:18px; left:50%; transform:translateX(-50%); display:flex; gap:10px; z-index:3; }
+#zoomov .zoom-ctrls button{ width:48px; height:42px; font-size:21px; font-weight:700; }
 
 .svg-text{ font-family:"Spectral", Georgia, serif; font-size:13px; font-weight:500; }
 .svg-text.mono{ font-family:"JetBrains Mono",monospace; font-size:11px; }
@@ -1058,6 +1075,10 @@ body.il-up-auto .up.show{ opacity:1; visibility:visible; pointer-events:auto; }
     <div class="kicker">Unit 01 · Random Variables &amp; Distributions</div>
     <h2><span class="num">01</span>Random Variables &amp; Distribution Functions</h2>
     <p class="lede">Probability fundamentals, random variables, PMF, PDF, CDF, and six core probability distributions.</p>
+  <figure class="diagram-fig" style="margin:16px 0 24px;">
+    <img src="ps-images/mindmap-unit1.png" alt="Unit I mind map — Random Variables and Distributions" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+    <figcaption><b>Mind Map · Unit I</b> · All 6 distributions, PMF/PDF/CDF formulas, trigger words, and when to use each — unit at a glance.</figcaption>
+  </figure>
     <span class="priority">High-yield · 25/75 M · 1.5 Q in Part-B</span>
   </div>
 
@@ -1760,6 +1781,10 @@ MGF: M_X(t) = λ/(λ - t),  t &lt; λ</div>
     <div class="kicker">Unit 02 · Expectation &amp; Joint Distributions</div>
     <h2><span class="num">02</span>Expectation, MGF &amp; Joint Variables</h2>
     <p class="lede">Mathematical expectations, Moment Generating Functions, and two-dimensional random variables (joint, marginal, conditional).</p>
+  <figure class="diagram-fig" style="margin:16px 0 24px;">
+    <img src="ps-images/mindmap-unit2.png" alt="Unit II mind map — Expectation MGF PGF and 2D Random Variables" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+    <figcaption><b>Mind Map · Unit II</b> · E(X) formulas, MGF table, PGF, and complete 2D workflow (joint → marginal → conditional → covariance).</figcaption>
+  </figure>
     <span class="priority">High-yield · 18/75 M · 1 Q in Part-B</span>
   </div>
 
@@ -2036,6 +2061,10 @@ E(XY) = ∑∑ x * y * P(X=x, Y=y)</div>
     <div class="kicker">Unit 03 · Descriptive Statistics</div>
     <h2><span class="num">03</span>Descriptive Statistics</h2>
     <p class="lede">Data types, frequency distributions, measures of central tendency, dispersion, skewness, and kurtosis.</p>
+  <figure class="diagram-fig" style="margin:16px 0 24px;">
+    <img src="ps-images/mindmap-unit3.png" alt="Unit III mind map — Descriptive Statistics" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+    <figcaption><b>Mind Map · Unit III</b> · Primary vs secondary data, Mean/Median/Mode (when to use), Variance, Skewness β₁, Kurtosis β₂ — all formulas in one view.</figcaption>
+  </figure>
     <span class="priority">High-yield · 16/75 M · 1 Q in Part-B</span>
   </div>
 
@@ -2406,6 +2435,10 @@ Platykurtic (Flat peak, light tails): B2 &lt; 3</div>
     <div class="kicker">Unit 04 · Correlation &amp; Curve Fitting</div>
     <h2><span class="num">04</span>Correlation, Regression &amp; Curve Fitting</h2>
     <p class="lede">Bivariate relationships, linear correlation, lines of regression, rank correlation, and least-square curve fitting.</p>
+  <figure class="diagram-fig" style="margin:16px 0 24px;">
+    <img src="ps-images/mindmap-unit4.png" alt="Unit IV mind map — Correlation and Curve Fitting" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+    <figcaption><b>Mind Map · Unit IV</b> · Pearson r vs Spearman ρ, both regression lines, curve fitting types — with exam workflow steps.</figcaption>
+  </figure>
     <span class="priority">High-yield · 16/75 M · 1 Q in Part-B</span>
   </div>
 
@@ -6886,6 +6919,62 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       onScroll();
     }
   }catch(err){}
+})();
+
+/* Tap-to-zoom lightbox for diagrams — tap/click any .diagram-fig to open fullscreen; pinch / scroll / +- buttons to zoom; drag to pan; double-tap toggles; ✕ / background / Esc to close. */
+(function(){
+  var ov=document.createElement('div'); ov.id='zoomov';
+  ov.innerHTML='<div class="zoom-stage"><div class="zoom-content"></div></div>'+
+    '<div class="zoom-hint">pinch / scroll to zoom · drag to pan</div>'+
+    '<button class="zoom-close" aria-label="Close">✕</button>'+
+    '<div class="zoom-ctrls"><button data-z="out" aria-label="Zoom out">−</button>'+
+    '<button data-z="reset" aria-label="Fit">⤢</button>'+
+    '<button data-z="in" aria-label="Zoom in">+</button></div>';
+  document.body.appendChild(ov);
+  var stage=ov.querySelector('.zoom-stage'), content=ov.querySelector('.zoom-content');
+  var scale=1, min=1, tx=0, ty=0;
+  function apply(){ content.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')'; }
+  function clamp(){ scale=Math.max(min, Math.min(scale, 8)); }
+  function open(fig){
+    content.innerHTML=''; content.appendChild(fig.cloneNode(true));
+    ov.classList.add('on'); document.body.style.overflow='hidden';
+    scale=1; min=1; tx=0; ty=0; apply();
+    requestAnimationFrame(function(){
+      var el=content.firstChild; var cw=(el&&el.offsetWidth)||content.offsetWidth||1;
+      var fit=Math.min(1,(stage.clientWidth*0.96)/cw);
+      min=fit; scale=fit; tx=0; ty=0; apply();
+    });
+  }
+  function close(){ ov.classList.remove('on'); document.body.style.overflow=''; content.innerHTML=''; }
+  ov.querySelector('.zoom-close').addEventListener('click', close);
+  ov.addEventListener('click', function(e){ if(e.target===ov||e.target===stage) close(); });
+  ov.querySelectorAll('.zoom-ctrls button').forEach(function(b){
+    b.addEventListener('click', function(ev){ ev.stopPropagation();
+      var z=b.getAttribute('data-z');
+      if(z==='in')scale*=1.3; else if(z==='out')scale/=1.3; else {scale=min;tx=0;ty=0;}
+      clamp(); apply(); });
+  });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape'&&ov.classList.contains('on')) close(); });
+  document.querySelectorAll('figure.diagram-fig').forEach(function(f){
+    f.addEventListener('click', function(){ if(!ov.classList.contains('on')) open(f); });
+  });
+  function dist(t){ return Math.hypot(t[0].clientX-t[1].clientX, t[0].clientY-t[1].clientY); }
+  var sd=0, ss=1, panning=false, lx=0, ly=0;
+  stage.addEventListener('touchstart', function(e){
+    if(e.touches.length===2){ sd=dist(e.touches); ss=scale; panning=false; }
+    else if(e.touches.length===1){ panning=true; lx=e.touches[0].clientX; ly=e.touches[0].clientY; }
+  }, {passive:false});
+  stage.addEventListener('touchmove', function(e){
+    if(e.touches.length===2){ e.preventDefault(); scale=ss*dist(e.touches)/(sd||1); clamp(); apply(); }
+    else if(e.touches.length===1&&panning){ if(scale>min){ e.preventDefault(); tx+=e.touches[0].clientX-lx; ty+=e.touches[0].clientY-ly; } lx=e.touches[0].clientX; ly=e.touches[0].clientY; apply(); }
+  }, {passive:false});
+  stage.addEventListener('touchend', function(e){ panning=e.touches.length===1; if(panning){ lx=e.touches[0].clientX; ly=e.touches[0].clientY; } });
+  stage.addEventListener('wheel', function(e){ e.preventDefault(); scale*=(e.deltaY<0?1.15:0.87); clamp(); apply(); }, {passive:false});
+  var md=false, mx=0, my=0;
+  stage.addEventListener('mousedown', function(e){ md=true; mx=e.clientX; my=e.clientY; });
+  window.addEventListener('mousemove', function(e){ if(md&&scale>min){ tx+=e.clientX-mx; ty+=e.clientY-my; mx=e.clientX; my=e.clientY; apply(); } });
+  window.addEventListener('mouseup', function(){ md=false; });
+  content.addEventListener('dblclick', function(e){ e.stopPropagation(); if(scale>min){scale=min;tx=0;ty=0;}else{scale=Math.min(min*2.5,8);} clamp(); apply(); });
 })();
 </script>
 
