@@ -641,14 +641,17 @@ td code{ font-size:11.5px; }
 .steps .step{
   counter-increment:step;
   position:relative;
-  padding:10px 12px 10px 44px;
-  margin:8px 0;
+  padding:12px 14px 12px 46px;
+  margin:12px 0;
   background:#fffefb;
   border:1px solid var(--rule);
   border-left:3px solid var(--crimson);
   border-radius:4px;
-  font-size:14px; line-height:1.55;
+  font-size:14px; line-height:1.8;
 }
+.steps .step b.lbl{ display:block; margin-bottom:5px; color:var(--brand-deep); }
+.steps .step .eq{ display:block; padding-left:14px; margin:1px 0; }
+.steps .step .eq.first{ padding-left:0; }
 .steps .step::before{
   content:counter(step);
   position:absolute; left:8px; top:9px;
@@ -894,63 +897,20 @@ input,textarea,select{ font-size:16px; }
 }
 
 /* ── INTERACTIVE-LAYER (remove-safe) ── */
-/* self-test toggle chip */
-nav.chips button.st-toggle{
-  flex-shrink:0; padding:6px 12px;
-  font-family:"JetBrains Mono",monospace;
-  font-size:11px; font-weight:700;
-  letter-spacing:.08em; color:var(--ink);
-  background:var(--paper-soft);
-  border:1.5px dashed var(--brand);
-  border-radius:0; white-space:nowrap;
-  text-transform:uppercase; cursor:pointer;
-}
-nav.chips button.st-toggle.on{ background:var(--brand); border-style:solid; border-color:var(--ink); color:var(--paper); }
-@media(max-width:480px){ nav.chips button.st-toggle{ font-size:10px; padding:6px 9px; min-height:38px; } }
-@media(max-width:360px){ nav.chips button.st-toggle{ font-size:9.5px; padding:5px 8px; } }
-/* active-recall: blurred answers */
-.qcard .ans.ans-hidden{ position:relative; cursor:pointer; min-height:72px; }
-.qcard .ans.ans-hidden > *{ filter:blur(7px); pointer-events:none; user-select:none; -webkit-user-select:none; transition:filter .25s ease; }
-.qcard .ans.ans-hidden.revealed{ cursor:auto; }
-.qcard .ans.ans-hidden.revealed > *{ filter:none; pointer-events:auto; user-select:auto; -webkit-user-select:auto; }
-.qcard .ans.ans-hidden::after{
-  content:"👁 tap to reveal";
-  position:absolute; top:16px; left:50%; transform:translateX(-50%);
-  padding:4px 12px; background:var(--highlighter);
-  border:1.5px solid var(--ink); border-radius:3px;
-  font-family:"JetBrains Mono",monospace; font-size:10px;
-  letter-spacing:.14em; text-transform:uppercase; color:var(--ink);
-  white-space:nowrap; z-index:2; pointer-events:none;
-}
-.qcard .ans.ans-hidden.revealed::after{ content:none; }
-/* progress tracker (#imp-topics) */
-#il-progress{ margin:0 0 12px; }
-#il-progress .il-label{ display:block; margin:0 0 5px; font-family:"JetBrains Mono",monospace; font-size:11px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:var(--brand); }
-#il-progress .il-track{ height:6px; background:var(--paper-deep); border:1px solid var(--rule); border-radius:99px; overflow:hidden; }
-#il-progress .il-fill{ height:100%; width:0%; background:linear-gradient(90deg, var(--brand), var(--brand-2)); border-radius:99px; transition:width .3s ease; }
-.il-chk{ display:inline-block; width:14px; height:14px; margin:0 7px 0 0; vertical-align:-2px; border:1.5px solid var(--brand); border-radius:3px; background:var(--paper); position:relative; cursor:pointer; }
-.il-chk.on{ background:var(--brand); }
-.il-chk.on::after{ content:"✓"; position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:10px; font-weight:700; color:var(--paper); line-height:1; }
-.il-chk:focus-visible{ outline:2.5px solid var(--crimson); outline-offset:2px; }
-#imp-topics a:has(> .il-chk.on){ opacity:.6; }
+/* (self-test tap-to-reveal + topic-progress checkboxes removed — content-first) */
 /* back-to-top: hidden until scrolled (scoped to JS-added body class) */
 body.il-up-auto .up{ opacity:0; visibility:hidden; pointer-events:none; transition:opacity .25s ease, visibility .25s ease, transform .25s ease; }
 body.il-up-auto .up.show{ opacity:1; visibility:visible; pointer-events:auto; }
 /* subtle polish (motion-safe) */
 @media (prefers-reduced-motion: no-preference){
   .qcard{ transition:transform .18s ease, box-shadow .18s ease; }
-  nav.chips a:active, nav.chips button.st-toggle:active{ transform:translateY(1px) scale(.97); }
+  nav.chips a:active{ transform:translateY(1px) scale(.97); }
   body.il-up-auto .up{ transform:translateY(10px); }
   body.il-up-auto .up.show{ transform:none; }
 }
 @media (hover:hover) and (prefers-reduced-motion: no-preference){
   .qcard:hover, .qcard:focus-within{ transform:translateY(-2px); box-shadow:0 5px 16px rgba(31,27,22,.12); }
   .qcard.repeated:hover, .qcard.repeated:focus-within{ box-shadow:3px 3px 0 var(--crimson), 0 5px 16px rgba(31,27,22,.12); }
-}
-@media print{
-  nav.chips button.st-toggle, #il-progress, .il-chk{ display:none !important; }
-  .qcard .ans.ans-hidden > *{ filter:none !important; }
-  .qcard .ans.ans-hidden::after{ content:none !important; }
 }
 </style>
 </head>
@@ -966,7 +926,7 @@ body.il-up-auto .up.show{ opacity:1; visibility:visible; pointer-events:auto; }
     <a href="#unit-3">U3 · Stats</a>
     <a href="#unit-4">U4 · Regression</a>
     <a href="#predicted" class="hot">🔮 Predicted</a>
-    <a href="#real-may26" class="hot">📄 MAY-26</a>
+    <a href="#real-may25" class="hot">📄 BCA-25 SOLVED</a>
     <a href="#cheatsheet" class="hot">⚡ Cheat Sheet</a>
   </nav>
 </header>
@@ -1063,7 +1023,7 @@ body.il-up-auto .up.show{ opacity:1; visibility:visible; pointer-events:auto; }
     <div style="font-family:'JetBrains Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:var(--crimson); margin:0 0 6px;">Exam Papers</div>
     <div style="display:flex; flex-wrap:wrap; gap:7px;">
       <a href="#predicted" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">🔮 Predicted Paper</a>
-      <a href="#real-may26" style="display:inline-block; padding:5px 11px; background:var(--brand-soft); border:1px solid var(--crimson); border-radius:3px; color:var(--crimson); text-decoration:none; font-size:13px; font-weight:700;">📄 Real Paper · 312411 · May-2026</a>
+      <a href="#real-may25" style="display:inline-block; padding:5px 11px; background:var(--brand-soft); border:1px solid var(--crimson); border-radius:3px; color:var(--crimson); text-decoration:none; font-size:13px; font-weight:700;">📄 Solved Paper · BCA 311408 · May-2025</a>
       <a href="#cheatsheet" style="display:inline-block; padding:5px 11px; background:var(--paper); border:1px solid var(--brand); border-radius:3px; color:var(--brand); text-decoration:none; font-size:13px;">⚡ Cheat Sheet</a>
     </div>
   </div>
@@ -3005,7 +2965,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q7(b)</span></div>
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q7(b)</span></div>
       <div class="qbody"><b>(c) Find the mode of the dataset: 8, 12, 15, 12, 19, 23, 12, 8, 15.</b></div>
       <div class="ans">
         <ul>
@@ -3074,7 +3034,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(h) ×3</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q1(g)</span></div>
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q1(h) ×3</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q1(g)</span></div>
       <div class="qbody"><b>(h) What is a platykurtic distribution? State its β₂ (kurtosis) value.</b></div>
       <div class="ans">
         <ul>
@@ -3086,7 +3046,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q1(j) · least-square line</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(b)</span></div>
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q1(j) · least-square line</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q5(b)</span></div>
       <div class="qbody"><b>(i) State the normal equations for fitting a straight line y = a + bx.</b></div>
       <div class="ans">
         <ul>
@@ -3318,14 +3278,22 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag fav">Unit 1</span>
         <span class="tag hot">⭐ Binomial · MGF</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q2(b)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q3(a)/Q3(b)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q2(b)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q3(a)/Q3(b)</span>
       </div>
       <div class="qbody">
         <b>(a) Derive Mean E(X) = np, Variance Var(X) = npq, and the Mode of a Binomial distribution X ~ B(n, p). [8 M]</b><br>
         <b>(b) Find the moment generating function (MGF) of the continuous random variable with pdf f(x) = 2e<sup>−2x</sup>, x ≥ 0. Hence state mean and variance. [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The <b>Binomial distribution</b> counts how many times something "works" when you repeat the same experiment n times. Classic example: toss a coin 10 times and count how many heads you get. Each toss is independent, and every toss has the same success chance p.</p>
+          <p><b>What does the question want?</b> Part (a): prove (derive) the formulas for Mean = np, Variance = npq, and find the Mode (most likely value). Part (b): find the MGF of f(x) = 2e<sup>−2x</sup> — this is the Exponential distribution with λ = 2 — and read off mean and variance from it.</p>
+          <p><b>The key result(s) to remember:</b> For X ~ B(n, p): <b>Mean = np</b>, <b>Variance = npq</b> (q = 1 − p), <b>Mode = ⌊(n+1)p⌋</b>. Quick example: 10 coin tosses, p = ½ → Mean = 5, Var = 2.5, Mode = 5. For Exponential λ = 2: <b>MGF = 2/(2 − t)</b>, Mean = 1/2, Var = 1/4.</p>
+          <p><b>Scary symbol, explained:</b> <b>MGF M(t)</b> = "moment-generating function" — it's just a special average E[e<sup>tX</sup>]. Differentiating it once at t = 0 gives the mean; twice gives E(X²); then Var = E(X²) − [E(X)]². <b>C(n,k)</b> = "n choose k" = number of ways to pick k successes from n trials. <b>q</b> = 1 − p = failure probability.</p>
+          <p><b>Bare minimum to attempt:</b> Write Mean = np and Var = npq with one-line justification (sum of Bernoulli RVs). For the MGF part, write M(t) = ∫ e<sup>tx</sup>·2e<sup>−2x</sup> dx = 2/(2−t), then differentiate at t = 0. Even partial marks for the setup.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — B(n,p):</b> Mean = <b>np</b> · Var = <b>npq</b> · Mode = <b>⌊(n+1)p⌋</b> · MGF = <b>(q+pe<sup>t</sup>)<sup>n</sup></b><br>
           <b>Exp(λ):</b> MGF = <b>λ/(λ−t)</b> · E(X) = <b>1/λ</b> · Var = <b>1/λ²</b> · (here λ=2 so E=½, Var=¼)
@@ -3362,26 +3330,26 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Derive Mean E(X) = np:</b>
-            E(X) = Σ<sub>k=0</sub><sup>n</sup> k · C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>.
-            Term k = 0 contributes 0, start at k = 1. Identity: k · C(n, k) = n · C(n − 1, k − 1).
-            E(X) = np · Σ<sub>k=1</sub><sup>n</sup> C(n−1, k−1) · p<sup>k−1</sup> · q<sup>n−k</sup>.
-            Let j = k − 1, sum becomes Σ<sub>j=0</sub><sup>n−1</sup> C(n−1, j) p<sup>j</sup> q<sup>(n−1)−j</sup> = (p + q)<sup>n−1</sup> = 1.
-            ∴ <mark><b>mean = np</b></mark>.
+            <b class="lbl">Derive Mean E(X) = np</b>
+            <span class="eq first">E(X) = Σ<sub>k=0</sub><sup>n</sup> k · C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>.</span>
+            <span class="eq">Term k = 0 contributes 0, start at k = 1. Identity: k · C(n, k) = n · C(n − 1, k − 1).</span>
+            <span class="eq">E(X) = np · Σ<sub>k=1</sub><sup>n</sup> C(n−1, k−1) · p<sup>k−1</sup> · q<sup>n−k</sup>.</span>
+            <span class="eq">Let j = k − 1, sum becomes Σ<sub>j=0</sub><sup>n−1</sup> C(n−1, j) p<sup>j</sup> q<sup>(n−1)−j</sup> = (p + q)<sup>n−1</sup> = 1.</span>
+            <span class="eq">∴ <mark><b>mean = np</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Derive Variance Var(X) = npq:</b>
-            Compute E[X(X−1)] using k(k−1) · C(n, k) = n(n−1) · C(n−2, k−2):
-            E[X(X−1)] = n(n−1) p<sup>2</sup> · (p + q)<sup>n−2</sup> = n(n−1) p<sup>2</sup>.
-            E(X<sup>2</sup>) = E[X(X−1)] + E(X) = n(n−1)p<sup>2</sup> + np = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np.
-            Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np − n<sup>2</sup>p<sup>2</sup> = np − np<sup>2</sup> = np(1 − p) = <mark><b>variance = npq</b></mark>.
+            <b class="lbl">Derive Variance Var(X) = npq</b>
+            <span class="eq first">Compute E[X(X−1)] using k(k−1) · C(n, k) = n(n−1) · C(n−2, k−2):</span>
+            <span class="eq">E[X(X−1)] = n(n−1) p<sup>2</sup> · (p + q)<sup>n−2</sup> = n(n−1) p<sup>2</sup>.</span>
+            <span class="eq">E(X<sup>2</sup>) = E[X(X−1)] + E(X) = n(n−1)p<sup>2</sup> + np = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np.</span>
+            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np − n<sup>2</sup>p<sup>2</sup> = np − np<sup>2</sup> = np(1 − p) = <mark><b>variance = npq</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Derive Mode:</b>
-            Mode is the k that maximises P(X = k). Examine the ratio:
-            P(X = k) / P(X = k − 1) = [(n − k + 1) / k] · (p / q).
-            Ratio ≥ 1 ⇔ k ≤ (n + 1)p. So P(X = k) increases while k &lt; (n + 1)p, then decreases.
-            ∴ <mark><b>Mode = ⌊(n + 1)p⌋</b></mark>. If (n + 1)p is an integer, both (n + 1)p and (n + 1)p − 1 are modes (bimodal).
+            <b class="lbl">Derive Mode</b>
+            <span class="eq first">Mode is the k that maximises P(X = k). Examine the ratio:</span>
+            <span class="eq">P(X = k) / P(X = k − 1) = [(n − k + 1) / k] · (p / q).</span>
+            <span class="eq">Ratio ≥ 1 ⇔ k ≤ (n + 1)p. So P(X = k) increases while k &lt; (n + 1)p, then decreases.</span>
+            <span class="eq">∴ <mark><b>Mode = ⌊(n + 1)p⌋</b></mark>. If (n + 1)p is an integer, both (n + 1)p and (n + 1)p − 1 are modes (bimodal).</span>
           </div>
         </div>
 
@@ -3391,39 +3359,39 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <p><b>Part (b)(i) — MGF of f(x) = 2e<sup>−2x</sup>, x ≥ 0  (Exponential with λ = 2).</b></p>
         <div class="steps">
           <div class="step k">
-            <b>Setup MGF integral:</b>
-            M<sub>X</sub>(t) = E[e<sup>tX</sup>] = ∫<sub>0</sub><sup>∞</sup> e<sup>tx</sup> · 2e<sup>−2x</sup> dx = 2 · ∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx.
+            <b class="lbl">Setup MGF integral</b>
+            <span class="eq first">M<sub>X</sub>(t) = E[e<sup>tX</sup>] = ∫<sub>0</sub><sup>∞</sup> e<sup>tx</sup> · 2e<sup>−2x</sup> dx = 2 · ∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx.</span>
           </div>
           <div class="step k">
-            <b>Evaluate (converges only when 2 − t &gt; 0, i.e. t &lt; 2):</b>
-            ∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx = [−e<sup>−(2−t)x</sup> / (2 − t)]<sub>0</sub><sup>∞</sup> = 1 / (2 − t).
-            ∴ <mark><b>M<sub>X</sub>(t) = 2 / (2 − t),  valid for t &lt; 2</b></mark>.
+            <b class="lbl">Evaluate (converges only when 2 − t &gt; 0, i.e. t &lt; 2)</b>
+            <span class="eq first">∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx = [−e<sup>−(2−t)x</sup> / (2 − t)]<sub>0</sub><sup>∞</sup> = 1 / (2 − t).</span>
+            <span class="eq">∴ <mark><b>M<sub>X</sub>(t) = 2 / (2 − t),  valid for t &lt; 2</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Mean and Variance from M<sub>X</sub>(t):</b>
-            M'<sub>X</sub>(t) = d/dt [2(2 − t)<sup>−1</sup>] = 2 / (2 − t)<sup>2</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = 2 / 4 = <mark><b>E(X) = 1/2</b></mark>.
-            M''<sub>X</sub>(t) = 4 / (2 − t)<sup>3</sup>  ⇒  E(X<sup>2</sup>) = M''<sub>X</sub>(0) = 4 / 8 = 1/2.
-            Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = 1/2 − 1/4 = <mark><b>Var(X) = 1/4</b></mark>.
-            Cross-check with closed form: for Exp(λ), E(X) = 1/λ = 1/2 ✓ and Var(X) = 1/λ<sup>2</sup> = 1/4 ✓.
+            <b class="lbl">Mean and Variance from M<sub>X</sub>(t)</b>
+            <span class="eq first">M'<sub>X</sub>(t) = d/dt [2(2 − t)<sup>−1</sup>] = 2 / (2 − t)<sup>2</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = 2 / 4 = <mark><b>E(X) = 1/2</b></mark>.</span>
+            <span class="eq">M''<sub>X</sub>(t) = 4 / (2 − t)<sup>3</sup>  ⇒  E(X<sup>2</sup>) = M''<sub>X</sub>(0) = 4 / 8 = 1/2.</span>
+            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = 1/2 − 1/4 = <mark><b>Var(X) = 1/4</b></mark>.</span>
+            <span class="eq">Cross-check with closed form: for Exp(λ), E(X) = 1/λ = 1/2 ✓ and Var(X) = 1/λ<sup>2</sup> = 1/4 ✓.</span>
           </div>
         </div>
 
         <p><b>Part (b)(ii) — MGF of Binomial(n, p) (discrete-sum pattern, included for breadth).</b></p>
         <div class="steps">
           <div class="step k">
-            <b>Setup MGF sum:</b>
-            M<sub>X</sub>(t) = Σ<sub>k=0</sub><sup>n</sup> e<sup>tk</sup> · C(n, k) p<sup>k</sup> q<sup>n−k</sup>
-            = Σ<sub>k=0</sub><sup>n</sup> C(n, k) (p·e<sup>t</sup>)<sup>k</sup> q<sup>n−k</sup>.
+            <b class="lbl">Setup MGF sum</b>
+            <span class="eq first">M<sub>X</sub>(t) = Σ<sub>k=0</sub><sup>n</sup> e<sup>tk</sup> · C(n, k) p<sup>k</sup> q<sup>n−k</sup></span>
+            <span class="eq">= Σ<sub>k=0</sub><sup>n</sup> C(n, k) (p·e<sup>t</sup>)<sup>k</sup> q<sup>n−k</sup>.</span>
           </div>
           <div class="step k">
-            <b>Apply the binomial theorem (a + b)<sup>n</sup> = Σ C(n, k) a<sup>k</sup> b<sup>n−k</sup>:</b>
-            with a = p·e<sup>t</sup>, b = q:
-            <mark><b>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></b></mark>, defined for every real t.
+            <b class="lbl">Apply the binomial theorem (a + b)<sup>n</sup> = Σ C(n, k) a<sup>k</sup> b<sup>n−k</sup></b>
+            <span class="eq first">with a = p·e<sup>t</sup>, b = q:</span>
+            <span class="eq"><mark><b>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></b></mark>, defined for every real t.</span>
           </div>
           <div class="step k">
-            <b>Recover E(X) and Var(X):</b>
-            M'<sub>X</sub>(t) = n(q + p·e<sup>t</sup>)<sup>n−1</sup> · p·e<sup>t</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = n(q + p)<sup>n−1</sup> · p = np ✓.
-            M''<sub>X</sub>(0) = n(n − 1)p<sup>2</sup> + np  ⇒  Var(X) = M''<sub>X</sub>(0) − [M'<sub>X</sub>(0)]<sup>2</sup> = npq ✓.
+            <b class="lbl">Recover E(X) and Var(X)</b>
+            <span class="eq first">M'<sub>X</sub>(t) = n(q + p·e<sup>t</sup>)<sup>n−1</sup> · p·e<sup>t</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = n(q + p)<sup>n−1</sup> · p = np ✓.</span>
+            <span class="eq">M''<sub>X</sub>(0) = n(n − 1)p<sup>2</sup> + np  ⇒  Var(X) = M''<sub>X</sub>(0) − [M'<sub>X</sub>(0)]<sup>2</sup> = npq ✓.</span>
           </div>
         </div>
 
@@ -3482,8 +3450,8 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag hot">⭐ Normal · Poisson</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(b) · Normal mean-120 SD-40 ×3</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q6(a) · Fit Poisson ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q6(a) · Normal (reverse)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q2(a)/Q6(b) · Poisson fit</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q6(a) · Normal (reverse)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q2(a)/Q6(b) · Poisson fit</span>
       </div>
       <div class="qbody">
         <b>(a) The lifetime X of an electric bulb follows N(μ = 120, σ = 40) hours. Find: (i) P(X &lt; 100), (ii) P(100 &lt; X &lt; 180), (iii) P(X &gt; 200). Use the Z-table. [8 M]</b><br>
@@ -3498,6 +3466,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The <b>Normal distribution</b> is the famous “bell curve” — most values cluster around the mean μ and fewer appear as you move away. Think of exam marks in a large class: most cluster near average, very few are extremely low or high. The <b>Poisson distribution</b> counts rare events in a fixed window — like accidents at a junction per day.</p>
+          <p><b>What does the question want?</b> Part (a): bulb lifetime is Normal with mean 120 h, spread σ = 40 h — find probability of lasting less than 100 h, between 100 and 180 h, and more than 200 h. Part (b): given accident count data, find “expected” counts if accidents followed a Poisson model.</p>
+          <p><b>The key result(s) to remember:</b> Convert X to a <b>Z-score = (X − μ) / σ</b>. Example: X=100, μ=120, σ=40 → Z = −0.5. Look up |Z|=0.5 in the Φ-table: Φ(0.5) = 0.6915. Since Z is negative: P(X&lt;100) = 1 − 0.6915 = <b>0.3085</b>. For Poisson: λ = x̅ = Σ(f·x)/N, expected freq = N × e<sup>−λ</sup>λ<sup>k</sup>/k!.</p>
+          <p><b>Scary symbol, explained:</b> <b>Φ(z)</b> = area to the LEFT of z under the bell curve (from the Z-table). <b>Φ(−z) = 1 − Φ(z)</b> — use this whenever z is negative. <b>λ (lambda)</b> = average events per interval. <b>e ≈ 2.718</b> is a fixed constant.</p>
+          <p><b>Bare minimum to attempt:</b> Write Z=(X−μ)/σ, look up the Z-table in the answer below, apply Φ(−z)=1−Φ(z) for negatives. For Poisson: compute λ=0.3, write P(0)–P(4) with the formula, multiply by N=200. Even one correct Z step earns marks.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Normal Z:</b> standardise <b>Z = (X−μ)/σ</b> · Φ(−z) = <b>1−Φ(z)</b> · P(a&lt;X&lt;b) = <b>Φ(z₂)−Φ(z₁)</b><br>
           <b>Poisson fit:</b> λ̂ = <b>x̄ = Σfx/N</b> · recursion <b>P(k) = (λ/k)·P(k−1)</b> · signature: <b>mean ≈ variance</b>
@@ -3545,19 +3521,19 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>(i) P(X &lt; 100):</b>
-            Z = (100 − 120) / 40 = −0.5.
-            P(X &lt; 100) = Φ(−0.5) = 1 − Φ(0.5) = 1 − 0.6915 = <mark><b>0.3085 (30.85%)</b></mark>.
+            <b class="lbl">(i) P(X &lt; 100)</b>
+            <span class="eq first">Z = (100 − 120) / 40 = −0.5.</span>
+            <span class="eq">P(X &lt; 100) = Φ(−0.5) = 1 − Φ(0.5) = 1 − 0.6915 = <mark><b>0.3085 (30.85%)</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>(ii) P(100 &lt; X &lt; 180):</b>
-            Z<sub>1</sub> = −0.5, Z<sub>2</sub> = (180 − 120)/40 = 1.5.
-            P = Φ(1.5) − Φ(−0.5) = 0.9332 − 0.3085 = <mark><b>0.6247 (62.47%)</b></mark>.
+            <b class="lbl">(ii) P(100 &lt; X &lt; 180)</b>
+            <span class="eq first">Z<sub>1</sub> = −0.5, Z<sub>2</sub> = (180 − 120)/40 = 1.5.</span>
+            <span class="eq">P = Φ(1.5) − Φ(−0.5) = 0.9332 − 0.3085 = <mark><b>0.6247 (62.47%)</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>(iii) P(X &gt; 200):</b>
-            Z = (200 − 120) / 40 = 2.0.
-            P(X &gt; 200) = 1 − Φ(2.0) = 1 − 0.9772 = <mark><b>0.0228 (2.28%)</b></mark>.
+            <b class="lbl">(iii) P(X &gt; 200)</b>
+            <span class="eq first">Z = (200 − 120) / 40 = 2.0.</span>
+            <span class="eq">P(X &gt; 200) = 1 − Φ(2.0) = 1 − 0.9772 = <mark><b>0.0228 (2.28%)</b></mark>.</span>
           </div>
         </div>
 
@@ -3566,7 +3542,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <p>Total observations N = Σf<sub>i</sub> = 122 + 60 + 15 + 2 + 1 = 200.</p>
         <div class="steps">
           <div class="step k">
-            <b>Σfx table (Method-of-Moments setup):</b>
+            <b class="lbl">Σfx table (Method-of-Moments setup)</b>
             <div class="table-wrap" style="margin:6px 0;">
               <table>
                 <thead><tr><th>x<sub>i</sub></th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>Σ</th></tr></thead>
@@ -3579,12 +3555,12 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
             </div>
           </div>
           <div class="step k">
-            <b>Estimate λ:</b>
-            x̄ = Σf<sub>i</sub>x<sub>i</sub> / N = 100 / 200 = <mark><b>λ̂ = 0.5</b></mark> (MLE).
-            Sample Var = Σfx<sup>2</sup>/N − x̄<sup>2</sup> = 154/200 − 0.25 = 0.77 − 0.25 = 0.52 ≈ λ̂ ⇒ Poisson plausible (mean ≈ variance, the Poisson "signature").
+            <b class="lbl">Estimate λ</b>
+            <span class="eq first">x̄ = Σf<sub>i</sub>x<sub>i</sub> / N = 100 / 200 = <mark><b>λ̂ = 0.5</b></mark> (MLE).</span>
+            <span class="eq">Sample Var = Σfx<sup>2</sup>/N − x̄<sup>2</sup> = 154/200 − 0.25 = 0.77 − 0.25 = 0.52 ≈ λ̂ ⇒ Poisson plausible (mean ≈ variance, the Poisson "signature").</span>
           </div>
           <div class="step k">
-            <b>Theoretical frequencies T<sub>k</sub> = N · P(X = k) via recursion P(k) = (λ/k) · P(k−1):</b>
+            <b class="lbl">Theoretical frequencies T<sub>k</sub> = N · P(X = k) via recursion P(k) = (λ/k) · P(k−1)</b>
             <ul>
               <li>P(X = 0) = e<sup>−0.5</sup> = 0.6065   ⇒  T<sub>0</sub> = 200 × 0.6065 = <b>121.30</b></li>
               <li>P(X = 1) = (0.5/1) × 0.6065 = 0.3033  ⇒  T<sub>1</sub> = 200 × 0.3033 = <b>60.65</b></li>
@@ -3592,11 +3568,11 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
               <li>P(X = 3) = (0.5/3) × 0.0758 = 0.01264 ⇒  T<sub>3</sub> = 200 × 0.01264 = <b>2.53</b></li>
               <li>P(X = 4) = (0.5/4) × 0.01264 = 0.00158⇒  T<sub>4</sub> = 200 × 0.00158 = <b>0.32</b></li>
             </ul>
-            ΣT = 121.30 + 60.65 + 15.16 + 2.53 + 0.32 = <b>199.96 ≈ N</b> ✓.
+            <span class="eq">ΣT = 121.30 + 60.65 + 15.16 + 2.53 + 0.32 = <b>199.96 ≈ N</b> ✓.</span>
           </div>
           <div class="step k">
-            <b>Compare observed vs theoretical:</b>
-            The fitted frequencies (121.30, 60.65, 15.16, 2.53, 0.32) track the observed (122, 60, 15, 2, 1) closely at every value of x, so the <mark>Poisson model is a good fit</mark> for the data.
+            <b class="lbl">Compare observed vs theoretical</b>
+            <span class="eq first">The fitted frequencies (121.30, 60.65, 15.16, 2.53, 0.32) track the observed (122, 60, 15, 2, 1) closely at every value of x, so the <mark>Poisson model is a good fit</mark> for the data.</span>
           </div>
         </div>
 
@@ -3665,6 +3641,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) The joint pdf of (X, Y) is f(x, y) = k(x + y), 0 ≤ x ≤ 1, 0 ≤ y ≤ 1, and 0 elsewhere. Find: (i) k, (ii) marginals f<sub>X</sub>(x), f<sub>Y</sub>(y), (iii) conditional f(y | x). [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> A <b>joint distribution</b> gives the probability of two variables X and Y taking specific values simultaneously — like a 2-D table of chances. The <b>continuous</b> version uses a formula f(x,y) instead of a table, and integrals ∫ replace sums Σ.</p>
+          <p><b>What does the question want?</b> Part (a) discrete: from the joint table, sum each row to get P(X) and each column to get P(Y); compute E(X), E(Y), Var; find Cov(X,Y) and ρ. Part (b) continuous: find constant k so the pdf integrates to 1, then find marginals and the conditional density f(y|x).</p>
+          <p><b>The key result(s) to remember:</b> <b>Marginal of X</b> = row sum: P(X=1) = 0.1+0.2 = 0.3. <b>E(X)</b> = 1×0.3 + 2×0.3 + 3×0.4 = 2.1. <b>Cov(X,Y) = E(XY) − E(X)·E(Y)</b>. <b>ρ = Cov / (σ<sub>X</sub>·σ<sub>Y</sub>)</b>, always in [−1, +1]. For continuous: set ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup>k(x+y)dxdy = 1 → k = 1.</p>
+          <p><b>Scary symbol, explained:</b> <b>Σ<sub>y</sub>P(x,y)</b> = add up all entries in the row for X=x (row totals). <b>E(XY)</b> = Σ x·y·P(x,y) over all cells. <b>∫f(x,y)dy</b> = “integrate out y” to get x-only density. <b>σ<sub>X</sub></b> = √Var(X).</p>
+          <p><b>Bare minimum to attempt:</b> Write row sums as P(X) and column sums as P(Y). Compute E(X) and E(Y). Use Cov = E(XY)−E(X)E(Y). Finishing E(X) and E(Y) alone earns partial marks. For part (b), set the double integral equal to 1 to find k=1.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Discrete:</b> P(X=x) = <b>Σ<sub>y</sub>P(x,y)</b> (row sum) · Cov = <b>E(XY)−E(X)E(Y)</b> · ρ = <b>Cov/(σ<sub>X</sub>σ<sub>Y</sub>)</b><br>
           <b>Continuous:</b> f<sub>X</sub>(x) = <b>∫f(x,y)dy</b> · f(y|x) = <b>f(x,y)/f<sub>X</sub>(x)</b> · independent if f(x,y) = <b>f<sub>X</sub>(x)·f<sub>Y</sub>(y)</b>
@@ -3722,33 +3706,33 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Marginals:</b>
-            P(X=1) = 0.1 + 0.2 = 0.3;  P(X=2) = 0.2 + 0.1 = 0.3;  P(X=3) = 0.1 + 0.3 = 0.4.
-            P(Y=1) = 0.1 + 0.2 + 0.1 = 0.4;  P(Y=2) = 0.2 + 0.1 + 0.3 = 0.6.
-            Check: ΣP(X) = 1.0 ✓ and ΣP(Y) = 1.0 ✓.
+            <b class="lbl">Marginals</b>
+            <span class="eq first">P(X=1) = 0.1 + 0.2 = 0.3;  P(X=2) = 0.2 + 0.1 = 0.3;  P(X=3) = 0.1 + 0.3 = 0.4.</span>
+            <span class="eq">P(Y=1) = 0.1 + 0.2 + 0.1 = 0.4;  P(Y=2) = 0.2 + 0.1 + 0.3 = 0.6.</span>
+            <span class="eq">Check: ΣP(X) = 1.0 ✓ and ΣP(Y) = 1.0 ✓.</span>
           </div>
           <div class="step k">
-            <b>Means:</b>
-            E(X) = 1(0.3) + 2(0.3) + 3(0.4) = 0.3 + 0.6 + 1.2 = <mark><b>E(X) = 2.1</b></mark>.
-            E(Y) = 1(0.4) + 2(0.6) = 0.4 + 1.2 = <mark><b>E(Y) = 1.6</b></mark>.
+            <b class="lbl">Means</b>
+            <span class="eq first">E(X) = 1(0.3) + 2(0.3) + 3(0.4) = 0.3 + 0.6 + 1.2 = <mark><b>E(X) = 2.1</b></mark>.</span>
+            <span class="eq">E(Y) = 1(0.4) + 2(0.6) = 0.4 + 1.2 = <mark><b>E(Y) = 1.6</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Variances:</b>
-            E(X<sup>2</sup>) = 1(0.3) + 4(0.3) + 9(0.4) = 0.3 + 1.2 + 3.6 = 5.1.
-            Var(X) = 5.1 − (2.1)<sup>2</sup> = 5.1 − 4.41 = <b>0.69</b>.  SD(X) = √0.69 = 0.8307.
-            E(Y<sup>2</sup>) = 1(0.4) + 4(0.6) = 2.8.
-            Var(Y) = 2.8 − (1.6)<sup>2</sup> = 2.8 − 2.56 = <b>0.24</b>.  SD(Y) = √0.24 = 0.4899.
+            <b class="lbl">Variances</b>
+            <span class="eq first">E(X<sup>2</sup>) = 1(0.3) + 4(0.3) + 9(0.4) = 0.3 + 1.2 + 3.6 = 5.1.</span>
+            <span class="eq">Var(X) = 5.1 − (2.1)<sup>2</sup> = 5.1 − 4.41 = <b>0.69</b>.  SD(X) = √0.69 = 0.8307.</span>
+            <span class="eq">E(Y<sup>2</sup>) = 1(0.4) + 4(0.6) = 2.8.</span>
+            <span class="eq">Var(Y) = 2.8 − (1.6)<sup>2</sup> = 2.8 − 2.56 = <b>0.24</b>.  SD(Y) = √0.24 = 0.4899.</span>
           </div>
           <div class="step k">
-            <b>E(XY):</b>
-            E(XY) = Σ x·y·P(x, y)
-            = 1·1·0.1 + 1·2·0.2 + 2·1·0.2 + 2·2·0.1 + 3·1·0.1 + 3·2·0.3
-            = 0.1 + 0.4 + 0.4 + 0.4 + 0.3 + 1.8 = <b>3.4</b>.
+            <b class="lbl">E(XY)</b>
+            <span class="eq first">E(XY) = Σ x·y·P(x, y)</span>
+            <span class="eq">= 1·1·0.1 + 1·2·0.2 + 2·1·0.2 + 2·2·0.1 + 3·1·0.1 + 3·2·0.3</span>
+            <span class="eq">= 0.1 + 0.4 + 0.4 + 0.4 + 0.3 + 1.8 = <b>3.4</b>.</span>
           </div>
           <div class="step k">
-            <b>Cov &amp; ρ:</b>
-            <mark>Cov(X,Y)</mark> = E(XY) − E(X)·E(Y) = 3.4 − (2.1)(1.6) = 3.4 − 3.36 = <mark><b>Cov = 0.04</b></mark>.
-            <mark>correlation ρ</mark>(X, Y) = Cov / (SD<sub>X</sub> · SD<sub>Y</sub>) = 0.04 / (0.8307 × 0.4899) = 0.04 / 0.407 ≈ <mark><b>ρ ≈ 0.0983</b></mark>.
+            <b class="lbl">Cov &amp; ρ</b>
+            <span class="eq first"><mark>Cov(X,Y)</mark> = E(XY) − E(X)·E(Y) = 3.4 − (2.1)(1.6) = 3.4 − 3.36 = <mark><b>Cov = 0.04</b></mark>.</span>
+            <span class="eq"><mark>correlation ρ</mark>(X, Y) = Cov / (SD<sub>X</sub> · SD<sub>Y</sub>) = 0.04 / (0.8307 × 0.4899) = 0.04 / 0.407 ≈ <mark><b>ρ ≈ 0.0983</b></mark>.</span>
           </div>
         </div>
 
@@ -3756,25 +3740,25 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <p>For a continuous pair (X, Y), the <mark>marginal PDF</mark> f<sub>X</sub>(x) is the joint density integrated over all y (and the other way for Y). The <mark>conditional PDF</mark> is f(y | x) = f(x, y) / f<sub>X</sub>(x), valid where f<sub>X</sub>(x) &gt; 0. The <mark>covariance</mark> as an integral is Cov(X, Y) = ∫∫ (x − μ<sub>X</sub>)(y − μ<sub>Y</sub>) f(x, y) dx dy = E(XY) − E(X)E(Y).</p>
         <div class="steps">
           <div class="step k">
-            <b>(i) Find k (normalisation):</b>
-            ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> k(x + y) dx dy = 1.
-            Inner ∫<sub>0</sub><sup>1</sup> (x + y) dx = [x<sup>2</sup>/2 + xy]<sub>0</sub><sup>1</sup> = ½ + y.
-            Outer k · ∫<sub>0</sub><sup>1</sup> (½ + y) dy = k · [y/2 + y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = k(½ + ½) = k.
-            ∴ k · 1 = 1 ⇒ <mark><b>k = 1</b></mark> ⇒ valid <mark>joint distribution</mark>.
+            <b class="lbl">(i) Find k (normalisation)</b>
+            <span class="eq first">∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> k(x + y) dx dy = 1.</span>
+            <span class="eq">Inner ∫<sub>0</sub><sup>1</sup> (x + y) dx = [x<sup>2</sup>/2 + xy]<sub>0</sub><sup>1</sup> = ½ + y.</span>
+            <span class="eq">Outer k · ∫<sub>0</sub><sup>1</sup> (½ + y) dy = k · [y/2 + y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = k(½ + ½) = k.</span>
+            <span class="eq">∴ k · 1 = 1 ⇒ <mark><b>k = 1</b></mark> ⇒ valid <mark>joint distribution</mark>.</span>
           </div>
           <div class="step k">
-            <b>(ii) Marginal f<sub>X</sub>(x):</b>
-            f<sub>X</sub>(x) = ∫<sub>0</sub><sup>1</sup> (x + y) dy = [xy + y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = <b>x + ½</b>,  0 ≤ x ≤ 1.
-            Check ∫<sub>0</sub><sup>1</sup> (x + ½) dx = [x<sup>2</sup>/2 + x/2]<sub>0</sub><sup>1</sup> = ½ + ½ = 1 ✓.
+            <b class="lbl">(ii) Marginal f<sub>X</sub>(x)</b>
+            <span class="eq first">f<sub>X</sub>(x) = ∫<sub>0</sub><sup>1</sup> (x + y) dy = [xy + y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = <b>x + ½</b>,  0 ≤ x ≤ 1.</span>
+            <span class="eq">Check ∫<sub>0</sub><sup>1</sup> (x + ½) dx = [x<sup>2</sup>/2 + x/2]<sub>0</sub><sup>1</sup> = ½ + ½ = 1 ✓.</span>
           </div>
           <div class="step k">
-            <b>Marginal f<sub>Y</sub>(y):</b>
-            By the symmetry of f(x, y) = x + y under swap of x↔y: f<sub>Y</sub>(y) = <b>y + ½</b>,  0 ≤ y ≤ 1.
+            <b class="lbl">Marginal f<sub>Y</sub>(y)</b>
+            <span class="eq first">By the symmetry of f(x, y) = x + y under swap of x↔y: f<sub>Y</sub>(y) = <b>y + ½</b>,  0 ≤ y ≤ 1.</span>
           </div>
           <div class="step k">
-            <b>(iii) Conditional f(y | x):</b>
-            f(y | x) = f(x, y) / f<sub>X</sub>(x) = <b>(x + y) / (x + ½)</b>,  0 ≤ y ≤ 1.
-            (At x = 0: f(y | 0) = y/(½) = 2y; at x = 1: f(y | 1) = (1 + y)/1.5; both still integrate to 1 over y ∈ [0, 1].)
+            <b class="lbl">(iii) Conditional f(y | x)</b>
+            <span class="eq first">f(y | x) = f(x, y) / f<sub>X</sub>(x) = <b>(x + y) / (x + ½)</b>,  0 ≤ y ≤ 1.</span>
+            <span class="eq">(At x = 0: f(y | 0) = y/(½) = 2y; at x = 1: f(y | 1) = (1 + y)/1.5; both still integrate to 1 over y ∈ [0, 1].)</span>
           </div>
 
           <figure class="diagram-fig">
@@ -3825,20 +3809,20 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
           </figure>
 
           <div class="step k">
-            <b>Means E(X) and E(Y):</b>
-            E(X) = ∫<sub>0</sub><sup>1</sup> x(x + ½) dx = ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup> + x/2) dx = 1/3 + 1/4 = <b>7/12 ≈ 0.5833</b>.
-            By symmetry E(Y) = <b>7/12 ≈ 0.5833</b>.
+            <b class="lbl">Means E(X) and E(Y)</b>
+            <span class="eq first">E(X) = ∫<sub>0</sub><sup>1</sup> x(x + ½) dx = ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup> + x/2) dx = 1/3 + 1/4 = <b>7/12 ≈ 0.5833</b>.</span>
+            <span class="eq">By symmetry E(Y) = <b>7/12 ≈ 0.5833</b>.</span>
           </div>
           <div class="step k">
-            <b>E(XY):</b>
-            E(XY) = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> xy(x + y) dx dy = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>y + xy<sup>2</sup>) dx dy.
-            Inner ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>y + xy<sup>2</sup>) dx = y/3 + y<sup>2</sup>/2.
-            Outer ∫<sub>0</sub><sup>1</sup> (y/3 + y<sup>2</sup>/2) dy = 1/6 + 1/6 = <b>1/3 ≈ 0.3333</b>.
+            <b class="lbl">E(XY)</b>
+            <span class="eq first">E(XY) = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> xy(x + y) dx dy = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>y + xy<sup>2</sup>) dx dy.</span>
+            <span class="eq">Inner ∫<sub>0</sub><sup>1</sup> (x<sup>2</sup>y + xy<sup>2</sup>) dx = y/3 + y<sup>2</sup>/2.</span>
+            <span class="eq">Outer ∫<sub>0</sub><sup>1</sup> (y/3 + y<sup>2</sup>/2) dy = 1/6 + 1/6 = <b>1/3 ≈ 0.3333</b>.</span>
           </div>
           <div class="step k">
-            <b>Cov(X, Y) for the continuous case:</b>
-            Cov = E(XY) − E(X)E(Y) = 1/3 − (7/12)<sup>2</sup> = 1/3 − 49/144 = 48/144 − 49/144 = <b>−1/144 ≈ −0.00694</b>.
-            X and Y are very weakly <i>negatively</i> correlated; they are <b>not independent</b> because f(x, y) = x + y ≠ f<sub>X</sub>(x)·f<sub>Y</sub>(y) = (x + ½)(y + ½).
+            <b class="lbl">Cov(X, Y) for the continuous case</b>
+            <span class="eq first">Cov = E(XY) − E(X)E(Y) = 1/3 − (7/12)<sup>2</sup> = 1/3 − 49/144 = 48/144 − 49/144 = <b>−1/144 ≈ −0.00694</b>.</span>
+            <span class="eq">X and Y are very weakly <i>negatively</i> correlated; they are <b>not independent</b> because f(x, y) = x + y ≠ f<sub>X</sub>(x)·f<sub>Y</sub>(y) = (x + ½)(y + ½).</span>
           </div>
         </div>
 
@@ -3896,9 +3880,9 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag fav">Unit 4</span>
         <span class="tag hot">⭐ Karl Pearson · Regression</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(c) · Karl Pearson r (10 pairs) ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a) · two regression eqns</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q4(a) · Karl Pearson skewness</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q4(b) · grouped SD</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q5(a) · two regression eqns</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q4(a) · Karl Pearson skewness</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q4(b) · grouped SD</span>
       </div>
       <div class="qbody">
         <b>(a) Compute the Karl Pearson correlation coefficient for the following ten pairs. [8 M]</b><br>
@@ -3913,6 +3897,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) From the data in (a), fit both regression lines (Y on X and X on Y) by the method of least squares. [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> <b>Correlation</b> measures how strongly two variables move together. If taller people score higher, correlation is positive. The <b>Karl Pearson r</b> is the standard measure: +1 = perfect positive line, −1 = perfect inverse, 0 = no linear link. <b>Regression</b> goes further: it gives the best-fit line to predict one variable from the other.</p>
+          <p><b>What does the question want?</b> Part (a): compute r for 10 (X,Y) pairs using the table formula. Part (b): write both regression equations — “Y on X” (predicts Y given X) and “X on Y” (predicts X given Y) — and find their slopes.</p>
+          <p><b>The key result(s) to remember:</b> <b>r = [nΣXY − ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b>. Make a table: X, Y, X², Y², XY → sum all → plug in. Regression Y on X: y−ȳ = b<sub>yx</sub>(x−x̄) where b<sub>yx</sub> = r·σ<sub>Y</sub>/σ<sub>X</sub>. Check: r² = b<sub>yx</sub>·b<sub>xy</sub>.</p>
+          <p><b>Scary symbol, explained:</b> <b>ΣXY</b> = multiply each X by its paired Y and add. <b>ΣX²</b> = square each X then add. <b>σ<sub>X</sub></b> = SD of X = √[ΣX²/n − (x̄)²]. <b>b<sub>yx</sub></b> = slope of Y-on-X line (how much Y changes when X increases by 1).</p>
+          <p><b>Bare minimum to attempt:</b> Build the ΣX, ΣY, ΣX², ΣY², ΣXY table from 10 data pairs, plug into the r formula. Even computing r alone earns 8 of 15 marks. For regression, write the two formulae with your computed values substituted.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — r:</b> <b>r = [nΣXY−ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b> · range −1 to +1<br>
           <b>Regression Y on X:</b> y−ȳ = <b>b<sub>yx</sub>(x−x̄)</b>, b<sub>yx</sub> = <b>r·σ<sub>Y</sub>/σ<sub>X</sub></b> · <b>X on Y:</b> b<sub>xy</sub> = r·σ<sub>X</sub>/σ<sub>Y</sub> · check: <b>r² = b<sub>yx</sub>·b<sub>xy</sub></b>
@@ -3956,7 +3948,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Row-by-row Σ table (n = 10):</b>
+            <b class="lbl">Row-by-row Σ table (n = 10)</b>
             <div class="table-wrap" style="margin:6px 0;">
               <table>
                 <thead><tr><th>i</th><th>X</th><th>Y</th><th>X<sup>2</sup></th><th>Y<sup>2</sup></th><th>XY</th></tr></thead>
@@ -3977,47 +3969,47 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
             </div>
           </div>
           <div class="step k">
-            <b>Means:</b>
-            X̄ = 280 / 10 = <b>28</b>;  Ȳ = 284 / 10 = <b>28.4</b>.
+            <b class="lbl">Means</b>
+            <span class="eq first">X̄ = 280 / 10 = <b>28</b>;  Ȳ = 284 / 10 = <b>28.4</b>.</span>
           </div>
           <div class="step k">
-            <b>Karl Pearson r:</b>
-            r = [n·ΣXY − ΣX·ΣY] / √{ [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] · [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] }
-            Numerator = 10(8968) − 280(284) = 89680 − 79520 = <b>10160</b>.
-            n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup> = 91600 − 78400 = 13200.
-            n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup> = 89440 − 80656 = 8784.
-            Denominator = √(13200 × 8784) = √115,948,800 ≈ <b>10768</b>.
-            <mark><b>r = 10160 / 10768 ≈ 0.944</b></mark> (very strong positive).
+            <b class="lbl">Karl Pearson r</b>
+            <span class="eq first">r = [n·ΣXY − ΣX·ΣY] / √{ [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] · [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] }</span>
+            <span class="eq">Numerator = 10(8968) − 280(284) = 89680 − 79520 = <b>10160</b>.</span>
+            <span class="eq">n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup> = 91600 − 78400 = 13200.</span>
+            <span class="eq">n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup> = 89440 − 80656 = 8784.</span>
+            <span class="eq">Denominator = √(13200 × 8784) = √115,948,800 ≈ <b>10768</b>.</span>
+            <span class="eq"><mark><b>r = 10160 / 10768 ≈ 0.944</b></mark> (very strong positive).</span>
           </div>
         </div>
 
         <h5>(b) Two Regression Lines (Least Squares)</h5>
         <div class="steps">
           <div class="step k">
-            <b>Compute Regression coefficient <mark>b<sub>yx</sub></mark> (slope of Y on X):</b>
-            b<sub>yx</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] = 10160 / 13200 = <mark><b>b<sub>yx</sub> = 0.7697</b></mark>.
+            <b class="lbl">Compute Regression coefficient <mark>b<sub>yx</sub></mark> (slope of Y on X)</b>
+            <span class="eq first">b<sub>yx</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] = 10160 / 13200 = <mark><b>b<sub>yx</sub> = 0.7697</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Compute Regression coefficient <mark>b<sub>xy</sub></mark> (slope of X on Y):</b>
-            b<sub>xy</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] = 10160 / 8784 = <mark><b>b<sub>xy</sub> = 1.1567</b></mark>.
+            <b class="lbl">Compute Regression coefficient <mark>b<sub>xy</sub></mark> (slope of X on Y)</b>
+            <span class="eq first">b<sub>xy</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] = 10160 / 8784 = <mark><b>b<sub>xy</sub> = 1.1567</b></mark>.</span>
           </div>
           <div class="step k">
-            <b><mark>Regression line</mark> of Y on X:</b>
-            Passes through (X̄, Ȳ) = (28, 28.4):
-            Y − 28.4 = 0.7697 · (X − 28)
-            Y = 0.7697 X − 21.55 + 28.4
-            <mark><b>Y = 0.7697 X + 6.85</b></mark>.
+            <b class="lbl"><mark>Regression line</mark> of Y on X</b>
+            <span class="eq first">Passes through (X̄, Ȳ) = (28, 28.4):</span>
+            <span class="eq">Y − 28.4 = 0.7697 · (X − 28)</span>
+            <span class="eq">Y = 0.7697 X − 21.55 + 28.4</span>
+            <span class="eq"><mark><b>Y = 0.7697 X + 6.85</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Regression Line of X on Y:</b>
-            X − 28 = 1.1567 · (Y − 28.4)
-            X = 1.1567 Y − 32.85 + 28
-            <mark><b>X = 1.1567 Y − 4.85</b></mark>.
+            <b class="lbl">Regression Line of X on Y</b>
+            <span class="eq first">X − 28 = 1.1567 · (Y − 28.4)</span>
+            <span class="eq">X = 1.1567 Y − 32.85 + 28</span>
+            <span class="eq"><mark><b>X = 1.1567 Y − 4.85</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Cross-check:</b>
-            <mark>r² = b_yx · b_xy</mark> = 0.7697 × 1.1567 ≈ 0.8903.
-            r = √0.8903 ≈ <mark><b>r = 0.9436</b></mark> ✓ matches Part-(a).
+            <b class="lbl">Cross-check</b>
+            <span class="eq first"><mark>r² = b_yx · b_xy</mark> = 0.7697 × 1.1567 ≈ 0.8903.</span>
+            <span class="eq">r = √0.8903 ≈ <mark><b>r = 0.9436</b></mark> ✓ matches Part-(a).</span>
           </div>
         </div>
 
@@ -4090,12 +4082,20 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q5(b) ALT [12 M]</span>
         <span class="tag fav">Unit 4</span>
         <span class="tag hot">⭐ Partially Destroyed Records</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q5(a)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q5(a)</span>
       </div>
       <div class="qbody">
         <b>In a partially destroyed laboratory record, only the two regression lines survive: <mark>8X − 10Y + 66 = 0</mark> and <mark>40X − 18Y = 214</mark>. The variance of X is 9. Find: (a) the mean values X̄ and Ȳ; (b) which line is Y on X and which is X on Y, and the regression coefficients b<sub>yx</sub> and b<sub>xy</sub>; (c) the correlation coefficient r; (d) the standard deviation of Y. [12 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> Imagine a lab notebook is burned — only two equations survive. These are the two regression lines. Even without raw data, you can recover the means, the correlation, and a standard deviation just from two equations. This is a classic “inverse problem” in statistics.</p>
+          <p><b>What does the question want?</b> From equations 8X−10Y+66=0 and 40X−18Y=214: (a) find means X̄ and Ȳ by solving simultaneously; (b) decide which is Y-on-X and which is X-on-Y by checking |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1; (c) find r = √(b<sub>yx</sub>·b<sub>xy</sub>); (d) find σ<sub>Y</sub> given σ<sub>X</sub>=3.</p>
+          <p><b>The key result(s) to remember:</b> The two regression lines ALWAYS cross at (X̄, Ȳ) — so solve them as simultaneous equations. The product of slopes = r², which must be ≤ 1. The assignment whose product exceeds 1 is wrong. r = +√(product) with sign = sign of slopes.</p>
+          <p><b>Scary symbol, explained:</b> <b>b<sub>yx</sub></b> = slope of Y-on-X line = coefficient of X when equation is written as Y = mX + c. <b>b<sub>xy</sub></b> = coefficient of Y when written as X = mY + c. <b>σ<sub>Y</sub> = b<sub>yx</sub>·σ<sub>X</sub>/r</b> (rearrange to find the unknown SD).</p>
+          <p><b>Bare minimum to attempt:</b> Solve the two equations simultaneously to find X̄=13, Ȳ=17 — this alone earns marks. Then try both slope assignments, note which product exceeds 1 (inadmissible), and state r = √(product of correct slopes). Even partial steps earn credit.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Destroyed Records:</b> two lines always cross at <b>(X̄, Ȳ)</b> → solve simultaneously<br>
           <b>Admissibility:</b> try both slope assignments; keep the one where <b>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</b> · r = <b>+√(b<sub>yx</sub>·b<sub>xy</sub>)</b> (sign = sign of b) · σ<sub>Y</sub> = <b>b<sub>yx</sub>·σ<sub>X</sub>/r</b>
@@ -4128,19 +4128,19 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <h5>(a) Means — Intersection of the Two Lines</h5>
         <div class="steps">
           <div class="step k">
-            <b>Set up the system:</b>
-            Eq 1: 8X − 10Y = −66
-            Eq 2: 40X − 18Y = 214
+            <b class="lbl">Set up the system</b>
+            <span class="eq first">Eq 1: 8X − 10Y = −66</span>
+            <span class="eq">Eq 2: 40X − 18Y = 214</span>
           </div>
           <div class="step k">
-            <b>Eliminate X — multiply Eq 1 by 5:</b>
-            40X − 50Y = −330.
-            Subtract from Eq 2: (40X − 18Y) − (40X − 50Y) = 214 − (−330)
-            32Y = 544  ⇒  <mark><b>Ȳ = 17</b></mark>.
+            <b class="lbl">Eliminate X — multiply Eq 1 by 5</b>
+            <span class="eq first">40X − 50Y = −330.</span>
+            <span class="eq">Subtract from Eq 2: (40X − 18Y) − (40X − 50Y) = 214 − (−330)</span>
+            <span class="eq">32Y = 544  ⇒  <mark><b>Ȳ = 17</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Back-substitute into Eq 1:</b>
-            8X − 10(17) = −66  ⇒  8X = 170 − 66 = 104  ⇒  <mark><b>X̄ = 13</b></mark>.
+            <b class="lbl">Back-substitute into Eq 1</b>
+            <span class="eq first">8X − 10(17) = −66  ⇒  8X = 170 − 66 = 104  ⇒  <mark><b>X̄ = 13</b></mark>.</span>
           </div>
         </div>
 
@@ -4168,32 +4168,32 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
         <div class="steps">
           <div class="step k">
-            <b>Read the slopes from the admissible assignment:</b>
-            Eq 1 as Y on X: 10Y = 8X + 66 ⇒ Y = 0.8X + 6.6 ⇒ <mark><b>b<sub>yx</sub> = 0.8</b></mark>.
-            Eq 2 as X on Y: 40X = 18Y + 214 ⇒ X = 0.45Y + 5.35 ⇒ <mark><b>b<sub>xy</sub> = 0.45</b></mark>.
+            <b class="lbl">Read the slopes from the admissible assignment</b>
+            <span class="eq first">Eq 1 as Y on X: 10Y = 8X + 66 ⇒ Y = 0.8X + 6.6 ⇒ <mark><b>b<sub>yx</sub> = 0.8</b></mark>.</span>
+            <span class="eq">Eq 2 as X on Y: 40X = 18Y + 214 ⇒ X = 0.45Y + 5.35 ⇒ <mark><b>b<sub>xy</sub> = 0.45</b></mark>.</span>
           </div>
         </div>
 
         <h5>(c) Correlation Coefficient r</h5>
         <div class="steps">
           <div class="step k">
-            <b>Apply r² = b<sub>yx</sub>·b<sub>xy</sub>:</b>
-            r = √(b<sub>yx</sub> · b<sub>xy</sub>) = √(0.8 × 0.45) = √0.36 = <mark><b>r = +0.6</b></mark>.
-            Sign is positive because both regression slopes are positive.
+            <b class="lbl">Apply r² = b<sub>yx</sub>·b<sub>xy</sub></b>
+            <span class="eq first">r = √(b<sub>yx</sub> · b<sub>xy</sub>) = √(0.8 × 0.45) = √0.36 = <mark><b>r = +0.6</b></mark>.</span>
+            <span class="eq">Sign is positive because both regression slopes are positive.</span>
           </div>
         </div>
 
         <h5>(d) Standard Deviation of Y</h5>
         <div class="steps">
           <div class="step k">
-            <b>From the variance of X:</b>
-            Var(X) = 9 ⇒ σ<sub>x</sub> = √9 = 3.
+            <b class="lbl">From the variance of X</b>
+            <span class="eq first">Var(X) = 9 ⇒ σ<sub>x</sub> = √9 = 3.</span>
           </div>
           <div class="step k">
-            <b>Use b<sub>yx</sub> = r · σ<sub>y</sub>/σ<sub>x</sub>:</b>
-            0.8 = 0.6 × (σ<sub>y</sub> / 3)
-            0.8 = 0.2 × σ<sub>y</sub>  ⇒  σ<sub>y</sub> = 0.8 / 0.2 = <mark><b>σ<sub>y</sub> = 4</b></mark>.
-            Cross-check with b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>: 0.45 = 0.6 × 3 / σ<sub>y</sub> ⇒ σ<sub>y</sub> = 1.8 / 0.45 = 4 ✓.
+            <b class="lbl">Use b<sub>yx</sub> = r · σ<sub>y</sub>/σ<sub>x</sub></b>
+            <span class="eq first">0.8 = 0.6 × (σ<sub>y</sub> / 3)</span>
+            <span class="eq">0.8 = 0.2 × σ<sub>y</sub>  ⇒  σ<sub>y</sub> = 0.8 / 0.2 = <mark><b>σ<sub>y</sub> = 4</b></mark>.</span>
+            <span class="eq">Cross-check with b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>: 0.45 = 0.6 × 3 / σ<sub>y</sub> ⇒ σ<sub>y</sub> = 1.8 / 0.45 = 4 ✓.</span>
           </div>
         </div>
 
@@ -4263,6 +4263,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) A diagnostic test for a disease is 99% sensitive (P(+ | D) = 0.99) and 95% specific (P(− | D′) = 0.95). The prior prevalence is P(D) = 0.01. A randomly chosen person tests positive — what is P(D | +) ? [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> <b>Curve fitting</b> finds the equation of a line or curve that “passes closest” to scattered data. For a <b>parabola</b> Y = a+bX+cX², you find 3 unknowns. The <b>least squares method</b> minimises the sum of squared vertical distances from each data point to the curve. <b>Bayes theorem</b> (part b) updates a probability when new evidence arrives — like updating “chance of disease” after a test result.</p>
+          <p><b>What does the question want?</b> Part (a): given 5 (X,Y) pairs, fit Y = a+bX+cX² and find a, b, c. Part (b): a diagnostic test is 99% sensitive, 95% specific, disease prevalence 1% — find P(actually has disease | tested positive).</p>
+          <p><b>The key result(s) to remember:</b> For a parabola, write 3 normal equations: (1) ΣY = na+bΣX+cΣX², (2) ΣXY = aΣX+bΣX²+cΣX³, (3) ΣX²Y = aΣX²+bΣX³+cΣX⁴. Compute a Σ-table (X, Y, X², X³, X⁴, XY, X²Y) first. For Bayes: P(D|+) = P(+|D)·P(D) / [P(+|D)·P(D) + P(+|D′)·P(D′)].</p>
+          <p><b>Scary symbol, explained:</b> <b>ΣX³, ΣX⁴</b> = sum of cubes and fourth powers of all X values. <b>Normal equations</b> = a system of 3 simultaneous equations to solve for a, b, c. <b>P(D|+)</b> = probability of disease GIVEN positive test (Bayes posterior). <b>P(+|D′)</b> = false-positive rate = 1 − specificity = 0.05.</p>
+          <p><b>Bare minimum to attempt:</b> Build the Σ-table (7 columns) — most marks come from correct sums. Write out the 3 normal equations with your sums substituted. Even partial table values and 1–2 correct equations earn step marks.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Parabola Y=a+bX+cX²:</b> 3 normal eqs:<br>
           (1) <b>ΣY = na + bΣX + cΣX²</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX² + cΣX³</b> &nbsp; (3) <b>ΣX²Y = aΣX² + bΣX³ + cΣX⁴</b><br>
@@ -4295,32 +4303,32 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Σ-Table (n = 5):</b>
-            ΣX = 0+1+2+3+4 = <b>10</b>;  ΣY = 1+1.8+1.3+2.5+6.3 = <b>12.9</b>.
-            ΣX<sup>2</sup> = 0+1+4+9+16 = <b>30</b>;  ΣX<sup>3</sup> = 0+1+8+27+64 = <b>100</b>;  ΣX<sup>4</sup> = 0+1+16+81+256 = <b>354</b>.
-            ΣXY = 0(1)+1(1.8)+2(1.3)+3(2.5)+4(6.3) = 0+1.8+2.6+7.5+25.2 = <b>37.1</b>.
-            ΣX<sup>2</sup>Y = 0(1)+1(1.8)+4(1.3)+9(2.5)+16(6.3) = 0+1.8+5.2+22.5+100.8 = <b>130.3</b>.
+            <b class="lbl">Σ-Table (n = 5)</b>
+            <span class="eq first">ΣX = 0+1+2+3+4 = <b>10</b>;  ΣY = 1+1.8+1.3+2.5+6.3 = <b>12.9</b>.</span>
+            <span class="eq">ΣX<sup>2</sup> = 0+1+4+9+16 = <b>30</b>;  ΣX<sup>3</sup> = 0+1+8+27+64 = <b>100</b>;  ΣX<sup>4</sup> = 0+1+16+81+256 = <b>354</b>.</span>
+            <span class="eq">ΣXY = 0(1)+1(1.8)+2(1.3)+3(2.5)+4(6.3) = 0+1.8+2.6+7.5+25.2 = <b>37.1</b>.</span>
+            <span class="eq">ΣX<sup>2</sup>Y = 0(1)+1(1.8)+4(1.3)+9(2.5)+16(6.3) = 0+1.8+5.2+22.5+100.8 = <b>130.3</b>.</span>
           </div>
           <div class="step k">
-            <b><mark>Normal equations</mark> (3 unknowns):</b>
-            (1) ΣY = na + b·ΣX + c·ΣX<sup>2</sup>  →  12.9 = 5a + 10b + 30c.
-            (2) ΣXY = a·ΣX + b·ΣX<sup>2</sup> + c·ΣX<sup>3</sup>  →  37.1 = 10a + 30b + 100c.
-            (3) ΣX<sup>2</sup>Y = a·ΣX<sup>2</sup> + b·ΣX<sup>3</sup> + c·ΣX<sup>4</sup>  →  130.3 = 30a + 100b + 354c.
+            <b class="lbl"><mark>Normal equations</mark> (3 unknowns)</b>
+            <span class="eq first">(1) ΣY = na + b·ΣX + c·ΣX<sup>2</sup>  →  12.9 = 5a + 10b + 30c.</span>
+            <span class="eq">(2) ΣXY = a·ΣX + b·ΣX<sup>2</sup> + c·ΣX<sup>3</sup>  →  37.1 = 10a + 30b + 100c.</span>
+            <span class="eq">(3) ΣX<sup>2</sup>Y = a·ΣX<sup>2</sup> + b·ΣX<sup>3</sup> + c·ΣX<sup>4</sup>  →  130.3 = 30a + 100b + 354c.</span>
           </div>
           <div class="step k">
-            <b>Solve 3 × 3 System:</b>
-            (2) − 2·(1): 37.1 − 25.8 = 10b + 40c  →  11.3 = 10b + 40c     … (4)
-            (3) − 6·(1): 130.3 − 77.4 = 40b + 174c  →  52.9 = 40b + 174c     … (5)
-            (5) − 4·(4): 52.9 − 45.2 = 174c − 160c  →  7.7 = 14c  →  <b>c = 0.55</b>.
-            From (4): 10b = 11.3 − 40(0.55) = 11.3 − 22 = −10.7  →  <b>b = −1.07</b>.
-            From (1): 5a = 12.9 − 10(−1.07) − 30(0.55) = 12.9 + 10.7 − 16.5 = 7.1  →  <b>a = 1.42</b>.
+            <b class="lbl">Solve 3 × 3 System</b>
+            <span class="eq first">(2) − 2·(1): 37.1 − 25.8 = 10b + 40c  →  11.3 = 10b + 40c     … (4)</span>
+            <span class="eq">(3) − 6·(1): 130.3 − 77.4 = 40b + 174c  →  52.9 = 40b + 174c     … (5)</span>
+            <span class="eq">(5) − 4·(4): 52.9 − 45.2 = 174c − 160c  →  7.7 = 14c  →  <b>c = 0.55</b>.</span>
+            <span class="eq">From (4): 10b = 11.3 − 40(0.55) = 11.3 − 22 = −10.7  →  <b>b = −1.07</b>.</span>
+            <span class="eq">From (1): 5a = 12.9 − 10(−1.07) − 30(0.55) = 12.9 + 10.7 − 16.5 = 7.1  →  <b>a = 1.42</b>.</span>
           </div>
           <div class="step k">
-            <b>Fitted Parabola:</b>
-            <mark><b>Y = 1.42 − 1.07 X + 0.55 X²</b></mark>.
+            <b class="lbl">Fitted Parabola</b>
+            <span class="eq first"><mark><b>Y = 1.42 − 1.07 X + 0.55 X²</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Verify fit at each X (residuals):</b>
+            <b class="lbl">Verify fit at each X (residuals)</b>
             <div class="table-wrap" style="margin:6px 0;">
               <table>
                 <thead><tr><th>X</th><th>Y (obs)</th><th>Ŷ = 1.42 − 1.07X + 0.55X<sup>2</sup></th><th>Residual Y − Ŷ</th></tr></thead>
@@ -4334,7 +4342,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
                 </tbody>
               </table>
             </div>
-            Residuals sum to 0 (least-squares property); parabola opens upward (c = 0.55 &gt; 0).
+            <span class="eq">Residuals sum to 0 (least-squares property); parabola opens upward (c = 0.55 &gt; 0).</span>
           </div>
         </div>
 
@@ -4404,21 +4412,21 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>State Bayes' formula:</b>
-            P(D | +) = [P(+ | D) · P(D)] / P(+).
-            Total probability: P(+) = P(+ | D) · P(D) + P(+ | D′) · P(D′).
+            <b class="lbl">State Bayes' formula</b>
+            <span class="eq first">P(D | +) = [P(+ | D) · P(D)] / P(+).</span>
+            <span class="eq">Total probability: P(+) = P(+ | D) · P(D) + P(+ | D′) · P(D′).</span>
           </div>
           <div class="step k">
-            <b>Substitute given values:</b>
-            <mark>prior</mark> P(D) = 0.01 ⇒ P(D′) = 0.99.
-            P(+ | D) = 0.99 (<mark>sensitivity</mark>).
-            P(+ | D′) = 1 − 0.95 = 0.05 (false-positive rate = 1 − <mark>specificity</mark>).
-            P(+) = 0.99 × 0.01 + 0.05 × 0.99 = 0.0099 + 0.0495 = <b>0.0594</b>.
+            <b class="lbl">Substitute given values</b>
+            <span class="eq first"><mark>prior</mark> P(D) = 0.01 ⇒ P(D′) = 0.99.</span>
+            <span class="eq">P(+ | D) = 0.99 (<mark>sensitivity</mark>).</span>
+            <span class="eq">P(+ | D′) = 1 − 0.95 = 0.05 (false-positive rate = 1 − <mark>specificity</mark>).</span>
+            <span class="eq">P(+) = 0.99 × 0.01 + 0.05 × 0.99 = 0.0099 + 0.0495 = <b>0.0594</b>.</span>
           </div>
           <div class="step k">
-            <b><mark>Posterior</mark>:</b>
-            P(D | +) = 0.0099 / 0.0594 = <mark><b>P(D | +) = 0.1667 (≈ 16.67%)</b></mark>.
-            Interpretation: even after a positive test, the chance of disease is only ~17% because the prior prevalence (1%) is very low: base-rate fallacy in action.
+            <b class="lbl"><mark>Posterior</mark></b>
+            <span class="eq first">P(D | +) = 0.0099 / 0.0594 = <mark><b>P(D | +) = 0.1667 (≈ 16.67%)</b></mark>.</span>
+            <span class="eq">Interpretation: even after a positive test, the chance of disease is only ~17% because the prior prevalence (1%) is very low: base-rate fallacy in action.</span>
           </div>
         </div>
 
@@ -4474,7 +4482,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q7(a) · Spearman rank (judges) ×2</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q4(a) · joint pdf integral</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(a) · P(X&lt;a ∩ Y&lt;b)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q7(a) · rank correlation</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q7(a) · rank correlation</span>
       </div>
       <div class="qbody">
         <b>(a) Two judges award ranks to 10 candidates as follows. Compute Spearman's rank correlation coefficient. [8 M]</b><br>
@@ -4490,6 +4498,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>(b) The joint pdf of (X, Y) is f(x, y) = 4xy for 0 ≤ x ≤ 1, 0 ≤ y ≤ 1, and 0 elsewhere. Find P(X &lt; ½ ∩ Y &lt; ½) and P(X + Y &lt; 1). [7 M]</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> <b>Spearman rank correlation</b> measures agreement between two judges — not raw scores, but positions (1st, 2nd, 3rd…). ρ = +1 means perfect agreement; ρ = −1 means total disagreement. The <b>joint pdf integral</b> part (b) is the continuous joint distribution: integrate over a region to find a probability.</p>
+          <p><b>What does the question want?</b> Part (a): two judges rank 10 candidates — compute D = rank difference for each candidate, square them, sum to get ΣD², plug into formula. Part (b): given f(x,y)=4xy, find P(X&lt;½ and Y&lt;½) and P(X+Y&lt;1) by double integration.</p>
+          <p><b>The key result(s) to remember:</b> <b>ρ<sub>s</sub> = 1 − 6ΣD² / [n(n²−1)]</b>. For n=10 and ΣD²=10: ρ<sub>s</sub> = 1 − 60/990 = <b>0.9394</b>. For integrals: P(X&lt;½, Y&lt;½) = ∫<sub>0</sub><sup>½</sup>∫<sub>0</sub><sup>½</sup>4xy dy dx = <b>1/16</b>. P(X+Y&lt;1): upper limit of inner integral is 1−x instead of ½.</p>
+          <p><b>Scary symbol, explained:</b> <b>ΣD²</b> = square each rank difference, add all. <b>n(n²−1)</b> = 10×99 = 990 for n=10. <b>∫<sub>0</sub><sup>½</sup>∫<sub>0</sub><sup>½</sup>f dy dx</b> = integrate over y first (holding x fixed), then over x. Inner result: ∫<sub>0</sub><sup>½</sup>4xy dy = 4x·[y²/2]<sub>0</sub><sup>½</sup> = x/2.</p>
+          <p><b>Bare minimum to attempt:</b> List rank differences D for all 10 candidates, square and sum to get ΣD²=10, substitute into formula to get ρ<sub>s</sub>. For part (b), write the double integral limits correctly and evaluate the inner integral — even the setup earns marks.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Spearman:</b> ρ<sub>s</sub> = <b>1 − 6ΣD²/[n(n²−1)]</b> &nbsp;(D = R₁−R₂) · ties → average rank<br>
           <b>Joint integral:</b> P(X&lt;a ∩ Y&lt;b) = <b>∫<sub>0</sub><sup>a</sup>∫<sub>0</sub><sup>b</sup> f(x,y) dy dx</b> · P(X+Y&lt;1) = <b>∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1−x</sup> f(x,y) dy dx</b>
@@ -4555,7 +4571,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Rank-difference table:</b>
+            <b class="lbl">Rank-difference table</b>
             <div class="table-wrap" style="margin:6px 0;">
               <table>
                 <thead><tr><th>Candidate</th><th>R<sub>1</sub></th><th>R<sub>2</sub></th><th>D = R<sub>1</sub> − R<sub>2</sub></th><th>D<sup>2</sup></th></tr></thead>
@@ -4577,18 +4593,18 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
             Sanity: ΣD = 0 always (ranks both sum to n(n + 1)/2). ΣD<sup>2</sup> = 10.
           </div>
           <div class="step k">
-            <b>Apply Spearman formula:</b>
-            ρ<sub>s</sub> = 1 − [6 · ΣD<sup>2</sup>] / [n(n<sup>2</sup> − 1)]
-            = 1 − (6 × 10) / (10 × (100 − 1))
-            = 1 − 60 / 990
-            = 1 − 0.06061
-            = <mark><b>ρ<sub>s</sub> = 0.9394</b></mark>.
-            Strong positive agreement between the two judges: every disagreement is exactly ±1 rank.
+            <b class="lbl">Apply Spearman formula</b>
+            <span class="eq first">ρ<sub>s</sub> = 1 − [6 · ΣD<sup>2</sup>] / [n(n<sup>2</sup> − 1)]</span>
+            <span class="eq">= 1 − (6 × 10) / (10 × (100 − 1))</span>
+            <span class="eq">= 1 − 60 / 990</span>
+            <span class="eq">= 1 − 0.06061</span>
+            <span class="eq">= <mark><b>ρ<sub>s</sub> = 0.9394</b></mark>.</span>
+            <span class="eq">Strong positive agreement between the two judges: every disagreement is exactly ±1 rank.</span>
           </div>
           <div class="step k">
-            <b>Cross-check via Karl Pearson on the ranks:</b>
-            ΣR<sub>1</sub> = ΣR<sub>2</sub> = 55; ΣR<sub>1</sub><sup>2</sup> = ΣR<sub>2</sub><sup>2</sup> = 385; ΣR<sub>1</sub>·R<sub>2</sub> = 1·2 + 2·1 + 3·4 + 4·3 + 5·6 + 6·5 + 7·8 + 8·7 + 9·10 + 10·9 = 2 + 2 + 12 + 12 + 30 + 30 + 56 + 56 + 90 + 90 = 380.
-            r = [10(380) − 55(55)] / [10(385) − 55<sup>2</sup>] = (3800 − 3025) / (3850 − 3025) = 775 / 825 = 0.9394 ✓ matches ρ<sub>s</sub>.
+            <b class="lbl">Cross-check via Karl Pearson on the ranks</b>
+            <span class="eq first">ΣR<sub>1</sub> = ΣR<sub>2</sub> = 55; ΣR<sub>1</sub><sup>2</sup> = ΣR<sub>2</sub><sup>2</sup> = 385; ΣR<sub>1</sub>·R<sub>2</sub> = 1·2 + 2·1 + 3·4 + 4·3 + 5·6 + 6·5 + 7·8 + 8·7 + 9·10 + 10·9 = 2 + 2 + 12 + 12 + 30 + 30 + 56 + 56 + 90 + 90 = 380.</span>
+            <span class="eq">r = [10(380) − 55(55)] / [10(385) − 55<sup>2</sup>] = (3800 − 3025) / (3850 − 3025) = 775 / 825 = 0.9394 ✓ matches ρ<sub>s</sub>.</span>
           </div>
         </div>
 
@@ -4596,28 +4612,28 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <p>For a joint pdf f(x, y), the chance of any region R is P((X, Y) ∈ R) = ∫∫<sub>R</sub> f(x, y) dx dy. When f(x, y) = g(x)·h(y) and the region is a rectangle [a, b] × [c, d], the double integral splits into two single ones — a big shortcut. For non-rectangular regions like X + Y &lt; 1, the inner limit depends on the outer variable. Get it from the boundary line.</p>
         <div class="steps">
           <div class="step k">
-            <b>Verify f(x, y) = 4xy is a valid pdf:</b>
-            Non-negative on [0, 1]<sup>2</sup>. Total mass:
-            ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> 4xy dx dy = 4 · [x<sup>2</sup>/2]<sub>0</sub><sup>1</sup> · [y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = 4 · ½ · ½ = 1 ✓.
-            Note the product structure: f(x, y) = (2x)·(2y) ⇒ X and Y are <b>independent</b> with marginal pdfs f<sub>X</sub>(x) = 2x and f<sub>Y</sub>(y) = 2y on [0, 1].
+            <b class="lbl">Verify f(x, y) = 4xy is a valid pdf</b>
+            <span class="eq first">Non-negative on [0, 1]<sup>2</sup>. Total mass:</span>
+            <span class="eq">∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1</sup> 4xy dx dy = 4 · [x<sup>2</sup>/2]<sub>0</sub><sup>1</sup> · [y<sup>2</sup>/2]<sub>0</sub><sup>1</sup> = 4 · ½ · ½ = 1 ✓.</span>
+            <span class="eq">Note the product structure: f(x, y) = (2x)·(2y) ⇒ X and Y are <b>independent</b> with marginal pdfs f<sub>X</sub>(x) = 2x and f<sub>Y</sub>(y) = 2y on [0, 1].</span>
           </div>
           <div class="step k">
-            <b>(i) P(X &lt; ½ ∩ Y &lt; ½):</b>
-            = ∫<sub>0</sub><sup>1/2</sup>∫<sub>0</sub><sup>1/2</sup> 4xy dx dy
-            = 4 · [x²/2]<sub>0</sub><sup>1/2</sup> · [y²/2]<sub>0</sub><sup>1/2</sup>
-            = 4 · (1/8) · (1/8)
-            = 4 / 64 = <mark><b>P = 1/16 = 0.0625</b></mark>.
+            <b class="lbl">(i) P(X &lt; ½ ∩ Y &lt; ½)</b>
+            <span class="eq first">= ∫<sub>0</sub><sup>1/2</sup>∫<sub>0</sub><sup>1/2</sup> 4xy dx dy</span>
+            <span class="eq">= 4 · [x²/2]<sub>0</sub><sup>1/2</sup> · [y²/2]<sub>0</sub><sup>1/2</sup></span>
+            <span class="eq">= 4 · (1/8) · (1/8)</span>
+            <span class="eq">= 4 / 64 = <mark><b>P = 1/16 = 0.0625</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>(ii) P(X + Y &lt; 1):</b>
-            Triangular region 0 ≤ x ≤ 1, 0 ≤ y ≤ 1 − x.
-            P = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1−x</sup> 4xy dy dx
-            = ∫<sub>0</sub><sup>1</sup> 4x · [y²/2]<sub>0</sub><sup>1−x</sup> dx
-            = ∫<sub>0</sub><sup>1</sup> 2x(1 − x)<sup>2</sup> dx.
-            Expand: 2x(1 − 2x + x²) = 2x − 4x² + 2x³.
-            ∫<sub>0</sub><sup>1</sup> (2x − 4x² + 2x³) dx = [x² − 4x³/3 + x⁴/2]<sub>0</sub><sup>1</sup>
-            = 1 − 4/3 + 1/2 = 6/6 − 8/6 + 3/6 = 1/6.
-            ∴ <mark><b>P(X + Y &lt; 1) = 1/6 ≈ 0.1667</b></mark>.
+            <b class="lbl">(ii) P(X + Y &lt; 1)</b>
+            <span class="eq first">Triangular region 0 ≤ x ≤ 1, 0 ≤ y ≤ 1 − x.</span>
+            <span class="eq">P = ∫<sub>0</sub><sup>1</sup>∫<sub>0</sub><sup>1−x</sup> 4xy dy dx</span>
+            <span class="eq">= ∫<sub>0</sub><sup>1</sup> 4x · [y²/2]<sub>0</sub><sup>1−x</sup> dx</span>
+            <span class="eq">= ∫<sub>0</sub><sup>1</sup> 2x(1 − x)<sup>2</sup> dx.</span>
+            <span class="eq">Expand: 2x(1 − 2x + x²) = 2x − 4x² + 2x³.</span>
+            <span class="eq">∫<sub>0</sub><sup>1</sup> (2x − 4x² + 2x³) dx = [x² − 4x³/3 + x⁴/2]<sub>0</sub><sup>1</sup></span>
+            <span class="eq">= 1 − 4/3 + 1/2 = 6/6 − 8/6 + 3/6 = 1/6.</span>
+            <span class="eq">∴ <mark><b>P(X + Y &lt; 1) = 1/6 ≈ 0.1667</b></mark>.</span>
           </div>
         </div>
 
@@ -4725,12 +4741,20 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q8 [7 M]</span>
         <span class="tag fav">Unit 3</span>
         <span class="tag hot">⭐ Continuous pdf · k, μ, σ²</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ Real May-26 Q3(a) · continuous pdf</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BTech-26 Q3(a) · continuous pdf</span>
       </div>
       <div class="qbody">
         <b>The density function of a random variable X is f(x) = k·x(2 − x), 0 ≤ x ≤ 2 (and 0 elsewhere). Find (i) k, (ii) the mean, (iii) the variance, (iv) the mean deviation about the mean.</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> A <b>probability density function (pdf)</b> is a curve where the area under it equals 1 — because "something must happen." Think of it like a hill: the total land area under the hill is fixed. The constant k just stretches or shrinks the hill so the area is exactly 1.</p>
+          <p><b>What does the question want?</b> Four things in order: (i) find k using total-area = 1; (ii) find the mean (balance point of the distribution = ∫x·f(x) dx); (iii) find the variance (average squared distance from the mean = E(X²) − μ²); (iv) find the mean deviation (average absolute distance from the mean = ∫|x − μ|·f(x) dx).</p>
+          <p><b>The key result(s) to remember:</b> ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 gives k = 3/4. Mean μ = ∫<sub>0</sub><sup>2</sup> x·f(x) dx = 1 (by symmetry of the parabola). Variance σ² = E(X²) − μ² ≈ 0.2. Mean deviation = ∫<sub>0</sub><sup>2</sup> |x−1|·f(x) dx ≈ 0.375.</p>
+          <p><b>Scary symbol, explained:</b> <b>∫</b> = "integral" = area under the curve (add up infinitely many thin slices). <b>E(X)</b> = expected value = weighted average of all possible x values. <b>E(X²)</b> = same but weight x² instead of x. <b>|x − μ|</b> = absolute value = always positive distance from the mean.</p>
+          <p><b>Bare minimum to attempt:</b> Set ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 and solve for k — that's step (i) and earns marks immediately. Then write E(X) = ∫ x·f(x) dx for step (ii). Even if you can't finish the arithmetic, the correct setup earns partial credit.</p>
+        </div>
         <p>For a continuous random variable, the <mark>constant k</mark> is fixed by the <mark>normalisation condition</mark> ∫f(x) dx = 1 over the support. The <mark>mean</mark> is ∫x·f(x) dx, the <mark>variance</mark> is E[X²] − μ², and the <mark>mean deviation about the mean</mark> is E|X − μ|. Here f(x) = k·x(2 − x) is a downward parabola on [0, 2], symmetric about x = 1.</p>
 
         <figure class="diagram-fig">
@@ -4775,37 +4799,37 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>(i) Find k — normalisation:</b>
-            ∫<sub>0</sub><sup>2</sup> k·x(2 − x) dx = k∫<sub>0</sub><sup>2</sup> (2x − x²) dx
-            = k·[x² − x³/3]<sub>0</sub><sup>2</sup>
-            = k·(4 − 8/3)
-            = k·(4/3) = 1
-            ⟹ <mark><b>k = 3/4</b></mark>.
+            <b class="lbl">(i) Find k — normalisation</b>
+            <span class="eq first">∫<sub>0</sub><sup>2</sup> k·x(2 − x) dx = k∫<sub>0</sub><sup>2</sup> (2x − x²) dx</span>
+            <span class="eq">= k·[x² − x³/3]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= k·(4 − 8/3)</span>
+            <span class="eq">= k·(4/3) = 1</span>
+            <span class="eq">⟹ <mark><b>k = 3/4</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>(ii) Mean μ = ∫x·f(x) dx:</b>
-            μ = (3/4)∫<sub>0</sub><sup>2</sup> x·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x² − x³) dx
-            = (3/4)·[2x³/3 − x⁴/4]<sub>0</sub><sup>2</sup>
-            = (3/4)·(16/3 − 4)
-            = (3/4)·(4/3) = <mark><b>μ = 1</b></mark>.
-            (As expected from the symmetry about x = 1.)
+            <b class="lbl">(ii) Mean μ = ∫x·f(x) dx</b>
+            <span class="eq first">μ = (3/4)∫<sub>0</sub><sup>2</sup> x·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x² − x³) dx</span>
+            <span class="eq">= (3/4)·[2x³/3 − x⁴/4]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= (3/4)·(16/3 − 4)</span>
+            <span class="eq">= (3/4)·(4/3) = <mark><b>μ = 1</b></mark>.</span>
+            <span class="eq">(As expected from the symmetry about x = 1.)</span>
           </div>
           <div class="step k">
-            <b>(iii) Variance = E[X²] − μ²:</b>
-            E[X²] = (3/4)∫<sub>0</sub><sup>2</sup> x²·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x³ − x⁴) dx
-            = (3/4)·[x⁴/2 − x⁵/5]<sub>0</sub><sup>2</sup>
-            = (3/4)·(8 − 32/5)
-            = (3/4)·(8/5) = 6/5 = 1.2.
-            σ² = E[X²] − μ² = 1.2 − 1 = <mark><b>0.2</b></mark>   (so SD σ = √0.2 ≈ 0.447).
+            <b class="lbl">(iii) Variance = E[X²] − μ²</b>
+            <span class="eq first">E[X²] = (3/4)∫<sub>0</sub><sup>2</sup> x²·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x³ − x⁴) dx</span>
+            <span class="eq">= (3/4)·[x⁴/2 − x⁵/5]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= (3/4)·(8 − 32/5)</span>
+            <span class="eq">= (3/4)·(8/5) = 6/5 = 1.2.</span>
+            <span class="eq">σ² = E[X²] − μ² = 1.2 − 1 = <mark><b>0.2</b></mark>   (so SD σ = √0.2 ≈ 0.447).</span>
           </div>
           <div class="step k">
-            <b>(iv) Mean deviation about the mean = E|X − 1|:</b>
-            Since f is symmetric about x = 1, E|X − 1| = 2∫<sub>1</sub><sup>2</sup> (x − 1)·(3/4)x(2 − x) dx.
-            Inner: ∫<sub>1</sub><sup>2</sup> (x − 1)(2x − x²) dx = ∫<sub>1</sub><sup>2</sup> (3x² − x³ − 2x) dx
-            = [x³ − x⁴/4 − x²]<sub>1</sub><sup>2</sup>
-            = (8 − 4 − 4) − (1 − 0.25 − 1)
-            = 0 − (−0.25) = 0.25.
-            ∴ MD = 2·(3/4)·0.25 = <mark><b>3/8 = 0.375</b></mark>.
+            <b class="lbl">(iv) Mean deviation about the mean = E|X − 1|</b>
+            <span class="eq first">Since f is symmetric about x = 1, E|X − 1| = 2∫<sub>1</sub><sup>2</sup> (x − 1)·(3/4)x(2 − x) dx.</span>
+            <span class="eq">Inner: ∫<sub>1</sub><sup>2</sup> (x − 1)(2x − x²) dx = ∫<sub>1</sub><sup>2</sup> (3x² − x³ − 2x) dx</span>
+            <span class="eq">= [x³ − x⁴/4 − x²]<sub>1</sub><sup>2</sup></span>
+            <span class="eq">= (8 − 4 − 4) − (1 − 0.25 − 1)</span>
+            <span class="eq">= 0 − (−0.25) = 0.25.</span>
+            <span class="eq">∴ MD = 2·(3/4)·0.25 = <mark><b>3/8 = 0.375</b></mark>.</span>
           </div>
         </div>
 
@@ -4851,6 +4875,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>In a normal distribution, 31% of the items are below 45 and 8% are above 64. Find the mean and standard deviation. (Use Φ(0.50) = 0.69, Φ(1.40) = 0.92.)</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> Usually in Normal distribution problems you're given μ and σ and asked to find a probability. This question flips it: you're given two probabilities (31% below 45, 8% above 64) and asked to find μ and σ. It's like knowing the shape of a bell curve from two clues and working backwards to pin down where it's centred and how wide it is.</p>
+          <p><b>What does the question want?</b> Find the mean μ and standard deviation σ of a Normal distribution, given that 31% of values lie below 45 and 8% lie above 64. Two unknowns, two equations — solve simultaneously.</p>
+          <p><b>The key result(s) to remember:</b> Standardise with <b>Z = (X − μ) / σ</b>. From the Z-table hints: Φ(0.50) = 0.69 and Φ(1.40) = 0.92. So 31% below 45 → z = −0.50; 8% above 64 → z = +1.40. Two equations: (45 − μ)/σ = −0.50 and (64 − μ)/σ = +1.40. Subtract to get <b>σ = 10</b>, then back-substitute to get <b>μ = 50</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>Φ(z)</b> = area to the LEFT of z on the standard Normal curve (from the Z-table). <b>Φ(−z) = 1 − Φ(z)</b> — for negative z values. "31% below" means Φ(z) = 0.31, so z is negative. "8% above" means Φ(z) = 0.92, so z is positive.</p>
+          <p><b>Bare minimum to attempt:</b> Write the two Z-equations using (X − μ)/σ = z. Subtract them to cancel μ and find σ. Then substitute back for μ. If you set up both equations correctly you've earned most of the marks — the algebra is straightforward.</p>
+        </div>
         <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
           <b>⚡ Quick Recall — Inverse Normal:</b> set up two z-equations: (x₁−μ)/σ = z₁, (x₂−μ)/σ = z₂<br>
           Subtract to eliminate μ: σ = <b>(x₂−x₁)/(z₂−z₁)</b> · then μ = <b>x₁ − z₁·σ</b> · symmetric dist (17% both sides) → z₁ = −z₂ so μ = (x₁+x₂)/2 first
@@ -4875,25 +4907,25 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Lower tail → first equation:</b>
-            P(X &lt; 45) = 0.31. The z is <mark>negative</mark> (below the mean). Φ(−0.50) = 1 − 0.69 = 0.3085 ≈ 0.31.
-            ⟹ (45 − μ)/σ = <mark>−0.50</mark>   …(1)
+            <b class="lbl">Lower tail → first equation</b>
+            <span class="eq first">P(X &lt; 45) = 0.31. The z is <mark>negative</mark> (below the mean). Φ(−0.50) = 1 − 0.69 = 0.3085 ≈ 0.31.</span>
+            <span class="eq">⟹ (45 − μ)/σ = <mark>−0.50</mark>   …(1)</span>
           </div>
           <div class="step k">
-            <b>Upper tail → second equation:</b>
-            P(X &gt; 64) = 0.08 ⟹ P(X &lt; 64) = 0.92. Φ(1.40) = 0.92.
-            ⟹ (64 − μ)/σ = <mark>+1.40</mark>   …(2)
+            <b class="lbl">Upper tail → second equation</b>
+            <span class="eq first">P(X &gt; 64) = 0.08 ⟹ P(X &lt; 64) = 0.92. Φ(1.40) = 0.92.</span>
+            <span class="eq">⟹ (64 − μ)/σ = <mark>+1.40</mark>   …(2)</span>
           </div>
           <div class="step k">
-            <b>Subtract (1) from (2) to eliminate μ:</b>
-            (64 − 45) = σ·[1.40 − (−0.50)]
-            ⟹ 19 = 1.90·σ
-            ⟹ <mark><b>σ = 10</b></mark>.
+            <b class="lbl">Subtract (1) from (2) to eliminate μ</b>
+            <span class="eq first">(64 − 45) = σ·[1.40 − (−0.50)]</span>
+            <span class="eq">⟹ 19 = 1.90·σ</span>
+            <span class="eq">⟹ <mark><b>σ = 10</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Back-substitute into (1):</b>
-            45 − μ = −0.50 × 10 = −5
-            ⟹ μ = 45 + 5 = <mark><b>μ = 50</b></mark>.
+            <b class="lbl">Back-substitute into (1)</b>
+            <span class="eq first">45 − μ = −0.50 × 10 = −5</span>
+            <span class="eq">⟹ μ = 45 + 5 = <mark><b>μ = 50</b></mark>.</span>
           </div>
         </div>
 
@@ -4926,6 +4958,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>The median of the following frequency distribution is 24. Find the missing frequency x. Classes (frequency): 0–10 (5), 10–20 (25), 20–30 (x), 30–40 (18), 40–50 (7).</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The <b>median</b> is the middle value — half the data falls below it, half above. In a grouped frequency table, the median falls inside one specific class (called the median class). There's a formula to find the exact median value from that class. Here the median is given (= 24) but one frequency (x) is missing — so we use the formula in reverse to find x.</p>
+          <p><b>What does the question want?</b> Use the grouped-data median formula to set up an equation in x, then solve for x. Nothing else.</p>
+          <p><b>The key result(s) to remember:</b> <b>Median M = L + [(N/2 − cf) / f] × h</b>, where L = lower boundary of the median class, N = total frequency, cf = cumulative frequency before the median class, f = frequency of the median class, h = class width. Here: 24 lies in class 20–30 → L = 20, h = 10, cf = 30. Solve to get <b>x = 25</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>cf</b> = cumulative frequency = sum of all frequencies BEFORE the median class. <b>N/2</b> = the "halfway point" of total data. <b>L</b> = the left boundary of the median class (where it starts). <b>h</b> = class width (here all classes are width 10).</p>
+          <p><b>Bare minimum to attempt:</b> First add up all frequencies to get N. Then decide which class contains the median (= 24 is in class 20–30). Write the median formula with L = 20, cf = 30, h = 10, f = x, M = 24. Solve for x. Even just writing the formula and identifying the class earns marks.</p>
+        </div>
         <p>When the <mark>median is given</mark> but one frequency is unknown, identify the <mark>median class</mark> (the class containing the given median value), plug the values into the grouped-data <mark>median formula</mark> M = L + [(N/2 − cf)/f]·h, and solve the resulting equation for the missing frequency x.</p>
 
         <figure class="diagram-fig">
@@ -5000,29 +5040,29 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Total frequency and median class:</b>
-            N = 5 + 25 + x + 18 + 7 = <mark>55 + x</mark>.
-            Median = 24 lies in class <mark>20–30</mark> ⟹ median class is 20–30, with
-            L = 20, class-width h = 10, f = x, and cf (before median class) = 5 + 25 = 30.
+            <b class="lbl">Total frequency and median class</b>
+            <span class="eq first">N = 5 + 25 + x + 18 + 7 = <mark>55 + x</mark>.</span>
+            <span class="eq">Median = 24 lies in class <mark>20–30</mark> ⟹ median class is 20–30, with</span>
+            <span class="eq">L = 20, class-width h = 10, f = x, and cf (before median class) = 5 + 25 = 30.</span>
           </div>
           <div class="step k">
-            <b>Apply the median formula:</b>
-            M = L + [(N/2 − cf)/f]·h
-            ⟹ 24 = 20 + [((55 + x)/2 − 30)/x]·10.
+            <b class="lbl">Apply the median formula</b>
+            <span class="eq first">M = L + [(N/2 − cf)/f]·h</span>
+            <span class="eq">⟹ 24 = 20 + [((55 + x)/2 − 30)/x]·10.</span>
           </div>
           <div class="step k">
-            <b>Solve for x:</b>
-            24 − 20 = [((55 + x)/2 − 30)/x]·10
-            ⟹ 4 = [((55 + x)/2 − 30)/x]·10
-            ⟹ 0.4x = (55 + x)/2 − 30
-            ⟹ 0.4x = 0.5x − 2.5
-            ⟹ −0.1x = −2.5
-            ⟹ <mark><b>x = 25</b></mark>.
+            <b class="lbl">Solve for x</b>
+            <span class="eq first">24 − 20 = [((55 + x)/2 − 30)/x]·10</span>
+            <span class="eq">⟹ 4 = [((55 + x)/2 − 30)/x]·10</span>
+            <span class="eq">⟹ 0.4x = (55 + x)/2 − 30</span>
+            <span class="eq">⟹ 0.4x = 0.5x − 2.5</span>
+            <span class="eq">⟹ −0.1x = −2.5</span>
+            <span class="eq">⟹ <mark><b>x = 25</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Check:</b>
-            N = 55 + 25 = 80, N/2 = 40.
-            M = 20 + [(40 − 30)/25]·10 = 20 + (10/25)·10 = 20 + 4 = 24 ✓ (matches the given median).
+            <b class="lbl">Check</b>
+            <span class="eq first">N = 55 + 25 = 80, N/2 = 40.</span>
+            <span class="eq">M = 20 + [(40 − 30)/25]·10 = 20 + (10/25)·10 = 20 + 4 = 24 ✓ (matches the given median).</span>
           </div>
         </div>
 
@@ -5055,6 +5095,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>Two fair dice are thrown. Let D = |X − Y| be the absolute difference of the two faces. Find E(D) and Var(D).</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> You roll two dice and look at how far apart the two numbers are — the absolute difference D = |X − Y|. D can be 0 (both same), 1 (one apart), 2 (two apart), …, up to 5 (one shows 1, other shows 6). We want the "long-run average" of D (called the expectation E(D)) and how much D varies around that average (the variance Var(D)).</p>
+          <p><b>What does the question want?</b> Build the probability table for D (how many of the 36 outcomes give each value of D), then use E(D) = Σ d·P(d) and Var(D) = E(D²) − [E(D)]² to compute the two answers.</p>
+          <p><b>The key result(s) to remember:</b> Total outcomes = 36. Counts by value of D: D=0 → 6 outcomes, D=1 → 10, D=2 → 8, D=3 → 6, D=4 → 4, D=5 → 2 (these add to 36 ✓). <b>E(D) = 70/36 = 35/18 ≈ 1.94</b>. <b>Var(D) = 665/324 ≈ 2.05</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>E(D)</b> = expected value = weighted average of D over all 36 outcomes. <b>E(D²)</b> = same but square each D first. <b>Var(D)</b> = E(D²) − [E(D)]² — always this formula. <b>|X − Y|</b> = absolute value = always positive (e.g. |2 − 5| = 3, |5 − 2| = 3).</p>
+          <p><b>Bare minimum to attempt:</b> Draw a 6×6 grid of outcomes (or just count systematically): D=0 when both same (6 pairs), D=1 when adjacent (10 pairs), etc. Once the table is correct, E(D) = Σ d × (count/36). Even a partial correct table earns marks.</p>
+        </div>
         <p>With two fair dice there are <mark>36 equally-likely</mark> outcomes. First build the <mark>probability distribution</mark> of D = |X − Y| by counting how many of the 36 pairs give each absolute difference, then use <mark>E(D) = Σ d·P(d)</mark> and <mark>Var(D) = E(D²) − [E(D)]²</mark>.</p>
 
         <figure class="diagram-fig">
@@ -5122,22 +5170,22 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Expectation E(D) = Σ d·P(d):</b>
-            E(D) = (0·6 + 1·10 + 2·8 + 3·6 + 4·4 + 5·2)/36
-            = (0 + 10 + 16 + 18 + 16 + 10)/36
-            = 70/36 = <mark><b>35/18 ≈ 1.944</b></mark>.
+            <b class="lbl">Expectation E(D) = Σ d·P(d)</b>
+            <span class="eq first">E(D) = (0·6 + 1·10 + 2·8 + 3·6 + 4·4 + 5·2)/36</span>
+            <span class="eq">= (0 + 10 + 16 + 18 + 16 + 10)/36</span>
+            <span class="eq">= 70/36 = <mark><b>35/18 ≈ 1.944</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Second moment E(D²) = Σ d²·P(d):</b>
-            E(D²) = (0²·6 + 1²·10 + 2²·8 + 3²·6 + 4²·4 + 5²·2)/36
-            = (0 + 10 + 32 + 54 + 64 + 50)/36
-            = 210/36 = 35/6 ≈ 5.833.
+            <b class="lbl">Second moment E(D²) = Σ d²·P(d)</b>
+            <span class="eq first">E(D²) = (0²·6 + 1²·10 + 2²·8 + 3²·6 + 4²·4 + 5²·2)/36</span>
+            <span class="eq">= (0 + 10 + 32 + 54 + 64 + 50)/36</span>
+            <span class="eq">= 210/36 = 35/6 ≈ 5.833.</span>
           </div>
           <div class="step k">
-            <b>Variance Var(D) = E(D²) − [E(D)]²:</b>
-            Var(D) = 35/6 − (35/18)²
-            = 1890/324 − 1225/324
-            = <mark><b>665/324 ≈ 2.053</b></mark>.
+            <b class="lbl">Variance Var(D) = E(D²) − [E(D)]²</b>
+            <span class="eq first">Var(D) = 35/6 − (35/18)²</span>
+            <span class="eq">= 1890/324 − 1225/324</span>
+            <span class="eq">= <mark><b>665/324 ≈ 2.053</b></mark>.</span>
           </div>
         </div>
 
@@ -5175,6 +5223,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         MGF and hence obtain the mean and variance.</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The <b>Moment Generating Function (MGF)</b> is a single formula M(t) = E[e<sup>tX</sup>] that "stores" all the information about a distribution. Think of it as a magic box — you put in the distribution, and if you differentiate once you get the mean, differentiate twice you get E(X²), and so on. Part (a) uses a triangular pdf (a tent-shaped curve), Part (b) uses the Geometric distribution (counting coin tosses until first heads).</p>
+          <p><b>What does the question want?</b> Part (a): compute ∫e<sup>tx</sup>·f(x) dx for the triangular pdf (split into two integrals over [0,1] and [1,2]), then differentiate at t = 0 to find mean and variance. Part (b): compute Σ e<sup>tx</sup>·P(X=x) for the Geometric distribution (it's a geometric series), then differentiate at t = 0.</p>
+          <p><b>The key result(s) to remember:</b> For the Geometric(p) distribution, <b>MGF = pe<sup>t</sup> / (1 − qe<sup>t</sup>)</b>, <b>Mean = 1/p</b>, <b>Var = q/p²</b>. For the triangular distribution M(t) = 2(e<sup>t</sup>−1)²/t² with Mean = 1, Var = 1/6.</p>
+          <p><b>Scary symbol, explained:</b> <b>M(t)</b> = MGF evaluated at t. <b>M′(0)</b> = first derivative at t = 0 = Mean. <b>M″(0)</b> = second derivative at t = 0 = E(X²). <b>Σ</b> (capital sigma) = "sum over all values." A geometric series Σ (qe<sup>t</sup>)<sup>x−1</sup> = 1/(1−qe<sup>t</sup>) — this is the key formula for Part (b).</p>
+          <p><b>Bare minimum to attempt:</b> For Part (b), write P(X=x) = q<sup>x−1</sup>p, so M(t) = Σ e<sup>tx</sup>·q<sup>x−1</sup>p = (p/q)·Σ(qe<sup>t</sup>)<sup>x</sup> — factor and sum the geometric series. That derivation alone earns most marks. For Part (a), just setting up the two integrals with correct limits earns the setup marks.</p>
+        </div>
 
         <h5>Part (a): MGF of the Triangular Distribution</h5>
 
@@ -5183,35 +5239,36 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Evaluate I₁ = ∫₀¹ x e<sup>tx</sup> dx by integration by parts:</b>
-            I₁ = [x · e<sup>tx</sup>/t]₀¹ − ∫₀¹ e<sup>tx</sup>/t dx
-            = e<sup>t</sup>/t − [e<sup>tx</sup>/t²]₀¹
-            = e<sup>t</sup>/t − (e<sup>t</sup> − 1)/t².
+            <b class="lbl">Evaluate I₁ = ∫₀¹ x e<sup>tx</sup> dx by integration by parts</b>
+            <span class="eq first">I₁ = [x · e<sup>tx</sup>/t]₀¹ − ∫₀¹ e<sup>tx</sup>/t dx</span>
+            <span class="eq">= e<sup>t</sup>/t − [e<sup>tx</sup>/t²]₀¹</span>
+            <span class="eq">= e<sup>t</sup>/t − (e<sup>t</sup> − 1)/t².</span>
           </div>
           <div class="step k">
-            <b>Evaluate I₂ = ∫₁² (2−x) e<sup>tx</sup> dx by integration by parts:</b>
-            I₂ = [(2−x) · e<sup>tx</sup>/t]₁² + ∫₁² e<sup>tx</sup>/t dx
-            = (0 − e<sup>t</sup>/t) + [e<sup>tx</sup>/t²]₁²
-            = −e<sup>t</sup>/t + (e<sup>2t</sup> − e<sup>t</sup>)/t².
+            <b class="lbl">Evaluate I₂ = ∫₁² (2−x) e<sup>tx</sup> dx by integration by parts</b>
+            <span class="eq first">I₂ = [(2−x) · e<sup>tx</sup>/t]₁² + ∫₁² e<sup>tx</sup>/t dx</span>
+            <span class="eq">= (0 − e<sup>t</sup>/t) + [e<sup>tx</sup>/t²]₁²</span>
+            <span class="eq">= −e<sup>t</sup>/t + (e<sup>2t</sup> − e<sup>t</sup>)/t².</span>
           </div>
           <div class="step k">
-            <b>Combine M(t) = I₁ + I₂:</b>
-            M(t) = e<sup>t</sup>/t − (e<sup>t</sup>−1)/t² − e<sup>t</sup>/t + (e<sup>2t</sup>−e<sup>t</sup>)/t²
-            = [−e<sup>t</sup> + 1 + e<sup>2t</sup> − e<sup>t</sup>] / t²
-            = (e<sup>2t</sup> − 2e<sup>t</sup> + 1) / t²
-            = <mark><b>(e<sup>t</sup> − 1)² / t²</b></mark>.
+            <b class="lbl">Combine M(t) = I₁ + I₂</b>
+            <span class="eq first">M(t) = e<sup>t</sup>/t − (e<sup>t</sup>−1)/t² − e<sup>t</sup>/t + (e<sup>2t</sup>−e<sup>t</sup>)/t²</span>
+            <span class="eq">= [−e<sup>t</sup> + 1 + e<sup>2t</sup> − e<sup>t</sup>] / t²</span>
+            <span class="eq">= (e<sup>2t</sup> − 2e<sup>t</sup> + 1) / t²</span>
+            <span class="eq">= <mark><b>(e<sup>t</sup> − 1)² / t²</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Mean = M′(0): expand (e<sup>t</sup>−1)² = t² + t³ + 7t⁴/12 + … , so M(t) = 1 + t + 7t²/12 + …</b>
-            M′(0) = coefficient of t in power series = <mark><b>E(X) = 1</b></mark>.
+            <b class="lbl">Mean = M′(0)</b>
+            <span class="eq first">Expand (e<sup>t</sup>−1)² = t² + t³ + 7t⁴/12 + … , so M(t) = 1 + t + 7t²/12 + …</span>
+            <span class="eq">M′(0) = coefficient of t in power series = <mark><b>E(X) = 1</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Second moment = M″(0):</b>
-            M″(0) = 2 × coefficient of t² = 2 × 7/12 = <mark><b>E(X²) = 7/6</b></mark>.
+            <b class="lbl">Second moment = M″(0)</b>
+            <span class="eq first">M″(0) = 2 × coefficient of t² = 2 × 7/12 = <mark><b>E(X²) = 7/6</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Variance = E(X²) − [E(X)]²:</b>
-            Var(X) = 7/6 − 1² = <mark><b>1/6</b></mark>.
+            <b class="lbl">Variance = E(X²) − [E(X)]²</b>
+            <span class="eq first">Var(X) = 7/6 − 1² = <mark><b>1/6</b></mark>.</span>
           </div>
         </div>
 
@@ -5221,25 +5278,25 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>MGF definition:</b>
-            M(t) = E[e<sup>tX</sup>] = Σ<sub>x=1</sub><sup>∞</sup> e<sup>tx</sup> q<sup>x−1</sup> p
-            = pe<sup>t</sup> Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup>.
+            <b class="lbl">MGF definition</b>
+            <span class="eq first">M(t) = E[e<sup>tX</sup>] = Σ<sub>x=1</sub><sup>∞</sup> e<sup>tx</sup> q<sup>x−1</sup> p</span>
+            <span class="eq">= pe<sup>t</sup> Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup>.</span>
           </div>
           <div class="step k">
-            <b>Sum as geometric series (valid when qe<sup>t</sup> &lt; 1):</b>
-            Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup> = 1/(1 − qe<sup>t</sup>).
-            ∴ <mark><b>M(t) = pe<sup>t</sup> / (1 − qe<sup>t</sup>)</b></mark>.
+            <b class="lbl">Sum as geometric series (valid when qe<sup>t</sup> &lt; 1)</b>
+            <span class="eq first">Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup> = 1/(1 − qe<sup>t</sup>).</span>
+            <span class="eq">∴ <mark><b>M(t) = pe<sup>t</sup> / (1 − qe<sup>t</sup>)</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Mean = M′(0):</b>
-            M′(t) = [pe<sup>t</sup>(1−qe<sup>t</sup>) + pe<sup>t</sup>·qe<sup>t</sup>] / (1−qe<sup>t</sup>)²
-            = pe<sup>t</sup> / (1−qe<sup>t</sup>)².
-            M′(0) = p / (1−q)² = p / p² = <mark><b>1/p</b></mark>.
+            <b class="lbl">Mean = M′(0)</b>
+            <span class="eq first">M′(t) = [pe<sup>t</sup>(1−qe<sup>t</sup>) + pe<sup>t</sup>·qe<sup>t</sup>] / (1−qe<sup>t</sup>)²</span>
+            <span class="eq">= pe<sup>t</sup> / (1−qe<sup>t</sup>)².</span>
+            <span class="eq">M′(0) = p / (1−q)² = p / p² = <mark><b>1/p</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Second moment M″(0):</b>
-            Differentiating again and evaluating at t = 0 gives E(X²) = (2−p)/p².
-            Var(X) = E(X²) − [E(X)]² = (2−p)/p² − 1/p² = <mark><b>q/p²</b></mark>.
+            <b class="lbl">Second moment M″(0)</b>
+            <span class="eq first">Differentiating again and evaluating at t = 0 gives E(X²) = (2−p)/p².</span>
+            <span class="eq">Var(X) = E(X²) − [E(X)]² = (2−p)/p² − 1/p² = <mark><b>q/p²</b></mark>.</span>
           </div>
         </div>
 
@@ -5321,6 +5378,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         −1.5, 17, −30, 108. Find the moments about the mean and calculate β₁ and β₂.</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> Part (a) is a classic Binomial problem: drawing cards "with replacement" means each draw is independent and the probability stays the same. Part (b) is about <b>moments</b> — numbers that describe the shape of a distribution. "Moments about value 4" means someone computed averages using A = 4 as the centre instead of the true mean; now you have to convert them to moments about the actual mean.</p>
+          <p><b>What does the question want?</b> Part (a): find mean and variance of the number of kings in 2 draws (with replacement). Part (b): given four "raw moments" μ₁′, μ₂′, μ₃′, μ₄′ about A = 4, convert to central moments μ₂, μ₃, μ₄ about the mean, then calculate β₁ (skewness) and β₂ (kurtosis).</p>
+          <p><b>The key result(s) to remember:</b> Part (a): p = 4/52 = 1/13 (kings in a deck), n = 2. <b>Mean = np = 2/13</b>, <b>Var = npq = 24/169</b>. Part (b): conversion formulas: μ₂ = μ₂′ − (μ₁′)²; μ₃ = μ₃′ − 3μ₂′μ₁′ + 2(μ₁′)³; μ₄ = μ₄′ − 4μ₃′μ₁′ + 6μ₂′(μ₁′)² − 3(μ₁′)⁴. Then <b>β₁ = μ₃²/μ₂³</b>, <b>β₂ = μ₄/μ₂²</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>μ₁′</b> (mu-one-prime) = first raw moment about A = 4 = E(X − 4). <b>μᵣ</b> (central moment) = E[(X − mean)<sup>r</sup>] — measured about the TRUE mean. <b>β₁</b> (beta-one) = skewness coefficient, tells if the distribution leans left or right. <b>β₂</b> (beta-two) = kurtosis, tells if the distribution is more peaked or flat compared to Normal (Normal has β₂ = 3).</p>
+          <p><b>Bare minimum to attempt:</b> Part (a): identify p = 1/13, n = 2, write Mean = 2/13, Var = 24/169 — that's it. Part (b): memorise the three shift formulas, plug in the given numbers. Even computing just μ₂ = 17 − 2.25 = 14.75 earns partial marks.</p>
+        </div>
 
         <h5>Part (a): Number of Kings in 2 Draws with Replacement</h5>
 
@@ -5329,19 +5394,19 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Probability distribution table:</b>
-            P(X = 0) = q² = (12/13)² = 144/169.
-            P(X = 1) = 2pq = 2·(1/13)·(12/13) = 24/169.
-            P(X = 2) = p² = (1/13)² = 1/169.
-            Check: 144 + 24 + 1 = 169 ✓
+            <b class="lbl">Probability distribution table</b>
+            <span class="eq first">P(X = 0) = q² = (12/13)² = 144/169.</span>
+            <span class="eq">P(X = 1) = 2pq = 2·(1/13)·(12/13) = 24/169.</span>
+            <span class="eq">P(X = 2) = p² = (1/13)² = 1/169.</span>
+            <span class="eq">Check: 144 + 24 + 1 = 169 ✓</span>
           </div>
           <div class="step k">
-            <b>Mean = np:</b>
-            E(X) = 2 × (1/13) = <mark><b>2/13 ≈ 0.154</b></mark>.
+            <b class="lbl">Mean = np</b>
+            <span class="eq first">E(X) = 2 × (1/13) = <mark><b>2/13 ≈ 0.154</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Variance = npq:</b>
-            Var(X) = 2 × (1/13) × (12/13) = 24/169 ≈ <mark><b>0.142</b></mark>.
+            <b class="lbl">Variance = npq</b>
+            <span class="eq first">Var(X) = 2 × (1/13) × (12/13) = 24/169 ≈ <mark><b>0.142</b></mark>.</span>
           </div>
         </div>
 
@@ -5365,32 +5430,32 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>μ₂ (central) = μ₂′ − (μ₁′)²:</b>
-            μ₂ = 17 − (−1.5)² = 17 − 2.25 = <mark><b>14.75</b></mark>.
+            <b class="lbl">μ₂ (central) = μ₂′ − (μ₁′)²</b>
+            <span class="eq first">μ₂ = 17 − (−1.5)² = 17 − 2.25 = <mark><b>14.75</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>μ₃ = μ₃′ − 3μ₂′μ₁′ + 2(μ₁′)³:</b>
-            = −30 − 3(17)(−1.5) + 2(−1.5)³
-            = −30 + 76.5 + 2(−3.375)
-            = −30 + 76.5 − 6.75
-            = <mark><b>39.75</b></mark>.
+            <b class="lbl">μ₃ = μ₃′ − 3μ₂′μ₁′ + 2(μ₁′)³</b>
+            <span class="eq first">= −30 − 3(17)(−1.5) + 2(−1.5)³</span>
+            <span class="eq">= −30 + 76.5 + 2(−3.375)</span>
+            <span class="eq">= −30 + 76.5 − 6.75</span>
+            <span class="eq">= <mark><b>39.75</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>μ₄ = μ₄′ − 4μ₃′μ₁′ + 6μ₂′(μ₁′)² − 3(μ₁′)⁴:</b>
-            = 108 − 4(−30)(−1.5) + 6(17)(−1.5)² − 3(−1.5)⁴
-            = 108 − 180 + 6(17)(2.25) − 3(5.0625)
-            = 108 − 180 + 229.5 − 15.1875
-            = <mark><b>142.3125</b></mark>.
+            <b class="lbl">μ₄ = μ₄′ − 4μ₃′μ₁′ + 6μ₂′(μ₁′)² − 3(μ₁′)⁴</b>
+            <span class="eq first">= 108 − 4(−30)(−1.5) + 6(17)(−1.5)² − 3(−1.5)⁴</span>
+            <span class="eq">= 108 − 180 + 6(17)(2.25) − 3(5.0625)</span>
+            <span class="eq">= 108 − 180 + 229.5 − 15.1875</span>
+            <span class="eq">= <mark><b>142.3125</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>β₁ = μ₃² / μ₂³:</b>
-            μ₂³ = 14.75³ ≈ 3209.05.
-            β₁ = 39.75² / 14.75³ = 1580.06 / 3209.05 ≈ <mark><b>0.492</b></mark>.
+            <b class="lbl">β₁ = μ₃² / μ₂³</b>
+            <span class="eq first">μ₂³ = 14.75³ ≈ 3209.05.</span>
+            <span class="eq">β₁ = 39.75² / 14.75³ = 1580.06 / 3209.05 ≈ <mark><b>0.492</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>β₂ = μ₄ / μ₂²:</b>
-            μ₂² = 14.75² = 217.5625.
-            β₂ = 142.3125 / 217.5625 ≈ <mark><b>0.654</b></mark>.
+            <b class="lbl">β₂ = μ₄ / μ₂²</b>
+            <span class="eq first">μ₂² = 14.75² = 217.5625.</span>
+            <span class="eq">β₂ = 142.3125 / 217.5625 ≈ <mark><b>0.654</b></mark>.</span>
           </div>
         </div>
 
@@ -5462,6 +5527,14 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <b>Show that for a <mark>Normal distribution</mark> N(μ, σ²) all odd-order central moments vanish, and that even-order central moments satisfy the recurrence μ<sub>2n</sub> = (2n − 1) σ² · μ<sub>2n−2</sub>. Evaluate μ₂, μ₄, μ₆ and hence find β₁ and β₂.</b>
       </div>
       <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The Normal (bell-shaped) distribution is perfectly symmetric around its mean μ. That symmetry has a beautiful consequence: if you measure how spread out values are on the left vs right in an "odd" way (odd moments), they cancel out exactly — the result is zero. Even moments (μ₂, μ₄, μ₆) don't cancel and follow a neat pattern called a <b>recurrence formula</b> — each one is just (2n−1) times σ² times the previous one.</p>
+          <p><b>What does the question want?</b> Three things: (1) Argue why odd central moments (μ₁, μ₃, μ₅, …) are all zero (symmetry); (2) Derive the recurrence μ<sub>2n</sub> = (2n−1)σ²·μ<sub>2n−2</sub> using integration by parts; (3) Use the recurrence to evaluate μ₂, μ₄, μ₆ and then compute β₁ and β₂.</p>
+          <p><b>The key result(s) to remember:</b> μ₂ = σ² (that's just the variance). Then: <b>μ₄ = 3σ⁴</b> (use n=2: μ₄ = 3σ²·μ₂ = 3σ⁴), <b>μ₆ = 15σ⁶</b> (use n=3: μ₆ = 5σ²·μ₄ = 15σ⁶). Then <b>β₁ = μ₃²/μ₂³ = 0</b> (since μ₃ = 0) and <b>β₂ = μ₄/μ₂² = 3σ⁴/σ⁴ = 3</b>. So for any Normal distribution: β₁ = 0 and β₂ = 3.</p>
+          <p><b>Scary symbol, explained:</b> <b>μ<sub>r</sub></b> = r-th central moment = E[(X−μ)<sup>r</sup>] = average of (deviation from mean) raised to power r. <b>Recurrence</b> = a formula where each term is built from the previous one (like how 5! = 5 × 4!). <b>Odd function</b> = a function where f(−t) = −f(t); integrating such a function over a symmetric interval (−∞ to +∞) gives zero.</p>
+          <p><b>Bare minimum to attempt:</b> Write "The Normal distribution is symmetric about μ, so the integrand for any odd moment is an odd function of (X−μ), which integrates to zero over (−∞, ∞)." Then state μ₂ = σ², use the recurrence to get μ₄ = 3σ⁴, compute β₂ = μ₄/μ₂² = 3. That sequence alone covers most of the 10 marks.</p>
+        </div>
 
         <h5>Introduction</h5>
         <p>The <mark>Normal distribution</mark> N(μ, σ²) has pdf
@@ -5472,14 +5545,13 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Symmetry argument:</b>
-            The integrand for μ<sub>r</sub> = ∫ (x−μ)<sup>r</sup> f(x) dx, when r is odd, is an
-            <mark>odd function</mark> of (x−μ) because f(x) is symmetric about μ.
+            <b class="lbl">Symmetry argument</b>
+            <span class="eq first">The integrand for μ<sub>r</sub> = ∫ (x−μ)<sup>r</sup> f(x) dx, when r is odd, is an <mark>odd function</mark> of (x−μ) because f(x) is symmetric about μ.</span>
           </div>
           <div class="step k">
-            <b>Conclusion for odd r:</b>
-            Integrating an odd function over a symmetric interval (−∞, ∞) gives zero.
-            ∴ <mark><b>μ₁ = μ₃ = μ₅ = … = 0</b></mark>.
+            <b class="lbl">Conclusion for odd r</b>
+            <span class="eq first">Integrating an odd function over a symmetric interval (−∞, ∞) gives zero.</span>
+            <span class="eq">∴ <mark><b>μ₁ = μ₃ = μ₅ = … = 0</b></mark>.</span>
           </div>
         </div>
 
@@ -5487,25 +5559,27 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
         <div class="steps">
           <div class="step k">
-            <b>Start from μ<sub>r</sub> = ∫ t<sup>r</sup> f(t+μ) dt, substitute t = x−μ.</b>
-            Integrate by parts: let u = t<sup>r−1</sup>, dv = t·f(t+μ) dt.
-            Since tf(t+μ) = −σ² f′(t+μ), integration by parts yields:
-            μ<sub>r</sub> = (r−1) σ² μ<sub>r−2</sub>.
+            <b class="lbl">Start from μ<sub>r</sub> = ∫ t<sup>r</sup> f(t+μ) dt, substitute t = x−μ</b>
+            <span class="eq first">Integrate by parts: let u = t<sup>r−1</sup>, dv = t·f(t+μ) dt.</span>
+            <span class="eq">Since tf(t+μ) = −σ² f′(t+μ), integration by parts yields:</span>
+            <span class="eq">μ<sub>r</sub> = (r−1) σ² μ<sub>r−2</sub>.</span>
           </div>
           <div class="step k">
-            <b>Setting r = 2n gives the recurrence:</b>
-            <mark><b>μ<sub>2n</sub> = (2n − 1) σ² · μ<sub>2n−2</sub></b></mark>.
+            <b class="lbl">Setting r = 2n gives the recurrence</b>
+            <span class="eq first"><mark><b>μ<sub>2n</sub> = (2n − 1) σ² · μ<sub>2n−2</sub></b></mark>.</span>
           </div>
           <div class="step k">
-            <b>Apply: μ₂ (base case) = σ².</b>
-            μ₄ = (4−1) σ² · μ₂ = 3σ² · σ² = <mark><b>3σ⁴</b></mark>.
-            μ₆ = (6−1) σ² · μ₄ = 5σ² · 3σ⁴ = <mark><b>15σ⁶</b></mark>.
+            <b class="lbl">Apply: μ₂ (base case) = σ²</b>
+            <span class="eq first">μ₄ = (4−1) σ² · μ₂ = 3σ² · σ² = <mark><b>3σ⁴</b></mark>.</span>
+            <span class="eq">μ₆ = (6−1) σ² · μ₄ = 5σ² · 3σ⁴ = <mark><b>15σ⁶</b></mark>.</span>
           </div>
           <div class="step k">
-            <b>β₁ = μ₃² / μ₂³ = 0² / σ⁶ = <mark><b>0</b></mark> (symmetric → zero skewness).</b>
+            <b class="lbl">β₁ = μ₃² / μ₂³</b>
+            <span class="eq first">β₁ = 0² / σ⁶ = <mark><b>0</b></mark> (symmetric → zero skewness).</span>
           </div>
           <div class="step k">
-            <b>β₂ = μ₄ / μ₂² = 3σ⁴ / σ⁴ = <mark><b>3</b></mark> (mesokurtic — normal kurtosis).</b>
+            <b class="lbl">β₂ = μ₄ / μ₂²</b>
+            <span class="eq first">β₂ = 3σ⁴ / σ⁴ = <mark><b>3</b></mark> (mesokurtic — normal kurtosis).</span>
           </div>
         </div>
 
@@ -5559,19 +5633,831 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
 </section>
 
-<!-- ============ REAL SAME-SYLLABUS PAPER · 312411 (BCA-DS-23-204) · May-2026 ============ -->
-<section class="predicted-vault" id="real-may26" style="scroll-margin-top:100px;">
+<!-- ============ BCA SOLVED PAPER · 311408 (BCA-DS-23-204) · May-2025 — ANSWER-STYLE ANCHOR ============ -->
+<section class="predicted-vault" id="real-may25" style="scroll-margin-top:100px;">
   <div class="unit-head">
-    <div class="kicker">📄 Real paper · code 312411 (BCA-DS-23-204) · same syllabus as your BCD-202-V exam</div>
-    <h2>Real Paper · 312411 · May-2026</h2>
-    <p class="lede">A real BCA(DS)-IV university paper (code 312411 / BCA-DS-23-204) — different scheme code, identical syllabus to your BCD-202-V exam, so it serves as the answer-style anchor. Every Part-A short is point-form; every Part-B answer is fully worked (formula → substitution → arithmetic → boxed answer). Notation follows Gupta &amp; Kapoor / Veerarajan.</p>
+    <div class="kicker">📄 BCA May-2025 · code 311408 · YOUR answer-style anchor</div>
+    <h2>BCA Paper · 311408 · May-2025</h2>
+    <p class="lede">A real BCA(DS)-IV university paper (code 311408) — same syllabus as your exam, and the BCA answer-style ANCHOR. Part-A = point-form; every Part-B answer is fully worked (formula → substitution → arithmetic → boxed answer).</p>
+  </div>
+
+  <div class="part-head">PART A (Q1 · COMPULSORY · 10 × 1.5 = 15 MARKS)</div>
+
+  <!-- Q1(a) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(a)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(a) Define distribution function for a random variable.</b></div>
+    <div class="ans">
+      <ul>
+        <li>The <mark>Cumulative Distribution Function (CDF)</mark> is defined as F(x) = P(X ≤ x) for all x ∈ ℝ.</li>
+        <li>F(x) is <b>non-decreasing</b>; F(−∞) = 0 and F(+∞) = 1.</li>
+        <li>F(x) is <b>right-continuous</b>: lim<sub>h→0⁺</sub> F(x+h) = F(x).</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> F(x) tells you "what fraction of time does X land at or below x?" — starts at 0, climbs to 1, never goes back down.</p>
+    </div>
+  </div>
+
+  <!-- Q1(b) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(b)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(b) State conditions under which Poisson distribution is used.</b></div>
+    <div class="ans">
+      <ul>
+        <li><mark>n is very large</mark> (large number of trials).</li>
+        <li><mark>p is very small</mark> (probability of success per trial is tiny).</li>
+        <li><mark>λ = np</mark> is finite and constant (average rate is stable).</li>
+        <li>Events are <b>independent</b> and occur randomly in a fixed interval of time/space.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Poisson works for rare events — like counting defects per metre of cloth or calls arriving per minute at a call centre.</p>
+    </div>
+  </div>
+
+  <!-- Q1(c) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(c)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(c) Prove that f(x) = 6x(1 − x), 0 ≤ x ≤ 1 is a valid probability density function.</b></div>
+    <div class="ans">
+      <ul>
+        <li><b>Non-negativity:</b> On [0,1], x ≥ 0 and (1−x) ≥ 0, so f(x) = 6x(1−x) ≥ 0. ✓</li>
+        <li><b>Total area = 1:</b>
+          <div class="steps" style="margin-top:6px;">
+            <div class="step k">
+              <b class="lbl">Integral</b>
+              <span class="eq first">∫₀¹ 6x(1−x) dx = 6 ∫₀¹ (x − x²) dx</span>
+              <span class="eq">= 6 [x²/2 − x³/3]₀¹</span>
+              <span class="eq">= 6 (1/2 − 1/3)</span>
+              <span class="eq">= 6 × 1/6</span>
+              <span class="eq"><mark><b>= 1 ✓</b></mark></span>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Two tests — f(x) never goes negative, and the area under the curve is exactly 1. Both pass → valid pdf.</p>
+    </div>
+  </div>
+
+  <!-- Q1(d) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(d)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(d) Name three sources of secondary data.</b></div>
+    <div class="ans">
+      <ul>
+        <li><mark>Government/census publications</mark> — Census of India, RBI reports, NSSO surveys.</li>
+        <li><mark>Journals and published research reports</mark> — academic papers, company annual reports.</li>
+        <li><mark>Internet, newspapers, and company records</mark> — news databases, corporate datasets.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Secondary data = data someone else already collected. You just reuse it.</p>
+    </div>
+  </div>
+
+  <!-- Q1(e) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(e)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(e) State the properties of joint distribution function F(x, y).</b></div>
+    <div class="ans">
+      <ul>
+        <li>F(−∞, y) = F(x, −∞) = 0; <mark>F(∞, ∞) = 1</mark>.</li>
+        <li>Non-decreasing in each argument separately.</li>
+        <li>P(a &lt; X ≤ b, c &lt; Y ≤ d) = F(b,d) − F(a,d) − F(b,c) + F(a,c) ≥ 0 (rectangle inequality).</li>
+        <li>Right-continuous in each variable.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> The joint CDF tells you the probability that both X and Y are simultaneously small. It climbs from 0 to 1 and never goes backwards in either direction.</p>
+    </div>
+  </div>
+
+  <!-- Q1(f) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(f)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(f) Define covariance. What is the covariance of two independent random variables?</b></div>
+    <div class="ans">
+      <ul>
+        <li><mark>Cov(X,Y) = E(XY) − E(X)·E(Y)</mark> — measures how much X and Y vary together.</li>
+        <li>Positive Cov → both move in the same direction; negative → opposite directions.</li>
+        <li>If X and Y are <b>independent</b>, E(XY) = E(X)·E(Y), so <mark>Cov(X,Y) = 0</mark>.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Independence kills the relationship → covariance = 0. But Cov = 0 does NOT guarantee independence.</p>
+    </div>
+  </div>
+
+  <!-- Q1(g) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(g)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(g) Find the median of: 20, 25, 30, 15, 17, 35, 26, 18, 40, 45, 50.</b></div>
+    <div class="ans">
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Sort</b>
+          <span class="eq first">15, 17, 18, 20, 25, <b>26</b>, 30, 35, 40, 45, 50</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">n = 11 (odd)</b>
+          <span class="eq first">Median = value at position (n+1)/2 = 6th term</span>
+          <span class="eq"><mark><b>Median = 26</b></mark></span>
+        </div>
+      </div>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Sort the list, pick the middle value. 11 numbers → middle is the 6th → 26.</p>
+    </div>
+  </div>
+
+  <!-- Q1(h) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(h)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(h) What is a leptokurtic curve? Give the condition on β₂.</b></div>
+    <div class="ans">
+      <ul>
+        <li>A <mark>leptokurtic</mark> distribution is more sharply peaked than the normal curve, with <b>heavier tails</b> (outliers more likely).</li>
+        <li>Condition: <mark>β₂ &gt; 3</mark> (equivalently, excess kurtosis γ₂ = β₂ − 3 &gt; 0).</li>
+        <li>Examples: Student's t-distribution, Laplace distribution.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Lepto = thin; the curve is tall and skinny in the middle but has fat ends. β₂ &gt; 3 is the key number to write.</p>
+    </div>
+  </div>
+
+  <!-- Q1(i) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(i)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(i) State three differences between correlation and regression.</b></div>
+    <div class="ans">
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Parameter</th><th>Correlation</th><th>Regression</th></tr></thead>
+          <tbody>
+            <tr><td>Purpose</td><td>Measures <mark>degree/strength</mark> of linear relationship</td><td>Predicts value of one variable from another</td></tr>
+            <tr><td>Symmetry</td><td>Symmetric: r<sub>XY</sub> = r<sub>YX</sub></td><td>Asymmetric: line of Y on X ≠ line of X on Y</td></tr>
+            <tr><td>Range</td><td><mark>r ∈ [−1, 1]</mark></td><td>Regression coefficient b can exceed 1</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Correlation = "how related?"; Regression = "predict one from the other." Correlation goes both ways; regression has a direction.</p>
+    </div>
+  </div>
+
+  <!-- Q1(j) -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q1(j)</span>
+      <span class="tag marks">1.5M</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody"><b>(j) Define positive correlation and inverse (negative) correlation.</b></div>
+    <div class="ans">
+      <ul>
+        <li><mark>Positive correlation</mark>: both variables move in the <b>same direction</b> — when X increases, Y also increases (e.g., height and weight). r &gt; 0.</li>
+        <li><mark>Negative / inverse correlation</mark>: variables move in <b>opposite directions</b> — when X increases, Y decreases (e.g., price and demand). r &lt; 0.</li>
+      </ul>
+      <p style="margin-top:8px;color:var(--brand-deep);"><b>🟢 In simple words:</b> Positive = same direction (study more → score more). Negative = opposite (more absent → less score).</p>
+    </div>
+  </div>
+
+  <div class="part-head">PART B (ATTEMPT ANY FOUR · 4 × 15 = 60 MARKS)</div>
+
+  <!-- Q2 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q2 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Poisson + Probability</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] A lot of 200 articles contains 10 defective articles. If 20 articles are selected at random, find using the Poisson approximation: (i) no defective, (ii) exactly one defective, (iii) at least one defective.</b><br>
+      <b>(b) [7 M] Two dice are thrown simultaneously. Find the probability that the sum of faces is divisible by 2 or 3.</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): a batch has a few bad items; Poisson approximation finds the chance of getting 0 or 1 or more defectives in a small sample. Part (b): two dice give 36 equally likely outcomes; count favourables.</p>
+        <p><b>What does the question want?</b> (a) Three probabilities using the Poisson formula P(X=k) = e<sup>−λ</sup>λ<sup>k</sup>/k!. (b) P(sum ÷ 2 or 3) using classical probability and set union.</p>
+        <p><b>The key result(s):</b> λ = np = 20 × (10/200) = 1. Then e<sup>−1</sup> ≈ 0.3679.</p>
+        <p><b>Scary symbol, explained:</b> e<sup>−1</sup> is just 1/e ≈ 0.3679. It appears because Poisson uses the exponential constant.</p>
+        <p><b>Bare minimum to attempt:</b> Write λ = np, write the Poisson formula, substitute — long working earns full marks step by step.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> Poisson: P(X=k) = e<sup>−λ</sup>λ<sup>k</sup>/k! · λ = np · e<sup>−1</sup> ≈ 0.3679 · P(≥1) = 1 − P(0)
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a) Poisson Approximation — Defective Articles</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Setup</b>
+          <span class="eq first">N = 200 articles, defective = 10 → p = 10/200 = 0.05</span>
+          <span class="eq">n = 20 (sample size)</span>
+          <span class="eq">λ = np = 20 × 0.05 = <mark><b>1</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Formula</b>
+          <span class="eq first">P(X = k) = e<sup>−λ</sup> · λ<sup>k</sup> / k!</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">(i) P(X = 0)</b>
+          <span class="eq first">= e<sup>−1</sup> · 1⁰ / 0!</span>
+          <span class="eq">= e<sup>−1</sup> × 1</span>
+          <span class="eq"><mark><b>= 0.3679</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">(ii) P(X = 1)</b>
+          <span class="eq first">= e<sup>−1</sup> · 1¹ / 1!</span>
+          <span class="eq">= e<sup>−1</sup> × 1</span>
+          <span class="eq"><mark><b>= 0.3679</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">(iii) P(X ≥ 1)</b>
+          <span class="eq first">= 1 − P(X = 0)</span>
+          <span class="eq">= 1 − 0.3679</span>
+          <span class="eq"><mark><b>= 0.6321</b></mark></span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(b) Sum Divisible by 2 or 3 — Two Dice</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Sample space</b>
+          <span class="eq first">Total outcomes = 6 × 6 = 36</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Event A: sum ÷ 2 (even)</b>
+          <span class="eq first">Even sums: 2,4,6,8,10,12</span>
+          <span class="eq">Counts: 1,3,5,5,3,1 → |A| = 18</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Event B: sum ÷ 3</b>
+          <span class="eq first">Sums: 3,6,9,12</span>
+          <span class="eq">Counts: 2,5,4,1 → |B| = 12</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">A ∩ B: sum ÷ 6</b>
+          <span class="eq first">Sums: 6, 12 → Counts: 5,1 → |A∩B| = 6</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Union (inclusion–exclusion)</b>
+          <span class="eq first">|A ∪ B| = 18 + 12 − 6 = 24</span>
+          <span class="eq">P(A ∪ B) = 24/36</span>
+          <span class="eq"><mark><b>= 2/3 ≈ 0.667</b></mark></span>
+        </div>
+      </div>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>λ setup and Poisson formula <span class="m">2 M</span></li>
+        <li>P(0) and P(1) computed correctly <span class="m">3 M</span></li>
+        <li>P(≥1) = 1 − P(0) <span class="m">3 M</span></li>
+        <li>Sample space, events A and B enumerated <span class="m">3 M</span></li>
+        <li>Inclusion–exclusion and final P <span class="m">4 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q3 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q3 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Normal Distribution + Combined Mean</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] The mean of a normal distribution is 12 and S.D. is 3. Find the probability that a value drawn at random will be: (i) greater than 15, (ii) less than 6, (iii) between 10 and 14.</b><br>
+      <b>(b) [7 M] In a factory, Group A has 50 workers earning mean Rs 3000; Group B has 70 workers earning mean Rs 3500. Find the combined mean salary.</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): Normal distribution questions — convert X to Z, look up the Z-table. Part (b): weighted average of two groups.</p>
+        <p><b>What does the question want?</b> (a) Three probabilities using Φ(z) from the standard normal table. (b) Combined mean = (n₁x̄₁ + n₂x̄₂)/(n₁+n₂).</p>
+        <p><b>The key result(s):</b> Z = (X−μ)/σ. Φ(1) = 0.8413, Φ(2) = 0.9772, Φ(0.67) = 0.7486.</p>
+        <p><b>Scary symbol, explained:</b> Φ(z) is just "the area to the left of z on the bell curve" — given by the Z-table.</p>
+        <p><b>Bare minimum to attempt:</b> Write Z formula, substitute each x, write the table value, compute the probability. Show every substitution.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> Z = (X − μ)/σ · P(X&gt;a) = 1 − Φ(z) · P(X&lt;a) = Φ(z) · P(a&lt;X&lt;b) = Φ(z₂) − Φ(z₁)
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a) Normal Distribution Probabilities — μ = 12, σ = 3</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">(i) P(X &gt; 15)</b>
+          <span class="eq first">Z = (15 − 12)/3 = 1.00</span>
+          <span class="eq">P(X &gt; 15) = 1 − Φ(1) = 1 − 0.8413</span>
+          <span class="eq"><mark><b>= 0.1587 (15.87%)</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">(ii) P(X &lt; 6)</b>
+          <span class="eq first">Z = (6 − 12)/3 = −2.00</span>
+          <span class="eq">P(X &lt; 6) = Φ(−2) = 1 − Φ(2) = 1 − 0.9772</span>
+          <span class="eq"><mark><b>= 0.0228 (2.28%)</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">(iii) P(10 &lt; X &lt; 14)</b>
+          <span class="eq first">Z₁ = (10 − 12)/3 = −0.67; Z₂ = (14 − 12)/3 = 0.67</span>
+          <span class="eq">P = Φ(0.67) − Φ(−0.67) = 2·Φ(0.67) − 1</span>
+          <span class="eq">= 2 × 0.7486 − 1 = 1.4972 − 1</span>
+          <span class="eq"><mark><b>= 0.4972 (49.72%)</b></mark></span>
+        </div>
+      </div>
+      <p style="font-size:13px;color:var(--muted);margin-top:6px;"><b>Z-table used:</b> Φ(1.00) = 0.8413 · Φ(2.00) = 0.9772 · Φ(0.67) = 0.7486</p>
+
+      <h5 style="margin:14px 0 6px;">(b) Combined Mean Salary</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Given</b>
+          <span class="eq first">Group A: n₁ = 50, x̄₁ = Rs 3000</span>
+          <span class="eq">Group B: n₂ = 70, x̄₂ = Rs 3500</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Formula</b>
+          <span class="eq first">x̄ combined = (n₁x̄₁ + n₂x̄₂) / (n₁ + n₂)</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Substitute</b>
+          <span class="eq first">= (50 × 3000 + 70 × 3500) / (50 + 70)</span>
+          <span class="eq">= (150000 + 245000) / 120</span>
+          <span class="eq">= 395000 / 120</span>
+          <span class="eq"><mark><b>= Rs 3291.67</b></mark></span>
+        </div>
+      </div>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>Z formula and substitution for each case <span class="m">3 M</span></li>
+        <li>Correct Φ values from table and final probabilities <span class="m">5 M</span></li>
+        <li>Combined mean formula and substitution <span class="m">3 M</span></li>
+        <li>Arithmetic and correct final answer <span class="m">4 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q4 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q4 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Joint Distribution + Expectation</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] The joint probability mass function of (X, Y) is given below. Find: (i) marginal distribution of Y, (ii) conditional distribution of Y given X = 4, (iii) whether X and Y are independent.</b><br>
+      <div class="table-wrap" style="margin:8px 0;">
+        <table>
+          <thead><tr><th>X \ Y</th><th>1</th><th>3</th><th>9</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>1/8</td><td>1/24</td><td>1/12</td></tr>
+            <tr><td>4</td><td>1/4</td><td>1/4</td><td>0</td></tr>
+            <tr><td>6</td><td>1/8</td><td>1/24</td><td>1/12</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <b>(b) [7 M] Find E(X + Y) where X and Y are outcomes of two independently thrown fair dice.</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): a joint table — sum across rows for Y's marginal, divide a row by its row-total for conditional, check independence by comparing joint vs product of marginals. Part (b): linearity of expectation makes this easy.</p>
+        <p><b>What does the question want?</b> (a) Marginal P(Y), conditional P(Y|X=4), independence test. (b) E(X+Y) = E(X) + E(Y) using the formula for a fair die.</p>
+        <p><b>The key result(s):</b> P(X=4) = 1/4+1/4+0 = 1/2. For independence: P(X=4,Y=9) = 0 but P(X=4)·P(Y=9) ≠ 0 → NOT independent.</p>
+        <p><b>Scary symbol, explained:</b> Marginal = "collapse the table in one direction" — add all values in a column to get P(Y=y).</p>
+        <p><b>Bare minimum to attempt:</b> Sum columns for marginals, divide by marginal for conditional, compare cell vs product for independence. One line of arithmetic each.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> Marginal P(Y=y) = Σₓ P(X=x,Y=y) · Conditional P(Y=y|X=x) = P(X=x,Y=y)/P(X=x) · Independent iff P(X,Y)=P(X)·P(Y) for ALL pairs
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a)(i) Marginal Distribution of Y</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Sum columns</b>
+          <span class="eq first">P(Y=1) = 1/8 + 1/4 + 1/8 = 1/8 + 2/8 + 1/8 = <mark><b>4/8 = 1/2</b></mark></span>
+          <span class="eq">P(Y=3) = 1/24 + 1/4 + 1/24 = 1/24 + 6/24 + 1/24 = <mark><b>8/24 = 1/3</b></mark></span>
+          <span class="eq">P(Y=9) = 1/12 + 0 + 1/12 = <mark><b>2/12 = 1/6</b></mark></span>
+          <span class="eq">Check: 1/2 + 1/3 + 1/6 = 3/6 + 2/6 + 1/6 = 1 ✓</span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a)(ii) Conditional Distribution Y | X = 4</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Row sum for X=4</b>
+          <span class="eq first">P(X=4) = 1/4 + 1/4 + 0 = <mark>1/2</mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Conditional probabilities</b>
+          <span class="eq first">P(Y=1 | X=4) = (1/4) ÷ (1/2) = <mark><b>1/2</b></mark></span>
+          <span class="eq">P(Y=3 | X=4) = (1/4) ÷ (1/2) = <mark><b>1/2</b></mark></span>
+          <span class="eq">P(Y=9 | X=4) = 0 ÷ (1/2) = <mark><b>0</b></mark></span>
+          <span class="eq">Check: 1/2 + 1/2 + 0 = 1 ✓</span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a)(iii) Independence Test</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Check one cell</b>
+          <span class="eq first">P(X=4) · P(Y=9) = (1/2) × (1/6) = 1/12</span>
+          <span class="eq">But P(X=4, Y=9) = 0</span>
+          <span class="eq">Since 1/12 ≠ 0,</span>
+          <span class="eq"><mark><b>X and Y are NOT independent.</b></mark></span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(b) E(X + Y) — Sum of Two Dice</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">E of one fair die</b>
+          <span class="eq first">E(d) = (1+2+3+4+5+6)/6 = 21/6 = 3.5</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Linearity of expectation</b>
+          <span class="eq first">E(X+Y) = E(X) + E(Y) = 3.5 + 3.5</span>
+          <span class="eq"><mark><b>= 7</b></mark></span>
+        </div>
+      </div>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>Marginal of Y (3 values correct) <span class="m">3 M</span></li>
+        <li>Conditional distribution Y|X=4 <span class="m">2 M</span></li>
+        <li>Independence test with justification <span class="m">3 M</span></li>
+        <li>E(single die) and linearity argument <span class="m">3 M</span></li>
+        <li>Final E(X+Y) = 7 <span class="m">4 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q5 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q5 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Types of Data + MGF</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] Define data. Explain the different types of data with examples.</b><br>
+      <b>(b) [7 M] Find the moment generating function (MGF) of f(x) = 1/3, −1 &lt; x &lt; 2. Verify M(0) = 1.</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): types of data — qualitative vs quantitative, primary vs secondary, and how data is represented. Part (b): MGF is just E(e<sup>tX</sup>) — integrate the pdf multiplied by e<sup>tx</sup>.</p>
+        <p><b>What does the question want?</b> (a) A structured answer with a diagram showing data types. (b) Compute the integral ∫e<sup>tx</sup>f(x)dx and verify at t=0.</p>
+        <p><b>The key result(s):</b> MGF M(t) = (1/3t)(e<sup>2t</sup> − e<sup>−t</sup>) for t≠0; M(0) = 1.</p>
+        <p><b>Scary symbol, explained:</b> MGF at t=0 always equals 1 because e<sup>0</sup>=1 and the pdf integrates to 1.</p>
+        <p><b>Bare minimum to attempt:</b> For (b) — write the integral, substitute limits, factorise. For (a) — draw the types tree diagram, give 1 example each.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> M(t) = E(e<sup>tX</sup>) = ∫e<sup>tx</sup>f(x)dx · M(0) = 1 always · Primary data: collected first-hand · Secondary data: already collected
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a) Types of Data</h5>
+      <p><mark>Data</mark> is a collection of facts, figures, or observations gathered for analysis and decision-making.</p>
+
+      <figure class="diagram-fig">
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;max-width:560px;margin:0 auto;">
+          <div style="border:2px solid var(--brand);border-radius:6px;padding:10px;background:var(--brand-soft);">
+            <div style="font-weight:700;color:var(--brand-deep);margin-bottom:6px;">By Source</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="border:1px solid var(--brand);border-radius:4px;padding:6px;background:var(--paper);font-size:13px;text-align:center;"><b>Primary</b><br><span style="font-size:11px;color:var(--muted);">Surveys, interviews</span></div>
+              <div style="border:1px solid var(--brand);border-radius:4px;padding:6px;background:var(--paper);font-size:13px;text-align:center;"><b>Secondary</b><br><span style="font-size:11px;color:var(--muted);">Govt reports, books</span></div>
+            </div>
+          </div>
+          <div style="border:2px solid var(--brand);border-radius:6px;padding:10px;background:var(--brand-soft);">
+            <div style="font-weight:700;color:var(--brand-deep);margin-bottom:6px;">By Nature</div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+              <div style="border:1px solid var(--brand);border-radius:4px;padding:6px;background:var(--paper);font-size:13px;text-align:center;"><b>Qualitative</b><br><span style="font-size:11px;color:var(--muted);">Nominal, Ordinal</span></div>
+              <div style="border:1px solid var(--brand);border-radius:4px;padding:6px;background:var(--paper);font-size:13px;text-align:center;"><b>Quantitative</b><br><span style="font-size:11px;color:var(--muted);">Discrete, Continuous</span></div>
+            </div>
+          </div>
+        </div>
+        <figcaption><b>Fig 5.18</b> · Data types classified by source (primary/secondary) and by nature (qualitative/quantitative).</figcaption>
+      </figure>
+
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Type</th><th>Definition</th><th>Sub-types</th><th>Example</th></tr></thead>
+          <tbody>
+            <tr><td><mark>Primary</mark></td><td>Collected first-hand by the researcher</td><td>Survey, interview, observation, experiment</td><td>Student survey on phone usage</td></tr>
+            <tr><td><mark>Secondary</mark></td><td>Already collected by someone else</td><td>Govt reports, journals, internet</td><td>Census 2021 population data</td></tr>
+            <tr><td><mark>Qualitative</mark></td><td>Non-numeric, categorical</td><td>Nominal (no order), Ordinal (ordered)</td><td>Eye colour, satisfaction level</td></tr>
+            <tr><td><mark>Quantitative</mark></td><td>Numeric, measurable</td><td>Discrete (counted), Continuous (measured)</td><td>No. of cars; height in cm</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p style="margin-top:8px;"><b>Representation:</b> Data is displayed using <mark>tables</mark>, bar/pie charts (qualitative), and histograms/ogives (quantitative).</p>
+
+      <h5 style="margin:14px 0 6px;">(b) MGF of Uniform f(x) = 1/3 on (−1, 2)</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Definition</b>
+          <span class="eq first">M(t) = E(e<sup>tX</sup>) = ∫₋₁² e<sup>tx</sup> · (1/3) dx</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Integrate (t ≠ 0)</b>
+          <span class="eq first">= (1/3) · [e<sup>tx</sup>/t]₋₁²</span>
+          <span class="eq">= (1/3t) · (e<sup>2t</sup> − e<sup>−t</sup>)</span>
+          <span class="eq"><mark><b>M(t) = (e<sup>2t</sup> − e<sup>−t</sup>) / (3t)</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Verify M(0) = 1</b>
+          <span class="eq first">At t → 0, apply L'Hôpital or use: (e<sup>2t</sup>−e<sup>−t</sup>) ≈ (1+2t)−(1−t) = 3t</span>
+          <span class="eq">So M(0) = lim<sub>t→0</sub> 3t/(3t) = 1</span>
+          <span class="eq">Direct: M(0) = ∫₋₁²(1/3)dx = (1/3)(2−(−1)) = (1/3)(3)</span>
+          <span class="eq"><mark><b>M(0) = 1 ✓</b></mark></span>
+        </div>
+      </div>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>Definition of data and table of types with examples <span class="m">4 M</span></li>
+        <li>Diagram (data types tree) <span class="m">2 M</span></li>
+        <li>Representation methods mentioned <span class="m">2 M</span></li>
+        <li>MGF integral set up and evaluated correctly <span class="m">4 M</span></li>
+        <li>M(0) = 1 verified <span class="m">3 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q6 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q6 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Skewness + Regression Lines</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] Calculate Karl Pearson's coefficient of skewness for the data: 25, 15, 23, 40, 27, 25, 23, 25, 20. (n = 9)</b><br>
+      <b>(b) [7 M] Find both regression lines for: X: 2,4,6,8,10 and Y: 5,7,9,8,11. Also find the correlation coefficient r.</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): skewness measures whether the data tilts left or right of centre. Karl Pearson's formula uses Mean, Mode, and SD. Part (b): find the two regression lines and then r from the two regression coefficients.</p>
+        <p><b>What does the question want?</b> (a) Sk = (Mean − Mode)/SD. (b) b<sub>yx</sub> and b<sub>xy</sub> using the standard formulae; r = √(b<sub>yx</sub>·b<sub>xy</sub>).</p>
+        <p><b>The key result(s):</b> (a) Mean ≈ 24.78, Mode = 25, SD ≈ 6.33, Sk ≈ −0.035. (b) b<sub>yx</sub> = 0.65, b<sub>xy</sub> = 1.30, r ≈ 0.919.</p>
+        <p><b>Scary symbol, explained:</b> Σxy means "multiply each x by its paired y and add all up." Make a table column for this.</p>
+        <p><b>Bare minimum to attempt:</b> For (a) — sort the data to find mode, compute mean and SD. For (b) — make a 5-row table with x, y, x², y², xy columns, then substitute into the formulae.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> Sk<sub>P</sub> = (Mean − Mode)/SD · b<sub>yx</sub> = (nΣxy − ΣxΣy)/(nΣx² − (Σx)²) · r = √(b<sub>yx</sub>·b<sub>xy</sub>)
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a) Karl Pearson's Skewness</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Data &amp; basics</b>
+          <span class="eq first">Data: 15, 20, 23, 23, 25, 25, 25, 27, 40 (sorted)</span>
+          <span class="eq">n = 9, <mark>Mode = 25</mark> (appears 3 times)</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Mean</b>
+          <span class="eq first">Σx = 15+20+23+23+25+25+25+27+40 = 223</span>
+          <span class="eq">x̄ = 223/9 = <mark>24.78</mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Σx² and Variance</b>
+          <span class="eq first">Σx² = 225+400+529+529+625+625+625+729+1600 = 5887</span>
+          <span class="eq">Var = Σx²/n − x̄² = 5887/9 − (24.78)²</span>
+          <span class="eq">= 654.11 − 614.05 = 40.06</span>
+          <span class="eq">SD = √40.06 = <mark>6.33</mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Skewness</b>
+          <span class="eq first">Sk = (Mean − Mode) / SD</span>
+          <span class="eq">= (24.78 − 25) / 6.33</span>
+          <span class="eq">= −0.22 / 6.33</span>
+          <span class="eq"><mark><b>Sk ≈ −0.035 (slight negative skew)</b></mark></span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(b) Regression Lines &amp; Correlation</h5>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>X</th><th>Y</th><th>X²</th><th>Y²</th><th>XY</th></tr></thead>
+          <tbody>
+            <tr><td>2</td><td>5</td><td>4</td><td>25</td><td>10</td></tr>
+            <tr><td>4</td><td>7</td><td>16</td><td>49</td><td>28</td></tr>
+            <tr><td>6</td><td>9</td><td>36</td><td>81</td><td>54</td></tr>
+            <tr><td>8</td><td>8</td><td>64</td><td>64</td><td>64</td></tr>
+            <tr><td>10</td><td>11</td><td>100</td><td>121</td><td>110</td></tr>
+            <tr><td><b>Σ = 30</b></td><td><b>Σ = 40</b></td><td><b>Σ = 220</b></td><td><b>Σ = 340</b></td><td><b>Σ = 266</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Means</b>
+          <span class="eq first">x̄ = 30/5 = 6; ȳ = 40/5 = 8</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">b<sub>yx</sub> (Y on X)</b>
+          <span class="eq first">= (nΣxy − ΣxΣy) / (nΣx² − (Σx)²)</span>
+          <span class="eq">= (5×266 − 30×40) / (5×220 − 900)</span>
+          <span class="eq">= (1330 − 1200) / (1100 − 900)</span>
+          <span class="eq">= 130 / 200 = <mark><b>0.65</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">b<sub>xy</sub> (X on Y)</b>
+          <span class="eq first">= (nΣxy − ΣxΣy) / (nΣy² − (Σy)²)</span>
+          <span class="eq">= 130 / (5×340 − 1600)</span>
+          <span class="eq">= 130 / (1700 − 1600)</span>
+          <span class="eq">= 130 / 100 = <mark><b>1.30</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Line Y on X</b>
+          <span class="eq first">(Y − ȳ) = b<sub>yx</sub>(X − x̄)</span>
+          <span class="eq">Y − 8 = 0.65(X − 6)</span>
+          <span class="eq"><mark><b>Y = 0.65X + 4.1</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Line X on Y</b>
+          <span class="eq first">(X − x̄) = b<sub>xy</sub>(Y − ȳ)</span>
+          <span class="eq">X − 6 = 1.30(Y − 8)</span>
+          <span class="eq"><mark><b>X = 1.30Y − 4.4</b></mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Correlation coefficient</b>
+          <span class="eq first">r = √(b<sub>yx</sub> × b<sub>xy</sub>) = √(0.65 × 1.30)</span>
+          <span class="eq">= √0.845</span>
+          <span class="eq"><mark><b>r ≈ 0.919</b></mark></span>
+        </div>
+      </div>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>Mode, Mean, Σx², SD computed correctly <span class="m">4 M</span></li>
+        <li>Skewness formula and final Sk value <span class="m">4 M</span></li>
+        <li>Table (ΣX, ΣY, ΣX², ΣY², ΣXY) <span class="m">2 M</span></li>
+        <li>Both b<sub>yx</sub> and b<sub>xy</sub> and regression lines <span class="m">4 M</span></li>
+        <li>r = √(b<sub>yx</sub>·b<sub>xy</sub>) = 0.919 <span class="m">1 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+  <!-- Q7 -->
+  <div class="qcard predicted">
+    <div class="qhead">
+      <span class="qnum">Q7 [15 M]</span>
+      <span class="tag marks">8M + 7M</span>
+      <span class="tag hot">⭐ Curve Fitting + Rank Correlation</span>
+      <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BCA May-25 · 311408</span>
+    </div>
+    <div class="qbody">
+      <b>(a) [8 M] Fit a parabola of the form Y = a + bX + cX² to the following data (years 1929–1937, coded X = −4 to 4):</b><br>
+      <div class="table-wrap" style="margin:8px 0;">
+        <table>
+          <thead><tr><th>Year</th><th>1929</th><th>1930</th><th>1931</th><th>1932</th><th>1933</th><th>1934</th><th>1935</th><th>1936</th><th>1937</th></tr></thead>
+          <tbody>
+            <tr><td>X</td><td>−4</td><td>−3</td><td>−2</td><td>−1</td><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+            <tr><td>Y</td><td>352</td><td>356</td><td>357</td><td>358</td><td>359</td><td>361</td><td>361</td><td>360</td><td>359</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <b>(b) [7 M] Calculate Spearman's rank correlation coefficient for: X: 78,89,97,69,59,79,68,57; Y: 125,137,156,112,107,136,123,108. (n = 8)</b>
+    </div>
+    <div class="ans">
+
+      <div class="box eli5"><span class="label">🟢 Start here — simple explanation (zero se)</span>
+        <p><b>What is this about?</b> Part (a): fitting Y = a + bX + cX² — a parabola — using normal equations from least squares. Using symmetric coded X makes the cross terms vanish. Part (b): Spearman's ρ uses rank differences, not raw values.</p>
+        <p><b>What does the question want?</b> (a) Solve three normal equations to find a, b, c and write the parabola. (b) Rank each set, compute d = R₁−R₂, compute d², sum, substitute in ρ = 1 − 6Σd²/n(n²−1).</p>
+        <p><b>The key result(s):</b> b = ΣXY/ΣX² = 51/60 = 0.85. Symmetric X → ΣX = ΣX³ = 0, which decouples b from {a,c}. ρ ≈ 0.952.</p>
+        <p><b>Scary symbol, explained:</b> Normal equations = "the conditions that make the total squared error as small as possible." Three unknowns → three equations.</p>
+        <p><b>Bare minimum to attempt:</b> For (a) — write the three normal equations, use the symmetric property to get b immediately, then solve the 2×2 system. For (b) — make a rank table, compute d², use the formula.</p>
+      </div>
+
+      <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+        <b>⚡ Quick Recall:</b> Normal eqs: ΣY=na+bΣX+cΣX²; ΣXY=aΣX+bΣX²+cΣX³; ΣX²Y=aΣX²+bΣX⁴+cΣX⁴ (typo-free) · Symmetric X: ΣX=0, ΣX³=0 → b=ΣXY/ΣX² · ρ = 1 − 6Σd²/[n(n²−1)]
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(a) Fitting Parabola Y = a + bX + cX²</h5>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Key sums</b>
+          <span class="eq first">ΣY = 352+356+357+358+359+361+361+360+359 = 3223; n = 9</span>
+          <span class="eq">ΣX² = 2(16+9+4+1)+0 = 60; ΣX⁴ = 2(256+81+16+1) = 708</span>
+          <span class="eq">ΣXY = (−4)(352)+(−3)(356)+(−2)(357)+(−1)(358)+(0)(359)+(1)(361)+(2)(361)+(3)(360)+(4)(359)</span>
+          <span class="eq">= −1408−1068−714−358+0+361+722+1080+1436 = <mark>51</mark></span>
+          <span class="eq">ΣX²Y = 16(352)+9(356)+4(357)+1(358)+0+1(361)+4(361)+9(360)+16(359)</span>
+          <span class="eq">= 5632+3204+1428+358+0+361+1444+3240+5744 = <mark>21411</mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Normal equations (ΣX = ΣX³ = 0)</b>
+          <span class="eq first">Eq 1: ΣY = na + cΣX² → 3223 = 9a + 60c</span>
+          <span class="eq">Eq 2: ΣXY = bΣX² → 51 = 60b → <mark>b = 0.85</mark></span>
+          <span class="eq">Eq 3: ΣX²Y = aΣX² + cΣX⁴ → 21411 = 60a + 708c</span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Solve Eq 1 &amp; 3</b>
+          <span class="eq first">From Eq 1: a = (3223 − 60c)/9 = 358.11 − 6.67c</span>
+          <span class="eq">Sub into Eq 3: 21411 = 60(358.11 − 6.67c) + 708c</span>
+          <span class="eq">21411 = 21486.6 − 400.2c + 708c</span>
+          <span class="eq">307.8c = 21411 − 21486.6 = −75.6</span>
+          <span class="eq">c = −75.6/307.8 = <mark>−0.246</mark></span>
+          <span class="eq">a = 358.11 − 6.67(−0.246) = 358.11 + 1.64 = <mark>359.75</mark></span>
+        </div>
+        <div class="step k">
+          <b class="lbl">Parabola</b>
+          <span class="eq first"><mark><b>Y = 359.75 + 0.85X − 0.246X²</b></mark> (X = year − 1933)</span>
+        </div>
+      </div>
+
+      <h5 style="margin:14px 0 6px;">(b) Spearman's Rank Correlation</h5>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>X</th><th>Y</th><th>R₁</th><th>R₂</th><th>d = R₁−R₂</th><th>d²</th></tr></thead>
+          <tbody>
+            <tr><td>78</td><td>125</td><td>5</td><td>5</td><td>0</td><td>0</td></tr>
+            <tr><td>89</td><td>137</td><td>7</td><td>7</td><td>0</td><td>0</td></tr>
+            <tr><td>97</td><td>156</td><td>8</td><td>8</td><td>0</td><td>0</td></tr>
+            <tr><td>69</td><td>112</td><td>4</td><td>3</td><td>1</td><td>1</td></tr>
+            <tr><td>59</td><td>107</td><td>2</td><td>1</td><td>1</td><td>1</td></tr>
+            <tr><td>79</td><td>136</td><td>6</td><td>6</td><td>0</td><td>0</td></tr>
+            <tr><td>68</td><td>123</td><td>3</td><td>4</td><td>−1</td><td>1</td></tr>
+            <tr><td>57</td><td>108</td><td>1</td><td>2</td><td>−1</td><td>1</td></tr>
+            <tr><td></td><td></td><td></td><td></td><td><b>Σd²</b></td><td><b>4</b></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="steps">
+        <div class="step k">
+          <b class="lbl">Formula</b>
+          <span class="eq first">ρ = 1 − 6Σd² / [n(n² − 1)]</span>
+          <span class="eq">= 1 − 6×4 / [8×63]</span>
+          <span class="eq">= 1 − 24/504</span>
+          <span class="eq">= 1 − 0.0476</span>
+          <span class="eq"><mark><b>ρ ≈ 0.952</b></mark></span>
+        </div>
+      </div>
+      <p style="margin-top:6px;font-size:13px;"><b>Interpretation:</b> ρ ≈ 0.952 indicates a <mark>very strong positive rank correlation</mark> between X and Y.</p>
+
+      <div class="score"><b>Marks Allocation:</b><ul>
+        <li>Key sums (ΣY, ΣX², ΣX⁴, ΣXY, ΣX²Y) <span class="m">3 M</span></li>
+        <li>Three normal equations written correctly <span class="m">2 M</span></li>
+        <li>Solving for a, b, c and parabola equation <span class="m">3 M</span></li>
+        <li>Rank table with d and d² <span class="m">3 M</span></li>
+        <li>ρ formula, substitution, and final value <span class="m">4 M</span></li>
+        <li>Total <span class="m">15 M</span></li>
+      </ul></div>
+    </div>
+  </div>
+
+</section>
+
+<!-- ============ BTech SAME-SYLLABUS PAPER · 312411 · May-2026 (frequency reference only) ============ -->
+<section class="predicted-vault" id="real-may26" style="scroll-margin-top:100px;">
+  <details class="archive">
+    <summary style="cursor:pointer;font-weight:700;padding:12px 14px;color:var(--muted);background:var(--paper-soft);border:1px dashed var(--rule);border-radius:6px;list-style:none;">📄 BTech-26 paper (312411 · May-2026) — optional extra practice · frequency reference only. Your solved paper is the BCA-25 (311408) paper above. ▸ tap to open</summary>
+  <div class="unit-head">
+    <div class="kicker">📄 BTech-26 paper · code 312411 · same-syllabus · frequency reference (not BCA answer-style)</div>
+    <h2>BTech-26 Paper · 312411 · May-2026</h2>
+    <p class="lede">A same-syllabus BTech-stream paper (code 312411, May-2026) — useful as a <b>frequency reference</b> for which topics recur, but NOT the BCA answer-style anchor. For answer style and wording, follow the <b>BCA May-2025 (311408)</b> solved paper above. Every Part-B answer here is still fully worked; notation follows Gupta &amp; Kapoor / Veerarajan.</p>
   </div>
 
     <!-- ===================== PART A ===================== -->
     <div class="part-head">PART A (Q1 · COMPULSORY · 10 × 1.5 = 15 MARKS)</div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(a)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(a) Define Normal Probability Curve.</b></div>
       <div class="ans">
         <ul>
@@ -5583,7 +6469,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(b)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(b) Explain Binomial Distribution.</b></div>
       <div class="ans">
         <ul>
@@ -5595,7 +6481,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(c)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(c) Define probability density function (pdf).</b></div>
       <div class="ans">
         <ul>
@@ -5607,7 +6493,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(d)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(d) State the mean and variance of the Exponential distribution via its MGF.</b></div>
       <div class="ans">
         <ul>
@@ -5619,7 +6505,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(e)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(e) Explain Poisson Distribution.</b></div>
       <div class="ans">
         <ul>
@@ -5631,7 +6517,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(f)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(f) State the types of skewness.</b></div>
       <div class="ans">
         <ul>
@@ -5643,7 +6529,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(g)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(g) State the types of kurtosis.</b></div>
       <div class="ans">
         <ul>
@@ -5655,7 +6541,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(h)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(h) Find the median of 24, 56, 67, 78, 43, 68, 98, 38, 73.</b></div>
       <div class="ans">
         <ul>
@@ -5667,7 +6553,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(i)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(i) Explain the concept of regression.</b></div>
       <div class="ans">
         <ul>
@@ -5679,7 +6565,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
     </div>
 
     <div class="qcard predicted">
-      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span></div>
+      <div class="qhead"><span class="qnum">Q1(j)</span><span class="tag marks">1.5M</span><span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span></div>
       <div class="qbody"><b>(j) Explain the concept of correlation.</b></div>
       <div class="ans">
         <ul>
@@ -5699,7 +6585,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q2 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ Poisson fit · Binomial</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] Fit a Poisson distribution to the following data on deaths from horse-kicks and compute the five theoretical frequencies.</b>
@@ -5808,7 +6694,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q3 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ pdf moments · Exponential MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] A continuous random variable has pdf f(x) = k·x(2 − x), 0 ≤ x ≤ 2. Find (i) k, (ii) the mean, (iii) the variance, (iv) the mean deviation about the mean.</b><br>
@@ -5906,7 +6792,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q4 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ Skewness · SD (grouped)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] Compute Karl Pearson's coefficient of skewness for the following income data.</b>
@@ -6025,7 +6911,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q5 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ Regression lines · Least squares</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] Obtain the two regression equations from the data:</b><br>
@@ -6130,7 +7016,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q6 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ Normal (reverse) · Poisson fit</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] In a normal distribution, 17% of the items are below 30 and 17% are above 60. Find the mean and standard deviation. (Use z ≈ 0.954 for the 17% tail.)</b><br>
@@ -6250,7 +7136,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         <span class="qnum">Q7 [15 M]</span>
         <span class="tag marks">7M + 8M</span>
         <span class="tag hot">⭐ Rank correlation (ties) · Median &amp; Mode</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 Real 312411 · May-26</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">📄 BTech-26 · 312411</span>
       </div>
       <div class="qbody">
         <b>(a) [7 M] Compute the rank correlation coefficient (handle ties).</b><br>
@@ -6363,6 +7249,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
         </div>
       </div>
     </div>
+  </details>
 
 </section>
 
@@ -6814,99 +7701,7 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 <script>
 (function(){
   'use strict';
-  var store = null;
-  try{ localStorage.setItem('__il_probe','1'); localStorage.removeItem('__il_probe'); store = localStorage; }catch(err){ store = null; }
-  function lsGet(k){ if(!store){ return null; } try{ return store.getItem(k); }catch(err){ return null; } }
-  function lsSet(k,v){ if(!store){ return; } try{ store.setItem(k,v); }catch(err){} }
-
-  /* 1 - Self-Test active-recall mode */
-  try{
-    var navChips = document.querySelector('nav.chips');
-    var answers = Array.prototype.slice.call(document.querySelectorAll('.qcard .ans'));
-    if(navChips && answers.length){
-      var st = document.createElement('button');
-      st.type = 'button';
-      st.className = 'st-toggle';
-      st.setAttribute('aria-pressed','false');
-      st.textContent = '🧠 Self-Test';
-      navChips.appendChild(st);
-      var setMode = function(on){
-        answers.forEach(function(a){
-          a.classList.remove('revealed');
-          a.classList.toggle('ans-hidden', on);
-        });
-        st.classList.toggle('on', on);
-        st.setAttribute('aria-pressed', on ? 'true' : 'false');
-        lsSet('ps-selftest', on ? '1' : '0');
-      };
-      st.addEventListener('click', function(){ setMode(!st.classList.contains('on')); });
-      document.addEventListener('click', function(e){
-        if(!e.target || typeof e.target.closest !== 'function'){ return; }
-        var ans = e.target.closest('.ans-hidden');
-        if(ans && !ans.classList.contains('revealed')){ ans.classList.add('revealed'); }
-      });
-      if(lsGet('ps-selftest') === '1'){ setMode(true); }
-    }
-  }catch(err){}
-
-  /* 2 - Topic progress tracking (#imp-topics) */
-  try{
-    var imp = document.getElementById('imp-topics');
-    var links = imp ? Array.prototype.slice.call(imp.querySelectorAll('a[href^="#t-"]')) : [];
-    if(imp && links.length){
-      var done = [];
-      try{ done = JSON.parse(lsGet('ps-done') || '[]'); }catch(err){ done = []; }
-      if(!Array.isArray(done)){ done = []; }
-      var prog = document.createElement('div');
-      prog.id = 'il-progress';
-      var lab = document.createElement('span');
-      lab.className = 'il-label';
-      var track = document.createElement('div');
-      track.className = 'il-track';
-      var fill = document.createElement('div');
-      fill.className = 'il-fill';
-      track.appendChild(fill);
-      prog.appendChild(lab);
-      prog.appendChild(track);
-      var h4 = imp.querySelector('h4');
-      if(h4 && h4.parentNode === imp){ imp.insertBefore(prog, h4.nextSibling); }
-      else{ imp.insertBefore(prog, imp.firstChild); }
-      var refresh = function(){
-        var n = links.filter(function(a){ return done.indexOf(a.getAttribute('href')) !== -1; }).length;
-        lab.textContent = n + ' / ' + links.length + ' done';
-        fill.style.width = (links.length ? Math.round(n / links.length * 100) : 0) + '%';
-      };
-      links.forEach(function(a){
-        var key = a.getAttribute('href');
-        var chk = document.createElement('span');
-        chk.className = 'il-chk';
-        chk.setAttribute('role','checkbox');
-        chk.setAttribute('tabindex','0');
-        chk.setAttribute('aria-label','Mark topic done');
-        var sync = function(){
-          var on = done.indexOf(key) !== -1;
-          chk.classList.toggle('on', on);
-          chk.setAttribute('aria-checked', on ? 'true' : 'false');
-        };
-        var toggle = function(e){
-          e.preventDefault();
-          e.stopPropagation();
-          if(done.indexOf(key) === -1){ done = done.concat([key]); }
-          else{ done = done.filter(function(k){ return k !== key; }); }
-          lsSet('ps-done', JSON.stringify(done));
-          sync();
-          refresh();
-        };
-        chk.addEventListener('click', toggle);
-        chk.addEventListener('keydown', function(e){ if(e.key === ' ' || e.key === 'Enter'){ toggle(e); } });
-        a.insertBefore(chk, a.firstChild);
-        sync();
-      });
-      refresh();
-    }
-  }catch(err){}
-
-  /* 3 - Back-to-top appears after 800px */
+  /* Back-to-top appears after 800px scroll */
   try{
     var up = document.querySelector('a.up');
     if(up){

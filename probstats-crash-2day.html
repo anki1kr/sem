@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Probability &amp; Statistics — 2-Day Crash Guide</title>
+<style>
+:root{ --paper:#f4efe4; --ink:#2a2520; --muted:#6b6052; --rule:#d9cfb6; --brand:#0f766e; --brand-soft:#ccfbf1; --brand-deep:#134e4a; --gold:#b45309; --hl:#fde68a; }
+*{ box-sizing:border-box; }
+body{ margin:0; background:var(--paper); color:var(--ink); font-family:Georgia,'Times New Roman',serif; line-height:1.7; padding:0 0 70px; }
+.wrap{ max-width:760px; margin:0 auto; padding:16px; }
+header{ background:var(--brand-deep); color:#fff; padding:30px 16px; text-align:center; }
+header h1{ margin:0 0 6px; font-size:25px; }
+header p{ margin:0; opacity:.9; font-size:14px; }
+h2{ color:var(--brand-deep); border-bottom:2px solid var(--brand); padding-bottom:6px; margin:38px 0 10px; font-size:22px; }
+h3{ color:var(--brand-deep); margin:26px 0 2px; font-size:18px; }
+.how{ font-size:13px; color:var(--muted); font-style:italic; margin:2px 0 8px; }
+.box{ border-left:4px solid var(--brand); background:#fff; padding:12px 14px; margin:12px 0; border-radius:4px; font-size:15px; }
+.box.eli5{ border-left-color:var(--gold); background:#fffbeb; border:1px dashed var(--gold); border-left-width:4px; }
+.box.plan{ border-left-color:var(--brand); background:var(--brand-soft); }
+.box p{ margin:6px 0; }
+.label{ display:block; font-weight:700; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--gold); margin-bottom:6px; }
+.formula{ font-family:'Courier New',monospace; background:#fff; border:1px solid var(--rule); border-radius:4px; padding:10px 12px; margin:10px 0; font-size:14px; line-height:1.6; }
+.steps{ counter-reset:s; margin:12px 0; }
+.step{ counter-increment:s; position:relative; background:#fff; border:1px solid var(--rule); border-left:3px solid var(--brand); border-radius:4px; padding:12px 14px 12px 44px; margin:10px 0; line-height:1.85; }
+.step::before{ content:counter(s); position:absolute; left:8px; top:10px; width:26px; height:26px; display:flex; align-items:center; justify-content:center; background:var(--brand); color:#fff; border-radius:3px; font-family:monospace; font-weight:700; font-size:12px; }
+.lbl{ display:block; font-weight:700; color:var(--brand-deep); margin-bottom:4px; }
+.eq{ display:block; padding-left:12px; margin:1px 0; }
+mark{ background:var(--hl); padding:0 3px; border-radius:2px; font-weight:700; }
+table{ width:100%; border-collapse:collapse; margin:12px 0; font-size:14px; background:#fff; }
+th,td{ border:1px solid var(--rule); padding:7px 9px; text-align:left; }
+th{ background:var(--brand-deep); color:#fff; }
+.tag{ display:inline-block; background:var(--brand); color:#fff; font-size:11px; padding:2px 9px; border-radius:99px; font-family:monospace; vertical-align:middle; }
+.tag.hot{ background:#b91c1c; }
+.cheat{ background:var(--brand-deep); color:#fff; padding:16px; border-radius:6px; font-family:monospace; font-size:12.5px; line-height:1.9; white-space:pre-wrap; overflow-x:auto; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Probability &amp; Statistics — 2-Day Crash Guide</h1>
+  <p>For zero prep. Focus on the numericals — formula → plug in → boxed answer. Attempt any 4 in Part-B.</p>
+</header>
+
+<div class="wrap">
+
+<h2>2-Day Plan</h2>
+<div class="box plan">
+  <p><strong>Day 1:</strong> Part-B Tier-1 (pdf, MGF, Poisson fit) + Normal + Binomial — do each worked example once, then redo yourself without looking.</p>
+  <p><strong>Day 2:</strong> Regression + Rank correlation, then cram all Part-A definitions. Re-do any 4 numericals timed (15 min each).</p>
+  <p><strong>Exam day:</strong> Part-A first (quick definitions = 15 easy marks), then your 4 strongest Part-B numericals.</p>
+</div>
+
+<h2>How the Paper Works</h2>
+<div class="box">
+  <p><strong>Part-A:</strong> Q1, 10 short parts × 1.5 = 15 marks. ALL compulsory — just one-line definitions. Fast points.</p>
+  <p><strong>Part-B:</strong> 6 long questions × 15 marks. Attempt ANY 4 = 60 marks. These are numericals — easiest marks if you know the formula.</p>
+  <p><strong>Total:</strong> 75 marks. You need roughly 35–40 to pass comfortably.</p>
+</div>
+
+<h2>PART B — Master These 6 Types</h2>
+
+<!-- TYPE 1 -->
+<h3>Type 1 — Continuous PDF (find k, mean, variance) <span class="tag hot">5/6 papers</span></h3>
+<p class="how">f(x) given on an interval; find k so total area = 1, then find mean and variance.</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  A pdf is a curve. Think of it like a hill of sand — the total amount of sand is always 1 (= total probability). The rule "total area = 1" lets you find k. Mean = the balance point where the hill would balance on a finger.
+</div>
+<div class="formula">
+Total area: ∫f(x)dx = 1  →  gives k<br>
+Mean (μ) = ∫ x·f(x) dx<br>
+E(X²) = ∫ x²·f(x) dx<br>
+Variance = E(X²) − (Mean)²
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Given: f(x) = k·x(2 − x),  0 ≤ x ≤ 2</b>
+    <span class="eq">We need to find k, then Mean, then Variance.</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find k — use ∫₀² f(x) dx = 1</b>
+    <span class="eq">∫₀² k·x(2 − x) dx = k · ∫₀² (2x − x²) dx</span>
+    <span class="eq">= k · [x² − x³/3]₀²  =  k · (4 − 8/3)  =  k · (4/3)</span>
+    <span class="eq">Set equal to 1:  k · (4/3) = 1  →  <mark>k = 3/4</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find Mean = ∫₀² x · (3/4)·x(2 − x) dx</b>
+    <span class="eq">= (3/4) · ∫₀² (2x² − x³) dx</span>
+    <span class="eq">= (3/4) · [2x³/3 − x⁴/4]₀²</span>
+    <span class="eq">= (3/4) · (16/3 − 4)  =  (3/4) · (4/3)  =  <mark>Mean = 1</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find Variance — first compute E(X²)</b>
+    <span class="eq">E(X²) = (3/4) · ∫₀² (2x³ − x⁴) dx</span>
+    <span class="eq">= (3/4) · [x⁴/2 − x⁵/5]₀²</span>
+    <span class="eq">= (3/4) · (8 − 6.4)  =  (3/4) · 1.6  =  1.2</span>
+    <span class="eq">Variance = E(X²) − (Mean)² = 1.2 − 1  =  <mark>Variance = 0.2</mark></span>
+  </div>
+</div>
+
+<!-- TYPE 2 -->
+<h3>Type 2 — MGF of Exponential <span class="tag hot">5/6 papers</span></h3>
+<p class="how">Find MGF of f(x) = λe<sup>−λx</sup>; use it to get mean and SD.</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  MGF stands for Moment Generating Function — it is a "formula machine." Differentiate it once and put t = 0 to get the mean. Differentiate twice and put t = 0 to get E(X²). You rarely need to do the integral yourself — just know the result M(t) = λ/(λ − t) and how to use it.
+</div>
+<div class="formula">
+f(x) = λe<sup>−λx</sup>,  x ≥ 0<br>
+M(t) = λ / (λ − t),  valid for t &lt; λ<br>
+Mean  = M′(0) = 1/λ<br>
+E(X²) = M″(0) = 2/λ²<br>
+Variance = 1/λ²  ·  SD = 1/λ
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Given: f(x) = 2e<sup>−2x</sup>  (so λ = 2)</b>
+    <span class="eq">Find MGF, then mean and SD.</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Derive M(t)</b>
+    <span class="eq">M(t) = ∫₀^∞ e<sup>tx</sup> · 2e<sup>−2x</sup> dx  =  2 · ∫₀^∞ e<sup>−(2−t)x</sup> dx</span>
+    <span class="eq">=  2 · [1/(2 − t)]  =  <mark>M(t) = 2/(2 − t)</mark>,  t &lt; 2</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find Mean = M′(0)</b>
+    <span class="eq">M′(t) = 2/(2 − t)²</span>
+    <span class="eq">M′(0) = 2/4 = <mark>Mean = 1/2</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find Variance and SD</b>
+    <span class="eq">Variance = 1/λ² = 1/4</span>
+    <span class="eq"><mark>SD = 1/λ = 1/2</mark></span>
+  </div>
+</div>
+
+<!-- TYPE 3 -->
+<h3>Type 3 — Poisson Fitting <span class="tag hot">5/6 papers</span></h3>
+<p class="how">Frequency table given; fit a Poisson and find expected (theoretical) frequencies.</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  Poisson counts rare, random events — like how many calls arrive per minute, or how many accidents happen per week. Its only parameter is λ (the average). You find λ from the data, then use the recursive shortcut to build the expected frequency column quickly.
+</div>
+<div class="formula">
+λ = Σ(f · x) / N<br>
+Expected freq for x:  E(x) = N · e<sup>−λ</sup> · λˣ / x!<br>
+Shortcut (much faster):  E(x) = E(x − 1) · λ / x
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Data: x = 0,1,2,3,4;  f = 122,60,15,2,1;  N = 200</b>
+  </div>
+  <div class="step">
+    <b class="lbl">Find λ</b>
+    <span class="eq">Σfx = 0·122 + 1·60 + 2·15 + 3·2 + 4·1  =  0 + 60 + 30 + 6 + 4  =  100</span>
+    <span class="eq">λ = 100 / 200  =  <mark>λ = 0.5</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Compute E(0) — seed value</b>
+    <span class="eq">e<sup>−0.5</sup> ≈ 0.6065</span>
+    <span class="eq">E(0) = 200 × 0.6065  =  <mark>121</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Use shortcut E(x) = E(x−1) · λ / x</b>
+    <span class="eq">E(1) = 121 × 0.5 / 1  =  <mark>61</mark></span>
+    <span class="eq">E(2) = 61 × 0.5 / 2   =  <mark>15</mark></span>
+    <span class="eq">E(3) = 15 × 0.5 / 3   =  <mark>3</mark></span>
+    <span class="eq">E(4) ≈ 3 × 0.5 / 4    ≈  <mark>0</mark>  (round to 0)</span>
+    <span class="eq">Total ≈ 121 + 61 + 15 + 3 + 0 = 200 ✓</span>
+  </div>
+</div>
+
+<!-- TYPE 4 -->
+<h3>Type 4 — Normal Distribution (Z-table) <span class="tag">4/6 papers</span></h3>
+<p class="how">Given μ and σ, find a probability or percentage using the Z-table.</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  The normal distribution is the classic bell curve — heights, exam marks, measurement errors all follow it. You convert any value X into a Z-score (how many standard deviations from the mean), then look up Φ(z) in the table. The table gives the area to the LEFT of z.
+</div>
+<div class="formula">
+Z = (X − μ) / σ<br>
+P(X &lt; a) = Φ(z)<br>
+P(X &gt; a) = 1 − Φ(z)<br>
+P(a &lt; X &lt; b) = Φ(z₂) − Φ(z₁)<br>
+Φ(−z) = 1 − Φ(z)<br>
+Key values:  Φ(1) = 0.8413  ·  Φ(2) = 0.9772  ·  Φ(1.96) ≈ 0.975
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Given: μ = 50, σ = 10. Find P(X &gt; 60).</b>
+    <span class="eq">Z = (60 − 50) / 10  =  1</span>
+    <span class="eq">P(X &gt; 60) = 1 − Φ(1) = 1 − 0.8413  =  <mark>0.1587  (15.87%)</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find P(40 &lt; X &lt; 60)</b>
+    <span class="eq">Z for 40 = (40 − 50)/10 = −1  ;  Z for 60 = 1</span>
+    <span class="eq">P = Φ(1) − Φ(−1) = 0.8413 − (1 − 0.8413) = 2(0.8413) − 1  =  <mark>0.6826  (68.26%)</mark></span>
+  </div>
+</div>
+
+<!-- TYPE 5 -->
+<h3>Type 5 — Binomial Distribution <span class="tag">4/6 papers</span></h3>
+<p class="how">n trials each success/fail; find mean, variance, mode, or expected number of cases from a large group.</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  Binomial = repeat something n times and count successes. Like tossing a coin 4 times and counting heads. p = probability of success each time, q = 1 − p. Mean = how many successes you expect on average.
+</div>
+<div class="formula">
+Mean = np<br>
+Variance = npq  (q = 1 − p)<br>
+Mode = ⌊(n+1)p⌋  (floor = round down)<br>
+P(X = k) = C(n,k) · pᵏ · qⁿ⁻ᵏ
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Given: 800 families, 4 children each, P(boy) = ½</b>
+    <span class="eq">n = 4,  p = q = ½</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Mean, Variance, Mode</b>
+    <span class="eq">Mean = np = 4 × ½  =  <mark>2</mark></span>
+    <span class="eq">Variance = npq = 4 × ½ × ½  =  <mark>1</mark></span>
+    <span class="eq">Mode = ⌊(4 + 1) × ½⌋ = ⌊2.5⌋  =  <mark>2</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">P(exactly 2 boys)</b>
+    <span class="eq">P(X = 2) = C(4,2) · (½)² · (½)² = 6 · (1/16) = 6/16 = 0.375</span>
+    <span class="eq">Expected families = 800 × 0.375  =  <mark>300 families</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">P(at least 1 boy)</b>
+    <span class="eq">P(X ≥ 1) = 1 − P(X = 0) = 1 − (½)⁴ = 1 − 1/16 = 15/16</span>
+    <span class="eq">Expected families = 800 × (15/16)  =  <mark>750 families</mark></span>
+  </div>
+</div>
+
+<!-- TYPE 6 -->
+<h3>Type 6 — Two Regression Equations <span class="tag">4/6 papers</span></h3>
+<p class="how">Data table of X and Y; find the two regression lines (Y on X, and X on Y).</p>
+<div class="box eli5">
+  <span class="label">🟢 In simple words</span>
+  Regression finds the best-fit straight line to predict one variable from another. There are two lines: one predicts Y from X (slope b_yx), one predicts X from Y (slope b_xy). Both lines always cross at the point (x̄, ȳ). The square root of the product of the two slopes gives you the correlation coefficient r.
+</div>
+<div class="formula">
+b_yx = (nΣxy − ΣxΣy) / (nΣx² − (Σx)²)<br>
+b_xy = (nΣxy − ΣxΣy) / (nΣy² − (Σy)²)<br>
+Y on X:  Y − ȳ = b_yx (X − x̄)<br>
+X on Y:  X − x̄ = b_xy (Y − ȳ)<br>
+r = √(b_yx · b_xy)
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Data: X: 1,2,3,4,5  ;  Y: 2,5,3,8,7</b>
+    <span class="eq">n = 5,  Σx = 15,  Σy = 25,  x̄ = 3,  ȳ = 5</span>
+    <span class="eq">Σxy = 1·2 + 2·5 + 3·3 + 4·8 + 5·7 = 2 + 10 + 9 + 32 + 35 = 88</span>
+    <span class="eq">Σx² = 1 + 4 + 9 + 16 + 25 = 55</span>
+    <span class="eq">Σy² = 4 + 25 + 9 + 64 + 49 = 151</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find b_yx (slope of Y on X line)</b>
+    <span class="eq">b_yx = (5 · 88 − 15 · 25) / (5 · 55 − 15²)</span>
+    <span class="eq">= (440 − 375) / (275 − 225)  =  65 / 50  =  <mark>b_yx = 1.3</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find b_xy (slope of X on Y line)</b>
+    <span class="eq">b_xy = (5 · 88 − 15 · 25) / (5 · 151 − 25²)</span>
+    <span class="eq">= 65 / (755 − 625)  =  65 / 130  =  <mark>b_xy = 0.5</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Write the two regression equations</b>
+    <span class="eq">Y on X:  Y − 5 = 1.3(X − 3)  →  <mark>Y = 1.3X + 1.1</mark></span>
+    <span class="eq">X on Y:  X − 3 = 0.5(Y − 5)  →  <mark>X = 0.5Y + 0.5</mark></span>
+  </div>
+  <div class="step">
+    <b class="lbl">Find correlation coefficient r</b>
+    <span class="eq">r = √(b_yx · b_xy) = √(1.3 × 0.5) = √0.65  =  <mark>r ≈ 0.806</mark></span>
+    <span class="eq">Positive r → positive correlation between X and Y. ✓</span>
+  </div>
+</div>
+
+<h2>Bonus — Easy Extra Numericals</h2>
+
+<h3>Rank Correlation (Spearman) <span class="tag">4/6 papers</span></h3>
+<p class="how">Two sets of rankings for n items; find how strongly they agree.</p>
+<div class="formula">
+ρ = 1 − 6Σd² / [n(n² − 1)]<br>
+d = rank in X − rank in Y  (for each item)
+</div>
+<div class="steps">
+  <div class="step">
+    <b class="lbl">Data: 5 students. Ranks X: 1,2,3,4,5 ;  Ranks Y: 2,1,4,3,5</b>
+    <span class="eq">d  values: −1, 1, −1, 1, 0</span>
+    <span class="eq">d² values:  1,  1,   1,  1, 0  →  Σd² = 4</span>
+  </div>
+  <div class="step">
+    <b class="lbl">Apply formula (n = 5)</b>
+    <span class="eq">ρ = 1 − 6 · 4 / [5 · (25 − 1)]  =  1 − 24 / 120  =  1 − 0.2  =  <mark>ρ = 0.8</mark></span>
+    <span class="eq">Strong positive rank agreement.</span>
+  </div>
+</div>
+
+<h3>Karl Pearson Skewness — Definitions</h3>
+<div class="formula">
+Sk = (Mean − Mode) / SD<br>
+Sk = 3(Mean − Median) / SD   ← use when mode is ill-defined<br>
+Positive Sk → right tail longer (mean &gt; median &gt; mode)<br>
+Negative Sk → left tail longer (mean &lt; median &lt; mode)
+</div>
+
+<h2>PART A — Definitions (15 easy marks, learn ALL)</h2>
+<p>These are the one-liners for Q1 (a)–(j). Write them short, write them first.</p>
+<table>
+  <tr><th>Term</th><th>One-line answer to write in exam</th></tr>
+  <tr><td>CDF</td><td>F(x) = P(X ≤ x); starts at 0, climbs to 1 as x → ∞.</td></tr>
+  <tr><td>pdf</td><td>Curve for a continuous random variable; area under it over any interval = probability; total area = 1.</td></tr>
+  <tr><td>pmf</td><td>Gives exact probabilities for a discrete random variable at each value; all probabilities add to 1.</td></tr>
+  <tr><td>Binomial</td><td>Counts successes in n independent yes/no trials; mean = np, variance = npq.</td></tr>
+  <tr><td>Poisson</td><td>Counts rare, random events in a fixed interval; mean = variance = λ.</td></tr>
+  <tr><td>Normal curve</td><td>Symmetric bell shape; mean = median = mode; total area under curve = 1; fully described by μ and σ.</td></tr>
+  <tr><td>Exponential (memoryless)</td><td>Models waiting time; has no memory: P(X &gt; s+t | X &gt; s) = P(X &gt; t); mean = 1/λ.</td></tr>
+  <tr><td>Covariance</td><td>Cov(X,Y) = E(XY) − E(X)E(Y); measures joint variation; if X and Y are independent then Cov = 0.</td></tr>
+  <tr><td>Correlation vs Regression</td><td>Correlation measures strength (r ∈ [−1, 1], symmetric between X and Y). Regression gives a prediction line — asymmetric (Y on X ≠ X on Y).</td></tr>
+  <tr><td>Skewness types</td><td>Symmetric (Sk = 0), Positive (right tail longer; mean &gt; median &gt; mode), Negative (left tail longer).</td></tr>
+  <tr><td>Kurtosis types</td><td>Mesokurtic (β₂ = 3, normal bell), Leptokurtic (β₂ &gt; 3, sharp peak), Platykurtic (β₂ &lt; 3, flat top).</td></tr>
+  <tr><td>Median (small data)</td><td>Sort all values; odd n → the middle value; even n → average of the two middle values.</td></tr>
+  <tr><td>Bayes' theorem</td><td>P(Aᵢ|B) = P(B|Aᵢ)·P(Aᵢ) / Σ P(B|Aⱼ)·P(Aⱼ) — updates probability given new evidence.</td></tr>
+</table>
+
+<h2>One-Glance Formula Cheat</h2>
+<div class="cheat">
+── CONTINUOUS PDF ────────────────────────────────────────
+∫f(x)dx = 1          →  gives k
+μ = ∫ x·f(x) dx
+Var = ∫ x²·f(x) dx − μ²
+
+── EXPONENTIAL MGF ───────────────────────────────────────
+f(x) = λe^(−λx),  x ≥ 0
+M(t) = λ / (λ − t),  t &lt; λ
+Mean = 1/λ  ·  Variance = 1/λ²  ·  SD = 1/λ
+
+── POISSON FITTING ───────────────────────────────────────
+λ = Σfx / N
+E(0) = N · e^(−λ)
+E(x) = E(x−1) · λ / x      ← recursive shortcut
+
+── NORMAL DISTRIBUTION ──────────────────────────────────
+Z = (X − μ) / σ
+P(X &lt; a) = Φ(z)
+P(X &gt; a) = 1 − Φ(z)
+P(a &lt; X &lt; b) = Φ(z₂) − Φ(z₁)
+Φ(1) = 0.8413  ·  Φ(2) = 0.9772  ·  Φ(−z) = 1 − Φ(z)
+
+── BINOMIAL ──────────────────────────────────────────────
+Mean = np  ·  Variance = npq  (q = 1 − p)
+Mode = ⌊(n+1)p⌋
+P(X = k) = C(n,k) · pᵏ · qⁿ⁻ᵏ
+
+── REGRESSION ────────────────────────────────────────────
+b_yx = (nΣxy − ΣxΣy) / (nΣx² − (Σx)²)
+b_xy = (nΣxy − ΣxΣy) / (nΣy² − (Σy)²)
+Y on X:  Y − ȳ = b_yx(X − x̄)
+X on Y:  X − x̄ = b_xy(Y − ȳ)
+r = √(b_yx · b_xy)
+
+── RANK CORRELATION (SPEARMAN) ──────────────────────────
+ρ = 1 − 6Σd² / [n(n² − 1)]
+d = rank difference for each item
+
+── SKEWNESS ──────────────────────────────────────────────
+Sk = (Mean − Mode) / SD
+Sk = 3(Mean − Median) / SD
+
+── BAYES' THEOREM ────────────────────────────────────────
+P(Aᵢ|B) = P(B|Aᵢ)·P(Aᵢ) / Σ P(B|Aⱼ)·P(Aⱼ)
+</div>
+
+</div><!-- end .wrap -->
+</body>
+</html>
