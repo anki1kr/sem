@@ -6,7 +6,7 @@
 //   - Static assets (icons, manifest) → cache-first.
 // Bump CACHE_VERSION whenever PRECACHE_URLS changes so old caches are purged.
 
-const CACHE_VERSION = 'bca-prep-v47';
+const CACHE_VERSION = 'bca-prep-v49';
 const PRECACHE_URLS = [
   './',
   './index.html',
@@ -69,7 +69,17 @@ const PRECACHE_URLS = [
   './ps-images/probability-rules.png',
   './ps-images/skewness-shapes.png',
   './ps-images/uniform-density.png',
-  './ps-images/variance-spread.png'
+  './ps-images/variance-spread.png',
+  './ps-images/pred-binomial-pmf.png',
+  './ps-images/pred-normal-area.png',
+  './ps-images/pred-pdf-parabola.png',
+  './ps-images/pred-normal-tails.png',
+  './ps-images/pred-dice-diff.png',
+  './ps-images/pred-poisson-fit.png',
+  './ps-images/pred-poisson-accidents.png',
+  './ps-images/pred-two-regression.png',
+  './ps-images/pred-parabola-fit.png',
+  './ps-images/pred-marks-histogram.png'
 ];
 
 // Install: pre-cache all guides. Use individual put() so a single 404 does
