@@ -3387,170 +3387,101 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
 
     <div class="part-head">SECTION B (ANSWER ANY FOUR · 60 MARKS)</div>
 
-    <!-- Q2 (Unit 1 — Binomial + MGF of continuous pdf) -->
+    <!-- Q2 (Unit 3 — Continuous pdf: k, mean, variance, mean deviation) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q2 [15 M]</span>
-        <span class="tag fav">Unit 1</span>
-        <span class="tag hot">⭐ Binomial · MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q2(b)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q3(a)/Q3(b)</span>
+        <span class="qnum">Q2 [7 M]</span>
+        <span class="tag fav">Unit 3</span>
+        <span class="tag hot">⭐ Continuous pdf · k, μ, σ²</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q3(a) · continuous pdf</span>
       </div>
       <div class="qbody">
-        <b>(a) Derive Mean E(X) = np, Variance Var(X) = npq, and the Mode of a Binomial distribution X ~ B(n, p). [8 M]</b><br>
-        <b>(b) Find the moment generating function (MGF) of the continuous random variable with pdf f(x) = 2e<sup>−2x</sup>, x ≥ 0. Hence state mean and variance. [7 M]</b>
+        <b>The density function of a random variable X is f(x) = k·x(2 − x), 0 ≤ x ≤ 2 (and 0 elsewhere). Find (i) k, (ii) the mean, (iii) the variance, (iv) the mean deviation about the mean.</b>
       </div>
       <div class="ans">
         <div class="box eli5">
           <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> The <b>Binomial distribution</b> counts how many times something "works" when you repeat the same experiment n times. Classic example: toss a coin 10 times and count how many heads you get. Each toss is independent, and every toss has the same success chance p.</p>
-          <p><b>What does the question want?</b> Part (a): prove (derive) the formulas for Mean = np, Variance = npq, and find the Mode (most likely value). Part (b): find the MGF of f(x) = 2e<sup>−2x</sup> — this is the Exponential distribution with λ = 2 — and read off mean and variance from it.</p>
-          <p><b>The key result(s) to remember:</b> For X ~ B(n, p): <b>Mean = np</b>, <b>Variance = npq</b> (q = 1 − p), <b>Mode = ⌊(n+1)p⌋</b>. Quick example: 10 coin tosses, p = ½ → Mean = 5, Var = 2.5, Mode = 5. For Exponential λ = 2: <b>MGF = 2/(2 − t)</b>, Mean = 1/2, Var = 1/4.</p>
-          <p><b>Scary symbol, explained:</b> <b>MGF M(t)</b> = "moment-generating function" — it's just a special average E[e<sup>tX</sup>]. Differentiating it once at t = 0 gives the mean; twice gives E(X²); then Var = E(X²) − [E(X)]². <b>C(n,k)</b> = "n choose k" = number of ways to pick k successes from n trials. <b>q</b> = 1 − p = failure probability.</p>
-          <p><b>Bare minimum to attempt:</b> Write Mean = np and Var = npq with one-line justification (sum of Bernoulli RVs). For the MGF part, write M(t) = ∫ e<sup>tx</sup>·2e<sup>−2x</sup> dx = 2/(2−t), then differentiate at t = 0. Even partial marks for the setup.</p>
+          <p><b>What is this about?</b> A <b>probability density function (pdf)</b> is a curve where the area under it equals 1 — because "something must happen." Think of it like a hill: the total land area under the hill is fixed. The constant k just stretches or shrinks the hill so the area is exactly 1.</p>
+          <p><b>What does the question want?</b> Four things in order: (i) find k using total-area = 1; (ii) find the mean (balance point of the distribution = ∫x·f(x) dx); (iii) find the variance (average squared distance from the mean = E(X²) − μ²); (iv) find the mean deviation (average absolute distance from the mean = ∫|x − μ|·f(x) dx).</p>
+          <p><b>The key result(s) to remember:</b> ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 gives k = 3/4. Mean μ = ∫<sub>0</sub><sup>2</sup> x·f(x) dx = 1 (by symmetry of the parabola). Variance σ² = E(X²) − μ² ≈ 0.2. Mean deviation = ∫<sub>0</sub><sup>2</sup> |x−1|·f(x) dx ≈ 0.375.</p>
+          <p><b>Scary symbol, explained:</b> <b>∫</b> = "integral" = area under the curve (add up infinitely many thin slices). <b>E(X)</b> = expected value = weighted average of all possible x values. <b>E(X²)</b> = same but weight x² instead of x. <b>|x − μ|</b> = absolute value = always positive distance from the mean.</p>
+          <p><b>Bare minimum to attempt:</b> Set ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 and solve for k — that's step (i) and earns marks immediately. Then write E(X) = ∫ x·f(x) dx for step (ii). Even if you can't finish the arithmetic, the correct setup earns partial credit.</p>
         </div>
-        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
-          <b>⚡ Quick Recall — B(n,p):</b> Mean = <b>np</b> · Var = <b>npq</b> · Mode = <b>⌊(n+1)p⌋</b> · MGF = <b>(q+pe<sup>t</sup>)<sup>n</sup></b><br>
-          <b>Exp(λ):</b> MGF = <b>λ/(λ−t)</b> · E(X) = <b>1/λ</b> · Var = <b>1/λ²</b> · (here λ=2 so E=½, Var=¼)
-        </div>
-        <h5>(a) Binomial — Mean, Variance, Mode</h5>
-        <p>The <mark>Binomial distribution</mark> counts "successes" in n independent <mark>Bernoulli trials</mark>. Each trial has success chance p and failure chance q = 1 − p. Think: n IPL matches, each with win-chance p. Write X ~ B(n, p):</p>
-        <ul>
-          <li><b>pmf:</b> P(X = k) = C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>, k = 0, 1, …, n.</li>
-          <li><b>Support:</b> X is in {0, 1, …, n} — discrete and finite. <b><mark>Mean = np</mark></b>, <b><mark>Variance = npq</mark></b>.</li>
-          <li><b>Sum of <mark>Bernoulli trials</mark>:</b> X = Σ<sub>i=1</sub><sup>n</sup> X<sub>i</sub>, each X<sub>i</sub> ~ Bernoulli(p). This view gives the fastest way to find E and Var.</li>
-          <li><b>Adds nicely:</b> If X ~ B(n<sub>1</sub>, p) and Y ~ B(n<sub>2</sub>, p) are independent, X + Y ~ B(n<sub>1</sub> + n<sub>2</sub>, p).</li>
-          <li><b><mark>MGF</mark>:</b> <mark>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></mark>.</li>
-        </ul>
+        <p>For a continuous random variable, the <mark>constant k</mark> is fixed by the <mark>normalisation condition</mark> ∫f(x) dx = 1 over the support. The <mark>mean</mark> is ∫x·f(x) dx, the <mark>variance</mark> is E[X²] − μ², and the <mark>mean deviation about the mean</mark> is E|X − μ|. Here f(x) = k·x(2 − x) is a downward parabola on [0, 2], symmetric about x = 1.</p>
 
         <figure class="diagram-fig">
-          <img src="ps-images/pred-binomial-pmf.png" alt="Binomial PMF bar chart for n equals 10 and p equals 0.5: symmetric bars peaking at k equals 5 which is n times p" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.1</b> · Binomial PMF for n = 10, p = 0.5. Peak (mode) at k = 5 = np; symmetric since p = q.</figcaption>
+          <img src="ps-images/pred-pdf-parabola.png" alt="Density curve f of x equals three quarters x times two minus x on zero to two, a downward parabola peaking at the mean x equals 1 with total area 1 and a gold band marking mu plus or minus sigma" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.11</b> · Density f(x) = (¾)x(2 − x) on [0, 2]: a symmetric downward parabola peaking at the <b>mean μ = 1</b> with <b>total area = 1</b>. Gold band marks the spread <b>μ ± σ</b> (σ = √0.2 ≈ 0.447), where most of the mass sits.</figcaption>
         </figure>
 
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Yahan teen cheezein nikalni hain — average (mean), failaav (variance), aur sabse common value (mode). Ek-ek karke:</p>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Chalo ek-ek karke nikalte hain — pehle k, phir mean, variance aur mean deviation. Bas area = 1 wali soch se shuru.</p>
         <div class="steps">
           <div class="step k">
-            <b class="lbl">Definition se shuru — Mean E(X):</b>
-            <span class="eq first">E(X) = Σ<sub>k=0</sub><sup>n</sup> k · C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>.</span>
-            <span class="eq">Term k = 0 contributes 0, start at k = 1. Identity: k · C(n, k) = n · C(n − 1, k − 1).</span>
-            <span class="eq">E(X) = np · Σ<sub>k=1</sub><sup>n</sup> C(n−1, k−1) · p<sup>k−1</sup> · q<sup>n−k</sup>.</span>
-            <span class="eq">Let j = k − 1, sum becomes Σ<sub>j=0</sub><sup>n−1</sup> C(n−1, j) p<sup>j</sup> q<sup>(n−1)−j</sup> = (p + q)<sup>n−1</sup> = 1.</span>
-            <span class="eq">∴ <mark><b>mean = np</b></mark>.</span>
+            <b class="lbl">Pehle k nikalo (area = 1 lagao):</b>
+            <span class="eq first">∫<sub>0</sub><sup>2</sup> k·x(2 − x) dx = k∫<sub>0</sub><sup>2</sup> (2x − x²) dx</span>
+            <span class="eq">= k·[x² − x³/3]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= k·(4 − 8/3)</span>
+            <span class="eq">= k·(4/3) = 1</span>
+            <span class="eq">⟹ <mark><b>k = 3/4</b></mark>.</span>
           </div>
           <div class="step k">
-            <b class="lbl">Ab Variance Var(X) = npq nikalo:</b>
-            <span class="eq first">Compute E[X(X−1)] using k(k−1) · C(n, k) = n(n−1) · C(n−2, k−2):</span>
-            <span class="eq">E[X(X−1)] = n(n−1) p<sup>2</sup> · (p + q)<sup>n−2</sup> = n(n−1) p<sup>2</sup>.</span>
-            <span class="eq">E(X<sup>2</sup>) = E[X(X−1)] + E(X) = n(n−1)p<sup>2</sup> + np = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np.</span>
-            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np − n<sup>2</sup>p<sup>2</sup> = np − np<sup>2</sup> = np(1 − p) = <mark><b>variance = npq</b></mark>.</span>
+            <b class="lbl">Ab mean nikalo (∫x·f(x) dx):</b>
+            <span class="eq first">μ = (3/4)∫<sub>0</sub><sup>2</sup> x·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x² − x³) dx</span>
+            <span class="eq">= (3/4)·[2x³/3 − x⁴/4]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= (3/4)·(16/3 − 4)</span>
+            <span class="eq">= (3/4)·(4/3) = <mark><b>μ = 1</b></mark>.</span>
+            <span class="eq">(As expected from the symmetry about x = 1.)</span>
           </div>
           <div class="step k">
-            <b class="lbl">Ab Mode nikalo (sabse likely value):</b>
-            <span class="eq first">Mode is the k that maximises P(X = k). Examine the ratio:</span>
-            <span class="eq">P(X = k) / P(X = k − 1) = [(n − k + 1) / k] · (p / q).</span>
-            <span class="eq">Ratio ≥ 1 ⇔ k ≤ (n + 1)p. So P(X = k) increases while k &lt; (n + 1)p, then decreases.</span>
-            <span class="eq">∴ <mark><b>Mode = ⌊(n + 1)p⌋</b></mark>. If (n + 1)p is an integer, both (n + 1)p and (n + 1)p − 1 are modes (bimodal).</span>
+            <b class="lbl">Ab variance (E[X²] − μ² wala formula):</b>
+            <span class="eq first">E[X²] = (3/4)∫<sub>0</sub><sup>2</sup> x²·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x³ − x⁴) dx</span>
+            <span class="eq">= (3/4)·[x⁴/2 − x⁵/5]<sub>0</sub><sup>2</sup></span>
+            <span class="eq">= (3/4)·(8 − 32/5)</span>
+            <span class="eq">= (3/4)·(8/5) = 6/5 = 1.2.</span>
+            <span class="eq">σ² = E[X²] − μ² = 1.2 − 1 = <mark><b>0.2</b></mark>   (so SD σ = √0.2 ≈ 0.447).</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Last me mean deviation (E|X − 1|) <span class="hg">(mean se average distance)</span>:</b>
+            <span class="eq first">Since f is symmetric about x = 1, E|X − 1| = 2∫<sub>1</sub><sup>2</sup> (x − 1)·(3/4)x(2 − x) dx.</span>
+            <span class="eq">Inner: ∫<sub>1</sub><sup>2</sup> (x − 1)(2x − x²) dx = ∫<sub>1</sub><sup>2</sup> (3x² − x³ − 2x) dx</span>
+            <span class="eq">= [x³ − x⁴/4 − x²]<sub>1</sub><sup>2</sup></span>
+            <span class="eq">= (8 − 4 − 4) − (1 − 0.25 − 1)</span>
+            <span class="eq">= 0 − (−0.25) = 0.25.</span>
+            <span class="eq">∴ MD = 2·(3/4)·0.25 = <mark><b>3/8 = 0.375</b></mark>.</span>
           </div>
         </div>
 
-        <h5>(b) MGF Derivations</h5>
-        <p>The <mark>moment generating</mark> function (<mark>MGF</mark>) <span class="hg">(har moment nikalne wali ek special average)</span> is M<sub>X</sub>(t) = E[e<sup>tX</sup>]. It fixes the full distribution and gives every moment by the rule M<sub>X</sub><sup>(r)</sup>(0) = E(X<sup>r</sup>). We work it out twice: once for the given Exponential pdf (continuous integral), once for the Binomial (discrete sum). Copy whichever pattern the exam asks.</p>
-
-        <p><b>Part (b)(i) — MGF of f(x) = 2e<sup>−2x</sup>, x ≥ 0  (Exponential with λ = 2).</b></p>
-        <p style="margin:0 0 8px;color:var(--brand-deep);">MGF nikalna matlab <span class="hg">(e<sup>tx</sup> ka average lena)</span>. Yahan pdf f(x) = 2e<sup>−2x</sup> hai. Ek-ek step:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Definition se shuru — integral set karo:</b>
-            <span class="eq first">M<sub>X</sub>(t) = E[e<sup>tX</sup>] = ∫<sub>0</sub><sup>∞</sup> e<sup>tx</sup> · 2e<sup>−2x</sup> dx = 2 · ∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab integrate karke limits lagao (converges sirf jab 2 − t &gt; 0, yaani t &lt; 2):</b>
-            <span class="eq first">∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx = [−e<sup>−(2−t)x</sup> / (2 − t)]<sub>0</sub><sup>∞</sup> = 1 / (2 − t).</span>
-            <span class="eq">∴ <mark><b>M<sub>X</sub>(t) = 2 / (2 − t),  valid for t &lt; 2</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab Mean aur Variance nikalo M<sub>X</sub>(t) se:</b>
-            <span class="eq first">M'<sub>X</sub>(t) = d/dt [2(2 − t)<sup>−1</sup>] = 2 / (2 − t)<sup>2</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = 2 / 4 = <mark><b>E(X) = 1/2</b></mark>.</span>
-            <span class="eq">M''<sub>X</sub>(t) = 4 / (2 − t)<sup>3</sup>  ⇒  E(X<sup>2</sup>) = M''<sub>X</sub>(0) = 4 / 8 = 1/2.</span>
-            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = 1/2 − 1/4 = <mark><b>Var(X) = 1/4</b></mark>.</span>
-            <span class="eq">Cross-check with closed form: for Exp(λ), E(X) = 1/λ = 1/2 ✓ and Var(X) = 1/λ<sup>2</sup> = 1/4 ✓.</span>
-          </div>
-        </div>
         <div class="box eli5">
-          <span class="label">🧮 Calculator wali soch — ∞ wali limit kaise lagti hai</span>
-          <p>Maan lo integral ke baad answer aaya <b>−e<sup>−5x</sup>/5</b>, aur limits hain <b>0 se ∞</b>. To kya karte ho?</p>
-          <ul>
-            <li>Upper value (x → ∞): e<sup>−5(∞)</sup> = e<sup>−∞</sup> = <b>0</b> <span class="hg">(bohot bada minus power = zero)</span></li>
-            <li>Lower value (x = 0): −e<sup>0</sup>/5 = −1/5</li>
-            <li>Answer: 0 − (−1/5) = <b>1/5</b></li>
-          </ul>
-          <p>Bas yahan bhi <b>wahi</b> kiya — sirf 5 ki jagah <b>(2 − t)</b> tha, isliye upper = 0 aur lower = −1/(2−t) daala, answer <b>1/(2−t)</b>.</p>
-        </div>
-
-        <p><b>Part (b)(ii) — MGF of Binomial(n, p) (discrete-sum pattern, included for breadth).</b></p>
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Discrete case mein integral ki jagah sum (Σ) aata hai. Same idea — e<sup>tk</sup> ka weighted average:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Definition se shuru — sum set karo:</b>
-            <span class="eq first">M<sub>X</sub>(t) = Σ<sub>k=0</sub><sup>n</sup> e<sup>tk</sup> · C(n, k) p<sup>k</sup> q<sup>n−k</sup></span>
-            <span class="eq">= Σ<sub>k=0</sub><sup>n</sup> C(n, k) (p·e<sup>t</sup>)<sup>k</sup> q<sup>n−k</sup>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab binomial theorem lagao (a + b)<sup>n</sup> = Σ C(n, k) a<sup>k</sup> b<sup>n−k</sup>:</b>
-            <span class="eq first">with a = p·e<sup>t</sup>, b = q:</span>
-            <span class="eq"><mark><b>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></b></mark>, defined for every real t.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab E(X) aur Var(X) wapas nikalo:</b>
-            <span class="eq first">M'<sub>X</sub>(t) = n(q + p·e<sup>t</sup>)<sup>n−1</sup> · p·e<sup>t</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = n(q + p)<sup>n−1</sup> · p = np ✓.</span>
-            <span class="eq">M''<sub>X</sub>(0) = n(n − 1)p<sup>2</sup> + np  ⇒  Var(X) = M''<sub>X</sub>(0) − [M'<sub>X</sub>(0)]<sup>2</sup> = npq ✓.</span>
-          </div>
+          <span class="label">🧮 Calculator wali soch — definite integral</span>
+          <p>∫<sub>0</sub><sup>2</sup> kuch dx ka matlab: antiderivative nikalo, phir <b>upar wali limit me daalo minus neeche wali me daalo</b>. Jaise ∫<sub>1</sub><sup>3</sup> x dx = [x²/2] = 9/2 − 1/2 = 4. Bas value upar daalo, value neeche daalo, ghata do.</p>
+          <p>Yahan har step me wohi: [x² − x³/3] me 2 daala (= 4 − 8/3), 0 daala (= 0), ghata diya. "Area = 1" sirf isiliye kyunki total probability hamesha 1 hoti hai.</p>
         </div>
 
         <div class="table-wrap">
           <table>
-            <caption>Standard Distribution Reference — pmf/pdf, mean, variance, MGF, applications</caption>
-            <thead>
-              <tr><th>Distribution</th><th>Type</th><th>pmf / pdf</th><th>Mean</th><th>Variance</th><th>MGF M<sub>X</sub>(t)</th><th>Typical Application</th></tr>
-            </thead>
+            <caption>Q8 Summary</caption>
+            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
             <tbody>
-              <tr><td>Bernoulli(p)</td><td>Discrete</td><td>p<sup>x</sup>q<sup>1−x</sup>, x ∈ {0, 1}</td><td>p</td><td>pq</td><td>q + pe<sup>t</sup></td><td>Single yes/no trial</td></tr>
-              <tr><td>Binomial(n, p)</td><td>Discrete</td><td>C(n,k) p<sup>k</sup> q<sup>n−k</sup></td><td>np</td><td>npq</td><td>(q + pe<sup>t</sup>)<sup>n</sup></td><td>k successes in n trials, A/B testing</td></tr>
-              <tr><td>Geometric(p)</td><td>Discrete</td><td>q<sup>k−1</sup> p, k = 1, 2, …</td><td>1/p</td><td>q/p<sup>2</sup></td><td>pe<sup>t</sup> / (1 − qe<sup>t</sup>)</td><td>Trial of first success (call retries)</td></tr>
-              <tr><td>Poisson(λ)</td><td>Discrete</td><td>e<sup>−λ</sup>λ<sup>k</sup>/k!</td><td>λ</td><td>λ</td><td>exp[λ(e<sup>t</sup> − 1)]</td><td>Rare events per fixed window</td></tr>
-              <tr><td>Uniform[a, b]</td><td>Continuous</td><td>1/(b − a), a ≤ x ≤ b</td><td>(a + b)/2</td><td>(b − a)<sup>2</sup>/12</td><td>(e<sup>tb</sup> − e<sup>ta</sup>) / [t(b − a)]</td><td>Random latency floor / lottery</td></tr>
-              <tr><td>Exponential(λ)</td><td>Continuous</td><td>λe<sup>−λx</sup>, x ≥ 0</td><td>1/λ</td><td>1/λ<sup>2</sup></td><td>λ / (λ − t), t &lt; λ</td><td>Inter-arrival times, lifetimes</td></tr>
-              <tr><td>Normal(μ, σ<sup>2</sup>)</td><td>Continuous</td><td>(1 / σ√(2π)) · exp[−(x − μ)<sup>2</sup>/(2σ<sup>2</sup>)]</td><td>μ</td><td>σ<sup>2</sup></td><td>exp[μt + σ<sup>2</sup>t<sup>2</sup>/2]</td><td>Aggregate effects, Central Limit Theorem</td></tr>
+              <tr><td>Constant k</td><td><b>3/4</b></td></tr>
+              <tr><td>Mean μ</td><td><b>1</b></td></tr>
+              <tr><td>Variance σ²</td><td><b>0.2</b> (σ ≈ 0.447)</td></tr>
+              <tr><td>Mean deviation about mean</td><td><b>3/8 = 0.375</b></td></tr>
             </tbody>
           </table>
         </div>
 
         <div class="box warn">
-          <b>Pitfalls:</b>
-          <ul style="margin:6px 0 0 18px;">
-            <li>In MGF integration, missing the rule <b>t &lt; λ</b> (here t &lt; 2) loses marks. The examiner checks for it.</li>
-            <li>For Mode, ⌊(n + 1)p⌋ is the floor — writing (n + 1)p when it is a fraction is wrong. Example: n = 9, p = 0.4 gives Mode = ⌊4⌋ = 4, not 4.0 loose.</li>
-            <li>Mixing up E[X(X − 1)] with E(X<sup>2</sup>) is the classic trap. Always get E(X<sup>2</sup>) = E[X(X − 1)] + E(X) before subtracting [E(X)]<sup>2</sup>.</li>
-          </ul>
+          <b>Final answer:</b> <mark><b>k = 3/4, μ = 1, σ² = 0.2, Mean deviation = 3/8 = 0.375.</b></mark>
         </div>
-
-        <h5>Modern Relevance</h5>
-        <p>Binomial drives A/B-test calculators, spam filters (k of n words match), and quality-control sampling tables. The Exponential MGF runs Poisson-process queue models (M/M/1 call centres, web servers), bathtub-curve reliability charts, and survival-regression rates. The MGF trick itself is the main route to prove the Central Limit Theorem and to find sums of independent random variables.</p>
-
-        <h5>Conclusion</h5>
-        <p>For X ~ B(n, p): Mean = np, Var = npq, Mode = ⌊(n + 1)p⌋. For the given Exponential pdf f(x) = 2e<sup>−2x</sup>: M<sub>X</sub>(t) = 2/(2 − t) for t &lt; 2. Then E(X) = ½ and Var(X) = ¼ from the first two derivatives at 0. The MGF method works for every standard distribution. Use it whenever you need any moment.</p>
 
         <div class="score">
           <b>Marks Allocation:</b>
           <ul>
-            <li>(a) Mean derivation (binomial-sum trick): <span class="m">3 M</span></li>
-            <li>(a) Variance via E[X(X−1)]: <span class="m">3 M</span></li>
-            <li>(a) Mode = ⌊(n+1)p⌋ via ratio test: <span class="m">2 M</span></li>
-            <li>(b) MGF integral with convergence condition: <span class="m">4 M</span></li>
-            <li>(b) Mean &amp; Variance from M'(0), M''(0): <span class="m">3 M</span></li>
-            <li>Total: <span class="m">15 M</span></li>
+            <li>(i) k from normalisation: <span class="m">2 M</span></li>
+            <li>(ii) Mean: <span class="m">1.5 M</span></li>
+            <li>(iii) Variance via E[X²]: <span class="m">2 M</span></li>
+            <li>(iv) Mean deviation about mean: <span class="m">1.5 M</span></li>
+            <li>Total: <span class="m">7 M</span></li>
           </ul>
         </div>
       </div>
@@ -3729,10 +3660,554 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
-    <!-- Q4 (Unit 2 — Joint discrete + Joint continuous) -->
+    <!-- Q4 (Unit 1 — Binomial + MGF of continuous pdf) -->
     <div class="qcard predicted">
       <div class="qhead">
         <span class="qnum">Q4 [15 M]</span>
+        <span class="tag fav">Unit 1</span>
+        <span class="tag hot">⭐ Binomial · MGF</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q3(a) · Binomial mean/var/mode 8M</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q1(c) · exponential MGF</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q2(b)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q3(a)/Q3(b)</span>
+      </div>
+      <div class="qbody">
+        <b>(a) Derive Mean E(X) = np, Variance Var(X) = npq, and the Mode of a Binomial distribution X ~ B(n, p). [8 M]</b><br>
+        <b>(b) Find the moment generating function (MGF) of the continuous random variable with pdf f(x) = 2e<sup>−2x</sup>, x ≥ 0. Hence state mean and variance. [7 M]</b>
+      </div>
+      <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> The <b>Binomial distribution</b> counts how many times something "works" when you repeat the same experiment n times. Classic example: toss a coin 10 times and count how many heads you get. Each toss is independent, and every toss has the same success chance p.</p>
+          <p><b>What does the question want?</b> Part (a): prove (derive) the formulas for Mean = np, Variance = npq, and find the Mode (most likely value). Part (b): find the MGF of f(x) = 2e<sup>−2x</sup> — this is the Exponential distribution with λ = 2 — and read off mean and variance from it.</p>
+          <p><b>The key result(s) to remember:</b> For X ~ B(n, p): <b>Mean = np</b>, <b>Variance = npq</b> (q = 1 − p), <b>Mode = ⌊(n+1)p⌋</b>. Quick example: 10 coin tosses, p = ½ → Mean = 5, Var = 2.5, Mode = 5. For Exponential λ = 2: <b>MGF = 2/(2 − t)</b>, Mean = 1/2, Var = 1/4.</p>
+          <p><b>Scary symbol, explained:</b> <b>MGF M(t)</b> = "moment-generating function" — it's just a special average E[e<sup>tX</sup>]. Differentiating it once at t = 0 gives the mean; twice gives E(X²); then Var = E(X²) − [E(X)]². <b>C(n,k)</b> = "n choose k" = number of ways to pick k successes from n trials. <b>q</b> = 1 − p = failure probability.</p>
+          <p><b>Bare minimum to attempt:</b> Write Mean = np and Var = npq with one-line justification (sum of Bernoulli RVs). For the MGF part, write M(t) = ∫ e<sup>tx</sup>·2e<sup>−2x</sup> dx = 2/(2−t), then differentiate at t = 0. Even partial marks for the setup.</p>
+        </div>
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — B(n,p):</b> Mean = <b>np</b> · Var = <b>npq</b> · Mode = <b>⌊(n+1)p⌋</b> · MGF = <b>(q+pe<sup>t</sup>)<sup>n</sup></b><br>
+          <b>Exp(λ):</b> MGF = <b>λ/(λ−t)</b> · E(X) = <b>1/λ</b> · Var = <b>1/λ²</b> · (here λ=2 so E=½, Var=¼)
+        </div>
+        <h5>(a) Binomial — Mean, Variance, Mode</h5>
+        <p>The <mark>Binomial distribution</mark> counts "successes" in n independent <mark>Bernoulli trials</mark>. Each trial has success chance p and failure chance q = 1 − p. Think: n IPL matches, each with win-chance p. Write X ~ B(n, p):</p>
+        <ul>
+          <li><b>pmf:</b> P(X = k) = C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>, k = 0, 1, …, n.</li>
+          <li><b>Support:</b> X is in {0, 1, …, n} — discrete and finite. <b><mark>Mean = np</mark></b>, <b><mark>Variance = npq</mark></b>.</li>
+          <li><b>Sum of <mark>Bernoulli trials</mark>:</b> X = Σ<sub>i=1</sub><sup>n</sup> X<sub>i</sub>, each X<sub>i</sub> ~ Bernoulli(p). This view gives the fastest way to find E and Var.</li>
+          <li><b>Adds nicely:</b> If X ~ B(n<sub>1</sub>, p) and Y ~ B(n<sub>2</sub>, p) are independent, X + Y ~ B(n<sub>1</sub> + n<sub>2</sub>, p).</li>
+          <li><b><mark>MGF</mark>:</b> <mark>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></mark>.</li>
+        </ul>
+
+        <figure class="diagram-fig">
+          <img src="ps-images/pred-binomial-pmf.png" alt="Binomial PMF bar chart for n equals 10 and p equals 0.5: symmetric bars peaking at k equals 5 which is n times p" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.1</b> · Binomial PMF for n = 10, p = 0.5. Peak (mode) at k = 5 = np; symmetric since p = q.</figcaption>
+        </figure>
+
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Yahan teen cheezein nikalni hain — average (mean), failaav (variance), aur sabse common value (mode). Ek-ek karke:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Definition se shuru — Mean E(X):</b>
+            <span class="eq first">E(X) = Σ<sub>k=0</sub><sup>n</sup> k · C(n, k) · p<sup>k</sup> · q<sup>n−k</sup>.</span>
+            <span class="eq">Term k = 0 contributes 0, start at k = 1. Identity: k · C(n, k) = n · C(n − 1, k − 1).</span>
+            <span class="eq">E(X) = np · Σ<sub>k=1</sub><sup>n</sup> C(n−1, k−1) · p<sup>k−1</sup> · q<sup>n−k</sup>.</span>
+            <span class="eq">Let j = k − 1, sum becomes Σ<sub>j=0</sub><sup>n−1</sup> C(n−1, j) p<sup>j</sup> q<sup>(n−1)−j</sup> = (p + q)<sup>n−1</sup> = 1.</span>
+            <span class="eq">∴ <mark><b>mean = np</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab Variance Var(X) = npq nikalo:</b>
+            <span class="eq first">Compute E[X(X−1)] using k(k−1) · C(n, k) = n(n−1) · C(n−2, k−2):</span>
+            <span class="eq">E[X(X−1)] = n(n−1) p<sup>2</sup> · (p + q)<sup>n−2</sup> = n(n−1) p<sup>2</sup>.</span>
+            <span class="eq">E(X<sup>2</sup>) = E[X(X−1)] + E(X) = n(n−1)p<sup>2</sup> + np = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np.</span>
+            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = n<sup>2</sup>p<sup>2</sup> − np<sup>2</sup> + np − n<sup>2</sup>p<sup>2</sup> = np − np<sup>2</sup> = np(1 − p) = <mark><b>variance = npq</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab Mode nikalo (sabse likely value):</b>
+            <span class="eq first">Mode is the k that maximises P(X = k). Examine the ratio:</span>
+            <span class="eq">P(X = k) / P(X = k − 1) = [(n − k + 1) / k] · (p / q).</span>
+            <span class="eq">Ratio ≥ 1 ⇔ k ≤ (n + 1)p. So P(X = k) increases while k &lt; (n + 1)p, then decreases.</span>
+            <span class="eq">∴ <mark><b>Mode = ⌊(n + 1)p⌋</b></mark>. If (n + 1)p is an integer, both (n + 1)p and (n + 1)p − 1 are modes (bimodal).</span>
+          </div>
+        </div>
+
+        <h5>(b) MGF Derivations</h5>
+        <p>The <mark>moment generating</mark> function (<mark>MGF</mark>) <span class="hg">(har moment nikalne wali ek special average)</span> is M<sub>X</sub>(t) = E[e<sup>tX</sup>]. It fixes the full distribution and gives every moment by the rule M<sub>X</sub><sup>(r)</sup>(0) = E(X<sup>r</sup>). We work it out twice: once for the given Exponential pdf (continuous integral), once for the Binomial (discrete sum). Copy whichever pattern the exam asks.</p>
+
+        <p><b>Part (b)(i) — MGF of f(x) = 2e<sup>−2x</sup>, x ≥ 0  (Exponential with λ = 2).</b></p>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">MGF nikalna matlab <span class="hg">(e<sup>tx</sup> ka average lena)</span>. Yahan pdf f(x) = 2e<sup>−2x</sup> hai. Ek-ek step:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Definition se shuru — integral set karo:</b>
+            <span class="eq first">M<sub>X</sub>(t) = E[e<sup>tX</sup>] = ∫<sub>0</sub><sup>∞</sup> e<sup>tx</sup> · 2e<sup>−2x</sup> dx = 2 · ∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab integrate karke limits lagao (converges sirf jab 2 − t &gt; 0, yaani t &lt; 2):</b>
+            <span class="eq first">∫<sub>0</sub><sup>∞</sup> e<sup>−(2−t)x</sup> dx = [−e<sup>−(2−t)x</sup> / (2 − t)]<sub>0</sub><sup>∞</sup> = 1 / (2 − t).</span>
+            <span class="eq">∴ <mark><b>M<sub>X</sub>(t) = 2 / (2 − t),  valid for t &lt; 2</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab Mean aur Variance nikalo M<sub>X</sub>(t) se:</b>
+            <span class="eq first">M'<sub>X</sub>(t) = d/dt [2(2 − t)<sup>−1</sup>] = 2 / (2 − t)<sup>2</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = 2 / 4 = <mark><b>E(X) = 1/2</b></mark>.</span>
+            <span class="eq">M''<sub>X</sub>(t) = 4 / (2 − t)<sup>3</sup>  ⇒  E(X<sup>2</sup>) = M''<sub>X</sub>(0) = 4 / 8 = 1/2.</span>
+            <span class="eq">Var(X) = E(X<sup>2</sup>) − [E(X)]<sup>2</sup> = 1/2 − 1/4 = <mark><b>Var(X) = 1/4</b></mark>.</span>
+            <span class="eq">Cross-check with closed form: for Exp(λ), E(X) = 1/λ = 1/2 ✓ and Var(X) = 1/λ<sup>2</sup> = 1/4 ✓.</span>
+          </div>
+        </div>
+        <div class="box eli5">
+          <span class="label">🧮 Calculator wali soch — ∞ wali limit kaise lagti hai</span>
+          <p>Maan lo integral ke baad answer aaya <b>−e<sup>−5x</sup>/5</b>, aur limits hain <b>0 se ∞</b>. To kya karte ho?</p>
+          <ul>
+            <li>Upper value (x → ∞): e<sup>−5(∞)</sup> = e<sup>−∞</sup> = <b>0</b> <span class="hg">(bohot bada minus power = zero)</span></li>
+            <li>Lower value (x = 0): −e<sup>0</sup>/5 = −1/5</li>
+            <li>Answer: 0 − (−1/5) = <b>1/5</b></li>
+          </ul>
+          <p>Bas yahan bhi <b>wahi</b> kiya — sirf 5 ki jagah <b>(2 − t)</b> tha, isliye upper = 0 aur lower = −1/(2−t) daala, answer <b>1/(2−t)</b>.</p>
+        </div>
+
+        <p><b>Part (b)(ii) — MGF of Binomial(n, p) (discrete-sum pattern, included for breadth).</b></p>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Discrete case mein integral ki jagah sum (Σ) aata hai. Same idea — e<sup>tk</sup> ka weighted average:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Definition se shuru — sum set karo:</b>
+            <span class="eq first">M<sub>X</sub>(t) = Σ<sub>k=0</sub><sup>n</sup> e<sup>tk</sup> · C(n, k) p<sup>k</sup> q<sup>n−k</sup></span>
+            <span class="eq">= Σ<sub>k=0</sub><sup>n</sup> C(n, k) (p·e<sup>t</sup>)<sup>k</sup> q<sup>n−k</sup>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab binomial theorem lagao (a + b)<sup>n</sup> = Σ C(n, k) a<sup>k</sup> b<sup>n−k</sup>:</b>
+            <span class="eq first">with a = p·e<sup>t</sup>, b = q:</span>
+            <span class="eq"><mark><b>M<sub>X</sub>(t) = (q + p·e<sup>t</sup>)<sup>n</sup></b></mark>, defined for every real t.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab E(X) aur Var(X) wapas nikalo:</b>
+            <span class="eq first">M'<sub>X</sub>(t) = n(q + p·e<sup>t</sup>)<sup>n−1</sup> · p·e<sup>t</sup>  ⇒  E(X) = M'<sub>X</sub>(0) = n(q + p)<sup>n−1</sup> · p = np ✓.</span>
+            <span class="eq">M''<sub>X</sub>(0) = n(n − 1)p<sup>2</sup> + np  ⇒  Var(X) = M''<sub>X</sub>(0) − [M'<sub>X</sub>(0)]<sup>2</sup> = npq ✓.</span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Standard Distribution Reference — pmf/pdf, mean, variance, MGF, applications</caption>
+            <thead>
+              <tr><th>Distribution</th><th>Type</th><th>pmf / pdf</th><th>Mean</th><th>Variance</th><th>MGF M<sub>X</sub>(t)</th><th>Typical Application</th></tr>
+            </thead>
+            <tbody>
+              <tr><td>Bernoulli(p)</td><td>Discrete</td><td>p<sup>x</sup>q<sup>1−x</sup>, x ∈ {0, 1}</td><td>p</td><td>pq</td><td>q + pe<sup>t</sup></td><td>Single yes/no trial</td></tr>
+              <tr><td>Binomial(n, p)</td><td>Discrete</td><td>C(n,k) p<sup>k</sup> q<sup>n−k</sup></td><td>np</td><td>npq</td><td>(q + pe<sup>t</sup>)<sup>n</sup></td><td>k successes in n trials, A/B testing</td></tr>
+              <tr><td>Geometric(p)</td><td>Discrete</td><td>q<sup>k−1</sup> p, k = 1, 2, …</td><td>1/p</td><td>q/p<sup>2</sup></td><td>pe<sup>t</sup> / (1 − qe<sup>t</sup>)</td><td>Trial of first success (call retries)</td></tr>
+              <tr><td>Poisson(λ)</td><td>Discrete</td><td>e<sup>−λ</sup>λ<sup>k</sup>/k!</td><td>λ</td><td>λ</td><td>exp[λ(e<sup>t</sup> − 1)]</td><td>Rare events per fixed window</td></tr>
+              <tr><td>Uniform[a, b]</td><td>Continuous</td><td>1/(b − a), a ≤ x ≤ b</td><td>(a + b)/2</td><td>(b − a)<sup>2</sup>/12</td><td>(e<sup>tb</sup> − e<sup>ta</sup>) / [t(b − a)]</td><td>Random latency floor / lottery</td></tr>
+              <tr><td>Exponential(λ)</td><td>Continuous</td><td>λe<sup>−λx</sup>, x ≥ 0</td><td>1/λ</td><td>1/λ<sup>2</sup></td><td>λ / (λ − t), t &lt; λ</td><td>Inter-arrival times, lifetimes</td></tr>
+              <tr><td>Normal(μ, σ<sup>2</sup>)</td><td>Continuous</td><td>(1 / σ√(2π)) · exp[−(x − μ)<sup>2</sup>/(2σ<sup>2</sup>)]</td><td>μ</td><td>σ<sup>2</sup></td><td>exp[μt + σ<sup>2</sup>t<sup>2</sup>/2]</td><td>Aggregate effects, Central Limit Theorem</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <b>Pitfalls:</b>
+          <ul style="margin:6px 0 0 18px;">
+            <li>In MGF integration, missing the rule <b>t &lt; λ</b> (here t &lt; 2) loses marks. The examiner checks for it.</li>
+            <li>For Mode, ⌊(n + 1)p⌋ is the floor — writing (n + 1)p when it is a fraction is wrong. Example: n = 9, p = 0.4 gives Mode = ⌊4⌋ = 4, not 4.0 loose.</li>
+            <li>Mixing up E[X(X − 1)] with E(X<sup>2</sup>) is the classic trap. Always get E(X<sup>2</sup>) = E[X(X − 1)] + E(X) before subtracting [E(X)]<sup>2</sup>.</li>
+          </ul>
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>Binomial drives A/B-test calculators, spam filters (k of n words match), and quality-control sampling tables. The Exponential MGF runs Poisson-process queue models (M/M/1 call centres, web servers), bathtub-curve reliability charts, and survival-regression rates. The MGF trick itself is the main route to prove the Central Limit Theorem and to find sums of independent random variables.</p>
+
+        <h5>Conclusion</h5>
+        <p>For X ~ B(n, p): Mean = np, Var = npq, Mode = ⌊(n + 1)p⌋. For the given Exponential pdf f(x) = 2e<sup>−2x</sup>: M<sub>X</sub>(t) = 2/(2 − t) for t &lt; 2. Then E(X) = ½ and Var(X) = ¼ from the first two derivatives at 0. The MGF method works for every standard distribution. Use it whenever you need any moment.</p>
+
+        <div class="score">
+          <b>Marks Allocation:</b>
+          <ul>
+            <li>(a) Mean derivation (binomial-sum trick): <span class="m">3 M</span></li>
+            <li>(a) Variance via E[X(X−1)]: <span class="m">3 M</span></li>
+            <li>(a) Mode = ⌊(n+1)p⌋ via ratio test: <span class="m">2 M</span></li>
+            <li>(b) MGF integral with convergence condition: <span class="m">4 M</span></li>
+            <li>(b) Mean &amp; Variance from M'(0), M''(0): <span class="m">3 M</span></li>
+            <li>Total: <span class="m">15 M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q5 (Unit 4 — Karl Pearson bivariate + Two regression equations) -->
+    <div class="qcard predicted">
+      <div class="qhead">
+        <span class="qnum">Q5 [15 M]</span>
+        <span class="tag fav">Unit 4</span>
+        <span class="tag hot">⭐ Karl Pearson · Regression</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(c) · Karl Pearson r (10 pairs) ×3</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q5(a) · two regression eqns</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q4(a) · Karl Pearson skewness</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q4(b) · grouped SD</span>
+      </div>
+      <div class="qbody">
+        <b>(a) Compute the Karl Pearson correlation coefficient for the following ten pairs. [8 M]</b><br>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>X</th><td>10</td><td>14</td><td>18</td><td>22</td><td>26</td><td>30</td><td>34</td><td>38</td><td>42</td><td>46</td></tr>
+              <tr><th>Y</th><td>18</td><td>12</td><td>24</td><td>20</td><td>30</td><td>28</td><td>34</td><td>36</td><td>42</td><td>40</td></tr>
+            </thead>
+          </table>
+        </div>
+        <b>(b) From the data in (a), fit both regression lines (Y on X and X on Y) by the method of least squares. [7 M]</b>
+      </div>
+      <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> <b>Correlation</b> measures how strongly two variables move together. If taller people score higher, correlation is positive. The <b>Karl Pearson r</b> is the standard measure: +1 = perfect positive line, −1 = perfect inverse, 0 = no linear link. <b>Regression</b> goes further: it gives the best-fit line to predict one variable from the other.</p>
+          <p><b>What does the question want?</b> Part (a): compute r for 10 (X,Y) pairs using the table formula. Part (b): write both regression equations — “Y on X” (predicts Y given X) and “X on Y” (predicts X given Y) — and find their slopes.</p>
+          <p><b>The key result(s) to remember:</b> <b>r = [nΣXY − ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b>. Make a table: X, Y, X², Y², XY → sum all → plug in. Regression Y on X: y−ȳ = b<sub>yx</sub>(x−x̄) where b<sub>yx</sub> = r·σ<sub>Y</sub>/σ<sub>X</sub>. Check: r² = b<sub>yx</sub>·b<sub>xy</sub>.</p>
+          <p><b>Scary symbol, explained:</b> <b>ΣXY</b> = multiply each X by its paired Y and add. <b>ΣX²</b> = square each X then add. <b>σ<sub>X</sub></b> = SD of X = √[ΣX²/n − (x̄)²]. <b>b<sub>yx</sub></b> = slope of Y-on-X line (how much Y changes when X increases by 1).</p>
+          <p><b>Bare minimum to attempt:</b> Build the ΣX, ΣY, ΣX², ΣY², ΣXY table from 10 data pairs, plug into the r formula. Even computing r alone earns 8 of 15 marks. For regression, write the two formulae with your computed values substituted.</p>
+        </div>
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — r:</b> <b>r = [nΣXY−ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b> · range −1 to +1<br>
+          <b>Regression Y on X:</b> y−ȳ = <b>b<sub>yx</sub>(x−x̄)</b>, b<sub>yx</sub> = <b>r·σ<sub>Y</sub>/σ<sub>X</sub></b> · <b>X on Y:</b> b<sub>xy</sub> = r·σ<sub>X</sub>/σ<sub>Y</sub> · check: <b>r² = b<sub>yx</sub>·b<sub>xy</sub></b>
+        </div>
+        <h5>(a) Karl Pearson Correlation Coefficient</h5>
+        <p>The <mark>Karl Pearson r</mark> shows the strength and direction of the <i>linear</i> link between two paired variables, fitted using the <mark>method of least squares</mark> <span class="hg">(error² ko sabse chhota karne wali fit)</span>. Think cricket batting averages vs strike rates. Key properties:</p>
+        <ul>
+          <li><b>Range:</b> −1 ≤ r ≤ +1. r = ±1 means all (x<sub>i</sub>, y<sub>i</sub>) sit exactly on a straight line.</li>
+          <li><b>No units:</b> r does not change if you shift or scale the data: r(aX + b, cY + d) = sign(ac) · r(X, Y).</li>
+          <li><b>Symmetry:</b> r<sub>xy</sub> = r<sub>yx</sub>. Only one number, unlike regression.</li>
+          <li><b>Sign:</b> matches the sign of Cov(X, Y) and of both regression slopes.</li>
+          <li><b>Limit:</b> catches only linear links. r ≈ 0 does not rule out strong curves like y = x<sup>2</sup> on a symmetric x-range.</li>
+        </ul>
+        <p>Two equivalent formulas:</p>
+        <p style="margin-left:14px;">(deviation form) r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)<sup>2</sup> · Σ(y − ȳ)<sup>2</sup>]<br>
+        (raw-score form) r = [n·ΣXY − ΣX·ΣY] / √{[n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>][n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>]}</p>
+
+        <figure class="diagram-fig">
+          <div style="position:relative;height:200px;background:var(--paper-deep);border:1px solid var(--rule);border-radius:8px;padding:8px;">
+            <svg viewBox="0 0 320 180" preserveAspectRatio="none" style="width:100%;height:100%;">
+              <line x1="20" y1="160" x2="310" y2="160" stroke="var(--muted)" stroke-width="1"/>
+              <line x1="20" y1="10" x2="20" y2="160" stroke="var(--muted)" stroke-width="1"/>
+              <line x1="40" y1="140" x2="300" y2="30" stroke="var(--brand)" stroke-width="2.5" stroke-dasharray="5,3"/>
+              <circle cx="48" cy="135" r="4" fill="var(--brand-deep)"/>
+              <circle cx="78" cy="148" r="4" fill="var(--brand-deep)"/>
+              <circle cx="106" cy="118" r="4" fill="var(--brand-deep)"/>
+              <circle cx="134" cy="125" r="4" fill="var(--brand-deep)"/>
+              <circle cx="162" cy="98" r="4" fill="var(--brand-deep)"/>
+              <circle cx="190" cy="105" r="4" fill="var(--brand-deep)"/>
+              <circle cx="218" cy="75" r="4" fill="var(--brand-deep)"/>
+              <circle cx="246" cy="68" r="4" fill="var(--brand-deep)"/>
+              <circle cx="274" cy="38" r="4" fill="var(--brand-deep)"/>
+              <circle cx="302" cy="45" r="4" fill="var(--brand-deep)"/>
+              <text x="165" y="175" text-anchor="middle" fill="var(--muted)" font-size="11">X (10 → 46)</text>
+              <text x="10" y="85" text-anchor="middle" fill="var(--muted)" font-size="11" transform="rotate(-90 10 85)">Y</text>
+              <text x="280" y="20" fill="var(--brand-deep)" font-size="11" font-weight="700">r ≈ 0.95</text>
+            </svg>
+          </div>
+          <figcaption><b>Fig 5.5</b> · Scatter plot of (X, Y) with regression line overlay. Strong positive linear trend ⇒ r close to +1.</figcaption>
+        </figure>
+
+        <p style="margin:0 0 8px;color:var(--brand-deep);">r nikalne ka pehla kaam ek bada Σ-table banana — saari sums ek jagah. Phir formula mein daal do:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle Σ-table banao (n = 10):</b>
+            <div class="table-wrap" style="margin:6px 0;">
+              <table>
+                <thead><tr><th>i</th><th>X</th><th>Y</th><th>X<sup>2</sup></th><th>Y<sup>2</sup></th><th>XY</th></tr></thead>
+                <tbody>
+                  <tr><td>1</td><td>10</td><td>18</td><td>100</td><td>324</td><td>180</td></tr>
+                  <tr><td>2</td><td>14</td><td>12</td><td>196</td><td>144</td><td>168</td></tr>
+                  <tr><td>3</td><td>18</td><td>24</td><td>324</td><td>576</td><td>432</td></tr>
+                  <tr><td>4</td><td>22</td><td>20</td><td>484</td><td>400</td><td>440</td></tr>
+                  <tr><td>5</td><td>26</td><td>30</td><td>676</td><td>900</td><td>780</td></tr>
+                  <tr><td>6</td><td>30</td><td>28</td><td>900</td><td>784</td><td>840</td></tr>
+                  <tr><td>7</td><td>34</td><td>34</td><td>1156</td><td>1156</td><td>1156</td></tr>
+                  <tr><td>8</td><td>38</td><td>36</td><td>1444</td><td>1296</td><td>1368</td></tr>
+                  <tr><td>9</td><td>42</td><td>42</td><td>1764</td><td>1764</td><td>1764</td></tr>
+                  <tr><td>10</td><td>46</td><td>40</td><td>2116</td><td>1600</td><td>1840</td></tr>
+                  <tr style="font-weight:700;background:var(--paper-deep);"><td>Σ</td><td>280</td><td>284</td><td>9160</td><td>8944</td><td>8968</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab means nikalo:</b>
+            <span class="eq first">X̄ = 280 / 10 = <b>28</b>;  Ȳ = 284 / 10 = <b>28.4</b>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab formula mein values daalo — r nikalo:</b>
+            <span class="eq first">r = [n·ΣXY − ΣX·ΣY] / √{ [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] · [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] }</span>
+            <span class="eq">Numerator = 10(8968) − 280(284) = 89680 − 79520 = <b>10160</b>.</span>
+            <span class="eq">n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup> = 91600 − 78400 = 13200.</span>
+            <span class="eq">n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup> = 89440 − 80656 = 8784.</span>
+            <span class="eq">Denominator = √(13200 × 8784) = √115,948,800 ≈ <b>10768</b>.</span>
+            <span class="eq"><mark><b>r = 10160 / 10768 ≈ 0.944</b></mark> (very strong positive).</span>
+          </div>
+        </div>
+
+        <h5>(b) Two Regression Lines (Least Squares)</h5>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Do alag-alag lines banengi — ek Y predict karne ke liye, ek X ke liye. Pehle dono slopes nikalo:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehla slope <mark>b<sub>yx</sub></mark> nikalo (Y on X):</b>
+            <span class="eq first">b<sub>yx</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] = 10160 / 13200 = <mark><b>b<sub>yx</sub> = 0.7697</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Doosra slope <mark>b<sub>xy</sub></mark> nikalo (X on Y):</b>
+            <span class="eq first">b<sub>xy</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] = 10160 / 8784 = <mark><b>b<sub>xy</sub> = 1.1567</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab pehli <mark>line</mark> banao — Y on X:</b>
+            <span class="eq first">Passes through (X̄, Ȳ) = (28, 28.4):</span>
+            <span class="eq">Y − 28.4 = 0.7697 · (X − 28)</span>
+            <span class="eq">Y = 0.7697 X − 21.55 + 28.4</span>
+            <span class="eq"><mark><b>Y = 0.7697 X + 6.85</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab doosri line banao — X on Y:</b>
+            <span class="eq first">X − 28 = 1.1567 · (Y − 28.4)</span>
+            <span class="eq">X = 1.1567 Y − 32.85 + 28</span>
+            <span class="eq"><mark><b>X = 1.1567 Y − 4.85</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Verify — dono slopes ka product = r²:</b>
+            <span class="eq first"><mark>r² = b_yx · b_xy</mark> = 0.7697 × 1.1567 ≈ 0.8903.</span>
+            <span class="eq">r = √0.8903 ≈ <mark><b>r = 0.9436</b></mark> ✓ matches Part-(a).</span>
+          </div>
+        </div>
+
+        <div class="box eli5">
+          <span class="label">🧮 Chhoti soch — do regression lines kyun</span>
+          <p>Socho do dost guess karte hain. Ek kehta "tumhari height batao, main weight guess karunga" (Y on X). Doosra kehta "weight batao, height guess karunga" (X on Y). Dono ke guess-rules <b>alag</b> honge — kyunki kaun input hai aur kaun output, woh badal gaya.</p>
+          <ul>
+            <li>Y on X line: X do → Y batati hai (slope b<sub>yx</sub>).</li>
+            <li>X on Y line: Y do → X batati hai (slope b<sub>xy</sub>).</li>
+          </ul>
+          <p>Par dono lines <b>ek hi point</b> pe milti hain — mean point (X̄, Ȳ) = (28, 28.4). Jitna data perfectly linear (r → 1), utna dono lines paas-paas; r = 1 pe to dono ek ho jaati hain.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Regression Summary — Q5(b)</caption>
+            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>b<sub>yx</sub> (slope of Y on X)</td><td>0.7697</td></tr>
+              <tr><td>b<sub>xy</sub> (slope of X on Y)</td><td>1.1567</td></tr>
+              <tr><td>Line Y on X</td><td><b>Y = 0.7697 X + 6.85</b></td></tr>
+              <tr><td>Line X on Y</td><td><b>X = 1.1567 Y − 4.85</b></td></tr>
+              <tr><td>r<sup>2</sup> = b<sub>yx</sub>·b<sub>xy</sub></td><td>0.8903</td></tr>
+              <tr><td>r</td><td>≈ 0.944</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h5>Synthesis — How Correlation and Regression Relate</h5>
+        <div class="table-wrap">
+          <table>
+            <caption>Karl Pearson Correlation vs Least-Squares Regression</caption>
+            <thead><tr><th>Aspect</th><th>Karl Pearson Correlation (r)</th><th>Regression (b<sub>yx</sub>, b<sub>xy</sub>)</th></tr></thead>
+            <tbody>
+              <tr><td>Definition</td><td>Standardised measure of linear association</td><td>Best-fit line minimising Σ(Y − Ŷ)<sup>2</sup></td></tr>
+              <tr><td>Formula</td><td>r = Σ(x−x̄)(y−ȳ) / √[Σ(x−x̄)<sup>2</sup>·Σ(y−ȳ)<sup>2</sup>]</td><td>b<sub>yx</sub> = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)<sup>2</sup></td></tr>
+              <tr><td>Symmetry</td><td>Symmetric: r<sub>xy</sub> = r<sub>yx</sub> (one number)</td><td>Asymmetric: b<sub>yx</sub> ≠ b<sub>xy</sub> (two slopes)</td></tr>
+              <tr><td>Range</td><td>−1 ≤ r ≤ +1 (unit-less)</td><td>Any real number; carries units (Y per unit X)</td></tr>
+              <tr><td>Key identity</td><td colspan="2" style="text-align:center;"><b>r<sup>2</sup> = b<sub>yx</sub> · b<sub>xy</sub></b>; r has the same sign as both b's</td></tr>
+              <tr><td>Use-case</td><td>Quantify strength of relationship (feature selection, EDA)</td><td>Predict Y from X (or X from Y) at a new value</td></tr>
+              <tr><td>Worked-data value</td><td>r ≈ 0.944</td><td>b<sub>yx</sub> = 0.7697; b<sub>xy</sub> = 1.1567</td></tr>
+              <tr><td>Geometric meaning</td><td>Cosine between mean-centred X, Y vectors</td><td>Slope of least-squares projection of one vector onto the other</td></tr>
+              <tr><td>Effect of outliers</td><td>Highly sensitive (one extreme pair can flip sign)</td><td>Slope also distorted; consider robust regression for heavy tails</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <b>Pitfalls:</b>
+          <ul style="margin:6px 0 0 18px;">
+            <li>The two regression lines are <i>different</i> unless r = ±1. Writing one and reusing it as the other loses half the marks.</li>
+            <li>Both regression lines must cross at (X̄, Ȳ). This is the cross-check examiners look for.</li>
+            <li>Forgetting the square root when finding r from b<sub>yx</sub>·b<sub>xy</sub> gives r<sup>2</sup> instead of r. That is a 2-mark error.</li>
+            <li>The sign of r must match the sign of both b values. If one b is +ve and the other −ve, you have a math error.</li>
+          </ul>
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>Karl Pearson r is the default link metric in correlation heatmaps for ML feature picking, finance return diversification, and gene studies. The two regression lines are the simplest case of normal-equation math. Every linear model library (<code>sklearn.linear_model.LinearRegression</code>, R's <code>lm()</code>, Stata's <code>regress</code>) solves the matrix form X<sup>T</sup>Xβ = X<sup>T</sup>y of these same equations. The rule r<sup>2</sup> = b<sub>yx</sub>·b<sub>xy</sub> grows into the R<sup>2</sup> score in multiple regression.</p>
+
+        <h5>Conclusion</h5>
+        <p>The computed r ≈ 0.944 shows a strong positive linear link. Both regression lines pass through (X̄, Ȳ) = (28, 28.4). Their slopes multiply to r<sup>2</sup> ≈ 0.8903, recovering r via square root. The same method scales to multi-variable regression via matrix least squares — one small jump from this 2-variable case.</p>
+
+        <div class="score">
+          <b>Marks Allocation:</b>
+          <ul>
+            <li>(a) Σ-table (ΣX, ΣY, ΣX², ΣY², ΣXY): <span class="m">4 M</span></li>
+            <li>(a) Karl Pearson r formula + final: <span class="m">4 M</span></li>
+            <li>(b) Both b<sub>yx</sub> and b<sub>xy</sub>: <span class="m">3 M</span></li>
+            <li>(b) Both regression lines + cross-check r² = b<sub>yx</sub>·b<sub>xy</sub>: <span class="m">4 M</span></li>
+            <li>Total: <span class="m">15 M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q6 (Unit 4 — Partially destroyed records: reconstruct from two regression lines) -->
+    <div class="qcard predicted">
+      <div class="qhead">
+        <span class="qnum">Q6 [12 M]</span>
+        <span class="tag fav">Unit 4</span>
+        <span class="tag hot">⭐ Partially Destroyed Records</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q5(a)</span>
+      </div>
+      <div class="qbody">
+        <b>In a partially destroyed laboratory record, only the two regression lines survive: <mark>8X − 10Y + 66 = 0</mark> and <mark>40X − 18Y = 214</mark>. The variance of X is 9. Find: (a) the mean values X̄ and Ȳ; (b) which line is Y on X and which is X on Y, and the regression coefficients b<sub>yx</sub> and b<sub>xy</sub>; (c) the correlation coefficient r; (d) the standard deviation of Y. [12 M]</b>
+      </div>
+      <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> Imagine a lab notebook is burned — only two equations survive. These are the two regression lines. Even without raw data, you can recover the means, the correlation, and a standard deviation just from two equations. This is a classic “inverse problem” in statistics.</p>
+          <p><b>What does the question want?</b> From equations 8X−10Y+66=0 and 40X−18Y=214: (a) find means X̄ and Ȳ by solving simultaneously; (b) decide which is Y-on-X and which is X-on-Y by checking |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1; (c) find r = √(b<sub>yx</sub>·b<sub>xy</sub>); (d) find σ<sub>Y</sub> given σ<sub>X</sub>=3.</p>
+          <p><b>The key result(s) to remember:</b> The two regression lines ALWAYS cross at (X̄, Ȳ) — so solve them as simultaneous equations. The product of slopes = r², which must be ≤ 1. The assignment whose product exceeds 1 is wrong. r = +√(product) with sign = sign of slopes.</p>
+          <p><b>Scary symbol, explained:</b> <b>b<sub>yx</sub></b> = slope of Y-on-X line = coefficient of X when equation is written as Y = mX + c. <b>b<sub>xy</sub></b> = coefficient of Y when written as X = mY + c. <b>σ<sub>Y</sub> = b<sub>yx</sub>·σ<sub>X</sub>/r</b> (rearrange to find the unknown SD).</p>
+          <p><b>Bare minimum to attempt:</b> Solve the two equations simultaneously to find X̄=13, Ȳ=17 — this alone earns marks. Then try both slope assignments, note which product exceeds 1 (inadmissible), and state r = √(product of correct slopes). Even partial steps earn credit.</p>
+        </div>
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Destroyed Records:</b> two lines always cross at <b>(X̄, Ȳ)</b> → solve simultaneously<br>
+          <b>Admissibility:</b> try both slope assignments; keep the one where <b>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</b> · r = <b>+√(b<sub>yx</sub>·b<sub>xy</sub>)</b> (sign = sign of b) · σ<sub>Y</sub> = <b>b<sub>yx</sub>·σ<sub>X</sub>/r</b>
+        </div>
+        <h5>Introduction</h5>
+        <p>Each pair of variables has <mark>two regression lines</mark> — <mark>Y on X</mark> (predicts Y from X) and <mark>X on Y</mark> (predicts X from Y). They always cross at the <mark>mean point (X̄, Ȳ)</mark>, so solving the two equations <i>simultaneously</i> recovers the means even when the raw data is lost. The slopes satisfy b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> and b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>, hence the key identity <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark>. The slope assignment is fixed by the rule <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>: only the assignment whose product does not exceed 1 is admissible, because r² can never exceed 1.</p>
+
+        <figure class="diagram-fig">
+          <img src="ps-images/pred-two-regression.png" alt="Two regression lines Y on X (slope 0.8) and X on Y (slope 0.45) crossing at the mean point 13 comma 17, with r equals 0.6" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.6</b> · The two surviving regression lines intersect at the recovered mean point (X̄, Ȳ) = (13, 17). The acute angle θ between them shrinks as r → ±1; here r = 0.6 gives a moderate gap.</figcaption>
+        </figure>
+
+        <h5>(a) Means — Intersection of the Two Lines</h5>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Dono lines mean point (X̄, Ȳ) pe milti hain — isliye unhe simultaneously solve karne se means mil jaate hain. Pehle system likho:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle dono equations likho (system set karo):</b>
+            <span class="eq first">Eq 1: 8X − 10Y = −66</span>
+            <span class="eq">Eq 2: 40X − 18Y = 214</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab X hatao — Eq 1 ko 5 se multiply karo:</b>
+            <span class="eq first">40X − 50Y = −330.</span>
+            <span class="eq">Subtract from Eq 2: (40X − 18Y) − (40X − 50Y) = 214 − (−330)</span>
+            <span class="eq">32Y = 544  ⇒  <mark><b>Ȳ = 17</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab Eq 1 mein wapas daalo (back-substitute):</b>
+            <span class="eq first">8X − 10(17) = −66  ⇒  8X = 170 − 66 = 104  ⇒  <mark><b>X̄ = 13</b></mark>.</span>
+          </div>
+        </div>
+
+        <div class="box eli5">
+          <span class="label">🧮 Chhoti soch — jali notebook se sab kaise mil gaya</span>
+          <p>Do raaste (lines) ek hi chauraahe (mean point) pe milte hain. Tumhe chauraaha dhoondhna hai → bas dono raaston ko ek saath solve karo, jahan milein wahi (X̄, Ȳ).</p>
+          <ul>
+            <li>Dono equations solve → milte hain (13, 17) = mean point.</li>
+            <li>Slopes ka product = r² (hamesha ≤ 1) → galat assignment ka product 1 se zyada aata hai, usse reject.</li>
+          </ul>
+          <p>Bas isi tarah bina raw data ke means, r aur SD sab wapas ban jaate hain.</p>
+        </div>
+
+        <h5>(b) Identify the Lines and the Coefficients</h5>
+        <p>Use the admissibility test <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>. Try both assignments and keep the one whose product stays at or below 1:</p>
+        <div class="table-wrap">
+          <table>
+            <caption>Slope-assignment test — only one option is admissible</caption>
+            <thead><tr><th>Assignment</th><th>b<sub>yx</sub></th><th>b<sub>xy</sub></th><th>Product</th><th>Verdict</th></tr></thead>
+            <tbody>
+              <tr>
+                <td>Eq 1 = Y on X, Eq 2 = X on Y</td>
+                <td>0.8</td><td>0.45</td>
+                <td>0.36 ≤ 1</td>
+                <td><b>Admissible ✓</b></td>
+              </tr>
+              <tr>
+                <td>Eq 2 = Y on X, Eq 1 = X on Y</td>
+                <td>2.2222</td><td>1.25</td>
+                <td>2.778 &gt; 1</td>
+                <td>Rejected ✗</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Admissible wale se slopes padho:</b>
+            <span class="eq first">Eq 1 as Y on X: 10Y = 8X + 66 ⇒ Y = 0.8X + 6.6 ⇒ <mark><b>b<sub>yx</sub> = 0.8</b></mark>.</span>
+            <span class="eq">Eq 2 as X on Y: 40X = 18Y + 214 ⇒ X = 0.45Y + 5.35 ⇒ <mark><b>b<sub>xy</sub> = 0.45</b></mark>.</span>
+          </div>
+        </div>
+
+        <h5>(c) Correlation Coefficient r</h5>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Ab r nikalo — r² = b<sub>yx</sub>·b<sub>xy</sub> ka root lo:</b>
+            <span class="eq first">r = √(b<sub>yx</sub> · b<sub>xy</sub>) = √(0.8 × 0.45) = √0.36 = <mark><b>r = +0.6</b></mark>.</span>
+            <span class="eq">Sign is positive because both regression slopes are positive.</span>
+          </div>
+        </div>
+
+        <h5>(d) Standard Deviation of Y</h5>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle σ<sub>x</sub> nikalo (Var ka root):</b>
+            <span class="eq first">Var(X) = 9 ⇒ σ<sub>x</sub> = √9 = 3.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> mein daal ke σ<sub>y</sub> nikalo:</b>
+            <span class="eq first">0.8 = 0.6 × (σ<sub>y</sub> / 3)</span>
+            <span class="eq">0.8 = 0.2 × σ<sub>y</sub>  ⇒  σ<sub>y</sub> = 0.8 / 0.2 = <mark><b>σ<sub>y</sub> = 4</b></mark>.</span>
+            <span class="eq">Cross-check with b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>: 0.45 = 0.6 × 3 / σ<sub>y</sub> ⇒ σ<sub>y</sub> = 1.8 / 0.45 = 4 ✓.</span>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Recovered Quantities — Partially Destroyed Records</caption>
+            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td>Mean X̄</td><td><b>13</b></td></tr>
+              <tr><td>Mean Ȳ</td><td><b>17</b></td></tr>
+              <tr><td>b<sub>yx</sub> (Y on X)</td><td>0.8</td></tr>
+              <tr><td>b<sub>xy</sub> (X on Y)</td><td>0.45</td></tr>
+              <tr><td>Correlation r</td><td><b>+0.6</b></td></tr>
+              <tr><td>σ<sub>x</sub> (given Var X = 9)</td><td>3</td></tr>
+              <tr><td>σ<sub>y</sub></td><td><b>4</b></td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <b>Pitfalls:</b>
+          <ul style="margin:6px 0 0 18px;">
+            <li>Guessing the slope assignment without the <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark> test. The wrong choice gives a product &gt; 1, i.e. r² &gt; 1, which is impossible.</li>
+            <li>Forgetting that both lines pass through (X̄, Ȳ). Solving them simultaneously <i>is</i> the means step.</li>
+            <li>Taking r = b<sub>yx</sub>·b<sub>xy</sub> = 0.36 instead of its square root 0.6. That confuses r² with r — a 2-mark slip.</li>
+            <li>Using σ<sub>x</sub> = 9 instead of σ<sub>x</sub> = √9 = 3. Var(X) is given, not the SD.</li>
+          </ul>
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>The "recover parameters from the fitted model" move is everyday data science. When only a trained <code>sklearn.linear_model.LinearRegression</code> object survives (raw data purged for privacy or storage), its coefficients still let you reconstruct means, the correlation, and the spread — exactly this algebra. The <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark> identity is the 2-variable seed of the R² score reported by every regression library.</p>
+
+        <h5>Conclusion</h5>
+        <p>From only the two regression lines and Var(X) = 9, the full bivariate summary is rebuilt: <mark>X̄ = 13, Ȳ = 17, r = 0.6, σ<sub>y</sub> = 4</mark>. The admissibility test |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 uniquely fixed which line was Y on X, and the intersection point recovered the means — the two facts an examiner rewards most in this question type.</p>
+
+        <div class="score">
+          <b>Marks Allocation:</b>
+          <ul>
+            <li>(a) Means via simultaneous solution (X̄, Ȳ): <span class="m">4 M</span></li>
+            <li>(b) Slope assignment via |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 + both coefficients: <span class="m">4 M</span></li>
+            <li>(c) Correlation r = √(b<sub>yx</sub>·b<sub>xy</sub>): <span class="m">2 M</span></li>
+            <li>(d) σ<sub>y</sub> from b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub>: <span class="m">2 M</span></li>
+            <li>Total: <span class="m">12 M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Q7 (Unit 2 — Joint discrete + Joint continuous) -->
+    <div class="qcard predicted">
+      <div class="qhead">
+        <span class="qnum">Q7 [15 M]</span>
         <span class="tag fav">Unit 2</span>
         <span class="tag hot">⭐ Joint Distribution · Cov · ρ</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA May-25 Q4(a) · joint table marginal/cond ×3</span>
@@ -3998,612 +4473,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
-    <!-- Q5 (Unit 4 — Karl Pearson bivariate + Two regression equations) -->
+    <!-- Q8 (Unit 4 + Unit 2 — Spearman rank + Joint pdf P(X<a∩Y<b)) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q5 [15 M]</span>
-        <span class="tag fav">Unit 4</span>
-        <span class="tag hot">⭐ Karl Pearson · Regression</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q7(c) · Karl Pearson r (10 pairs) ×3</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q5(a) · two regression lines ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q5(a) · two regression eqns</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q4(a) · Karl Pearson skewness</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q4(b) · grouped SD</span>
-      </div>
-      <div class="qbody">
-        <b>(a) Compute the Karl Pearson correlation coefficient for the following ten pairs. [8 M]</b><br>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>X</th><td>10</td><td>14</td><td>18</td><td>22</td><td>26</td><td>30</td><td>34</td><td>38</td><td>42</td><td>46</td></tr>
-              <tr><th>Y</th><td>18</td><td>12</td><td>24</td><td>20</td><td>30</td><td>28</td><td>34</td><td>36</td><td>42</td><td>40</td></tr>
-            </thead>
-          </table>
-        </div>
-        <b>(b) From the data in (a), fit both regression lines (Y on X and X on Y) by the method of least squares. [7 M]</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> <b>Correlation</b> measures how strongly two variables move together. If taller people score higher, correlation is positive. The <b>Karl Pearson r</b> is the standard measure: +1 = perfect positive line, −1 = perfect inverse, 0 = no linear link. <b>Regression</b> goes further: it gives the best-fit line to predict one variable from the other.</p>
-          <p><b>What does the question want?</b> Part (a): compute r for 10 (X,Y) pairs using the table formula. Part (b): write both regression equations — “Y on X” (predicts Y given X) and “X on Y” (predicts X given Y) — and find their slopes.</p>
-          <p><b>The key result(s) to remember:</b> <b>r = [nΣXY − ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b>. Make a table: X, Y, X², Y², XY → sum all → plug in. Regression Y on X: y−ȳ = b<sub>yx</sub>(x−x̄) where b<sub>yx</sub> = r·σ<sub>Y</sub>/σ<sub>X</sub>. Check: r² = b<sub>yx</sub>·b<sub>xy</sub>.</p>
-          <p><b>Scary symbol, explained:</b> <b>ΣXY</b> = multiply each X by its paired Y and add. <b>ΣX²</b> = square each X then add. <b>σ<sub>X</sub></b> = SD of X = √[ΣX²/n − (x̄)²]. <b>b<sub>yx</sub></b> = slope of Y-on-X line (how much Y changes when X increases by 1).</p>
-          <p><b>Bare minimum to attempt:</b> Build the ΣX, ΣY, ΣX², ΣY², ΣXY table from 10 data pairs, plug into the r formula. Even computing r alone earns 8 of 15 marks. For regression, write the two formulae with your computed values substituted.</p>
-        </div>
-        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
-          <b>⚡ Quick Recall — r:</b> <b>r = [nΣXY−ΣXΣY] / √{[nΣX²−(ΣX)²][nΣY²−(ΣY)²]}</b> · range −1 to +1<br>
-          <b>Regression Y on X:</b> y−ȳ = <b>b<sub>yx</sub>(x−x̄)</b>, b<sub>yx</sub> = <b>r·σ<sub>Y</sub>/σ<sub>X</sub></b> · <b>X on Y:</b> b<sub>xy</sub> = r·σ<sub>X</sub>/σ<sub>Y</sub> · check: <b>r² = b<sub>yx</sub>·b<sub>xy</sub></b>
-        </div>
-        <h5>(a) Karl Pearson Correlation Coefficient</h5>
-        <p>The <mark>Karl Pearson r</mark> shows the strength and direction of the <i>linear</i> link between two paired variables, fitted using the <mark>method of least squares</mark> <span class="hg">(error² ko sabse chhota karne wali fit)</span>. Think cricket batting averages vs strike rates. Key properties:</p>
-        <ul>
-          <li><b>Range:</b> −1 ≤ r ≤ +1. r = ±1 means all (x<sub>i</sub>, y<sub>i</sub>) sit exactly on a straight line.</li>
-          <li><b>No units:</b> r does not change if you shift or scale the data: r(aX + b, cY + d) = sign(ac) · r(X, Y).</li>
-          <li><b>Symmetry:</b> r<sub>xy</sub> = r<sub>yx</sub>. Only one number, unlike regression.</li>
-          <li><b>Sign:</b> matches the sign of Cov(X, Y) and of both regression slopes.</li>
-          <li><b>Limit:</b> catches only linear links. r ≈ 0 does not rule out strong curves like y = x<sup>2</sup> on a symmetric x-range.</li>
-        </ul>
-        <p>Two equivalent formulas:</p>
-        <p style="margin-left:14px;">(deviation form) r = Σ(x − x̄)(y − ȳ) / √[Σ(x − x̄)<sup>2</sup> · Σ(y − ȳ)<sup>2</sup>]<br>
-        (raw-score form) r = [n·ΣXY − ΣX·ΣY] / √{[n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>][n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>]}</p>
-
-        <figure class="diagram-fig">
-          <div style="position:relative;height:200px;background:var(--paper-deep);border:1px solid var(--rule);border-radius:8px;padding:8px;">
-            <svg viewBox="0 0 320 180" preserveAspectRatio="none" style="width:100%;height:100%;">
-              <line x1="20" y1="160" x2="310" y2="160" stroke="var(--muted)" stroke-width="1"/>
-              <line x1="20" y1="10" x2="20" y2="160" stroke="var(--muted)" stroke-width="1"/>
-              <line x1="40" y1="140" x2="300" y2="30" stroke="var(--brand)" stroke-width="2.5" stroke-dasharray="5,3"/>
-              <circle cx="48" cy="135" r="4" fill="var(--brand-deep)"/>
-              <circle cx="78" cy="148" r="4" fill="var(--brand-deep)"/>
-              <circle cx="106" cy="118" r="4" fill="var(--brand-deep)"/>
-              <circle cx="134" cy="125" r="4" fill="var(--brand-deep)"/>
-              <circle cx="162" cy="98" r="4" fill="var(--brand-deep)"/>
-              <circle cx="190" cy="105" r="4" fill="var(--brand-deep)"/>
-              <circle cx="218" cy="75" r="4" fill="var(--brand-deep)"/>
-              <circle cx="246" cy="68" r="4" fill="var(--brand-deep)"/>
-              <circle cx="274" cy="38" r="4" fill="var(--brand-deep)"/>
-              <circle cx="302" cy="45" r="4" fill="var(--brand-deep)"/>
-              <text x="165" y="175" text-anchor="middle" fill="var(--muted)" font-size="11">X (10 → 46)</text>
-              <text x="10" y="85" text-anchor="middle" fill="var(--muted)" font-size="11" transform="rotate(-90 10 85)">Y</text>
-              <text x="280" y="20" fill="var(--brand-deep)" font-size="11" font-weight="700">r ≈ 0.95</text>
-            </svg>
-          </div>
-          <figcaption><b>Fig 5.5</b> · Scatter plot of (X, Y) with regression line overlay. Strong positive linear trend ⇒ r close to +1.</figcaption>
-        </figure>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">r nikalne ka pehla kaam ek bada Σ-table banana — saari sums ek jagah. Phir formula mein daal do:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle Σ-table banao (n = 10):</b>
-            <div class="table-wrap" style="margin:6px 0;">
-              <table>
-                <thead><tr><th>i</th><th>X</th><th>Y</th><th>X<sup>2</sup></th><th>Y<sup>2</sup></th><th>XY</th></tr></thead>
-                <tbody>
-                  <tr><td>1</td><td>10</td><td>18</td><td>100</td><td>324</td><td>180</td></tr>
-                  <tr><td>2</td><td>14</td><td>12</td><td>196</td><td>144</td><td>168</td></tr>
-                  <tr><td>3</td><td>18</td><td>24</td><td>324</td><td>576</td><td>432</td></tr>
-                  <tr><td>4</td><td>22</td><td>20</td><td>484</td><td>400</td><td>440</td></tr>
-                  <tr><td>5</td><td>26</td><td>30</td><td>676</td><td>900</td><td>780</td></tr>
-                  <tr><td>6</td><td>30</td><td>28</td><td>900</td><td>784</td><td>840</td></tr>
-                  <tr><td>7</td><td>34</td><td>34</td><td>1156</td><td>1156</td><td>1156</td></tr>
-                  <tr><td>8</td><td>38</td><td>36</td><td>1444</td><td>1296</td><td>1368</td></tr>
-                  <tr><td>9</td><td>42</td><td>42</td><td>1764</td><td>1764</td><td>1764</td></tr>
-                  <tr><td>10</td><td>46</td><td>40</td><td>2116</td><td>1600</td><td>1840</td></tr>
-                  <tr style="font-weight:700;background:var(--paper-deep);"><td>Σ</td><td>280</td><td>284</td><td>9160</td><td>8944</td><td>8968</td></tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab means nikalo:</b>
-            <span class="eq first">X̄ = 280 / 10 = <b>28</b>;  Ȳ = 284 / 10 = <b>28.4</b>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab formula mein values daalo — r nikalo:</b>
-            <span class="eq first">r = [n·ΣXY − ΣX·ΣY] / √{ [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] · [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] }</span>
-            <span class="eq">Numerator = 10(8968) − 280(284) = 89680 − 79520 = <b>10160</b>.</span>
-            <span class="eq">n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup> = 91600 − 78400 = 13200.</span>
-            <span class="eq">n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup> = 89440 − 80656 = 8784.</span>
-            <span class="eq">Denominator = √(13200 × 8784) = √115,948,800 ≈ <b>10768</b>.</span>
-            <span class="eq"><mark><b>r = 10160 / 10768 ≈ 0.944</b></mark> (very strong positive).</span>
-          </div>
-        </div>
-
-        <h5>(b) Two Regression Lines (Least Squares)</h5>
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Do alag-alag lines banengi — ek Y predict karne ke liye, ek X ke liye. Pehle dono slopes nikalo:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehla slope <mark>b<sub>yx</sub></mark> nikalo (Y on X):</b>
-            <span class="eq first">b<sub>yx</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣX<sup>2</sup> − (ΣX)<sup>2</sup>] = 10160 / 13200 = <mark><b>b<sub>yx</sub> = 0.7697</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Doosra slope <mark>b<sub>xy</sub></mark> nikalo (X on Y):</b>
-            <span class="eq first">b<sub>xy</sub> = [n·ΣXY − ΣX·ΣY] / [n·ΣY<sup>2</sup> − (ΣY)<sup>2</sup>] = 10160 / 8784 = <mark><b>b<sub>xy</sub> = 1.1567</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab pehli <mark>line</mark> banao — Y on X:</b>
-            <span class="eq first">Passes through (X̄, Ȳ) = (28, 28.4):</span>
-            <span class="eq">Y − 28.4 = 0.7697 · (X − 28)</span>
-            <span class="eq">Y = 0.7697 X − 21.55 + 28.4</span>
-            <span class="eq"><mark><b>Y = 0.7697 X + 6.85</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab doosri line banao — X on Y:</b>
-            <span class="eq first">X − 28 = 1.1567 · (Y − 28.4)</span>
-            <span class="eq">X = 1.1567 Y − 32.85 + 28</span>
-            <span class="eq"><mark><b>X = 1.1567 Y − 4.85</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Verify — dono slopes ka product = r²:</b>
-            <span class="eq first"><mark>r² = b_yx · b_xy</mark> = 0.7697 × 1.1567 ≈ 0.8903.</span>
-            <span class="eq">r = √0.8903 ≈ <mark><b>r = 0.9436</b></mark> ✓ matches Part-(a).</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Chhoti soch — do regression lines kyun</span>
-          <p>Socho do dost guess karte hain. Ek kehta "tumhari height batao, main weight guess karunga" (Y on X). Doosra kehta "weight batao, height guess karunga" (X on Y). Dono ke guess-rules <b>alag</b> honge — kyunki kaun input hai aur kaun output, woh badal gaya.</p>
-          <ul>
-            <li>Y on X line: X do → Y batati hai (slope b<sub>yx</sub>).</li>
-            <li>X on Y line: Y do → X batati hai (slope b<sub>xy</sub>).</li>
-          </ul>
-          <p>Par dono lines <b>ek hi point</b> pe milti hain — mean point (X̄, Ȳ) = (28, 28.4). Jitna data perfectly linear (r → 1), utna dono lines paas-paas; r = 1 pe to dono ek ho jaati hain.</p>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption>Regression Summary — Q5(b)</caption>
-            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
-            <tbody>
-              <tr><td>b<sub>yx</sub> (slope of Y on X)</td><td>0.7697</td></tr>
-              <tr><td>b<sub>xy</sub> (slope of X on Y)</td><td>1.1567</td></tr>
-              <tr><td>Line Y on X</td><td><b>Y = 0.7697 X + 6.85</b></td></tr>
-              <tr><td>Line X on Y</td><td><b>X = 1.1567 Y − 4.85</b></td></tr>
-              <tr><td>r<sup>2</sup> = b<sub>yx</sub>·b<sub>xy</sub></td><td>0.8903</td></tr>
-              <tr><td>r</td><td>≈ 0.944</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <h5>Synthesis — How Correlation and Regression Relate</h5>
-        <div class="table-wrap">
-          <table>
-            <caption>Karl Pearson Correlation vs Least-Squares Regression</caption>
-            <thead><tr><th>Aspect</th><th>Karl Pearson Correlation (r)</th><th>Regression (b<sub>yx</sub>, b<sub>xy</sub>)</th></tr></thead>
-            <tbody>
-              <tr><td>Definition</td><td>Standardised measure of linear association</td><td>Best-fit line minimising Σ(Y − Ŷ)<sup>2</sup></td></tr>
-              <tr><td>Formula</td><td>r = Σ(x−x̄)(y−ȳ) / √[Σ(x−x̄)<sup>2</sup>·Σ(y−ȳ)<sup>2</sup>]</td><td>b<sub>yx</sub> = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)<sup>2</sup></td></tr>
-              <tr><td>Symmetry</td><td>Symmetric: r<sub>xy</sub> = r<sub>yx</sub> (one number)</td><td>Asymmetric: b<sub>yx</sub> ≠ b<sub>xy</sub> (two slopes)</td></tr>
-              <tr><td>Range</td><td>−1 ≤ r ≤ +1 (unit-less)</td><td>Any real number; carries units (Y per unit X)</td></tr>
-              <tr><td>Key identity</td><td colspan="2" style="text-align:center;"><b>r<sup>2</sup> = b<sub>yx</sub> · b<sub>xy</sub></b>; r has the same sign as both b's</td></tr>
-              <tr><td>Use-case</td><td>Quantify strength of relationship (feature selection, EDA)</td><td>Predict Y from X (or X from Y) at a new value</td></tr>
-              <tr><td>Worked-data value</td><td>r ≈ 0.944</td><td>b<sub>yx</sub> = 0.7697; b<sub>xy</sub> = 1.1567</td></tr>
-              <tr><td>Geometric meaning</td><td>Cosine between mean-centred X, Y vectors</td><td>Slope of least-squares projection of one vector onto the other</td></tr>
-              <tr><td>Effect of outliers</td><td>Highly sensitive (one extreme pair can flip sign)</td><td>Slope also distorted; consider robust regression for heavy tails</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <b>Pitfalls:</b>
-          <ul style="margin:6px 0 0 18px;">
-            <li>The two regression lines are <i>different</i> unless r = ±1. Writing one and reusing it as the other loses half the marks.</li>
-            <li>Both regression lines must cross at (X̄, Ȳ). This is the cross-check examiners look for.</li>
-            <li>Forgetting the square root when finding r from b<sub>yx</sub>·b<sub>xy</sub> gives r<sup>2</sup> instead of r. That is a 2-mark error.</li>
-            <li>The sign of r must match the sign of both b values. If one b is +ve and the other −ve, you have a math error.</li>
-          </ul>
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>Karl Pearson r is the default link metric in correlation heatmaps for ML feature picking, finance return diversification, and gene studies. The two regression lines are the simplest case of normal-equation math. Every linear model library (<code>sklearn.linear_model.LinearRegression</code>, R's <code>lm()</code>, Stata's <code>regress</code>) solves the matrix form X<sup>T</sup>Xβ = X<sup>T</sup>y of these same equations. The rule r<sup>2</sup> = b<sub>yx</sub>·b<sub>xy</sub> grows into the R<sup>2</sup> score in multiple regression.</p>
-
-        <h5>Conclusion</h5>
-        <p>The computed r ≈ 0.944 shows a strong positive linear link. Both regression lines pass through (X̄, Ȳ) = (28, 28.4). Their slopes multiply to r<sup>2</sup> ≈ 0.8903, recovering r via square root. The same method scales to multi-variable regression via matrix least squares — one small jump from this 2-variable case.</p>
-
-        <div class="score">
-          <b>Marks Allocation:</b>
-          <ul>
-            <li>(a) Σ-table (ΣX, ΣY, ΣX², ΣY², ΣXY): <span class="m">4 M</span></li>
-            <li>(a) Karl Pearson r formula + final: <span class="m">4 M</span></li>
-            <li>(b) Both b<sub>yx</sub> and b<sub>xy</sub>: <span class="m">3 M</span></li>
-            <li>(b) Both regression lines + cross-check r² = b<sub>yx</sub>·b<sub>xy</sub>: <span class="m">4 M</span></li>
-            <li>Total: <span class="m">15 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q5B (Unit 4 — Partially destroyed records: reconstruct from two regression lines) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q5(b) ALT [12 M]</span>
-        <span class="tag fav">Unit 4</span>
-        <span class="tag hot">⭐ Partially Destroyed Records</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q6(b) · same equations 12M ×2</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q5(a)</span>
-      </div>
-      <div class="qbody">
-        <b>In a partially destroyed laboratory record, only the two regression lines survive: <mark>8X − 10Y + 66 = 0</mark> and <mark>40X − 18Y = 214</mark>. The variance of X is 9. Find: (a) the mean values X̄ and Ȳ; (b) which line is Y on X and which is X on Y, and the regression coefficients b<sub>yx</sub> and b<sub>xy</sub>; (c) the correlation coefficient r; (d) the standard deviation of Y. [12 M]</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> Imagine a lab notebook is burned — only two equations survive. These are the two regression lines. Even without raw data, you can recover the means, the correlation, and a standard deviation just from two equations. This is a classic “inverse problem” in statistics.</p>
-          <p><b>What does the question want?</b> From equations 8X−10Y+66=0 and 40X−18Y=214: (a) find means X̄ and Ȳ by solving simultaneously; (b) decide which is Y-on-X and which is X-on-Y by checking |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1; (c) find r = √(b<sub>yx</sub>·b<sub>xy</sub>); (d) find σ<sub>Y</sub> given σ<sub>X</sub>=3.</p>
-          <p><b>The key result(s) to remember:</b> The two regression lines ALWAYS cross at (X̄, Ȳ) — so solve them as simultaneous equations. The product of slopes = r², which must be ≤ 1. The assignment whose product exceeds 1 is wrong. r = +√(product) with sign = sign of slopes.</p>
-          <p><b>Scary symbol, explained:</b> <b>b<sub>yx</sub></b> = slope of Y-on-X line = coefficient of X when equation is written as Y = mX + c. <b>b<sub>xy</sub></b> = coefficient of Y when written as X = mY + c. <b>σ<sub>Y</sub> = b<sub>yx</sub>·σ<sub>X</sub>/r</b> (rearrange to find the unknown SD).</p>
-          <p><b>Bare minimum to attempt:</b> Solve the two equations simultaneously to find X̄=13, Ȳ=17 — this alone earns marks. Then try both slope assignments, note which product exceeds 1 (inadmissible), and state r = √(product of correct slopes). Even partial steps earn credit.</p>
-        </div>
-        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
-          <b>⚡ Quick Recall — Destroyed Records:</b> two lines always cross at <b>(X̄, Ȳ)</b> → solve simultaneously<br>
-          <b>Admissibility:</b> try both slope assignments; keep the one where <b>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</b> · r = <b>+√(b<sub>yx</sub>·b<sub>xy</sub>)</b> (sign = sign of b) · σ<sub>Y</sub> = <b>b<sub>yx</sub>·σ<sub>X</sub>/r</b>
-        </div>
-        <h5>Introduction</h5>
-        <p>Each pair of variables has <mark>two regression lines</mark> — <mark>Y on X</mark> (predicts Y from X) and <mark>X on Y</mark> (predicts X from Y). They always cross at the <mark>mean point (X̄, Ȳ)</mark>, so solving the two equations <i>simultaneously</i> recovers the means even when the raw data is lost. The slopes satisfy b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> and b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>, hence the key identity <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark>. The slope assignment is fixed by the rule <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>: only the assignment whose product does not exceed 1 is admissible, because r² can never exceed 1.</p>
-
-        <figure class="diagram-fig">
-          <img src="ps-images/pred-two-regression.png" alt="Two regression lines Y on X (slope 0.8) and X on Y (slope 0.45) crossing at the mean point 13 comma 17, with r equals 0.6" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.6</b> · The two surviving regression lines intersect at the recovered mean point (X̄, Ȳ) = (13, 17). The acute angle θ between them shrinks as r → ±1; here r = 0.6 gives a moderate gap.</figcaption>
-        </figure>
-
-        <h5>(a) Means — Intersection of the Two Lines</h5>
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Dono lines mean point (X̄, Ȳ) pe milti hain — isliye unhe simultaneously solve karne se means mil jaate hain. Pehle system likho:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle dono equations likho (system set karo):</b>
-            <span class="eq first">Eq 1: 8X − 10Y = −66</span>
-            <span class="eq">Eq 2: 40X − 18Y = 214</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab X hatao — Eq 1 ko 5 se multiply karo:</b>
-            <span class="eq first">40X − 50Y = −330.</span>
-            <span class="eq">Subtract from Eq 2: (40X − 18Y) − (40X − 50Y) = 214 − (−330)</span>
-            <span class="eq">32Y = 544  ⇒  <mark><b>Ȳ = 17</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab Eq 1 mein wapas daalo (back-substitute):</b>
-            <span class="eq first">8X − 10(17) = −66  ⇒  8X = 170 − 66 = 104  ⇒  <mark><b>X̄ = 13</b></mark>.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Chhoti soch — jali notebook se sab kaise mil gaya</span>
-          <p>Do raaste (lines) ek hi chauraahe (mean point) pe milte hain. Tumhe chauraaha dhoondhna hai → bas dono raaston ko ek saath solve karo, jahan milein wahi (X̄, Ȳ).</p>
-          <ul>
-            <li>Dono equations solve → milte hain (13, 17) = mean point.</li>
-            <li>Slopes ka product = r² (hamesha ≤ 1) → galat assignment ka product 1 se zyada aata hai, usse reject.</li>
-          </ul>
-          <p>Bas isi tarah bina raw data ke means, r aur SD sab wapas ban jaate hain.</p>
-        </div>
-
-        <h5>(b) Identify the Lines and the Coefficients</h5>
-        <p>Use the admissibility test <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark>. Try both assignments and keep the one whose product stays at or below 1:</p>
-        <div class="table-wrap">
-          <table>
-            <caption>Slope-assignment test — only one option is admissible</caption>
-            <thead><tr><th>Assignment</th><th>b<sub>yx</sub></th><th>b<sub>xy</sub></th><th>Product</th><th>Verdict</th></tr></thead>
-            <tbody>
-              <tr>
-                <td>Eq 1 = Y on X, Eq 2 = X on Y</td>
-                <td>0.8</td><td>0.45</td>
-                <td>0.36 ≤ 1</td>
-                <td><b>Admissible ✓</b></td>
-              </tr>
-              <tr>
-                <td>Eq 2 = Y on X, Eq 1 = X on Y</td>
-                <td>2.2222</td><td>1.25</td>
-                <td>2.778 &gt; 1</td>
-                <td>Rejected ✗</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Admissible wale se slopes padho:</b>
-            <span class="eq first">Eq 1 as Y on X: 10Y = 8X + 66 ⇒ Y = 0.8X + 6.6 ⇒ <mark><b>b<sub>yx</sub> = 0.8</b></mark>.</span>
-            <span class="eq">Eq 2 as X on Y: 40X = 18Y + 214 ⇒ X = 0.45Y + 5.35 ⇒ <mark><b>b<sub>xy</sub> = 0.45</b></mark>.</span>
-          </div>
-        </div>
-
-        <h5>(c) Correlation Coefficient r</h5>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Ab r nikalo — r² = b<sub>yx</sub>·b<sub>xy</sub> ka root lo:</b>
-            <span class="eq first">r = √(b<sub>yx</sub> · b<sub>xy</sub>) = √(0.8 × 0.45) = √0.36 = <mark><b>r = +0.6</b></mark>.</span>
-            <span class="eq">Sign is positive because both regression slopes are positive.</span>
-          </div>
-        </div>
-
-        <h5>(d) Standard Deviation of Y</h5>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle σ<sub>x</sub> nikalo (Var ka root):</b>
-            <span class="eq first">Var(X) = 9 ⇒ σ<sub>x</sub> = √9 = 3.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub> mein daal ke σ<sub>y</sub> nikalo:</b>
-            <span class="eq first">0.8 = 0.6 × (σ<sub>y</sub> / 3)</span>
-            <span class="eq">0.8 = 0.2 × σ<sub>y</sub>  ⇒  σ<sub>y</sub> = 0.8 / 0.2 = <mark><b>σ<sub>y</sub> = 4</b></mark>.</span>
-            <span class="eq">Cross-check with b<sub>xy</sub> = r·σ<sub>x</sub>/σ<sub>y</sub>: 0.45 = 0.6 × 3 / σ<sub>y</sub> ⇒ σ<sub>y</sub> = 1.8 / 0.45 = 4 ✓.</span>
-          </div>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption>Recovered Quantities — Partially Destroyed Records</caption>
-            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
-            <tbody>
-              <tr><td>Mean X̄</td><td><b>13</b></td></tr>
-              <tr><td>Mean Ȳ</td><td><b>17</b></td></tr>
-              <tr><td>b<sub>yx</sub> (Y on X)</td><td>0.8</td></tr>
-              <tr><td>b<sub>xy</sub> (X on Y)</td><td>0.45</td></tr>
-              <tr><td>Correlation r</td><td><b>+0.6</b></td></tr>
-              <tr><td>σ<sub>x</sub> (given Var X = 9)</td><td>3</td></tr>
-              <tr><td>σ<sub>y</sub></td><td><b>4</b></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <b>Pitfalls:</b>
-          <ul style="margin:6px 0 0 18px;">
-            <li>Guessing the slope assignment without the <mark>|b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1</mark> test. The wrong choice gives a product &gt; 1, i.e. r² &gt; 1, which is impossible.</li>
-            <li>Forgetting that both lines pass through (X̄, Ȳ). Solving them simultaneously <i>is</i> the means step.</li>
-            <li>Taking r = b<sub>yx</sub>·b<sub>xy</sub> = 0.36 instead of its square root 0.6. That confuses r² with r — a 2-mark slip.</li>
-            <li>Using σ<sub>x</sub> = 9 instead of σ<sub>x</sub> = √9 = 3. Var(X) is given, not the SD.</li>
-          </ul>
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>The "recover parameters from the fitted model" move is everyday data science. When only a trained <code>sklearn.linear_model.LinearRegression</code> object survives (raw data purged for privacy or storage), its coefficients still let you reconstruct means, the correlation, and the spread — exactly this algebra. The <mark>r² = b<sub>yx</sub>·b<sub>xy</sub></mark> identity is the 2-variable seed of the R² score reported by every regression library.</p>
-
-        <h5>Conclusion</h5>
-        <p>From only the two regression lines and Var(X) = 9, the full bivariate summary is rebuilt: <mark>X̄ = 13, Ȳ = 17, r = 0.6, σ<sub>y</sub> = 4</mark>. The admissibility test |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 uniquely fixed which line was Y on X, and the intersection point recovered the means — the two facts an examiner rewards most in this question type.</p>
-
-        <div class="score">
-          <b>Marks Allocation:</b>
-          <ul>
-            <li>(a) Means via simultaneous solution (X̄, Ȳ): <span class="m">4 M</span></li>
-            <li>(b) Slope assignment via |b<sub>yx</sub>·b<sub>xy</sub>| ≤ 1 + both coefficients: <span class="m">4 M</span></li>
-            <li>(c) Correlation r = √(b<sub>yx</sub>·b<sub>xy</sub>): <span class="m">2 M</span></li>
-            <li>(d) σ<sub>y</sub> from b<sub>yx</sub> = r·σ<sub>y</sub>/σ<sub>x</sub>: <span class="m">2 M</span></li>
-            <li>Total: <span class="m">12 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q6 (Unit 4 + Unit 1 — Parabola curve fitting + Bayes conditional) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q6 [15 M]</span>
-        <span class="tag fav">Unit 4 · Unit 1</span>
-        <span class="tag hot">⭐ Curve Fit · Bayes</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q7(b) · parabola fit ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q6(a) · Bayes lost-card</span>
-      </div>
-      <div class="qbody">
-        <b>(a) Fit a second-degree parabola Y = a + bX + cX² to the following data by the method of least squares. [8 M]</b><br>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr><th>X</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
-              <tr><th>Y</th><td>1</td><td>1.8</td><td>1.3</td><td>2.5</td><td>6.3</td></tr>
-            </thead>
-          </table>
-        </div>
-        <b>(b) A diagnostic test for a disease is 99% sensitive (P(+ | D) = 0.99) and 95% specific (P(− | D′) = 0.95). The prior prevalence is P(D) = 0.01. A randomly chosen person tests positive — what is P(D | +) ? [7 M]</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> <b>Curve fitting</b> finds the equation of a line or curve that “passes closest” to scattered data. For a <b>parabola</b> Y = a+bX+cX², you find 3 unknowns. The <b>least squares method</b> minimises the sum of squared vertical distances from each data point to the curve. <b>Bayes theorem</b> (part b) updates a probability when new evidence arrives — like updating “chance of disease” after a test result.</p>
-          <p><b>What does the question want?</b> Part (a): given 5 (X,Y) pairs, fit Y = a+bX+cX² and find a, b, c. Part (b): a diagnostic test is 99% sensitive, 95% specific, disease prevalence 1% — find P(actually has disease | tested positive).</p>
-          <p><b>The key result(s) to remember:</b> For a parabola, write 3 normal equations: (1) ΣY = na+bΣX+cΣX², (2) ΣXY = aΣX+bΣX²+cΣX³, (3) ΣX²Y = aΣX²+bΣX³+cΣX⁴. Compute a Σ-table (X, Y, X², X³, X⁴, XY, X²Y) first. For Bayes: P(D|+) = P(+|D)·P(D) / [P(+|D)·P(D) + P(+|D′)·P(D′)].</p>
-          <p><b>Scary symbol, explained:</b> <b>ΣX³, ΣX⁴</b> = sum of cubes and fourth powers of all X values. <b>Normal equations</b> = a system of 3 simultaneous equations to solve for a, b, c. <b>P(D|+)</b> = probability of disease GIVEN positive test (Bayes posterior). <b>P(+|D′)</b> = false-positive rate = 1 − specificity = 0.05.</p>
-          <p><b>Bare minimum to attempt:</b> Build the Σ-table (7 columns) — most marks come from correct sums. Write out the 3 normal equations with your sums substituted. Even partial table values and 1–2 correct equations earn step marks.</p>
-        </div>
-        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
-          <b>⚡ Quick Recall — Parabola Y=a+bX+cX²:</b> 3 normal eqs:<br>
-          (1) <b>ΣY = na + bΣX + cΣX²</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX² + cΣX³</b> &nbsp; (3) <b>ΣX²Y = aΣX² + bΣX³ + cΣX⁴</b><br>
-          <b>Straight line Y=a+bX:</b> (1) <b>ΣY = na + bΣX</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX²</b> · <b>Bayes:</b> P(H|E) = <b>P(E|H)·P(H)/P(E)</b>
-        </div>
-        <h5>(a) Parabola Fit <mark>Y = a + bX + cX²</mark></h5>
-        <p>The <mark>method of least squares</mark> picks (a, b, c) that make S = Σ(Y<sub>i</sub> − a − bX<sub>i</sub> − cX<sub>i</sub><sup>2</sup>)<sup>2</sup> as small as possible. Setting ∂S/∂a = ∂S/∂b = ∂S/∂c = 0 gives the three <mark>normal equations</mark> below. The same pattern grows: an n-degree polynomial gives n + 1 normal equations using sums of X<sup>k</sup>.</p>
-
-        <figure class="diagram-fig">
-          <img src="ps-images/pred-parabola-fit.png" alt="Five data points from 0,1 to 4,6.3 with a fitted upward parabola Y equals 1.42 minus 1.07 X plus 0.55 X squared" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.7</b> · Five data points with fitted parabola curve. Parabola opens upward (c &gt; 0).</figcaption>
-        </figure>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Parabola fit karne ka matlab 3 unknowns (a, b, c) dhoondhna. Pehle saari sums ka table, phir 3 normal equations solve karo:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle Σ-table banao (n = 5):</b>
-            <span class="eq first">ΣX = 0+1+2+3+4 = <b>10</b>;  ΣY = 1+1.8+1.3+2.5+6.3 = <b>12.9</b>.</span>
-            <span class="eq">ΣX<sup>2</sup> = 0+1+4+9+16 = <b>30</b>;  ΣX<sup>3</sup> = 0+1+8+27+64 = <b>100</b>;  ΣX<sup>4</sup> = 0+1+16+81+256 = <b>354</b>.</span>
-            <span class="eq">ΣXY = 0(1)+1(1.8)+2(1.3)+3(2.5)+4(6.3) = 0+1.8+2.6+7.5+25.2 = <b>37.1</b>.</span>
-            <span class="eq">ΣX<sup>2</sup>Y = 0(1)+1(1.8)+4(1.3)+9(2.5)+16(6.3) = 0+1.8+5.2+22.5+100.8 = <b>130.3</b>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab 3 <mark>normal equations</mark> likho (3 unknowns):</b>
-            <span class="eq first">(1) ΣY = na + b·ΣX + c·ΣX<sup>2</sup>  →  12.9 = 5a + 10b + 30c.</span>
-            <span class="eq">(2) ΣXY = a·ΣX + b·ΣX<sup>2</sup> + c·ΣX<sup>3</sup>  →  37.1 = 10a + 30b + 100c.</span>
-            <span class="eq">(3) ΣX<sup>2</sup>Y = a·ΣX<sup>2</sup> + b·ΣX<sup>3</sup> + c·ΣX<sup>4</sup>  →  130.3 = 30a + 100b + 354c.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab 3×3 system solve karo (elimination se):</b>
-            <span class="eq first">(2) − 2·(1): 37.1 − 25.8 = 10b + 40c  →  11.3 = 10b + 40c     … (4)</span>
-            <span class="eq">(3) − 6·(1): 130.3 − 77.4 = 40b + 174c  →  52.9 = 40b + 174c     … (5)</span>
-            <span class="eq">(5) − 4·(4): 52.9 − 45.2 = 174c − 160c  →  7.7 = 14c  →  <b>c = 0.55</b>.</span>
-            <span class="eq">From (4): 10b = 11.3 − 40(0.55) = 11.3 − 22 = −10.7  →  <b>b = −1.07</b>.</span>
-            <span class="eq">From (1): 5a = 12.9 − 10(−1.07) − 30(0.55) = 12.9 + 10.7 − 16.5 = 7.1  →  <b>a = 1.42</b>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Final fitted parabola:</b>
-            <span class="eq first"><mark><b>Y = 1.42 − 1.07 X + 0.55 X²</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Verify — har X pe fit check karo (residuals):</b>
-            <div class="table-wrap" style="margin:6px 0;">
-              <table>
-                <thead><tr><th>X</th><th>Y (obs)</th><th>Ŷ = 1.42 − 1.07X + 0.55X<sup>2</sup></th><th>Residual Y − Ŷ</th></tr></thead>
-                <tbody>
-                  <tr><td>0</td><td>1.0</td><td>1.42</td><td>−0.42</td></tr>
-                  <tr><td>1</td><td>1.8</td><td>1.42 − 1.07 + 0.55 = 0.90</td><td>+0.90</td></tr>
-                  <tr><td>2</td><td>1.3</td><td>1.42 − 2.14 + 2.20 = 1.48</td><td>−0.18</td></tr>
-                  <tr><td>3</td><td>2.5</td><td>1.42 − 3.21 + 4.95 = 3.16</td><td>−0.66</td></tr>
-                  <tr><td>4</td><td>6.3</td><td>1.42 − 4.28 + 8.80 = 5.94</td><td>+0.36</td></tr>
-                  <tr style="font-weight:700;background:var(--paper-deep);"><td>Σ</td><td>12.9</td><td>12.90</td><td>0.00 ✓</td></tr>
-                </tbody>
-              </table>
-            </div>
-            <span class="eq">Residuals sum to 0 (least-squares property); parabola opens upward (c = 0.55 &gt; 0).</span>
-          </div>
-        </div>
-
-        <h5>(b) <mark>Bayes' theorem</mark> — Disease Test</h5>
-        <p><mark>Bayes' theorem</mark> flips a forward chance (model to data) into a backward one (data to model): <mark>posterior</mark> P(D | +) = P(+ | D) P(D) / P(+). The <mark>prior</mark> is P(D), and P(+) comes from the total probability rule over {D, D′}. The two test inputs are <mark>sensitivity</mark> <span class="hg">(bimar ko sahi pakadne ka chance)</span> P(+ | D) and <mark>specificity</mark> <span class="hg">(healthy ko sahi chhodne ka chance)</span> P(− | D′). The false-positive rate is 1 − specificity.</p>
-
-        <figure class="diagram-fig">
-          <div style="max-width:560px;margin:0 auto;">
-            <!-- ROOT -->
-            <div style="display:flex;justify-content:center;">
-              <div style="background:var(--ink);color:var(--paper);border-radius:8px;padding:8px 16px;font-weight:700;font-size:12px;text-align:center;">10,000 people<br><span style="font-size:9px;font-weight:600;color:var(--paper);opacity:.85;">prior P(D)=0.01</span></div>
-            </div>
-            <!-- connector to level 1 -->
-            <div style="height:14px;border-left:2px solid var(--rule);width:0;margin:0 auto;"></div>
-            <!-- LEVEL 1: Disease split -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:8px;padding:7px 6px;text-align:center;">
-                <div style="font-size:11px;font-weight:700;color:var(--brand-deep);">Disease (D)</div>
-                <div style="font-size:14px;font-weight:800;color:var(--brand-deep);">100</div>
-                <div style="font-size:8.5px;color:var(--muted);">= 0.01 × 10,000</div>
-              </div>
-              <div style="background:#eef6e4;border:1.5px solid var(--svg-good);border-radius:8px;padding:7px 6px;text-align:center;">
-                <div style="font-size:11px;font-weight:700;color:var(--svg-good);">No Disease (D′)</div>
-                <div style="font-size:14px;font-weight:800;color:var(--svg-good);">9,900</div>
-                <div style="font-size:8.5px;color:var(--muted);">= 0.99 × 10,000</div>
-              </div>
-            </div>
-            <!-- connectors to level 2 (each splits in two) -->
-            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-              <div style="display:flex;justify-content:space-around;height:14px;"><div style="border-left:2px solid var(--brand);width:0;"></div><div style="border-left:2px solid var(--brand);width:0;"></div></div>
-              <div style="display:flex;justify-content:space-around;height:14px;"><div style="border-left:2px solid var(--svg-good);width:0;"></div><div style="border-left:2px solid var(--svg-good);width:0;"></div></div>
-            </div>
-            <!-- LEVEL 2: Test result leaves (TP, FN | FP, TN) -->
-            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;">
-              <div style="background:var(--brand);color:#fff;border-radius:6px;padding:6px 3px;text-align:center;">
-                <div style="font-size:9px;font-weight:700;">Test + · TP</div>
-                <div style="font-size:14px;font-weight:800;">99</div>
-                <div style="font-size:8px;opacity:.9;">P(+|D)=0.99</div>
-              </div>
-              <div style="background:var(--brand-soft);color:var(--brand-deep);border:1px solid var(--brand);border-radius:6px;padding:6px 3px;text-align:center;">
-                <div style="font-size:9px;font-weight:700;">Test − · FN</div>
-                <div style="font-size:14px;font-weight:800;">1</div>
-                <div style="font-size:8px;color:var(--muted);">P(−|D)=0.01</div>
-              </div>
-              <div style="background:var(--gold);color:#fff;border-radius:6px;padding:6px 3px;text-align:center;">
-                <div style="font-size:9px;font-weight:700;">Test + · FP</div>
-                <div style="font-size:14px;font-weight:800;">495</div>
-                <div style="font-size:8px;opacity:.95;">P(+|D′)=0.05</div>
-              </div>
-              <div style="background:#eef6e4;color:var(--svg-good);border:1px solid var(--svg-good);border-radius:6px;padding:6px 3px;text-align:center;">
-                <div style="font-size:9px;font-weight:700;">Test − · TN</div>
-                <div style="font-size:14px;font-weight:800;">9,405</div>
-                <div style="font-size:8px;color:var(--muted);">P(−|D′)=0.95</div>
-              </div>
-            </div>
-            <!-- arrow to posterior -->
-            <div style="display:flex;justify-content:center;align-items:center;margin-top:12px;gap:8px;flex-wrap:wrap;">
-              <div style="background:var(--brand);color:#fff;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;">TP = 99</div>
-              <div style="font-size:13px;color:var(--ink);font-weight:700;">÷ (TP + FP) =</div>
-              <div style="background:var(--gold);color:#fff;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;">99 + 495 = 594</div>
-              <div style="font-size:18px;color:var(--brand-deep);font-weight:800;">→</div>
-              <div style="background:var(--ink);color:var(--paper);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800;">P(D|+) = 99/594 = 0.1667</div>
-            </div>
-          </div>
-          <figcaption><b>Fig 5.8</b> · Bayes as a <b>natural-frequency tree</b> over 10,000 people. Split by disease status (<b>100</b> D / <b>9,900</b> D′), then by test result into the four cells <b>TP=99, FN=1, FP=495, TN=9,405</b>. Posterior P(D|+) reads straight off the positive leaves: <b>TP ÷ (TP+FP) = 99/594 = 16.67%</b> — the false positives (495) swamp the true positives (99).</figcaption>
-        </figure>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Bayes ka kaam: positive test ke baad bimari ka real chance nikalna. Formula likho, values daalo, divide karo:</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle Bayes formula likho:</b>
-            <span class="eq first">P(D | +) = [P(+ | D) · P(D)] / P(+).</span>
-            <span class="eq">Total probability: P(+) = P(+ | D) · P(D) + P(+ | D′) · P(D′).</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab di hui values daalo:</b>
-            <span class="eq first"><mark>prior</mark> P(D) = 0.01 ⇒ P(D′) = 0.99.</span>
-            <span class="eq">P(+ | D) = 0.99 (<mark>sensitivity</mark>).</span>
-            <span class="eq">P(+ | D′) = 1 − 0.95 = 0.05 (false-positive rate = 1 − <mark>specificity</mark>).</span>
-            <span class="eq">P(+) = 0.99 × 0.01 + 0.05 × 0.99 = 0.0099 + 0.0495 = <b>0.0594</b>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Final answer — <mark>posterior</mark> nikalo:</b>
-            <span class="eq first">P(D | +) = 0.0099 / 0.0594 = <mark><b>P(D | +) = 0.1667 (≈ 16.67%)</b></mark>.</span>
-            <span class="eq">Interpretation: even after a positive test, the chance of disease is only ~17% because the prior prevalence (1%) is very low: base-rate fallacy in action.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Chhoti soch — 99% accurate test, fir bhi sirf 17% kyun</span>
-          <p>Maan lo 10,000 logon mein sirf <b>100</b> ko hi bimari hai (prior 1%). Test almost sabhi 100 ko pakad lega → 99 true positive.</p>
-          <ul>
-            <li>Par baaki 9,900 healthy mein se bhi 5% galat positive aayega = <b>495</b> false positive.</li>
-            <li>Total positive = 99 + 495 = 594. Inme se sach mein bimar sirf 99.</li>
-            <li>Chance = 99 / 594 = <b>16.67%</b>.</li>
-          </ul>
-          <p>Matlab — jab bimari hi durlabh ho, to false positives (495) asli cases (99) ko daba dete hain. Isi ko base-rate trap kehte hain.</p>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption>Bayes — 2 × 2 Confusion Layout (per 10,000 people)</caption>
-            <thead><tr><th></th><th>Disease (D)</th><th>No Disease (D′)</th><th>Total</th></tr></thead>
-            <tbody>
-              <tr><th>Test +</th><td>99 (TP)</td><td>495 (FP)</td><td>594</td></tr>
-              <tr><th>Test −</th><td>1 (FN)</td><td>9405 (TN)</td><td>9406</td></tr>
-              <tr><th>Total</th><td>100</td><td>9900</td><td>10000</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <b>Pitfalls:</b>
-          <ul style="margin:6px 0 0 18px;">
-            <li>Students often write P(+ | D′) as the specificity 0.95 instead of (1 − specificity) = 0.05. That sign error wrecks the posterior.</li>
-            <li>Skipping the total probability step for P(+) and dividing by P(+ | D) instead is the second top error. It leaves the prior unchanged.</li>
-            <li>In the parabola fit, rounding c early then using it for b stacks up error. Keep c, b, a as symbols until the last step.</li>
-            <li>The Σ table needs six sums for a parabola: ΣX, ΣX<sup>2</sup>, ΣX<sup>3</sup>, ΣX<sup>4</sup>, ΣXY, ΣX<sup>2</sup>Y. Forgetting the last three costs 3 marks.</li>
-          </ul>
-        </div>
-
-        <h5>Modern Relevance</h5>
-        <p>Least-squares curve fitting is the engine of every supervised ML model. Gradient descent solves the same normal equations at scale (X<sup>T</sup>X β = X<sup>T</sup>y). Polynomial regression is the direct grown-up form of the parabola fit. Bayes' theorem drives Naïve Bayes spam filters, medical-test reading, A/B-test posterior updates, and the base for Bayesian deep learning. The base-rate trap (posterior ≈ 17% even with a 99%-accurate test) is the classic example cited in clinical-decision and screening policy.</p>
-
-        <h5>Conclusion</h5>
-        <p>Parabola fit Y = 1.42 − 1.07X + 0.55X<sup>2</sup> makes Σ(Y − Ŷ)<sup>2</sup> smallest. Residuals sum to zero, as least squares needs. Bayes gives P(D | +) ≈ 16.67%. Even a 99%-accurate test on a 1%-prevalence disease gives mostly false positives. The false-positive count 0.05 × 0.99 = 0.0495 swamps the true-positive count 0.99 × 0.01 = 0.0099. Both results show how clean arithmetic beats gut feeling.</p>
-
-        <div class="score">
-          <b>Marks Allocation:</b>
-          <ul>
-            <li>(a) Σ-table (ΣX, ΣY, ΣX², ΣX³, ΣX⁴, ΣXY, ΣX²Y): <span class="m">3 M</span></li>
-            <li>(a) Three normal equations: <span class="m">2 M</span></li>
-            <li>(a) Solve 3 × 3 system + final parabola: <span class="m">3 M</span></li>
-            <li>(b) State Bayes + total probability: <span class="m">2 M</span></li>
-            <li>(b) Correct numerical substitution: <span class="m">3 M</span></li>
-            <li>(b) Final P(D | +) + interpretation: <span class="m">2 M</span></li>
-            <li>Total: <span class="m">15 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q7 (Unit 4 + Unit 2 — Spearman rank + Joint pdf P(X<a∩Y<b)) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q7 [15 M]</span>
+        <span class="qnum">Q8 [15 M]</span>
         <span class="tag fav">Unit 4 · Unit 2</span>
         <span class="tag hot">⭐ Spearman · Joint Integral</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-22 Q7(a) · Spearman rank (judges) ×2</span>
@@ -4875,189 +4748,10 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
-    <!-- Q8 (Unit 3 — Continuous pdf: k, mean, variance, mean deviation) -->
+    <!-- Q9 (Unit 1 — Median: missing frequency) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q8 [7 M]</span>
-        <span class="tag fav">Unit 3</span>
-        <span class="tag hot">⭐ Continuous pdf · k, μ, σ²</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA-26 Q3(a) · continuous pdf</span>
-      </div>
-      <div class="qbody">
-        <b>The density function of a random variable X is f(x) = k·x(2 − x), 0 ≤ x ≤ 2 (and 0 elsewhere). Find (i) k, (ii) the mean, (iii) the variance, (iv) the mean deviation about the mean.</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> A <b>probability density function (pdf)</b> is a curve where the area under it equals 1 — because "something must happen." Think of it like a hill: the total land area under the hill is fixed. The constant k just stretches or shrinks the hill so the area is exactly 1.</p>
-          <p><b>What does the question want?</b> Four things in order: (i) find k using total-area = 1; (ii) find the mean (balance point of the distribution = ∫x·f(x) dx); (iii) find the variance (average squared distance from the mean = E(X²) − μ²); (iv) find the mean deviation (average absolute distance from the mean = ∫|x − μ|·f(x) dx).</p>
-          <p><b>The key result(s) to remember:</b> ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 gives k = 3/4. Mean μ = ∫<sub>0</sub><sup>2</sup> x·f(x) dx = 1 (by symmetry of the parabola). Variance σ² = E(X²) − μ² ≈ 0.2. Mean deviation = ∫<sub>0</sub><sup>2</sup> |x−1|·f(x) dx ≈ 0.375.</p>
-          <p><b>Scary symbol, explained:</b> <b>∫</b> = "integral" = area under the curve (add up infinitely many thin slices). <b>E(X)</b> = expected value = weighted average of all possible x values. <b>E(X²)</b> = same but weight x² instead of x. <b>|x − μ|</b> = absolute value = always positive distance from the mean.</p>
-          <p><b>Bare minimum to attempt:</b> Set ∫<sub>0</sub><sup>2</sup> k·x(2−x) dx = 1 and solve for k — that's step (i) and earns marks immediately. Then write E(X) = ∫ x·f(x) dx for step (ii). Even if you can't finish the arithmetic, the correct setup earns partial credit.</p>
-        </div>
-        <p>For a continuous random variable, the <mark>constant k</mark> is fixed by the <mark>normalisation condition</mark> ∫f(x) dx = 1 over the support. The <mark>mean</mark> is ∫x·f(x) dx, the <mark>variance</mark> is E[X²] − μ², and the <mark>mean deviation about the mean</mark> is E|X − μ|. Here f(x) = k·x(2 − x) is a downward parabola on [0, 2], symmetric about x = 1.</p>
-
-        <figure class="diagram-fig">
-          <img src="ps-images/pred-pdf-parabola.png" alt="Density curve f of x equals three quarters x times two minus x on zero to two, a downward parabola peaking at the mean x equals 1 with total area 1 and a gold band marking mu plus or minus sigma" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.11</b> · Density f(x) = (¾)x(2 − x) on [0, 2]: a symmetric downward parabola peaking at the <b>mean μ = 1</b> with <b>total area = 1</b>. Gold band marks the spread <b>μ ± σ</b> (σ = √0.2 ≈ 0.447), where most of the mass sits.</figcaption>
-        </figure>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Chalo ek-ek karke nikalte hain — pehle k, phir mean, variance aur mean deviation. Bas area = 1 wali soch se shuru.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehle k nikalo (area = 1 lagao):</b>
-            <span class="eq first">∫<sub>0</sub><sup>2</sup> k·x(2 − x) dx = k∫<sub>0</sub><sup>2</sup> (2x − x²) dx</span>
-            <span class="eq">= k·[x² − x³/3]<sub>0</sub><sup>2</sup></span>
-            <span class="eq">= k·(4 − 8/3)</span>
-            <span class="eq">= k·(4/3) = 1</span>
-            <span class="eq">⟹ <mark><b>k = 3/4</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab mean nikalo (∫x·f(x) dx):</b>
-            <span class="eq first">μ = (3/4)∫<sub>0</sub><sup>2</sup> x·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x² − x³) dx</span>
-            <span class="eq">= (3/4)·[2x³/3 − x⁴/4]<sub>0</sub><sup>2</sup></span>
-            <span class="eq">= (3/4)·(16/3 − 4)</span>
-            <span class="eq">= (3/4)·(4/3) = <mark><b>μ = 1</b></mark>.</span>
-            <span class="eq">(As expected from the symmetry about x = 1.)</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab variance (E[X²] − μ² wala formula):</b>
-            <span class="eq first">E[X²] = (3/4)∫<sub>0</sub><sup>2</sup> x²·x(2 − x) dx = (3/4)∫<sub>0</sub><sup>2</sup> (2x³ − x⁴) dx</span>
-            <span class="eq">= (3/4)·[x⁴/2 − x⁵/5]<sub>0</sub><sup>2</sup></span>
-            <span class="eq">= (3/4)·(8 − 32/5)</span>
-            <span class="eq">= (3/4)·(8/5) = 6/5 = 1.2.</span>
-            <span class="eq">σ² = E[X²] − μ² = 1.2 − 1 = <mark><b>0.2</b></mark>   (so SD σ = √0.2 ≈ 0.447).</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Last me mean deviation (E|X − 1|) <span class="hg">(mean se average distance)</span>:</b>
-            <span class="eq first">Since f is symmetric about x = 1, E|X − 1| = 2∫<sub>1</sub><sup>2</sup> (x − 1)·(3/4)x(2 − x) dx.</span>
-            <span class="eq">Inner: ∫<sub>1</sub><sup>2</sup> (x − 1)(2x − x²) dx = ∫<sub>1</sub><sup>2</sup> (3x² − x³ − 2x) dx</span>
-            <span class="eq">= [x³ − x⁴/4 − x²]<sub>1</sub><sup>2</sup></span>
-            <span class="eq">= (8 − 4 − 4) − (1 − 0.25 − 1)</span>
-            <span class="eq">= 0 − (−0.25) = 0.25.</span>
-            <span class="eq">∴ MD = 2·(3/4)·0.25 = <mark><b>3/8 = 0.375</b></mark>.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Calculator wali soch — definite integral</span>
-          <p>∫<sub>0</sub><sup>2</sup> kuch dx ka matlab: antiderivative nikalo, phir <b>upar wali limit me daalo minus neeche wali me daalo</b>. Jaise ∫<sub>1</sub><sup>3</sup> x dx = [x²/2] = 9/2 − 1/2 = 4. Bas value upar daalo, value neeche daalo, ghata do.</p>
-          <p>Yahan har step me wohi: [x² − x³/3] me 2 daala (= 4 − 8/3), 0 daala (= 0), ghata diya. "Area = 1" sirf isiliye kyunki total probability hamesha 1 hoti hai.</p>
-        </div>
-
-        <div class="table-wrap">
-          <table>
-            <caption>Q8 Summary</caption>
-            <thead><tr><th>Quantity</th><th>Value</th></tr></thead>
-            <tbody>
-              <tr><td>Constant k</td><td><b>3/4</b></td></tr>
-              <tr><td>Mean μ</td><td><b>1</b></td></tr>
-              <tr><td>Variance σ²</td><td><b>0.2</b> (σ ≈ 0.447)</td></tr>
-              <tr><td>Mean deviation about mean</td><td><b>3/8 = 0.375</b></td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <b>Final answer:</b> <mark><b>k = 3/4, μ = 1, σ² = 0.2, Mean deviation = 3/8 = 0.375.</b></mark>
-        </div>
-
-        <div class="score">
-          <b>Marks Allocation:</b>
-          <ul>
-            <li>(i) k from normalisation: <span class="m">2 M</span></li>
-            <li>(ii) Mean: <span class="m">1.5 M</span></li>
-            <li>(iii) Variance via E[X²]: <span class="m">2 M</span></li>
-            <li>(iv) Mean deviation about mean: <span class="m">1.5 M</span></li>
-            <li>Total: <span class="m">7 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q9 (Unit 4 — Inverse Normal: find μ and σ from percentages) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q9 [8 M]</span>
-        <span class="tag fav">Unit 4</span>
-        <span class="tag hot">⭐ Inverse Normal · find μ, σ</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA PYQ · inverse normal</span>
-      </div>
-      <div class="qbody">
-        <b>In a normal distribution, 31% of the items are below 45 and 8% are above 64. Find the mean and standard deviation. (Use Φ(0.50) = 0.69, Φ(1.40) = 0.92.)</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> Usually in Normal distribution problems you're given μ and σ and asked to find a probability. This question flips it: you're given two probabilities (31% below 45, 8% above 64) and asked to find μ and σ. It's like knowing the shape of a bell curve from two clues and working backwards to pin down where it's centred and how wide it is.</p>
-          <p><b>What does the question want?</b> Find the mean μ and standard deviation σ of a Normal distribution, given that 31% of values lie below 45 and 8% lie above 64. Two unknowns, two equations — solve simultaneously.</p>
-          <p><b>The key result(s) to remember:</b> Standardise with <b>Z = (X − μ) / σ</b>. From the Z-table hints: Φ(0.50) = 0.69 and Φ(1.40) = 0.92. So 31% below 45 → z = −0.50; 8% above 64 → z = +1.40. Two equations: (45 − μ)/σ = −0.50 and (64 − μ)/σ = +1.40. Subtract to get <b>σ = 10</b>, then back-substitute to get <b>μ = 50</b>.</p>
-          <p><b>Scary symbol, explained:</b> <b>Φ(z)</b> = area to the LEFT of z on the standard Normal curve (from the Z-table). <b>Φ(−z) = 1 − Φ(z)</b> — for negative z values. "31% below" means Φ(z) = 0.31, so z is negative. "8% above" means Φ(z) = 0.92, so z is positive.</p>
-          <p><b>Bare minimum to attempt:</b> Write the two Z-equations using (X − μ)/σ = z. Subtract them to cancel μ and find σ. Then substitute back for μ. If you set up both equations correctly you've earned most of the marks — the algebra is straightforward.</p>
-        </div>
-        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
-          <b>⚡ Quick Recall — Inverse Normal:</b> set up two z-equations: (x₁−μ)/σ = z₁, (x₂−μ)/σ = z₂<br>
-          Subtract to eliminate μ: σ = <b>(x₂−x₁)/(z₂−z₁)</b> · then μ = <b>x₁ − z₁·σ</b> · symmetric dist (17% both sides) → z₁ = −z₂ so μ = (x₁+x₂)/2 first
-        </div>
-        <p>This is an <mark>inverse Normal</mark> problem: instead of finding a probability from a z-value, we work backwards from given <mark>tail percentages</mark> to two z-values, set up two equations in μ and σ via the standardisation z = (x − μ)/σ, and solve the pair.</p>
-
-        <figure class="diagram-fig">
-          <img src="ps-images/pred-normal-tails.png" alt="Normal curve with the left 31 percent tail below 45 shaded and the right 8 percent tail above 64 shaded, giving mean 50 and standard deviation 10" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.12</b> · Left tail 31% (x = 45, z = −0.50) and right tail 8% (x = 64, z = +1.40) pin down μ and σ.</figcaption>
-        </figure>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Do clue diye hain (31% neeche, 8% upar) — inse do equation banao aur μ, σ ulta nikaal lo. Ghabrana nahi, sirf do line ki algebra hai.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Neeche wale tail se pehla equation banao:</b>
-            <span class="eq first">P(X &lt; 45) = 0.31. The z is <mark>negative</mark> (below the mean). Φ(−0.50) = 1 − 0.69 = 0.3085 ≈ 0.31.</span>
-            <span class="eq">⟹ (45 − μ)/σ = <mark>−0.50</mark>   …(1)</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Upar wale tail se doosra equation banao:</b>
-            <span class="eq first">P(X &gt; 64) = 0.08 ⟹ P(X &lt; 64) = 0.92. Φ(1.40) = 0.92.</span>
-            <span class="eq">⟹ (64 − μ)/σ = <mark>+1.40</mark>   …(2)</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab (1) ko (2) me se ghatao taaki μ ud jaaye:</b>
-            <span class="eq first">(64 − 45) = σ·[1.40 − (−0.50)]</span>
-            <span class="eq">⟹ 19 = 1.90·σ</span>
-            <span class="eq">⟹ <mark><b>σ = 10</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">σ wapas (1) me daalo, μ mil jaayega:</b>
-            <span class="eq first">45 − μ = −0.50 × 10 = −5</span>
-            <span class="eq">⟹ μ = 45 + 5 = <mark><b>μ = 50</b></mark>.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 "Kitne SD door" wali soch — z value</span>
-          <p>z ka matlab sirf itna: ye value mean se <b>kitne standard-deviation door hai</b>. z = −0.50 → mean se aadha SD neeche. z = +1.40 → mean se 1.4 SD upar.</p>
-          <p>Toh "45 mean se 0.5 SD neeche" aur "64 mean se 1.4 SD upar". Beech ka gap 45→64 = 19 units = (1.40 + 0.50) = 1.9 SD jitna. Ek SD = 19/1.9 = 10. Bas isi se σ = 10 nikal aaya.</p>
-        </div>
-
-        <div class="box warn">
-          <b>Final answer:</b> <mark><b>Mean μ = 50, Standard deviation σ = 10.</b></mark>
-        </div>
-
-        <div class="score">
-          <b>Marks Allocation:</b>
-          <ul>
-            <li>Equation (1) from lower tail: <span class="m">2.5 M</span></li>
-            <li>Equation (2) from upper tail: <span class="m">2.5 M</span></li>
-            <li>Solve for σ: <span class="m">1.5 M</span></li>
-            <li>Solve for μ: <span class="m">1.5 M</span></li>
-            <li>Total: <span class="m">8 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q10 (Unit 1 — Median: missing frequency) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q10 [7 M]</span>
+        <span class="qnum">Q9 [7 M]</span>
         <span class="tag fav">Unit 1</span>
         <span class="tag hot">⭐ Median · missing frequency</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA PYQ · median missing-frequency</span>
@@ -5148,263 +4842,89 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
-    <!-- Q11 (Unit 3 — Two dice: E|X−Y| and Var|X−Y|) -->
+    <!-- Q10 (Unit 4 — Inverse Normal: find μ and σ from percentages) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q11 [7 M]</span>
-        <span class="tag fav">Unit 3</span>
-        <span class="tag hot">⭐ Expectation · |X − Y| (two dice)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA PYQ · expectation of |X−Y| (two dice)</span>
+        <span class="qnum">Q10 [8 M]</span>
+        <span class="tag fav">Unit 4</span>
+        <span class="tag hot">⭐ Inverse Normal · find μ, σ</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA PYQ · inverse normal</span>
       </div>
       <div class="qbody">
-        <b>Two fair dice are thrown. Let D = |X − Y| be the absolute difference of the two faces. Find E(D) and Var(D).</b>
+        <b>In a normal distribution, 31% of the items are below 45 and 8% are above 64. Find the mean and standard deviation. (Use Φ(0.50) = 0.69, Φ(1.40) = 0.92.)</b>
       </div>
       <div class="ans">
         <div class="box eli5">
           <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> You roll two dice and look at how far apart the two numbers are — the absolute difference D = |X − Y|. D can be 0 (both same), 1 (one apart), 2 (two apart), …, up to 5 (one shows 1, other shows 6). We want the "long-run average" of D (called the expectation E(D)) and how much D varies around that average (the variance Var(D)).</p>
-          <p><b>What does the question want?</b> Build the probability table for D (how many of the 36 outcomes give each value of D), then use E(D) = Σ d·P(d) and Var(D) = E(D²) − [E(D)]² to compute the two answers.</p>
-          <p><b>The key result(s) to remember:</b> Total outcomes = 36. Counts by value of D: D=0 → 6 outcomes, D=1 → 10, D=2 → 8, D=3 → 6, D=4 → 4, D=5 → 2 (these add to 36 ✓). <b>E(D) = 70/36 = 35/18 ≈ 1.94</b>. <b>Var(D) = 665/324 ≈ 2.05</b>.</p>
-          <p><b>Scary symbol, explained:</b> <b>E(D)</b> = expected value = weighted average of D over all 36 outcomes. <b>E(D²)</b> = same but square each D first. <b>Var(D)</b> = E(D²) − [E(D)]² — always this formula. <b>|X − Y|</b> = absolute value = always positive (e.g. |2 − 5| = 3, |5 − 2| = 3).</p>
-          <p><b>Bare minimum to attempt:</b> Draw a 6×6 grid of outcomes (or just count systematically): D=0 when both same (6 pairs), D=1 when adjacent (10 pairs), etc. Once the table is correct, E(D) = Σ d × (count/36). Even a partial correct table earns marks.</p>
+          <p><b>What is this about?</b> Usually in Normal distribution problems you're given μ and σ and asked to find a probability. This question flips it: you're given two probabilities (31% below 45, 8% above 64) and asked to find μ and σ. It's like knowing the shape of a bell curve from two clues and working backwards to pin down where it's centred and how wide it is.</p>
+          <p><b>What does the question want?</b> Find the mean μ and standard deviation σ of a Normal distribution, given that 31% of values lie below 45 and 8% lie above 64. Two unknowns, two equations — solve simultaneously.</p>
+          <p><b>The key result(s) to remember:</b> Standardise with <b>Z = (X − μ) / σ</b>. From the Z-table hints: Φ(0.50) = 0.69 and Φ(1.40) = 0.92. So 31% below 45 → z = −0.50; 8% above 64 → z = +1.40. Two equations: (45 − μ)/σ = −0.50 and (64 − μ)/σ = +1.40. Subtract to get <b>σ = 10</b>, then back-substitute to get <b>μ = 50</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>Φ(z)</b> = area to the LEFT of z on the standard Normal curve (from the Z-table). <b>Φ(−z) = 1 − Φ(z)</b> — for negative z values. "31% below" means Φ(z) = 0.31, so z is negative. "8% above" means Φ(z) = 0.92, so z is positive.</p>
+          <p><b>Bare minimum to attempt:</b> Write the two Z-equations using (X − μ)/σ = z. Subtract them to cancel μ and find σ. Then substitute back for μ. If you set up both equations correctly you've earned most of the marks — the algebra is straightforward.</p>
         </div>
-        <p>With two fair dice there are <mark>36 equally-likely</mark> outcomes. First build the <mark>probability distribution</mark> of D = |X − Y| by counting how many of the 36 pairs give each absolute difference, then use <mark>E(D) = Σ d·P(d)</mark> and <mark>Var(D) = E(D²) − [E(D)]²</mark>.</p>
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Inverse Normal:</b> set up two z-equations: (x₁−μ)/σ = z₁, (x₂−μ)/σ = z₂<br>
+          Subtract to eliminate μ: σ = <b>(x₂−x₁)/(z₂−z₁)</b> · then μ = <b>x₁ − z₁·σ</b> · symmetric dist (17% both sides) → z₁ = −z₂ so μ = (x₁+x₂)/2 first
+        </div>
+        <p>This is an <mark>inverse Normal</mark> problem: instead of finding a probability from a z-value, we work backwards from given <mark>tail percentages</mark> to two z-values, set up two equations in μ and σ via the standardisation z = (x − μ)/σ, and solve the pair.</p>
 
         <figure class="diagram-fig">
-          <img src="ps-images/pred-dice-diff.png" alt="Bar chart of D equals absolute difference of two dice, bars for d zero to five with probabilities 6,10,8,6,4,2 over 36, tallest at d equals 1, with E of D about 1.94 marked by a gold dashed line" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
-          <figcaption><b>Fig 5.14</b> · Distribution of D = |X − Y| for two fair dice (36 outcomes). Bar heights are proportional to <b>P(D = d)</b>; probabilities sum to <b>36/36 = 1 ✓</b>. The tallest bar at d = 1 (10 outcomes / 36) is most likely. The gold dashed line marks <b>E(D) = 35/18 ≈ 1.94</b>.</figcaption>
+          <img src="ps-images/pred-normal-tails.png" alt="Normal curve with the left 31 percent tail below 45 shaded and the right 8 percent tail above 64 shaded, giving mean 50 and standard deviation 10" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.12</b> · Left tail 31% (x = 45, z = −0.50) and right tail 8% (x = 64, z = +1.40) pin down μ and σ.</figcaption>
         </figure>
 
-        <div class="table-wrap">
-          <table>
-            <caption>Distribution of D = |X − Y| over the 36 outcomes</caption>
-            <thead><tr><th>D = |X − Y|</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
-            <tbody>
-              <tr><td>Number of outcomes</td><td>6</td><td>10</td><td>8</td><td>6</td><td>4</td><td>2</td></tr>
-              <tr><td>P(D)</td><td>6/36</td><td>10/36</td><td>8/36</td><td>6/36</td><td>4/36</td><td>2/36</td></tr>
-            </tbody>
-          </table>
-        </div>
-        <p style="font-size:13px;color:var(--muted);margin:4px 0 8px;">Total outcomes = 6 + 10 + 8 + 6 + 4 + 2 = 36 ✓.</p>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Table ban gaya, ab bas average (E) aur spread (Var) nikalna hai — har value ko uski probability se multiply karke jod do.</p>
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Do clue diye hain (31% neeche, 8% upar) — inse do equation banao aur μ, σ ulta nikaal lo. Ghabrana nahi, sirf do line ki algebra hai.</p>
         <div class="steps">
           <div class="step k">
-            <b class="lbl">Pehle expectation E(D) = Σ d·P(d):</b>
-            <span class="eq first">E(D) = (0·6 + 1·10 + 2·8 + 3·6 + 4·4 + 5·2)/36</span>
-            <span class="eq">= (0 + 10 + 16 + 18 + 16 + 10)/36</span>
-            <span class="eq">= 70/36 = <mark><b>35/18 ≈ 1.944</b></mark>.</span>
+            <b class="lbl">Neeche wale tail se pehla equation banao:</b>
+            <span class="eq first">P(X &lt; 45) = 0.31. The z is <mark>negative</mark> (below the mean). Φ(−0.50) = 1 − 0.69 = 0.3085 ≈ 0.31.</span>
+            <span class="eq">⟹ (45 − μ)/σ = <mark>−0.50</mark>   …(1)</span>
           </div>
           <div class="step k">
-            <b class="lbl">Ab E(D²) nikalo (har d ko square karke):</b>
-            <span class="eq first">E(D²) = (0²·6 + 1²·10 + 2²·8 + 3²·6 + 4²·4 + 5²·2)/36</span>
-            <span class="eq">= (0 + 10 + 32 + 54 + 64 + 50)/36</span>
-            <span class="eq">= 210/36 = 35/6 ≈ 5.833.</span>
+            <b class="lbl">Upar wale tail se doosra equation banao:</b>
+            <span class="eq first">P(X &gt; 64) = 0.08 ⟹ P(X &lt; 64) = 0.92. Φ(1.40) = 0.92.</span>
+            <span class="eq">⟹ (64 − μ)/σ = <mark>+1.40</mark>   …(2)</span>
           </div>
           <div class="step k">
-            <b class="lbl">Last me variance = E(D²) − [E(D)]²:</b>
-            <span class="eq first">Var(D) = 35/6 − (35/18)²</span>
-            <span class="eq">= 1890/324 − 1225/324</span>
-            <span class="eq">= <mark><b>665/324 ≈ 2.053</b></mark>.</span>
+            <b class="lbl">Ab (1) ko (2) me se ghatao taaki μ ud jaaye:</b>
+            <span class="eq first">(64 − 45) = σ·[1.40 − (−0.50)]</span>
+            <span class="eq">⟹ 19 = 1.90·σ</span>
+            <span class="eq">⟹ <mark><b>σ = 10</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">σ wapas (1) me daalo, μ mil jaayega:</b>
+            <span class="eq first">45 − μ = −0.50 × 10 = −5</span>
+            <span class="eq">⟹ μ = 45 + 5 = <mark><b>μ = 50</b></mark>.</span>
           </div>
         </div>
 
         <div class="box eli5">
-          <span class="label">🧮 Weighted average wali soch — expectation</span>
-          <p>Maan lo cricket me 10 match me se 6 baar 0 run, 10 baar... ruko, simple: agar zyada baar 1 aata hai aur kam baar 5, toh "average" 1 ki taraf jhukega. Yahi E(D) hai — har value × uska kitni baar aaya, jod ke total se baant do.</p>
-          <p>D=1 sabse zyada (10/36 baar) aata hai, isiliye E(D) ≈ 1.94, yaani 1 aur 2 ke beech. Variance batata hai ki values is 1.94 ke aas-paas kitni bikhri hui hain.</p>
+          <span class="label">🧮 "Kitne SD door" wali soch — z value</span>
+          <p>z ka matlab sirf itna: ye value mean se <b>kitne standard-deviation door hai</b>. z = −0.50 → mean se aadha SD neeche. z = +1.40 → mean se 1.4 SD upar.</p>
+          <p>Toh "45 mean se 0.5 SD neeche" aur "64 mean se 1.4 SD upar". Beech ka gap 45→64 = 19 units = (1.40 + 0.50) = 1.9 SD jitna. Ek SD = 19/1.9 = 10. Bas isi se σ = 10 nikal aaya.</p>
         </div>
 
         <div class="box warn">
-          <b>Final answer:</b> <mark><b>E(D) = 35/18 ≈ 1.94, Var(D) = 665/324 ≈ 2.05.</b></mark>
+          <b>Final answer:</b> <mark><b>Mean μ = 50, Standard deviation σ = 10.</b></mark>
         </div>
 
         <div class="score">
           <b>Marks Allocation:</b>
           <ul>
-            <li>Distribution table of D (counts + P): <span class="m">3 M</span></li>
-            <li>E(D): <span class="m">2 M</span></li>
-            <li>E(D²) + Var(D): <span class="m">2 M</span></li>
-            <li>Total: <span class="m">7 M</span></li>
+            <li>Equation (1) from lower tail: <span class="m">2.5 M</span></li>
+            <li>Equation (2) from upper tail: <span class="m">2.5 M</span></li>
+            <li>Solve for σ: <span class="m">1.5 M</span></li>
+            <li>Solve for μ: <span class="m">1.5 M</span></li>
+            <li>Total: <span class="m">8 M</span></li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- Q12 (Unit 2 — MGF of triangular pdf + Geometric distribution MGF) -->
+    <!-- Q11 (Unit 2/3 — Kings expectation + Raw-to-central moments + β₁ β₂) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q12 [15 M]</span>
-        <span class="tag fav">Unit 2</span>
-        <span class="tag hot">⭐ MGF · Triangular pdf + Geometric dist</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-23 Q3(b)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Q2(c)</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Geometric</span>
-      </div>
-      <div class="qbody">
-        <b>(a) [8 M] Find the <mark>moment generating function</mark> of the random variable X having the triangular pdf
-        f(x) = x for 0 ≤ x &lt; 1, f(x) = 2 − x for 1 ≤ x &lt; 2, and f(x) = 0 otherwise.
-        Hence find the mean and variance.</b><br>
-        <b>(b) [7 M] For the <mark>Geometric distribution</mark> P(X = x) = q<sup>x−1</sup> p, x = 1, 2, …, derive the
-        MGF and hence obtain the mean and variance.</b>
-      </div>
-      <div class="ans">
-        <div class="box eli5">
-          <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> The <b>Moment Generating Function (MGF)</b> is a single formula M(t) = E[e<sup>tX</sup>] that "stores" all the information about a distribution. Think of it as a magic box — you put in the distribution, and if you differentiate once you get the mean, differentiate twice you get E(X²), and so on. Part (a) uses a triangular pdf (a tent-shaped curve), Part (b) uses the Geometric distribution (counting coin tosses until first heads).</p>
-          <p><b>What does the question want?</b> Part (a): compute ∫e<sup>tx</sup>·f(x) dx for the triangular pdf (split into two integrals over [0,1] and [1,2]), then differentiate at t = 0 to find mean and variance. Part (b): compute Σ e<sup>tx</sup>·P(X=x) for the Geometric distribution (it's a geometric series), then differentiate at t = 0.</p>
-          <p><b>The key result(s) to remember:</b> For the Geometric(p) distribution, <b>MGF = pe<sup>t</sup> / (1 − qe<sup>t</sup>)</b>, <b>Mean = 1/p</b>, <b>Var = q/p²</b>. For the triangular distribution M(t) = 2(e<sup>t</sup>−1)²/t² with Mean = 1, Var = 1/6.</p>
-          <p><b>Scary symbol, explained:</b> <b>M(t)</b> = MGF evaluated at t. <b>M′(0)</b> = first derivative at t = 0 = Mean. <b>M″(0)</b> = second derivative at t = 0 = E(X²). <b>Σ</b> (capital sigma) = "sum over all values." A geometric series Σ (qe<sup>t</sup>)<sup>x−1</sup> = 1/(1−qe<sup>t</sup>) — this is the key formula for Part (b).</p>
-          <p><b>Bare minimum to attempt:</b> For Part (b), write P(X=x) = q<sup>x−1</sup>p, so M(t) = Σ e<sup>tx</sup>·q<sup>x−1</sup>p = (p/q)·Σ(qe<sup>t</sup>)<sup>x</sup> — factor and sum the geometric series. That derivation alone earns most marks. For Part (a), just setting up the two integrals with correct limits earns the setup marks.</p>
-        </div>
-
-        <h5>Part (a): MGF of the Triangular Distribution</h5>
-
-        <p>The <mark>triangular distribution</mark> on [0, 2] is piecewise linear with peak at x = 1.
-        The MGF is M(t) = E[e<sup>tX</sup>] = ∫₀¹ x e<sup>tx</sup> dx + ∫₁² (2−x) e<sup>tx</sup> dx.</p>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Pdf do tukdon me hai, toh integral bhi do tukdon me (I₁ + I₂). Dono ko by-parts se solve karke jod denge, phir mean aur variance.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Pehla tukda I₁ = ∫₀¹ x e<sup>tx</sup> dx by-parts se nikalo:</b>
-            <span class="eq first">I₁ = [x · e<sup>tx</sup>/t]₀¹ − ∫₀¹ e<sup>tx</sup>/t dx</span>
-            <span class="eq">= e<sup>t</sup>/t − [e<sup>tx</sup>/t²]₀¹</span>
-            <span class="eq">= e<sup>t</sup>/t − (e<sup>t</sup> − 1)/t².</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Doosra tukda I₂ = ∫₁² (2−x) e<sup>tx</sup> dx bhi by-parts se:</b>
-            <span class="eq first">I₂ = [(2−x) · e<sup>tx</sup>/t]₁² + ∫₁² e<sup>tx</sup>/t dx</span>
-            <span class="eq">= (0 − e<sup>t</sup>/t) + [e<sup>tx</sup>/t²]₁²</span>
-            <span class="eq">= −e<sup>t</sup>/t + (e<sup>2t</sup> − e<sup>t</sup>)/t².</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab dono jod do: M(t) = I₁ + I₂:</b>
-            <span class="eq first">M(t) = e<sup>t</sup>/t − (e<sup>t</sup>−1)/t² − e<sup>t</sup>/t + (e<sup>2t</sup>−e<sup>t</sup>)/t²</span>
-            <span class="eq">= [−e<sup>t</sup> + 1 + e<sup>2t</sup> − e<sup>t</sup>] / t²</span>
-            <span class="eq">= (e<sup>2t</sup> − 2e<sup>t</sup> + 1) / t²</span>
-            <span class="eq">= <mark><b>(e<sup>t</sup> − 1)² / t²</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Mean = M′(0) <span class="hg">(t ka coefficient)</span>:</b>
-            <span class="eq first">Expand (e<sup>t</sup>−1)² = t² + t³ + 7t⁴/12 + … , so M(t) = 1 + t + 7t²/12 + …</span>
-            <span class="eq">M′(0) = coefficient of t in power series = <mark><b>E(X) = 1</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Second moment = M″(0):</b>
-            <span class="eq first">M″(0) = 2 × coefficient of t² = 2 × 7/12 = <mark><b>E(X²) = 7/6</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Final me variance = E(X²) − [E(X)]²:</b>
-            <span class="eq first">Var(X) = 7/6 − 1² = <mark><b>1/6</b></mark>.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Magic box wali soch — MGF</span>
-          <p>MGF ek aisa formula hai jisme poori distribution "pack" ho jaati hai. Jaise zip file — ek baar bana lo, phir differentiate karke nikalte raho: ek baar differentiate (t=0 par) → mean, do baar → E(X²).</p>
-          <p>Yahan power-series me t ka coefficient hi mean (=1) ban gaya, t² ka coefficient ka double E(X²)=7/6. Box ek baar bana, dono answer mil gaye.</p>
-        </div>
-
-        <h5>Part (b): MGF of the Geometric Distribution</h5>
-
-        <p>For X ~ Geometric with P(X = x) = q<sup>x−1</sup> p (x = 1, 2, …), where p + q = 1:</p>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Yahan integral ki jagah summation (Σ) hai, par dar mat — ye ek geometric series hai jo aaram se ek formula me simat jaati hai.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Definition se shuru — MGF likho:</b>
-            <span class="eq first">M(t) = E[e<sup>tX</sup>] = Σ<sub>x=1</sub><sup>∞</sup> e<sup>tx</sup> q<sup>x−1</sup> p</span>
-            <span class="eq">= pe<sup>t</sup> Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab geometric series sum karo (jab qe<sup>t</sup> &lt; 1):</b>
-            <span class="eq first">Σ<sub>x=1</sub><sup>∞</sup> (qe<sup>t</sup>)<sup>x−1</sup> = 1/(1 − qe<sup>t</sup>).</span>
-            <span class="eq">∴ <mark><b>M(t) = pe<sup>t</sup> / (1 − qe<sup>t</sup>)</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Mean = M′(0) (ek baar differentiate, t=0):</b>
-            <span class="eq first">M′(t) = [pe<sup>t</sup>(1−qe<sup>t</sup>) + pe<sup>t</sup>·qe<sup>t</sup>] / (1−qe<sup>t</sup>)²</span>
-            <span class="eq">= pe<sup>t</sup> / (1−qe<sup>t</sup>)².</span>
-            <span class="eq">M′(0) = p / (1−q)² = p / p² = <mark><b>1/p</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Second moment M″(0), phir variance:</b>
-            <span class="eq first">Differentiating again and evaluating at t = 0 gives E(X²) = (2−p)/p².</span>
-            <span class="eq">Var(X) = E(X²) − [E(X)]² = (2−p)/p² − 1/p² = <mark><b>q/p²</b></mark>.</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Pehli success tak — geometric soch</span>
-          <p>Sikka uchaalte raho jab tak pehla HEAD na aaye. Agar head ki probability p hai, toh average me <b>1/p</b> baar uchaalna padta hai. p = 1/2 ho toh average 2 throws — jo sahi lagta hai.</p>
-          <p>Isiliye Geometric ka mean = 1/p. Aur summation Σ(qe<sup>t</sup>)<sup>x−1</sup> bas "ratio &lt; 1 wali infinite series = 1/(1−ratio)" wala school formula hai — wahi yahan ratio = qe<sup>t</sup>.</p>
-        </div>
-
-        <figure class="diagram-fig">
-          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;align-items:end;max-width:340px;margin:0 auto;height:110px;">
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
-              <div style="width:38px;height:90px;background:var(--brand);border-radius:3px 3px 0 0;"></div>
-              <div style="font-size:10px;color:var(--muted);margin-top:3px;">x=1</div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
-              <div style="width:38px;height:67px;background:var(--brand);border-radius:3px 3px 0 0;opacity:.75;"></div>
-              <div style="font-size:10px;color:var(--muted);margin-top:3px;">x=2</div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
-              <div style="width:38px;height:48px;background:var(--brand);border-radius:3px 3px 0 0;opacity:.52;"></div>
-              <div style="font-size:10px;color:var(--muted);margin-top:3px;">x=3</div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
-              <div style="width:38px;height:32px;background:var(--brand);border-radius:3px 3px 0 0;opacity:.34;"></div>
-              <div style="font-size:10px;color:var(--muted);margin-top:3px;">x=4</div>
-            </div>
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;">
-              <div style="width:38px;height:18px;background:var(--brand);border-radius:3px 3px 0 0;opacity:.20;"></div>
-              <div style="font-size:10px;color:var(--muted);margin-top:3px;">x=5</div>
-            </div>
-          </div>
-          <figcaption><b>Fig 5.15</b> · Geometric pmf: bars decay geometrically (each bar = q × previous bar). Tallest at x=1.</figcaption>
-        </figure>
-
-        <div class="table-wrap">
-          <table>
-            <caption>Geometric vs other discrete distributions — key facts</caption>
-            <thead>
-              <tr><th>Property</th><th>Geometric (p)</th><th>Binomial (n, p)</th><th>Poisson (λ)</th></tr>
-            </thead>
-            <tbody>
-              <tr><td>Support</td><td>x = 1, 2, 3, …</td><td>x = 0, 1, …, n</td><td>x = 0, 1, 2, …</td></tr>
-              <tr><td>PMF</td><td>q<sup>x−1</sup>p</td><td><sup>n</sup>C<sub>x</sub> p<sup>x</sup>q<sup>n−x</sup></td><td>e<sup>−λ</sup>λ<sup>x</sup>/x!</td></tr>
-              <tr><td>MGF</td><td>pe<sup>t</sup>/(1−qe<sup>t</sup>)</td><td>(q+pe<sup>t</sup>)<sup>n</sup></td><td>e<sup>λ(e<sup>t</sup>−1)</sup></td></tr>
-              <tr><td>Mean</td><td>1/p</td><td>np</td><td>λ</td></tr>
-              <tr><td>Variance</td><td>q/p²</td><td>npq</td><td>λ</td></tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="box warn">
-          <b>Final answers:</b><br>
-          Part (a): <mark><b>M(t) = (e<sup>t</sup>−1)²/t², Mean = 1, Var = 1/6.</b></mark><br>
-          Part (b): <mark><b>M(t) = pe<sup>t</sup>/(1−qe<sup>t</sup>), Mean = 1/p, Var = q/p².</b></mark>
-        </div>
-
-        <div class="score">
-          <b>Marks Allocation (15 M):</b>
-          <ul>
-            <li>Part (a) — I₁ + I₂ by parts: <span class="m">3 M</span></li>
-            <li>Part (a) — combine to (e<sup>t</sup>−1)²/t²: <span class="m">2 M</span></li>
-            <li>Part (a) — mean and variance from series: <span class="m">3 M</span></li>
-            <li>Part (b) — geometric series summing to MGF: <span class="m">3 M</span></li>
-            <li>Part (b) — differentiate for mean and variance: <span class="m">4 M</span></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-
-    <!-- Q13 (Unit 2/3 — Kings expectation + Raw-to-central moments + β₁ β₂) -->
-    <div class="qcard predicted">
-      <div class="qhead">
-        <span class="qnum">Q13 [15 M]</span>
+        <span class="qnum">Q11 [15 M]</span>
         <span class="tag fav">Unit 2 / Unit 3</span>
         <span class="tag hot">⭐ Discrete E(X), Var + Central moments β₁ β₂</span>
         <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-23 Q2(a)</span>
@@ -5569,130 +5089,317 @@ Verify r^2 = b_yx * b_xy  (where r has same sign as slopes)</div>
       </div>
     </div>
 
-    <!-- Q14 (Unit 1 — Normal distribution central moments, recurrence, β₁=0 β₂=3) -->
+    <!-- Q12 (Unit 3 — Two dice: E|X−Y| and Var|X−Y|) -->
     <div class="qcard predicted">
       <div class="qhead">
-        <span class="qnum">Q14 [10 M]</span>
-        <span class="tag fav">Unit 1</span>
-        <span class="tag hot">⭐ Normal distribution — central moments recurrence</span>
-        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q3(a)</span>
+        <span class="qnum">Q12 [7 M]</span>
+        <span class="tag fav">Unit 3</span>
+        <span class="tag hot">⭐ Expectation · |X − Y| (two dice)</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA PYQ · expectation of |X−Y| (two dice)</span>
       </div>
       <div class="qbody">
-        <b>Show that for a <mark>Normal distribution</mark> N(μ, σ²) all odd-order central moments vanish, and that even-order central moments satisfy the recurrence μ<sub>2n</sub> = (2n − 1) σ² · μ<sub>2n−2</sub>. Evaluate μ₂, μ₄, μ₆ and hence find β₁ and β₂.</b>
+        <b>Two fair dice are thrown. Let D = |X − Y| be the absolute difference of the two faces. Find E(D) and Var(D).</b>
       </div>
       <div class="ans">
         <div class="box eli5">
           <span class="label">🟢 Start here — simple explanation (zero se)</span>
-          <p><b>What is this about?</b> The Normal (bell-shaped) distribution is perfectly symmetric around its mean μ. That symmetry has a beautiful consequence: if you measure how spread out values are on the left vs right in an "odd" way (odd moments), they cancel out exactly — the result is zero. Even moments (μ₂, μ₄, μ₆) don't cancel and follow a neat pattern called a <b>recurrence formula</b> — each one is just (2n−1) times σ² times the previous one.</p>
-          <p><b>What does the question want?</b> Three things: (1) Argue why odd central moments (μ₁, μ₃, μ₅, …) are all zero (symmetry); (2) Derive the recurrence μ<sub>2n</sub> = (2n−1)σ²·μ<sub>2n−2</sub> using integration by parts; (3) Use the recurrence to evaluate μ₂, μ₄, μ₆ and then compute β₁ and β₂.</p>
-          <p><b>The key result(s) to remember:</b> μ₂ = σ² (that's just the variance). Then: <b>μ₄ = 3σ⁴</b> (use n=2: μ₄ = 3σ²·μ₂ = 3σ⁴), <b>μ₆ = 15σ⁶</b> (use n=3: μ₆ = 5σ²·μ₄ = 15σ⁶). Then <b>β₁ = μ₃²/μ₂³ = 0</b> (since μ₃ = 0) and <b>β₂ = μ₄/μ₂² = 3σ⁴/σ⁴ = 3</b>. So for any Normal distribution: β₁ = 0 and β₂ = 3.</p>
-          <p><b>Scary symbol, explained:</b> <b>μ<sub>r</sub></b> = r-th central moment = E[(X−μ)<sup>r</sup>] = average of (deviation from mean) raised to power r. <b>Recurrence</b> = a formula where each term is built from the previous one (like how 5! = 5 × 4!). <b>Odd function</b> = a function where f(−t) = −f(t); integrating such a function over a symmetric interval (−∞ to +∞) gives zero.</p>
-          <p><b>Bare minimum to attempt:</b> Write "The Normal distribution is symmetric about μ, so the integrand for any odd moment is an odd function of (X−μ), which integrates to zero over (−∞, ∞)." Then state μ₂ = σ², use the recurrence to get μ₄ = 3σ⁴, compute β₂ = μ₄/μ₂² = 3. That sequence alone covers most of the 10 marks.</p>
+          <p><b>What is this about?</b> You roll two dice and look at how far apart the two numbers are — the absolute difference D = |X − Y|. D can be 0 (both same), 1 (one apart), 2 (two apart), …, up to 5 (one shows 1, other shows 6). We want the "long-run average" of D (called the expectation E(D)) and how much D varies around that average (the variance Var(D)).</p>
+          <p><b>What does the question want?</b> Build the probability table for D (how many of the 36 outcomes give each value of D), then use E(D) = Σ d·P(d) and Var(D) = E(D²) − [E(D)]² to compute the two answers.</p>
+          <p><b>The key result(s) to remember:</b> Total outcomes = 36. Counts by value of D: D=0 → 6 outcomes, D=1 → 10, D=2 → 8, D=3 → 6, D=4 → 4, D=5 → 2 (these add to 36 ✓). <b>E(D) = 70/36 = 35/18 ≈ 1.94</b>. <b>Var(D) = 665/324 ≈ 2.05</b>.</p>
+          <p><b>Scary symbol, explained:</b> <b>E(D)</b> = expected value = weighted average of D over all 36 outcomes. <b>E(D²)</b> = same but square each D first. <b>Var(D)</b> = E(D²) − [E(D)]² — always this formula. <b>|X − Y|</b> = absolute value = always positive (e.g. |2 − 5| = 3, |5 − 2| = 3).</p>
+          <p><b>Bare minimum to attempt:</b> Draw a 6×6 grid of outcomes (or just count systematically): D=0 when both same (6 pairs), D=1 when adjacent (10 pairs), etc. Once the table is correct, E(D) = Σ d × (count/36). Even a partial correct table earns marks.</p>
         </div>
-
-        <h5>Introduction</h5>
-        <p>The <mark>Normal distribution</mark> N(μ, σ²) has pdf
-        f(x) = (1/σ√(2π)) exp[−(x−μ)²/2σ²].
-        Its central moments μ<sub>r</sub> = E[(X−μ)<sup>r</sup>] reveal the <mark>shape</mark> of the distribution: odd moments measure asymmetry, even moments measure spread and peakedness.</p>
-
-        <h5>Odd Central Moments Vanish</h5>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Normal curve perfectly symmetric hai mean ke aaspaas — isi symmetry ki wajah se saare odd moments khud-ba-khud zero ho jaate hain.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">Symmetry wali soch se shuru:</b>
-            <span class="eq first">The integrand for μ<sub>r</sub> = ∫ (x−μ)<sup>r</sup> f(x) dx, when r is odd, is an <mark>odd function</mark> <span class="hg">(f(−t) = −f(t))</span> of (x−μ) because f(x) is symmetric about μ.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Toh odd r ke liye conclusion:</b>
-            <span class="eq first">Integrating an odd function over a symmetric interval (−∞, ∞) gives zero.</span>
-            <span class="eq">∴ <mark><b>μ₁ = μ₃ = μ₅ = … = 0</b></mark>.</span>
-          </div>
-        </div>
-
-        <h5>Even-Moment Recurrence</h5>
-
-        <p style="margin:0 0 8px;color:var(--brand-deep);">Even moments zero nahi hote — par ek pyaara pattern follow karte hain jisme har moment pichhle wale se ban jaata hai. By-parts se ye recurrence nikalte hain.</p>
-        <div class="steps">
-          <div class="step k">
-            <b class="lbl">μ<sub>r</sub> = ∫ t<sup>r</sup> f(t+μ) dt se shuru, t = x−μ rakho:</b>
-            <span class="eq first">Integrate by parts: let u = t<sup>r−1</sup>, dv = t·f(t+μ) dt.</span>
-            <span class="eq">Since tf(t+μ) = −σ² f′(t+μ), integration by parts yields:</span>
-            <span class="eq">μ<sub>r</sub> = (r−1) σ² μ<sub>r−2</sub>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">r = 2n rakho → recurrence ban gaya:</b>
-            <span class="eq first"><mark><b>μ<sub>2n</sub> = (2n − 1) σ² · μ<sub>2n−2</sub></b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Ab values daalo (μ₂ = σ² base se):</b>
-            <span class="eq first">μ₄ = (4−1) σ² · μ₂ = 3σ² · σ² = <mark><b>3σ⁴</b></mark>.</span>
-            <span class="eq">μ₆ = (6−1) σ² · μ₄ = 5σ² · 3σ⁴ = <mark><b>15σ⁶</b></mark>.</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">β₁ = μ₃² / μ₂³ nikalo:</b>
-            <span class="eq first">β₁ = 0² / σ⁶ = <mark><b>0</b></mark> (symmetric → zero skewness).</span>
-          </div>
-          <div class="step k">
-            <b class="lbl">Aur β₂ = μ₄ / μ₂²:</b>
-            <span class="eq first">β₂ = 3σ⁴ / σ⁴ = <mark><b>3</b></mark> (mesokurtic — normal kurtosis).</span>
-          </div>
-        </div>
-
-        <div class="box eli5">
-          <span class="label">🧮 Sheeshe ki tarah symmetric — odd moments zero</span>
-          <p>Normal curve mean ke bilkul beech me sheeshe (mirror) jaisa hai — left side ka har point right side par exactly cancel ho jaata hai. Odd power (1, 3, 5) me ek taraf + aata hai toh doosri taraf usi size ka −, dono kat jaate hain → total 0.</p>
-          <p>Even power (2, 4, 6) me dono taraf + hi rehta hai (square se sab positive), toh cancel nahi hote. Isiliye β₁ = 0 (no jhukaav) aur β₂ = 3 (Normal ka standard nukeelapan).</p>
-        </div>
+        <p>With two fair dice there are <mark>36 equally-likely</mark> outcomes. First build the <mark>probability distribution</mark> of D = |X − Y| by counting how many of the 36 pairs give each absolute difference, then use <mark>E(D) = Σ d·P(d)</mark> and <mark>Var(D) = E(D²) − [E(D)]²</mark>.</p>
 
         <figure class="diagram-fig">
-          <div style="max-width:380px;margin:0 auto;position:relative;height:90px;">
-            <div style="position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--rule);"></div>
-            <div style="position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:2px;height:60px;background:var(--brand-deep);"></div>
-            <svg viewBox="0 0 380 90" style="width:100%;height:100%;overflow:visible;" aria-label="Bell curve symmetric about mu">
-              <path d="M 10 88 C 40 88 80 10 190 6 C 300 10 340 88 370 88"
-                    fill="var(--brand-soft)" stroke="var(--brand)" stroke-width="2.5" fill-opacity="0.55"/>
-              <text x="190" y="84" text-anchor="middle" fill="var(--brand-deep)" font-size="11" font-weight="700">μ</text>
-              <text x="95"  y="82" text-anchor="middle" fill="var(--muted)" font-size="10">μ−σ</text>
-              <text x="285" y="82" text-anchor="middle" fill="var(--muted)" font-size="10">μ+σ</text>
-            </svg>
-          </div>
-          <figcaption><b>Fig 5.17</b> · Normal bell curve: symmetric about μ → all odd central moments = 0; β₁ = 0, β₂ = 3.</figcaption>
+          <img src="ps-images/pred-dice-diff.png" alt="Bar chart of D equals absolute difference of two dice, bars for d zero to five with probabilities 6,10,8,6,4,2 over 36, tallest at d equals 1, with E of D about 1.94 marked by a gold dashed line" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.14</b> · Distribution of D = |X − Y| for two fair dice (36 outcomes). Bar heights are proportional to <b>P(D = d)</b>; probabilities sum to <b>36/36 = 1 ✓</b>. The tallest bar at d = 1 (10 outcomes / 36) is most likely. The gold dashed line marks <b>E(D) = 35/18 ≈ 1.94</b>.</figcaption>
         </figure>
 
         <div class="table-wrap">
           <table>
-            <caption>Central moments of Normal distribution N(μ, σ²)</caption>
-            <thead>
-              <tr><th>Order r</th><th>Type</th><th>Value</th><th>Interpretation</th></tr>
-            </thead>
+            <caption>Distribution of D = |X − Y| over the 36 outcomes</caption>
+            <thead><tr><th>D = |X − Y|</th><th>0</th><th>1</th><th>2</th><th>3</th><th>4</th><th>5</th></tr></thead>
             <tbody>
-              <tr><td>1</td><td>Odd</td><td>0</td><td>Mean deviation = 0 (symmetric)</td></tr>
-              <tr><td>2</td><td>Even</td><td>σ²</td><td>Variance</td></tr>
-              <tr><td>3</td><td>Odd</td><td>0</td><td>Skewness numerator = 0</td></tr>
-              <tr><td>4</td><td>Even</td><td>3σ⁴</td><td>β₂ = 3 → mesokurtic</td></tr>
-              <tr><td>5</td><td>Odd</td><td>0</td><td>—</td></tr>
-              <tr><td>6</td><td>Even</td><td>15σ⁶</td><td>Recurrence: 5σ² × μ₄</td></tr>
+              <tr><td>Number of outcomes</td><td>6</td><td>10</td><td>8</td><td>6</td><td>4</td><td>2</td></tr>
+              <tr><td>P(D)</td><td>6/36</td><td>10/36</td><td>8/36</td><td>6/36</td><td>4/36</td><td>2/36</td></tr>
             </tbody>
           </table>
         </div>
+        <p style="font-size:13px;color:var(--muted);margin:4px 0 8px;">Total outcomes = 6 + 10 + 8 + 6 + 4 + 2 = 36 ✓.</p>
+
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Table ban gaya, ab bas average (E) aur spread (Var) nikalna hai — har value ko uski probability se multiply karke jod do.</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle expectation E(D) = Σ d·P(d):</b>
+            <span class="eq first">E(D) = (0·6 + 1·10 + 2·8 + 3·6 + 4·4 + 5·2)/36</span>
+            <span class="eq">= (0 + 10 + 16 + 18 + 16 + 10)/36</span>
+            <span class="eq">= 70/36 = <mark><b>35/18 ≈ 1.944</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab E(D²) nikalo (har d ko square karke):</b>
+            <span class="eq first">E(D²) = (0²·6 + 1²·10 + 2²·8 + 3²·6 + 4²·4 + 5²·2)/36</span>
+            <span class="eq">= (0 + 10 + 32 + 54 + 64 + 50)/36</span>
+            <span class="eq">= 210/36 = 35/6 ≈ 5.833.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Last me variance = E(D²) − [E(D)]²:</b>
+            <span class="eq first">Var(D) = 35/6 − (35/18)²</span>
+            <span class="eq">= 1890/324 − 1225/324</span>
+            <span class="eq">= <mark><b>665/324 ≈ 2.053</b></mark>.</span>
+          </div>
+        </div>
+
+        <div class="box eli5">
+          <span class="label">🧮 Weighted average wali soch — expectation</span>
+          <p>Maan lo cricket me 10 match me se 6 baar 0 run, 10 baar... ruko, simple: agar zyada baar 1 aata hai aur kam baar 5, toh "average" 1 ki taraf jhukega. Yahi E(D) hai — har value × uska kitni baar aaya, jod ke total se baant do.</p>
+          <p>D=1 sabse zyada (10/36 baar) aata hai, isiliye E(D) ≈ 1.94, yaani 1 aur 2 ke beech. Variance batata hai ki values is 1.94 ke aas-paas kitni bikhri hui hain.</p>
+        </div>
 
         <div class="box warn">
-          <b>Final answer:</b> <mark><b>Odd μ = 0 (symmetry); μ₂ = σ², μ₄ = 3σ⁴, μ₆ = 15σ⁶; β₁ = 0, β₂ = 3.</b></mark>
+          <b>Final answer:</b> <mark><b>E(D) = 35/18 ≈ 1.94, Var(D) = 665/324 ≈ 2.05.</b></mark>
         </div>
 
         <div class="score">
-          <b>Marks Allocation (10 M):</b>
+          <b>Marks Allocation:</b>
           <ul>
-            <li>Odd moments vanish (symmetry argument): <span class="m">2 M</span></li>
-            <li>Derive recurrence μ<sub>2n</sub> = (2n−1)σ²μ<sub>2n−2</sub>: <span class="m">3 M</span></li>
-            <li>Evaluate μ₂, μ₄, μ₆: <span class="m">3 M</span></li>
-            <li>β₁ = 0 and β₂ = 3: <span class="m">2 M</span></li>
+            <li>Distribution table of D (counts + P): <span class="m">3 M</span></li>
+            <li>E(D): <span class="m">2 M</span></li>
+            <li>E(D²) + Var(D): <span class="m">2 M</span></li>
+            <li>Total: <span class="m">7 M</span></li>
           </ul>
         </div>
       </div>
     </div>
 
+    <!-- Q13 (Unit 4 + Unit 1 — Parabola curve fitting + Bayes conditional) -->
+    <div class="qcard predicted">
+      <div class="qhead">
+        <span class="qnum">Q13 [15 M]</span>
+        <span class="tag fav">Unit 4 · Unit 1</span>
+        <span class="tag hot">⭐ Curve Fit · Bayes</span>
+        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BCA Dec-24 Q7(b) · parabola fit ×3</span>        <span class="tag year" style="opacity:.72;background:#fef2f2;color:var(--crimson);border-color:var(--crimson);">⟲ BSC Dec-23 Q6(a) · Bayes lost-card</span>
+      </div>
+      <div class="qbody">
+        <b>(a) Fit a second-degree parabola Y = a + bX + cX² to the following data by the method of least squares. [8 M]</b><br>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>X</th><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td></tr>
+              <tr><th>Y</th><td>1</td><td>1.8</td><td>1.3</td><td>2.5</td><td>6.3</td></tr>
+            </thead>
+          </table>
+        </div>
+        <b>(b) A diagnostic test for a disease is 99% sensitive (P(+ | D) = 0.99) and 95% specific (P(− | D′) = 0.95). The prior prevalence is P(D) = 0.01. A randomly chosen person tests positive — what is P(D | +) ? [7 M]</b>
+      </div>
+      <div class="ans">
+        <div class="box eli5">
+          <span class="label">🟢 Start here — simple explanation (zero se)</span>
+          <p><b>What is this about?</b> <b>Curve fitting</b> finds the equation of a line or curve that “passes closest” to scattered data. For a <b>parabola</b> Y = a+bX+cX², you find 3 unknowns. The <b>least squares method</b> minimises the sum of squared vertical distances from each data point to the curve. <b>Bayes theorem</b> (part b) updates a probability when new evidence arrives — like updating “chance of disease” after a test result.</p>
+          <p><b>What does the question want?</b> Part (a): given 5 (X,Y) pairs, fit Y = a+bX+cX² and find a, b, c. Part (b): a diagnostic test is 99% sensitive, 95% specific, disease prevalence 1% — find P(actually has disease | tested positive).</p>
+          <p><b>The key result(s) to remember:</b> For a parabola, write 3 normal equations: (1) ΣY = na+bΣX+cΣX², (2) ΣXY = aΣX+bΣX²+cΣX³, (3) ΣX²Y = aΣX²+bΣX³+cΣX⁴. Compute a Σ-table (X, Y, X², X³, X⁴, XY, X²Y) first. For Bayes: P(D|+) = P(+|D)·P(D) / [P(+|D)·P(D) + P(+|D′)·P(D′)].</p>
+          <p><b>Scary symbol, explained:</b> <b>ΣX³, ΣX⁴</b> = sum of cubes and fourth powers of all X values. <b>Normal equations</b> = a system of 3 simultaneous equations to solve for a, b, c. <b>P(D|+)</b> = probability of disease GIVEN positive test (Bayes posterior). <b>P(+|D′)</b> = false-positive rate = 1 − specificity = 0.05.</p>
+          <p><b>Bare minimum to attempt:</b> Build the Σ-table (7 columns) — most marks come from correct sums. Write out the 3 normal equations with your sums substituted. Even partial table values and 1–2 correct equations earn step marks.</p>
+        </div>
+        <div class="box tip" style="margin-bottom:12px;padding:10px 14px;background:var(--brand-soft);border-left:4px solid var(--brand);font-size:14px;line-height:1.7;">
+          <b>⚡ Quick Recall — Parabola Y=a+bX+cX²:</b> 3 normal eqs:<br>
+          (1) <b>ΣY = na + bΣX + cΣX²</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX² + cΣX³</b> &nbsp; (3) <b>ΣX²Y = aΣX² + bΣX³ + cΣX⁴</b><br>
+          <b>Straight line Y=a+bX:</b> (1) <b>ΣY = na + bΣX</b> &nbsp; (2) <b>ΣXY = aΣX + bΣX²</b> · <b>Bayes:</b> P(H|E) = <b>P(E|H)·P(H)/P(E)</b>
+        </div>
+        <h5>(a) Parabola Fit <mark>Y = a + bX + cX²</mark></h5>
+        <p>The <mark>method of least squares</mark> picks (a, b, c) that make S = Σ(Y<sub>i</sub> − a − bX<sub>i</sub> − cX<sub>i</sub><sup>2</sup>)<sup>2</sup> as small as possible. Setting ∂S/∂a = ∂S/∂b = ∂S/∂c = 0 gives the three <mark>normal equations</mark> below. The same pattern grows: an n-degree polynomial gives n + 1 normal equations using sums of X<sup>k</sup>.</p>
+
+        <figure class="diagram-fig">
+          <img src="ps-images/pred-parabola-fit.png" alt="Five data points from 0,1 to 4,6.3 with a fitted upward parabola Y equals 1.42 minus 1.07 X plus 0.55 X squared" loading="lazy" style="width:100%;height:auto;border:1px solid var(--rule);border-radius:6px;">
+          <figcaption><b>Fig 5.7</b> · Five data points with fitted parabola curve. Parabola opens upward (c &gt; 0).</figcaption>
+        </figure>
+
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Parabola fit karne ka matlab 3 unknowns (a, b, c) dhoondhna. Pehle saari sums ka table, phir 3 normal equations solve karo:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle Σ-table banao (n = 5):</b>
+            <span class="eq first">ΣX = 0+1+2+3+4 = <b>10</b>;  ΣY = 1+1.8+1.3+2.5+6.3 = <b>12.9</b>.</span>
+            <span class="eq">ΣX<sup>2</sup> = 0+1+4+9+16 = <b>30</b>;  ΣX<sup>3</sup> = 0+1+8+27+64 = <b>100</b>;  ΣX<sup>4</sup> = 0+1+16+81+256 = <b>354</b>.</span>
+            <span class="eq">ΣXY = 0(1)+1(1.8)+2(1.3)+3(2.5)+4(6.3) = 0+1.8+2.6+7.5+25.2 = <b>37.1</b>.</span>
+            <span class="eq">ΣX<sup>2</sup>Y = 0(1)+1(1.8)+4(1.3)+9(2.5)+16(6.3) = 0+1.8+5.2+22.5+100.8 = <b>130.3</b>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab 3 <mark>normal equations</mark> likho (3 unknowns):</b>
+            <span class="eq first">(1) ΣY = na + b·ΣX + c·ΣX<sup>2</sup>  →  12.9 = 5a + 10b + 30c.</span>
+            <span class="eq">(2) ΣXY = a·ΣX + b·ΣX<sup>2</sup> + c·ΣX<sup>3</sup>  →  37.1 = 10a + 30b + 100c.</span>
+            <span class="eq">(3) ΣX<sup>2</sup>Y = a·ΣX<sup>2</sup> + b·ΣX<sup>3</sup> + c·ΣX<sup>4</sup>  →  130.3 = 30a + 100b + 354c.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab 3×3 system solve karo (elimination se):</b>
+            <span class="eq first">(2) − 2·(1): 37.1 − 25.8 = 10b + 40c  →  11.3 = 10b + 40c     … (4)</span>
+            <span class="eq">(3) − 6·(1): 130.3 − 77.4 = 40b + 174c  →  52.9 = 40b + 174c     … (5)</span>
+            <span class="eq">(5) − 4·(4): 52.9 − 45.2 = 174c − 160c  →  7.7 = 14c  →  <b>c = 0.55</b>.</span>
+            <span class="eq">From (4): 10b = 11.3 − 40(0.55) = 11.3 − 22 = −10.7  →  <b>b = −1.07</b>.</span>
+            <span class="eq">From (1): 5a = 12.9 − 10(−1.07) − 30(0.55) = 12.9 + 10.7 − 16.5 = 7.1  →  <b>a = 1.42</b>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Final fitted parabola:</b>
+            <span class="eq first"><mark><b>Y = 1.42 − 1.07 X + 0.55 X²</b></mark>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Verify — har X pe fit check karo (residuals):</b>
+            <div class="table-wrap" style="margin:6px 0;">
+              <table>
+                <thead><tr><th>X</th><th>Y (obs)</th><th>Ŷ = 1.42 − 1.07X + 0.55X<sup>2</sup></th><th>Residual Y − Ŷ</th></tr></thead>
+                <tbody>
+                  <tr><td>0</td><td>1.0</td><td>1.42</td><td>−0.42</td></tr>
+                  <tr><td>1</td><td>1.8</td><td>1.42 − 1.07 + 0.55 = 0.90</td><td>+0.90</td></tr>
+                  <tr><td>2</td><td>1.3</td><td>1.42 − 2.14 + 2.20 = 1.48</td><td>−0.18</td></tr>
+                  <tr><td>3</td><td>2.5</td><td>1.42 − 3.21 + 4.95 = 3.16</td><td>−0.66</td></tr>
+                  <tr><td>4</td><td>6.3</td><td>1.42 − 4.28 + 8.80 = 5.94</td><td>+0.36</td></tr>
+                  <tr style="font-weight:700;background:var(--paper-deep);"><td>Σ</td><td>12.9</td><td>12.90</td><td>0.00 ✓</td></tr>
+                </tbody>
+              </table>
+            </div>
+            <span class="eq">Residuals sum to 0 (least-squares property); parabola opens upward (c = 0.55 &gt; 0).</span>
+          </div>
+        </div>
+
+        <h5>(b) <mark>Bayes' theorem</mark> — Disease Test</h5>
+        <p><mark>Bayes' theorem</mark> flips a forward chance (model to data) into a backward one (data to model): <mark>posterior</mark> P(D | +) = P(+ | D) P(D) / P(+). The <mark>prior</mark> is P(D), and P(+) comes from the total probability rule over {D, D′}. The two test inputs are <mark>sensitivity</mark> <span class="hg">(bimar ko sahi pakadne ka chance)</span> P(+ | D) and <mark>specificity</mark> <span class="hg">(healthy ko sahi chhodne ka chance)</span> P(− | D′). The false-positive rate is 1 − specificity.</p>
+
+        <figure class="diagram-fig">
+          <div style="max-width:560px;margin:0 auto;">
+            <!-- ROOT -->
+            <div style="display:flex;justify-content:center;">
+              <div style="background:var(--ink);color:var(--paper);border-radius:8px;padding:8px 16px;font-weight:700;font-size:12px;text-align:center;">10,000 people<br><span style="font-size:9px;font-weight:600;color:var(--paper);opacity:.85;">prior P(D)=0.01</span></div>
+            </div>
+            <!-- connector to level 1 -->
+            <div style="height:14px;border-left:2px solid var(--rule);width:0;margin:0 auto;"></div>
+            <!-- LEVEL 1: Disease split -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="background:var(--brand-soft);border:1.5px solid var(--brand);border-radius:8px;padding:7px 6px;text-align:center;">
+                <div style="font-size:11px;font-weight:700;color:var(--brand-deep);">Disease (D)</div>
+                <div style="font-size:14px;font-weight:800;color:var(--brand-deep);">100</div>
+                <div style="font-size:8.5px;color:var(--muted);">= 0.01 × 10,000</div>
+              </div>
+              <div style="background:#eef6e4;border:1.5px solid var(--svg-good);border-radius:8px;padding:7px 6px;text-align:center;">
+                <div style="font-size:11px;font-weight:700;color:var(--svg-good);">No Disease (D′)</div>
+                <div style="font-size:14px;font-weight:800;color:var(--svg-good);">9,900</div>
+                <div style="font-size:8.5px;color:var(--muted);">= 0.99 × 10,000</div>
+              </div>
+            </div>
+            <!-- connectors to level 2 (each splits in two) -->
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+              <div style="display:flex;justify-content:space-around;height:14px;"><div style="border-left:2px solid var(--brand);width:0;"></div><div style="border-left:2px solid var(--brand);width:0;"></div></div>
+              <div style="display:flex;justify-content:space-around;height:14px;"><div style="border-left:2px solid var(--svg-good);width:0;"></div><div style="border-left:2px solid var(--svg-good);width:0;"></div></div>
+            </div>
+            <!-- LEVEL 2: Test result leaves (TP, FN | FP, TN) -->
+            <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:7px;">
+              <div style="background:var(--brand);color:#fff;border-radius:6px;padding:6px 3px;text-align:center;">
+                <div style="font-size:9px;font-weight:700;">Test + · TP</div>
+                <div style="font-size:14px;font-weight:800;">99</div>
+                <div style="font-size:8px;opacity:.9;">P(+|D)=0.99</div>
+              </div>
+              <div style="background:var(--brand-soft);color:var(--brand-deep);border:1px solid var(--brand);border-radius:6px;padding:6px 3px;text-align:center;">
+                <div style="font-size:9px;font-weight:700;">Test − · FN</div>
+                <div style="font-size:14px;font-weight:800;">1</div>
+                <div style="font-size:8px;color:var(--muted);">P(−|D)=0.01</div>
+              </div>
+              <div style="background:var(--gold);color:#fff;border-radius:6px;padding:6px 3px;text-align:center;">
+                <div style="font-size:9px;font-weight:700;">Test + · FP</div>
+                <div style="font-size:14px;font-weight:800;">495</div>
+                <div style="font-size:8px;opacity:.95;">P(+|D′)=0.05</div>
+              </div>
+              <div style="background:#eef6e4;color:var(--svg-good);border:1px solid var(--svg-good);border-radius:6px;padding:6px 3px;text-align:center;">
+                <div style="font-size:9px;font-weight:700;">Test − · TN</div>
+                <div style="font-size:14px;font-weight:800;">9,405</div>
+                <div style="font-size:8px;color:var(--muted);">P(−|D′)=0.95</div>
+              </div>
+            </div>
+            <!-- arrow to posterior -->
+            <div style="display:flex;justify-content:center;align-items:center;margin-top:12px;gap:8px;flex-wrap:wrap;">
+              <div style="background:var(--brand);color:#fff;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;">TP = 99</div>
+              <div style="font-size:13px;color:var(--ink);font-weight:700;">÷ (TP + FP) =</div>
+              <div style="background:var(--gold);color:#fff;border-radius:6px;padding:4px 8px;font-size:10px;font-weight:700;">99 + 495 = 594</div>
+              <div style="font-size:18px;color:var(--brand-deep);font-weight:800;">→</div>
+              <div style="background:var(--ink);color:var(--paper);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:800;">P(D|+) = 99/594 = 0.1667</div>
+            </div>
+          </div>
+          <figcaption><b>Fig 5.8</b> · Bayes as a <b>natural-frequency tree</b> over 10,000 people. Split by disease status (<b>100</b> D / <b>9,900</b> D′), then by test result into the four cells <b>TP=99, FN=1, FP=495, TN=9,405</b>. Posterior P(D|+) reads straight off the positive leaves: <b>TP ÷ (TP+FP) = 99/594 = 16.67%</b> — the false positives (495) swamp the true positives (99).</figcaption>
+        </figure>
+
+        <p style="margin:0 0 8px;color:var(--brand-deep);">Bayes ka kaam: positive test ke baad bimari ka real chance nikalna. Formula likho, values daalo, divide karo:</p>
+        <div class="steps">
+          <div class="step k">
+            <b class="lbl">Pehle Bayes formula likho:</b>
+            <span class="eq first">P(D | +) = [P(+ | D) · P(D)] / P(+).</span>
+            <span class="eq">Total probability: P(+) = P(+ | D) · P(D) + P(+ | D′) · P(D′).</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Ab di hui values daalo:</b>
+            <span class="eq first"><mark>prior</mark> P(D) = 0.01 ⇒ P(D′) = 0.99.</span>
+            <span class="eq">P(+ | D) = 0.99 (<mark>sensitivity</mark>).</span>
+            <span class="eq">P(+ | D′) = 1 − 0.95 = 0.05 (false-positive rate = 1 − <mark>specificity</mark>).</span>
+            <span class="eq">P(+) = 0.99 × 0.01 + 0.05 × 0.99 = 0.0099 + 0.0495 = <b>0.0594</b>.</span>
+          </div>
+          <div class="step k">
+            <b class="lbl">Final answer — <mark>posterior</mark> nikalo:</b>
+            <span class="eq first">P(D | +) = 0.0099 / 0.0594 = <mark><b>P(D | +) = 0.1667 (≈ 16.67%)</b></mark>.</span>
+            <span class="eq">Interpretation: even after a positive test, the chance of disease is only ~17% because the prior prevalence (1%) is very low: base-rate fallacy in action.</span>
+          </div>
+        </div>
+
+        <div class="box eli5">
+          <span class="label">🧮 Chhoti soch — 99% accurate test, fir bhi sirf 17% kyun</span>
+          <p>Maan lo 10,000 logon mein sirf <b>100</b> ko hi bimari hai (prior 1%). Test almost sabhi 100 ko pakad lega → 99 true positive.</p>
+          <ul>
+            <li>Par baaki 9,900 healthy mein se bhi 5% galat positive aayega = <b>495</b> false positive.</li>
+            <li>Total positive = 99 + 495 = 594. Inme se sach mein bimar sirf 99.</li>
+            <li>Chance = 99 / 594 = <b>16.67%</b>.</li>
+          </ul>
+          <p>Matlab — jab bimari hi durlabh ho, to false positives (495) asli cases (99) ko daba dete hain. Isi ko base-rate trap kehte hain.</p>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <caption>Bayes — 2 × 2 Confusion Layout (per 10,000 people)</caption>
+            <thead><tr><th></th><th>Disease (D)</th><th>No Disease (D′)</th><th>Total</th></tr></thead>
+            <tbody>
+              <tr><th>Test +</th><td>99 (TP)</td><td>495 (FP)</td><td>594</td></tr>
+              <tr><th>Test −</th><td>1 (FN)</td><td>9405 (TN)</td><td>9406</td></tr>
+              <tr><th>Total</th><td>100</td><td>9900</td><td>10000</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="box warn">
+          <b>Pitfalls:</b>
+          <ul style="margin:6px 0 0 18px;">
+            <li>Students often write P(+ | D′) as the specificity 0.95 instead of (1 − specificity) = 0.05. That sign error wrecks the posterior.</li>
+            <li>Skipping the total probability step for P(+) and dividing by P(+ | D) instead is the second top error. It leaves the prior unchanged.</li>
+            <li>In the parabola fit, rounding c early then using it for b stacks up error. Keep c, b, a as symbols until the last step.</li>
+            <li>The Σ table needs six sums for a parabola: ΣX, ΣX<sup>2</sup>, ΣX<sup>3</sup>, ΣX<sup>4</sup>, ΣXY, ΣX<sup>2</sup>Y. Forgetting the last three costs 3 marks.</li>
+          </ul>
+        </div>
+
+        <h5>Modern Relevance</h5>
+        <p>Least-squares curve fitting is the engine of every supervised ML model. Gradient descent solves the same normal equations at scale (X<sup>T</sup>X β = X<sup>T</sup>y). Polynomial regression is the direct grown-up form of the parabola fit. Bayes' theorem drives Naïve Bayes spam filters, medical-test reading, A/B-test posterior updates, and the base for Bayesian deep learning. The base-rate trap (posterior ≈ 17% even with a 99%-accurate test) is the classic example cited in clinical-decision and screening policy.</p>
+
+        <h5>Conclusion</h5>
+        <p>Parabola fit Y = 1.42 − 1.07X + 0.55X<sup>2</sup> makes Σ(Y − Ŷ)<sup>2</sup> smallest. Residuals sum to zero, as least squares needs. Bayes gives P(D | +) ≈ 16.67%. Even a 99%-accurate test on a 1%-prevalence disease gives mostly false positives. The false-positive count 0.05 × 0.99 = 0.0495 swamps the true-positive count 0.99 × 0.01 = 0.0099. Both results show how clean arithmetic beats gut feeling.</p>
+
+        <div class="score">
+          <b>Marks Allocation:</b>
+          <ul>
+            <li>(a) Σ-table (ΣX, ΣY, ΣX², ΣX³, ΣX⁴, ΣXY, ΣX²Y): <span class="m">3 M</span></li>
+            <li>(a) Three normal equations: <span class="m">2 M</span></li>
+            <li>(a) Solve 3 × 3 system + final parabola: <span class="m">3 M</span></li>
+            <li>(b) State Bayes + total probability: <span class="m">2 M</span></li>
+            <li>(b) Correct numerical substitution: <span class="m">3 M</span></li>
+            <li>(b) Final P(D | +) + interpretation: <span class="m">2 M</span></li>
+            <li>Total: <span class="m">15 M</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    
 </section>
 
 <!-- ============ BCA SOLVED PAPER · 311408 (BCA-DS-23-204) · May-2025 — ANSWER-STYLE ANCHOR ============ -->
