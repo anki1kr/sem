@@ -1,0 +1,75 @@
+<section class="topic" id="u2-binding">
+<h3>2.11 Static binding and dynamic binding</h3>
+<p class="hook">Binding is just: which body gets wired up to a method call. Decide it while reading the code (compiler), or decide it while the program is actually running (JVM)? <span class="hg">(binding = call ko uske body se jodna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Binding</mark> is the process of connecting a method call to its actual body (method definition). <mark>Static binding</mark> (early binding) happens at compile time and is used for overloaded methods; <mark>dynamic binding</mark> (late binding) happens at run time and is used for overridden methods.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Binding</span><ul>
+<li><span>Static binding<br>(early)</span><ul><li><span>Compile time<br>method overloading</span></li></ul></li>
+<li><span>Dynamic binding<br>(late)</span><ul><li><span>Run time<br>method overriding</span></li></ul></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.71</b> · Two types of binding in Java</figcaption><p class="draw">✍ Draw it: root Binding, two children (static, dynamic), one leaf under each naming when it happens.</p></figure>
+<ul>
+<li><mark>Static binding</mark> is done by the <b>compiler</b>: when several overloaded methods share a name, the compiler looks at the arguments in the call and wires up the matching method there and then.</li>
+<li><mark>Dynamic binding</mark> is done by the <b>JVM</b>: when a method is overridden, the same call can reach different bodies depending on which object is actually sitting behind the reference; that object exists only at run time, so only the JVM can make this decision.</li>
+<li>Static binding is also called <mark>early binding</mark>; dynamic binding is also called <mark>late binding</mark>.</li>
+<li>This is the same split as compile-time vs run-time polymorphism (Fig 2.17) seen from the compiler/JVM's point of view instead of the programmer's.</li>
+</ul>
+<p><b>1. Static binding</b> — resolved by the compiler, for overloaded methods:</p>
+<pre class="code" data-file="Animal.java"><code><span class="k">public</span> <span class="k">class</span> Animal {
+    <span class="k">void</span> eat() {                       <span class="c">// method without arguments</span>
+        System.out.println("animal is eating");
+    }
+    <span class="k">void</span> eat(String food) {            <span class="c">// overloaded: method with a String argument</span>
+        System.out.println("dog is eating... " + food);
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Animal a = <span class="k">new</span> Animal();
+        a.eat();                        <span class="c">// compiler binds this to eat() at compile time</span>
+        a.eat("Biscuits");               <span class="c">// compiler binds this to eat(String) at compile time</span>
+    }
+}</code></pre>
+<pre class="out">animal is eating
+dog is eating... Biscuits</pre>
+<ul>
+<li>Both calls are wired up while <code>javac</code> reads the source: the number and type of arguments in <code>a.eat()</code> and <code>a.eat("Biscuits")</code> are enough to pick a method, with no need to know what <code>a</code> points to at run time.</li>
+</ul>
+<p><b>2. Dynamic binding</b> — resolved by the JVM, for overridden methods:</p>
+<pre class="code" data-file="Dog.java"><code><span class="k">class</span> Animal {
+    <span class="k">void</span> eat() {
+        System.out.println("Animal is eating...");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> Dog <span class="k">extends</span> Animal {
+    <span class="k">void</span> eat() {                        <span class="c">// same name + same parameters: overriding</span>
+        System.out.println("dog is eating...");
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Animal a = <span class="k">new</span> Dog();
+        a.eat();                          <span class="c">// reference type Animal, object type Dog: Dog's eat() runs</span>
+        Animal a1 = <span class="k">new</span> Animal();
+        a1.eat();                          <span class="c">// object type Animal: Animal's eat() runs</span>
+        Dog d = <span class="k">new</span> Dog();
+        d.eat();                          <span class="c">// object type Dog: Dog's eat() runs</span>
+    }
+}</code></pre>
+<pre class="out">dog is eating...
+Animal is eating...
+dog is eating...</pre>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">a.eat()<small>a is Animal type</small></div><div class="ar">run time</div><div class="n">object is Dog</div><div class="n hi">Dog.eat() runs</div>
+</div></div><figcaption><b>Fig 2.72</b> · Dynamic binding: the JVM looks at the object behind the reference before choosing eat()</figcaption><p class="draw">✍ Draw it: three boxes in a row with arrows: the call, the actual object, the method that runs.</p></figure>
+<ul>
+<li><code>a</code> and <code>a1</code> are declared with the <b>same type</b> (<code>Animal</code>), yet <code>a.eat()</code> and <code>a1.eat()</code> print different lines — the only difference is the object each one actually refers to, which the JVM checks at run time. That is dynamic binding.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Static binding</th><th>Dynamic binding</th></tr>
+<tr><td>Also called</td><td>Early binding</td><td>Late binding</td></tr>
+<tr><td>Resolved by</td><td>Compiler</td><td>JVM</td></tr>
+<tr><td>Resolved when</td><td>Compile time</td><td>Run time</td></tr>
+<tr><td>Used for</td><td>Overloaded methods (and <code>static</code>/<code>private</code>/<code>final</code> methods)</td><td>Overridden (instance) methods</td></tr>
+<tr><td>Decided from</td><td>Reference type / arguments in the call</td><td>Actual object type</td></tr>
+<tr><td>Matching polymorphism</td><td>Compile-time polymorphism</td><td>Run-time polymorphism</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>S-C-C</b> vs <b>D-R-R</b>: Static binding = Compiler, Compile time; Dynamic binding = Run time, Real (actual) object.</div>
+<div class="note"><b>Common mistake:</b> thinking "static binding" only means "binding of <code>static</code> methods." A <code>static</code> method call IS always statically bound, but so is every overloaded call and every <code>private</code>/<code>final</code> method call — static binding is about <b>when</b> the decision is made (compile time), not only about the <code>static</code> keyword.</div>
+<div class="recall"><b>Quick recall</b> Binding = connecting a call to its body. Static/early = compiler, compile time, overloading. Dynamic/late = JVM, run time, overriding — the object behind the reference decides.</div>
+<a class="top" href="#top">↑ top</a></section>

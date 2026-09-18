@@ -1,0 +1,19 @@
+Write a sessional study-notes fragment. FIRST read the contract file fully and follow it exactly:
+C:\Users\ankit\AppData\Local\Temp\claude\c--Users-ankit-OneDrive-Desktop-Coding-DSA-Tracker\84ff3c22-3793-4ee7-88f6-2a7694a79575\scratchpad\sess\CONTRACT.md
+Also read the reference markup demo at:
+C:\Users\ankit\AppData\Local\Temp\claude\c--Users-ankit-OneDrive-Desktop-Coding-DSA-Tracker\84ff3c22-3793-4ee7-88f6-2a7694a79575\scratchpad\sess\demo\java-u1.html
+The JDK for compiling Java programs is at:
+C:\Users\ankit\AppData\Local\Temp\claude\c--Users-ankit-OneDrive-Desktop-Coding-DSA-Tracker\84ff3c22-3793-4ee7-88f6-2a7694a79575\scratchpad\jdk\jdk-21.0.12.1+1\bin\javac.exe (and java.exe in the same folder)
+
+You write EXACTLY ONE output file, nothing else outside temp compile folders:
+C:\Users\ankit\AppData\Local\Temp\claude\c--Users-ankit-OneDrive-Desktop-Coding-DSA-Tracker\84ff3c22-3793-4ee7-88f6-2a7694a79575\scratchpad\sess\frag\java-u1.html
+
+Subject: JAVA Programming (BCG-301-V), BCA Semester V. key = java, Unit 1.
+Unit title: "Java Language Basics"
+Syllabus (verbatim): Introduction to Java, Basic Features, Java Virtual Machine Architecture and Concepts, Primitive Data Type and Variables, Java Operators, Expressions, Statements and Arrays.
+
+Must cover (each a topic or clearly inside one): history/intro + JDK vs JRE vs JVM; features (simple, object-oriented, platform independent, secure, robust, portable, architecture neutral, multithreaded, distributed, high performance/JIT, dynamic) with a mnemonic; compile-run pipeline (.java -> javac -> bytecode .class -> JVM -> machine code) diagram; JVM architecture diagram (class loader subsystem: load/link/initialize, runtime data areas: method area, heap, stack, PC register, native method stack, execution engine: interpreter, JIT, garbage collector, JNI/native libraries) + concepts (bytecode, WORA, garbage collection); first program structure explained line by line; 8 primitive types table (size, default, range, example) + tree diagram primitive vs non-primitive; variables (declaration, initialization, local/instance/static) and literals, type conversion/casting (widening/narrowing) with diagram; operators all categories (arithmetic, unary/increment-decrement pre vs post, relational, logical with short-circuit, bitwise and shift, assignment/compound, ternary, instanceof) with a precedence table and easy code; expressions (evaluation, precedence/associativity, type promotion) worked example; statements: selection (if, if-else, else-if ladder, nested if, switch) with flowcharts, loops (for, while, do-while, enhanced for) with flowcharts and while vs do-while table, jump (break, continue, return); arrays: 1D declare/create/initialize/length/traverse, 2D arrays with memory/grid diagram, jagged arrays, easy programs (sum/max of array, matrix addition). Easy, beginner-friendly Java programs throughout (compile and run every one exactly as the contract's Java rules say, and paste the real output). Flowcharts for if/else, loops, switch are expected (use inline SVG for branches, the CSS .flow primitive for straight-line sequences).
+
+Before you finish: run
+C:\Users\ankit\OneDrive\Desktop\Coding\DSA-Tracker\venv\Scripts\python.exe C:\Users\ankit\AppData\Local\Temp\claude\c--Users-ankit-OneDrive-Desktop-Coding-DSA-Tracker\84ff3c22-3793-4ee7-88f6-2a7694a79575\scratchpad\sess\build.py java
+and fix every HARD error mentioning java-u1.html (a "missing fragment java-u2.html" complaint is fine, ignore it, that unit already exists). Then compile and run every Java program yourself with the javac.exe/java.exe path above and confirm the pasted output is the real output, not invented.

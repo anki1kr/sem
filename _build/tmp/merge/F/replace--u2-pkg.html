@@ -1,0 +1,261 @@
+<section class="topic" id="u2-pkg">
+<h3>2.14 Packages</h3>
+<p class="hook">Packages are folders for classes, like keeping college notes in separate subject folders so two files named "Unit1" never clash. <span class="hg">(classes ka folder)</span></p>
+<div class="def"><b>Definition:</b> A <mark>package</mark> is a named group of related classes, interfaces and sub-packages that provides a namespace (avoids name clashes), access protection and easy reuse. Packages are of two types: <mark>built-in</mark> (Java API) and <mark>user-defined</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Packages</span><ul>
+<li><span>Built-in</span><ul><li><span>java.lang</span></li><li><span>java.util</span></li><li><span>java.io</span></li></ul></li>
+<li><span>User-defined</span><ul><li><span>mypack</span></li><li><span>college.exam</span></li></ul></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.27</b> · Types of packages</figcaption><p class="draw">✍ Draw it: root Packages, two children Built-in and User-defined, 2-3 names under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Built-in package</th><th>Contains (examples)</th></tr>
+<tr><td><code>java.lang</code></td><td>String, Math, System, Object (imported automatically)</td></tr>
+<tr><td><code>java.util</code></td><td>Scanner, ArrayList, Arrays</td></tr>
+<tr><td><code>java.io</code></td><td>File, InputStreamReader, IOException</td></tr>
+<tr><td><code>java.awt</code></td><td>GUI classes such as Button, Frame</td></tr>
+<tr><td><code>java.net</code></td><td>URL, Socket (networking)</td></tr>
+<tr><td><code>java.sql</code></td><td>Connection, ResultSet (database)</td></tr>
+</table></div>
+<p>The notes draw the built-in tree one level deeper — each sub-package holding its own classes:</p>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">java</span><ul>
+<li><span>lang</span><ul><li><span>System</span></li><li><span>String</span></li></ul></li>
+<li><span>util</span><ul><li><span>ArrayList</span></li><li><span>Map</span></li></ul></li>
+<li><span>awt</span><ul><li><span>Button</span></li></ul></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.74</b> · java is the main package; lang, util, awt are its sub-packages; each sub-package has its own classes</figcaption><p class="draw">✍ Draw it: root java, three children lang/util/awt, 1-2 class names under each.</p></figure>
+<p><b>Creating a user-defined package</b></p>
+<ul>
+<li>Write <mark>package name;</mark> as the <b>first statement</b> of the source file.</li>
+<li>Package name = <mark>folder name</mark>; <code>college.exam</code> means folder <code>college/exam</code>. Use lowercase.</li>
+<li>Compile with <mark>javac -d . File.java</mark>: <code>-d</code> tells javac where to put the class file and it creates the package folder automatically (<code>.</code> = current folder). The syntax is really <code>javac -d &lt;directory&gt; &lt;file&gt;</code>, so <code>-d</code> can equally name any other path, e.g. <code>javac -d d:/madhu File.java</code>.</li>
+<li>Classes used from outside the package must be <mark>public</mark>.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">project/</span><ul>
+<li><span>Greet.java</span></li>
+<li><span>mypack/</span><ul><li><span>Greet.class</span></li></ul></li>
+<li><span>UsePack.java</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.28</b> · Folder layout after javac -d . Greet.java: the class file goes into a folder named after the package</figcaption><p class="draw">✍ Draw it: root project/, three children, and Greet.class under mypack/.</p></figure>
+<p>Step 1: file <code>project/Greet.java</code>, the package member:</p>
+<pre class="code"><code><span class="k">package</span> mypack;                       <span class="c">// must be the first statement</span>
+
+<span class="k">public</span> <span class="k">class</span> Greet {                  <span class="c">// public so other packages can use it</span>
+    <span class="k">public</span> <span class="k">void</span> hello(String name) {
+        System.out.println("Hello " + name);
+    }
+}</code></pre>
+<p>Step 2: file <code>project/UsePack.java</code>, a class outside the package that imports it:</p>
+<pre class="code"><code><span class="k">import</span> mypack.Greet;                  <span class="c">// single-type import (or: import mypack.*;)</span>
+
+<span class="k">public</span> <span class="k">class</span> UsePack {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Greet g = <span class="k">new</span> Greet();
+        g.hello("Riya");
+    }
+}</code></pre>
+<p>Step 3: commands, run from inside <code>project/</code>. The first creates folder <code>mypack</code> holding <code>Greet.class</code>; the last runs the program, which prints <code>Hello Riya</code>.</p>
+<pre class="code"><code>javac -d . Greet.java
+javac UsePack.java
+java UsePack</code></pre>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Greet.java<small>package mypack;</small></div><div class="ar">javac -d .</div><div class="n hi">mypack/Greet.class</div><div class="ar">import</div><div class="n">UsePack runs</div>
+</div></div><figcaption><b>Fig 2.29</b> · Steps to create and use a package</figcaption><p class="draw">✍ Draw it: three boxes in a row, label the arrows "javac -d ." and "import".</p></figure>
+<p><b>Running a class that is itself inside a package</b> — <code>UsePack</code> above is an outside class that only imports the package; the notes also show the other case, where the class you run IS the package member. Then you launch it with the package's <b>fully qualified name</b>:</p>
+<pre class="code"><code><span class="k">package</span> mypack;
+
+<span class="k">public</span> <span class="k">class</span> Simple {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        System.out.println("Welcome to package");
+    }
+}</code></pre>
+<pre class="code"><code>javac -d . Simple.java
+java mypack.Simple</code></pre>
+<pre class="out">Welcome to package</pre>
+<ul>
+<li>No plain <code>java Simple</code> here — <code>Simple.class</code> now lives inside folder <code>mypack</code>, so the JVM needs <mark>package name . class name</mark> to find it.</li>
+</ul>
+<p><b>Ways to use a class from another package</b> — three methods:</p>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>1. Fully qualified name</b>No import; write pack.A every time you use it</div>
+<div class="b"><b>2. Import one class</b><code>import pack.A;</code> then just write A</div>
+<div class="b"><b>3. Import all with *</b><code>import pack.*;</code> — every class, but not sub-packages</div>
+</div></div><figcaption><b>Fig 2.75</b> · The three ways to reach a class in another package</figcaption><p class="draw">✍ Draw it: three boxes in a row, numbered 1-2-3, one line of syntax under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Way</th><th>Syntax</th><th>Imports</th></tr>
+<tr><td>1. Fully qualified name</td><td><code>pack.A obj = new pack.A();</code></td><td>No import statement needed at all</td></tr>
+<tr><td>2. Single-type import</td><td><code>import pack.A;</code></td><td>Only that one class</td></tr>
+<tr><td>3. On-demand (wildcard) import</td><td><code>import pack.*;</code></td><td>All public classes of the package (not its sub-packages)</td></tr>
+</table></div>
+<p><b>Method 1 — fully qualified name, no import at all:</b></p>
+<p><code>A.java</code> (package <code>pack</code>):</p>
+<pre class="code"><code><span class="k">package</span> pack;
+
+<span class="k">public</span> <span class="k">class</span> A {
+    <span class="k">public</span> <span class="k">void</span> msg() {
+        System.out.println("Hello");
+    }
+}</code></pre>
+<p><code>B.java</code> (package <code>mypack</code>, a different package):</p>
+<pre class="code"><code><span class="k">package</span> mypack;
+
+<span class="k">public</span> <span class="k">class</span> B {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        pack.A obj = <span class="k">new</span> pack.A();     <span class="c">// fully qualified name: no import line needed</span>
+        obj.msg();
+    }
+}</code></pre>
+<pre class="code"><code>javac -d . A.java
+javac -d . B.java
+java mypack.B</code></pre>
+<pre class="out">Hello</pre>
+<ul>
+<li>Because every use of <code>A</code> is written out in full as <code>pack.A</code>, the compiler never needs an <code>import</code> line to find it. This method is mainly used when two packages have a class with the <b>same name</b> (e.g. both <code>java.util</code> and <code>java.sql</code> have a <code>Date</code> class) — writing the full name each time removes the ambiguity.</li>
+</ul>
+<p><b>Method 2 — import just the one class you need:</b> this is exactly the <code>Greet</code> / <code>UsePack</code> example already verified above — <code>import mypack.Greet;</code> brings in only that class, and the rest of the file simply writes <code>Greet</code>.</p>
+<p><b>Method 3 — import all classes of a package with <code>*</code>:</b></p>
+<p><code>Animals.java</code> (package <code>animals</code>):</p>
+<pre class="code"><code><span class="k">package</span> animals;
+
+<span class="k">class</span> Animals {
+    <span class="k">public</span> <span class="k">void</span> display() {
+        System.out.println("All are the animals in the world");
+    }
+}</code></pre>
+<p><code>Humans.java</code> (same package <code>animals</code>, extends Animals):</p>
+<pre class="code"><code><span class="k">package</span> animals;
+
+<span class="k">public</span> <span class="k">class</span> Humans <span class="k">extends</span> Animals {
+    <span class="k">public</span> <span class="k">void</span> msg() {
+        System.out.println("class A animals are Humans");
+    }
+    <span class="k">public</span> <span class="k">void</span> msgB() {
+        System.out.println("Humans are animals with intelligence");
+    }
+}</code></pre>
+<p><code>World.java</code> (package <code>world</code>, imports all of <code>animals</code>):</p>
+<pre class="code"><code><span class="k">package</span> world;
+
+<span class="k">import</span> animals.*;                   <span class="c">// every public class of animals</span>
+
+<span class="k">public</span> <span class="k">class</span> World {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Humans obj = <span class="k">new</span> Humans();
+        obj.display();
+        obj.msg();
+        obj.msgB();
+    }
+}</code></pre>
+<pre class="code"><code>javac -d . Animals.java
+javac -d . Humans.java
+javac -d . World.java
+java world.World</code></pre>
+<pre class="out">All are the animals in the world
+class A animals are Humans
+Humans are animals with intelligence</pre>
+<p>Note the reach of <code>animals.*</code> above: it pulls in every class of <code>animals</code>, but if <code>animals</code> had a sub-package <code>animals.wild</code>, that sub-package would need its own separate <code>import</code> — a wildcard import never reaches into sub-packages (more on this right below).</p>
+<p><b>Subpackages</b> — a package inside a package. It exists just to categorise a package further, and is named <code>packagename.subpackagename</code> (dot-separated), e.g. <code>pack.subpack</code>:</p>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">pack/</span><ul>
+<li><span>subpack/</span><ul><li><span>Simple.class</span></li></ul></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.76</b> · pack.subpack is a folder subpack sitting inside folder pack</figcaption><p class="draw">✍ Draw it: root pack/, one child subpack/, one leaf Simple.class.</p></figure>
+<pre class="code"><code><span class="k">package</span> pack.subpack;
+
+<span class="k">public</span> <span class="k">class</span> Simple {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        System.out.println("Hello subpackage");
+    }
+}</code></pre>
+<pre class="code"><code>javac -d . Simple.java
+java pack.subpack.Simple</code></pre>
+<pre class="out">Hello subpackage</pre>
+<ul>
+<li><code>javac -d .</code> now creates <b>two</b> nested folders, <code>pack/subpack/</code>, and drops <code>Simple.class</code> in the inner one — the dot in the package name becomes a folder boundary, same as before.</li>
+<li>Importing <code>pack.*</code> does <b>not</b> pull in <code>pack.subpack</code> — subpackages are never included by a wildcard import (the same point the "common mistake" note near the end of this section makes about <code>java.util.Scanner</code>); a sub-package must be imported on its own.</li>
+</ul>
+<p><b>Setting CLASSPATH</b> — needed when your <code>.java</code> source and the compiled <code>.class</code> file must live in different folders or drives, so that <code>javac</code>/<code>java</code> know where else to look:</p>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 220" width="640">
+<rect x="30" y="50" width="220" height="80" rx="6"/>
+<text class="b" x="140" y="78">D:\Madhu</text>
+<text x="140" y="105">S.java</text>
+<rect x="390" y="50" width="220" height="80" rx="6"/>
+<text class="b" x="500" y="78">C:\classes</text>
+<text x="500" y="105">pack\S.class</text>
+<path class="arr dash" d="M250 90 H390"/>
+<text class="s" x="320" y="75">classpath</text>
+<text class="s" x="320" y="175">java runs from D:\Madhu; class file lives in C:\classes</text>
+</svg></div><figcaption><b>Fig 2.77</b> · CLASSPATH tells java where to look when the class file is not in the current folder</figcaption><p class="draw">✍ Draw it: two boxes left and right, dashed arrow between them labelled "classpath".</p></figure>
+<p><code>S.java</code>, sitting in folder <code>D:\Madhu</code>:</p>
+<pre class="code"><code><span class="k">package</span> pack;
+
+<span class="k">public</span> <span class="k">class</span> S {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        System.out.println("This is example of setting classpath");
+    }
+}</code></pre>
+<p>Compile straight into a different drive/folder, then set CLASSPATH to that folder before running:</p>
+<pre class="code"><code>D:\Madhu&gt; javac -d C:\classes S.java
+D:\Madhu&gt; set classpath=C:\classes;.;
+D:\Madhu&gt; java pack.S</code></pre>
+<pre class="out">This is example of setting classpath</pre>
+<ul>
+<li>Verified the underlying mechanism directly: with no CLASSPATH set, running <code>java pack.S</code> from <code>D:\Madhu</code> fails with <code>Could not find or load main class pack.S</code>, because the class file is not there and not on the current folder; once CLASSPATH points at <code>C:\classes</code>, the same command finds <code>pack\S.class</code> and runs it.</li>
+<li>Adding <code>.;</code> to the CLASSPATH value (as above) keeps the current folder searchable too, so classes that ARE alongside you still run normally.</li>
+</ul>
+<p><b>How many public classes can one package hold?</b></p>
+<div class="note"><b>Common mistake:</b> "In Java there can be only one public class in a package" is WRONG. The real rule is <b>one public class per SOURCE FILE</b>, and that file must be named after it. A package can hold as many public classes as you like — just keep each one in its own file, all saved under the same package name.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 500 220" width="500">
+<rect x="20" y="20" width="460" height="180" rx="8"/>
+<text class="b" x="250" y="45">package madhu</text>
+<rect class="hi" x="50" y="70" width="180" height="100" rx="4"/>
+<text class="b" x="140" y="100">Alpha</text>
+<text class="s" x="140" y="125">Alpha.java</text>
+<text class="s" x="140" y="148">public class</text>
+<rect class="hi" x="270" y="70" width="180" height="100" rx="4"/>
+<text class="b" x="360" y="100">Beta</text>
+<text class="s" x="360" y="125">Beta.java</text>
+<text class="s" x="360" y="148">public class</text>
+</svg></div><figcaption><b>Fig 2.78</b> · Two public classes in one package: same package name, two separate files</figcaption><p class="draw">✍ Draw it: one big outer box "package madhu", two boxes inside it side by side, Alpha and Beta.</p></figure>
+<p><code>Alpha.java</code>:</p>
+<pre class="code"><code><span class="k">package</span> madhu;
+
+<span class="k">public</span> <span class="k">class</span> Alpha {
+    <span class="k">public</span> <span class="k">void</span> show() {
+        System.out.println("Class Alpha in package madhu");
+    }
+}</code></pre>
+<p><code>Beta.java</code>:</p>
+<pre class="code"><code><span class="k">package</span> madhu;
+
+<span class="k">public</span> <span class="k">class</span> Beta {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Alpha a = <span class="k">new</span> Alpha();      <span class="c">// same package: no import needed</span>
+        a.show();
+        System.out.println("Class Beta in package madhu");
+    }
+}</code></pre>
+<pre class="code"><code>javac -d . Alpha.java
+javac -d . Beta.java
+java madhu.Beta</code></pre>
+<pre class="out">Class Alpha in package madhu
+Class Beta in package madhu</pre>
+<ul>
+<li><code>Alpha</code> and <code>Beta</code> are both <code>public</code>, both in package <code>madhu</code>, and both compile and run fine — because each has its OWN file named after it. This is also the earlier <code>A.java</code>/<code>B.java</code> Method-1 example's shape, just within a single package instead of two.</li>
+<li>Classes in the <b>same</b> package never need an <code>import</code> to use each other — <code>Beta</code> uses <code>Alpha</code> directly.</li>
+</ul>
+<p><b>Access protection across packages</b> (Yes = accessible):</p>
+<div class="tw"><table>
+<tr><th>Accessed from</th><th>private</th><th>default</th><th>protected</th><th>public</th></tr>
+<tr><td>Same class</td><td>Yes</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Same package, subclass</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Same package, non-subclass</td><td>No</td><td>Yes</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Other package, subclass</td><td>No</td><td>No</td><td>Yes</td><td>Yes</td></tr>
+<tr><td>Other package, non-subclass</td><td>No</td><td>No</td><td>No</td><td>Yes</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Yes-count down the columns is <b>1-3-4-5</b>: private 1 row, default 3, protected 4, public all 5.</div>
+<ul>
+<li><mark>Advantages</mark>: avoids name conflicts, groups related classes, access control, reusability, easier maintenance.</li>
+<li><code>java.lang</code> is imported <mark>automatically</mark> in every program.</li>
+<li>Order in a file is always <mark>package</mark> statement, then <mark>import</mark> statement(s), then class declarations — never the other way round:</li>
+</ul>
+<pre class="code"><code><span class="k">package</span> statement;    <span class="c">// 1st</span>
+<span class="k">import</span> statement;     <span class="c">// 2nd</span>
+<span class="k">class</span> statement;      <span class="c">// 3rd</span></code></pre>
+<div class="note"><b>Common mistake:</b> thinking <code>import java.*;</code> imports everything. The <code>*</code> never includes sub-packages, so <code>java.util.Scanner</code> still needs <code>import java.util.*;</code> or <code>import java.util.Scanner;</code>.</div>
+<div class="recall"><b>Quick recall</b> package = folder of classes (+ sub-packages); <code>package</code> first line, <code>javac -d directory</code>, run a package member with <code>java pkg.Class</code>. Import: fully-qualified name (none needed), single-class, or <code>*</code> (never sub-packages). Subpackage = dot-separated nested folder. CLASSPATH points java/javac at a class file living elsewhere. One public class per FILE, not per package — a package can hold many, each in its own file.</div>
+<a class="top" href="#top">↑ top</a></section>

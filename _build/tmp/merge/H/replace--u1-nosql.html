@@ -1,0 +1,94 @@
+<section class="topic" id="u1-nosql">
+<h3>1.13 Introduction to NoSQL</h3>
+<p class="hook">NoSQL databases drop the fixed-table model so they can spread data across many servers and store flexible data. <span class="hg">(table ka bandhan nahi, machines badhao aur scale karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>NoSQL</mark> ("Not only SQL") databases are non-relational, usually schema-less, distributed databases designed to store and retrieve large volumes of structured, semi-structured and unstructured data with horizontal scalability and high availability.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 260" width="620">
+<rect x="20" y="30" width="140" height="60" rx="6"/><text x="90" y="60">Bigger server</text>
+<path class="arr" d="M90 135 V95"/>
+<rect x="45" y="135" width="90" height="45" rx="6"/><text x="90" y="157">Server</text>
+<text class="b" x="90" y="212">Scale up</text><text class="s" x="90" y="235">buy a bigger machine</text>
+<rect class="none dash" x="265" y="120" width="335" height="75" rx="8"/>
+<rect x="280" y="135" width="64" height="45" rx="6"/><text x="312" y="157">Node</text>
+<rect x="360" y="135" width="64" height="45" rx="6"/><text x="392" y="157">Node</text>
+<rect x="440" y="135" width="64" height="45" rx="6"/><text x="472" y="157">Node</text>
+<rect class="hi" x="520" y="135" width="64" height="45" rx="6"/><text x="552" y="157">+ Node</text>
+<text class="b" x="432" y="212">Scale out</text><text class="s" x="432" y="235">add commodity nodes</text>
+</svg></div><figcaption><b>Fig 1.19</b> · Vertical scaling (RDBMS) vs horizontal scaling (NoSQL)</figcaption><p class="draw">✍ Draw it: left, small box with an up-arrow to a bigger box; right, a dashed cluster of equal boxes with one "+ Node".</p></figure>
+<h4>Why NoSQL</h4>
+<ul>
+<li><mark>Scale-out</mark>: RDBMS clusters are hard to shard; NoSQL is built to run on clusters of commodity machines.</li>
+<li><mark>Flexible schema</mark>: new fields can be added without ALTER TABLE; suits fast-changing apps and semi-structured data.</li>
+<li><mark>Impedance mismatch</mark>: application objects (nested lists, maps) do not map neatly to flat relational rows; NoSQL stores them closer to their in-memory shape.</li>
+<li><mark>High availability</mark> through replication across nodes and data centres.</li>
+<li><mark>Big data volume and velocity</mark> from web, mobile and IoT applications.</li>
+</ul>
+<h4>Features</h4>
+<ul>
+<li><mark>Non-relational</mark>: no joins-based table model (most types).</li>
+<li><mark>Schema-less / schema-on-read</mark>, sometimes called <mark>dynamic schema</mark>: fields can be reshaped to meet a new requirement without a migration step.</li>
+<li><mark>Distributed</mark>: <b>sharding</b> (split data across nodes) and <b>replication</b> (copy data across nodes).</li>
+<li><mark>BASE</mark> consistency model, often <mark>eventual consistency</mark>, instead of strict ACID (varies by product).</li>
+<li>Usually <mark>open source</mark>, simple APIs, commodity hardware.</li>
+<li><mark>Global availability</mark>: data replicated across servers, data centres and clouds so users anywhere reach a nearby copy — a different benefit from plain high availability, which is about surviving a node failure rather than cutting latency for distant users.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>RDBMS</th><th>NoSQL</th></tr>
+<tr><td>Data model</td><td>Tables with rows and columns</td><td>Key-value, document, column-family, graph</td></tr>
+<tr><td>Schema</td><td>Fixed, predefined</td><td>Dynamic / flexible</td></tr>
+<tr><td>Scaling</td><td>Vertical (scale up)</td><td>Horizontal (scale out)</td></tr>
+<tr><td>Query language</td><td>SQL (standard)</td><td>Product-specific APIs / query languages</td></tr>
+<tr><td>Transactions</td><td>ACID</td><td>Mostly BASE (some offer ACID)</td></tr>
+<tr><td>Joins</td><td>Supported</td><td>Usually avoided; data denormalised</td></tr>
+<tr><td>Best for</td><td>Complex queries, strong consistency (banking ledgers)</td><td>Huge, fast, varied data (catalogues, feeds, sessions)</td></tr>
+<tr><td>Examples</td><td>MySQL, Oracle, PostgreSQL</td><td>MongoDB, Cassandra, Redis, Neo4j</td></tr>
+</table></div>
+<h4>Advantages and disadvantages of NoSQL</h4>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td><mark>Horizontal scaling</mark> on cheap commodity servers</td><td><mark>Weaker consistency</mark>: many systems are eventually consistent (BASE), not strictly ACID</td></tr>
+<tr><td><mark>Flexible schema</mark>: add fields without ALTER TABLE</td><td><mark>No standard query language</mark>: each product has its own API</td></tr>
+<tr><td>Handles <mark>structured, semi-structured and unstructured</mark> data</td><td><mark>Joins and complex queries</mark> are weak or missing</td></tr>
+<tr><td><mark>High availability</mark> through replication</td><td><mark>Data duplication</mark> (denormalisation) wastes space and must be kept in sync</td></tr>
+<tr><td><mark>Fast reads and writes</mark> for simple access patterns</td><td>Less mature tooling, reporting and skilled people than SQL</td></tr>
+<tr><td>Mostly <mark>open source</mark>, lower cost</td><td>Not suited to multi-row transactions such as banking ledgers</td></tr>
+<tr><td>Data stored close to application objects (fewer mappings)</td><td>Schema flexibility can let inconsistent data creep in</td></tr>
+<tr><td><mark>No single point of failure</mark>: a replicated, sharded cluster keeps serving even if one node dies</td><td>Does not suit highly relational, join-heavy data as well as an RDBMS does</td></tr>
+<tr><td>Quick to start with for a simple, well-matched access pattern</td><td><mark>Limited or inconsistent GUI/admin tooling</mark> — some products (e.g. MongoDB Compass) have good tooling, many do not</td></tr></table></div>
+<p><b>When to use NoSQL:</b> huge, fast-growing, varied data with simple access patterns (product catalogues, user sessions, social feeds, IoT readings). <b>When to stay with RDBMS:</b> strong consistency and complex joins (banking, accounting, inventory).</p>
+<h4>CAP theorem (Brewer)</h4>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 500 310" width="500">
+<polygon class="none" points="250,50 80,240 420,240"/>
+<circle class="hi" cx="250" cy="50" r="28"/><text class="b" x="250" y="50">C</text>
+<circle class="hi" cx="80" cy="240" r="28"/><text class="b" x="80" y="240">A</text>
+<circle class="hi" cx="420" cy="240" r="28"/><text class="b" x="420" y="240">P</text>
+<text class="l" x="290" y="50">Consistency</text>
+<text x="80" y="288">Availability</text>
+<text class="r" x="480" y="288">Partition tolerance</text>
+<text class="s r" x="152" y="145">CA: RDBMS</text>
+<text class="s l" x="348" y="145">CP: HBase, MongoDB</text>
+<text class="s" x="250" y="262">AP: Cassandra, CouchDB</text>
+</svg></div><figcaption><b>Fig 1.20</b> · CAP theorem triangle (typical textbook classification)</figcaption><p class="draw">✍ Draw it: triangle, circle C at top, A bottom-left, P bottom-right; write CA, CP, AP along the three sides.</p></figure>
+<ul>
+<li><mark>Consistency (C)</mark>: every read gets the most recent write (all nodes show the same data).</li>
+<li><mark>Availability (A)</mark>: every request to a working node gets a response.</li>
+<li><mark>Partition tolerance (P)</mark>: system keeps working even if network messages between nodes are lost.</li>
+<li><mark>CAP theorem</mark>: a distributed data store cannot guarantee all three at once; when a network partition happens it must choose between consistency and availability.</li>
+<li>Since partitions cannot be avoided in a cluster, real choice is <b>CP</b> or <b>AP</b>. The labels on products are a simplification: many systems let you tune consistency per operation.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>ACID (RDBMS)</th><th>BASE (many NoSQL)</th></tr>
+<tr><td><b>A</b>tomicity: all or nothing</td><td><b>B</b>asically <b>A</b>vailable: system responds even during failures</td></tr>
+<tr><td><b>C</b>onsistency: data moves from one valid state to another</td><td><b>S</b>oft state: state may change over time without input, as replicas sync</td></tr>
+<tr><td><b>I</b>solation: concurrent transactions do not interfere</td><td><b>E</b>ventual consistency: replicas become consistent given time</td></tr>
+<tr><td><b>D</b>urability: committed data survives crashes</td><td>Favours availability and scale over immediate consistency</td></tr>
+<tr><td>Pessimistic, strong consistency</td><td>Optimistic, weak/eventual consistency</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> Eventual consistency in everyday life:
+<div class="step">You change your profile photo on a social app (written to one replica)</div>
+<div class="step">A friend in another region loads your profile a moment later from another replica → still sees the old photo</div>
+<div class="step">After replication completes, all replicas show the new photo</div>
+<span class="ans">Available all the time, consistent eventually (BASE)</span></div>
+<div class="mn"><b>Mnemonic</b> ACID vs BASE: in chemistry acid and base are opposites, and so are these models (strict vs relaxed). CAP: "<b>C</b>ricket <b>A</b>lways <b>P</b>lays": pick 2, and P is compulsory.</div>
+<div class="note"><b>Common mistake:</b> "C" in CAP (all replicas agree) is not the same as "C" in ACID (database constraints stay valid).</div>
+<div class="recall"><b>Quick recall</b> NoSQL = non-relational, schema-less, scale-out, BASE; CAP: pick C or A during a partition; ACID strict vs BASE eventual.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

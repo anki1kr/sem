@@ -1,0 +1,596 @@
+<section class="unit" id="u1">
+<h2><span class="uno">Unit I</span>Java Language Basics</h2>
+<p class="unit-sub">Introduction to Java, features, JVM architecture, primitive types, operators, expressions, control flow statements, and arrays.</p>
+
+<section class="topic" id="u1-intro">
+<h3>1.1 Introduction to Java, JDK, JRE and JVM</h3>
+<p class="hook">Java was built so code written on a Windows PC runs unchanged on Linux or Mac. <span class="hg">(ek baar likho, har jagah chalao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Java</mark> is a high-level, object-oriented, class-based, platform-independent programming language created by James Gosling at Sun Microsystems in 1995.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi"><b>JDK (Java Development Kit)</b><small>Development tools (javac, jar, jdb) + JRE</small></div>
+<div class="l"><b>JRE (Java Runtime Environment)</b><small>Library classes (rt.jar / java.base) + JVM</small></div>
+<div class="l hi"><b>JVM (Java Virtual Machine)</b><small>Executes bytecode on target CPU & OS</small></div>
+</div></div>
+<figcaption><b>Fig 1.1</b> · Relationship between JDK, JRE, and JVM</figcaption>
+<p class="draw">✍ Draw it: three nested rectangles with JDK on top, JRE in the middle, JVM inside at the bottom.</p></figure>
+<ul>
+<li><mark>JDK</mark> (Java Development Kit): Complete software bundle needed to write and compile Java programs. Contains <code>javac</code> compiler.</li>
+<li><mark>JRE</mark> (Java Runtime Environment): Software bundle required to run compiled Java bytecode. Contains runtime libraries + JVM.</li>
+<li><mark>JVM</mark> (Java Virtual Machine): Abstract software machine that executes bytecode by translating it into CPU-specific machine instructions.</li>
+<li><mark>History</mark>: Developed in 1991 as Oak for interactive television; renamed to Java in 1995; acquired by Oracle Corporation in 2010.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Feature</th><th>JDK</th><th>JRE</th><th>JVM</th></tr>
+<tr><td>Full form</td><td>Java Development Kit</td><td>Java Runtime Environment</td><td>Java Virtual Machine</td></tr>
+<tr><td>Purpose</td><td>Development & Compilation</td><td>Running applications</td><td>Executing bytecode</td></tr>
+<tr><td>Contains</td><td>JRE + Tools (<code>javac</code>)</td><td>JVM + Core Libraries</td><td>Class Loader + Execution Engine</td></tr>
+<tr><td>Target User</td><td>Java Developers</td><td>End Users / Application Runners</td><td>Internal Engine</td></tr>
+</table></div>
+<p><b>Primary Java Features:</b></p>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Simple &amp; OOP</b>Easy syntax, no pointers, pure object model</div>
+<div class="b"><b>Platform Independent</b>WORA: bytecode runs everywhere</div>
+<div class="b hi"><b>Secure &amp; Robust</b>Bytecode verifier &amp; garbage collection</div>
+<div class="b"><b>Architecture Neutral</b>Fixed primitive data type sizes</div>
+<div class="b hi"><b>Multithreaded</b>Built-in thread support for concurrency</div>
+<div class="b"><b>High Performance / JIT</b>Just-In-Time compiler speeds up loop execution</div>
+</div></div>
+<figcaption><b>Fig 1.2</b> · Key architectural features of the Java platform</figcaption>
+<p class="draw">✍ Draw it: a 3x2 grid of feature boxes highlighting simple, platform independent, robust, secure, multithreaded, and JIT compiler.</p></figure>
+<div class="mn"><b>Mnemonic</b> <b>S-P-O-R-T-S-M-D</b>: Simple, Platform-independent, Object-oriented, Robust, Threaded (multithreaded), Secure, Multithreaded, Distributed.</div>
+<div class="recall"><b>Quick recall</b> JDK = JRE + Tools; JRE = JVM + Libraries; JVM executes bytecode. Java is platform independent because of bytecode.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-jvm">
+<h3>1.2 Java Virtual Machine (JVM) Architecture &amp; Execution Pipeline</h3>
+<p class="hook">Bytecode is the universal language that lets Java code travel across any operating system without re-compilation. <span class="hg">(bytecode sabhi OS ki aam bhasha hai)</span></p>
+<div class="def"><b>Definition:</b> The <mark>JVM</mark> (Java Virtual Machine) is a runtime engine that loads intermediate <mark>bytecode</mark> (<code>.class</code> file) produced by <code>javac</code>, verifies it, and converts it into machine code for execution.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Hello.java<small>Source code</small></div>
+<div class="ar">javac</div>
+<div class="n hi">Hello.class<small>Bytecode</small></div>
+<div class="ar">JVM</div>
+<div class="n">Machine Code<small>CPU execution</small></div>
+</div></div>
+<figcaption><b>Fig 1.3</b> · Java compilation and execution pipeline</figcaption>
+<p class="draw">✍ Draw it: horizontal chain from .java file box through javac arrow to .class bytecode box through JVM arrow to machine code box.</p></figure>
+<ul>
+<li><mark>Bytecode</mark>: Platform-independent intermediate code representation stored in <code>.class</code> files after compilation.</li>
+<li><mark>WORA</mark> (Write Once, Run Anywhere): Java code compiled on one OS can run on any OS having a compatible JVM.</li>
+<li><mark>Class Loader Subsystem</mark>: Performs three steps: <b>Loading</b> (loads <code>.class</code> file), <b>Linking</b> (Verification, Preparation, Resolution), and <b>Initialization</b> (executes static initializers).</li>
+<li><mark>Runtime Data Areas</mark>:
+  <ul>
+  <li><b>Method Area</b>: Stores class structure, field/method data, and static variables.</li>
+  <li><b>Heap</b>: Stores all created objects and instance variables. Managed by the <mark>garbage</mark> collector.</li>
+  <li><b>Java Stack</b>: Stores stack frames for active methods, local variables, and partial results.</li>
+  <li><b>PC Register</b>: Holds the address of the current JVM instruction being executed.</li>
+  <li><b>Native Method Stack</b>: Contains state for native (C/C++) methods.</li>
+  </ul>
+</li>
+<li><mark>Execution Engine</mark>:
+  <ul>
+  <li><b>Interpreter</b>: Reads and executes bytecode instructions one by one.</li>
+  <li><b>JIT Compiler</b> (Just-In-Time): Compiles frequently executed bytecode chunks (hotspots) directly into native CPU code to boost performance.</li>
+  <li><b>Garbage Collector</b>: Automatically deallocates unreferenced heap memory.</li>
+  </ul>
+</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi"><b>Class Loader Subsystem</b><small>Load &rarr; Link (Verify, Prepare, Resolve) &rarr; Initialize</small></div>
+<div class="row">
+<div class="l"><b>Method Area</b><small>Class structures</small></div>
+<div class="l hi"><b>Heap Area</b><small>Objects &amp; GC</small></div>
+<div class="l"><b>Stack Area</b><small>Frames &amp; locals</small></div>
+</div>
+<div class="row">
+<div class="l"><b>PC Register</b><small>Next instruction</small></div>
+<div class="l"><b>Native Stack</b><small>C/C++ frames</small></div>
+</div>
+<div class="l hi"><b>Execution Engine</b><small>Interpreter + JIT Compiler + Garbage Collector</small></div>
+</div></div>
+<figcaption><b>Fig 1.4</b> · JVM Internal Architecture Subsystems</figcaption>
+<p class="draw">✍ Draw it: stack diagram showing Class Loader at top, 5 Runtime Data Areas in middle rows, and Execution Engine at bottom.</p></figure>
+<div class="note"><b>Common mistake:</b> Thinking bytecode is CPU machine code. Bytecode is instructions for the JVM; the JVM translates it into CPU instructions.</div>
+<div class="recall"><b>Quick recall</b> JVM architecture = Class loader subsystem + Runtime memory areas (Heap, Stack, Method area) + Execution Engine (Interpreter + JIT + GC).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-first">
+<h3>1.3 Structure of a Java Program</h3>
+<p class="hook">Every Java program starts execution from main() inside a public class. <span class="hg">(main method se program chalu hota hai)</span></p>
+<div class="def"><b>Definition:</b> A Java program consists of one or more class definitions where execution begins at the <code>public static void main(String[] args)</code> entry point.</div>
+<p>Program: Hello World program line-by-line structure demo.</p>
+<pre class="code" data-file="HelloWorld.java"><code><span class="c">// Every Java program must be inside a class</span>
+<span class="k">public class</span> HelloWorld {
+    <span class="c">// Entry point method executed by JVM</span>
+    <span class="k">public static void</span> main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}</code></pre>
+<pre class="out">Hello, Java!</pre>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">JVM Start</div>
+<div class="n">Load HelloWorld.class</div>
+<div class="n hi">Execute main(String[] args)</div>
+<div class="n io">System.out.println("Hello, Java!")</div>
+<div class="n t">JVM Exit</div>
+</div></div>
+<figcaption><b>Fig 1.5</b> · Execution sequence of the HelloWorld program</figcaption>
+<p class="draw">✍ Draw it: vertical flow from Start oval to class load box to main execution box to I/O print box to Stop oval.</p></figure>
+<ul>
+<li><code>public</code>: Keyword making the class/method accessible from outside the package by the JVM.</li>
+<li><code>class</code>: Keyword used to define a class template.</li>
+<li><code>static</code>: Allows the JVM to call <code>main()</code> without creating an instance object of the class first.</li>
+<li><code>void</code>: Return type indicating the method does not return any value.</li>
+<li><code>main</code>: Name of the entry-point method recognized by the JVM.</li>
+<li><code>String[] args</code>: Array of string parameters passed via command line arguments.</li>
+<li><code>System.out.println()</code>: System class, out static stream, println method to output text followed by a new line.</li>
+</ul>
+<div class="recall"><b>Quick recall</b> File name must match public class name; <code>public static void main(String[] args)</code> is mandatory for execution.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-types">
+<h3>1.4 Primitive Data Types, Variables, Literals, and Type Casting</h3>
+<p class="hook">Primitive types are the foundational building blocks of Java data storage with fixed memory sizes across all CPUs. <span class="hg">(data types ki size fix hoti hai)</span></p>
+<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a predefined, built-in data type provided by Java that directly holds simple values in memory without creating an object.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Java Data Types</span><ul>
+<li><span>Primitive</span><ul>
+  <li><span>Integral (byte, short, int, long)</span></li>
+  <li><span>Floating Point (float, double)</span></li>
+  <li><span>Character (char)</span></li>
+  <li><span>Boolean (boolean)</span></li>
+</ul></li>
+<li><span>Non-Primitive</span><ul>
+  <li><span>Classes, Arrays, Interfaces</span></li>
+</ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.6</b> · Hierarchy tree of Java Data Types</figcaption>
+<p class="draw">✍ Draw it: top node Data Types branching into Primitive and Non-Primitive, listing the 8 primitives under Primitive.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Type</th><th>Size (bits / bytes)</th><th>Default Value</th><th>Range</th><th>Example</th></tr>
+<tr><td><code>byte</code></td><td>8 bits (1 byte)</td><td><code>0</code></td><td>-128 to 127</td><td><code>byte b = 100;</code></td></tr>
+<tr><td><code>short</code></td><td>16 bits (2 bytes)</td><td><code>0</code></td><td>-32,768 to 32,767</td><td><code>short s = 5000;</code></td></tr>
+<tr><td><code>int</code></td><td>32 bits (4 bytes)</td><td><code>0</code></td><td>-2<sup>31</sup> to 2<sup>31</sup>-1</td><td><code>int i = 42;</code></td></tr>
+<tr><td><code>long</code></td><td>64 bits (8 bytes)</td><td><code>0L</code></td><td>-2<sup>63</sup> to 2<sup>63</sup>-1</td><td><code>long l = 999L;</code></td></tr>
+<tr><td><code>float</code></td><td>32 bits (4 bytes)</td><td><code>0.0f</code></td><td>~1.4e-45 to ~3.4e+38</td><td><code>float f = 3.14f;</code></td></tr>
+<tr><td><code>double</code></td><td>64 bits (8 bytes)</td><td><code>0.0d</code></td><td>~4.9e-324 to ~1.7e+308</td><td><code>double d = 99.99;</code></td></tr>
+<tr><td><code>char</code></td><td>16 bits (2 bytes)</td><td><code>'\u0000'</code></td><td>0 to 65,535 (Unicode)</td><td><code>char c = 'A';</code></td></tr>
+<tr><td><code>boolean</code></td><td>1 bit (JVM dependent)</td><td><code>false</code></td><td><code>true</code> or <code>false</code></td><td><code>boolean flag = true;</code></td></tr>
+</table></div>
+
+<p><b>Variables &amp; Type Conversion / Casting:</b></p>
+<ul>
+<li><mark>Variables</mark>: Named storage locations in memory (Local, Instance, Static variables).</li>
+<li><mark>Literals</mark>: Constant values assigned directly to variables (e.g., <code>100</code>, <code>'A'</code>, <code>3.14f</code>).</li>
+<li><mark>Widening (Implicit Casting)</mark>: Converting a smaller type to a larger type automatically. Safe with no data loss: <code>byte</code> &rarr; <code>short</code> &rarr; <code>int</code> &rarr; <code>long</code> &rarr; <code>float</code> &rarr; <code>double</code>.</li>
+<li><mark>Narrowing (Explicit Casting)</mark>: Converting a larger type to a smaller type manually using cast syntax <code>(target_type)</code>. May result in data loss.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">byte</div><div class="ar">auto</div>
+<div class="n">short / char</div><div class="ar">auto</div>
+<div class="n">int</div><div class="ar">auto</div>
+<div class="n">long</div><div class="ar">auto</div>
+<div class="n hi">float / double</div>
+</div></div>
+<figcaption><b>Fig 1.7</b> · Automatic Widening Conversion hierarchy</figcaption>
+<p class="draw">✍ Draw it: horizontal chain of types from byte up to double connected with right arrows for implicit widening.</p></figure>
+
+<p>Program: Demonstrating primitive data types, widening, and narrowing type casting.</p>
+<pre class="code" data-file="DataTypeDemo.java"><code><span class="k">public class</span> DataTypeDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">byte</span> b = 100;
+        <span class="k">int</span> i = b;            <span class="c">// Implicit widening: byte -> int</span>
+        <span class="k">double</span> d = 10.5;
+        <span class="k">int</span> x = (<span class="k">int</span>) d;      <span class="c">// Explicit narrowing: double -> int</span>
+        <span class="k">char</span> c = 'A';
+        <span class="k">boolean</span> flag = <span class="k">true</span>;
+        System.out.println("b=" + b + ", i=" + i + ", x=" + x + ", c=" + c + ", flag=" + flag);
+    }
+}</code></pre>
+<pre class="out">b=100, i=100, x=10, c=A, flag=true</pre>
+
+<div class="mn"><b>Mnemonic</b> <b>B-S-I-L-F-D</b> (Byte, Short, Int, Long, Float, Double) for integral to floating widening order.</div>
+<div class="recall"><b>Quick recall</b> Java has 8 primitive types; widening is automatic, narrowing requires explicit <code>(type)</code> cast.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-operators">
+<h3>1.5 Java Operators and Precedence</h3>
+<p class="hook">Operators are symbols that direct the JVM to perform specific mathematical, logical, or bitwise computations. <span class="hg">(operator calculation karvata hai)</span></p>
+<div class="def"><b>Definition:</b> An <mark>operator</mark> is a special symbol that operates on one, two, or three operands to perform calculations and produce a result value.</div>
+
+<div class="tw"><table>
+<tr><th>Operator Category</th><th>Symbols</th><th>Description &amp; Behavior</th></tr>
+<tr><td>Arithmetic</td><td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></td><td>Addition, subtraction, multiplication, division, modulus (remainder).</td></tr>
+<tr><td>Unary / Increment</td><td><code>++</code>, <code>--</code>, <code>+</code>, <code>-</code>, <code>!</code>, <code>~</code></td><td>Pre-increment (<code>++x</code>: increment first), Post-increment (<code>x++</code>: use then increment).</td></tr>
+<tr><td>Relational</td><td><code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td><td>Compares two operands; returns boolean result.</td></tr>
+<tr><td>Logical</td><td><code>&amp;&amp;</code>, <code>||</code>, <code>!</code></td><td>Short-circuit AND (<code>&amp;&amp;</code>), short-circuit OR (<code>||</code>), logical NOT.</td></tr>
+<tr><td>Bitwise &amp; Shift</td><td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>~</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code></td><td>AND, OR, XOR, NOT, left-shift, signed right-shift, unsigned right-shift.</td></tr>
+<tr><td>Assignment</td><td><code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code></td><td>Assigns value to variable; compound assignment performs op then assigns.</td></tr>
+<tr><td>Ternary</td><td><code>condition ? val1 : val2</code></td><td>Shorthand <code>if-else</code> operator evaluating to <code>val1</code> if true, <code>val2</code> if false.</td></tr>
+<tr><td>Type comparison</td><td><code>instanceof</code></td><td>Checks if an object is an instance of a specified class/interface.</td></tr>
+</table></div>
+
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>1. Unary &amp; Parentheses</b><code>()  ++  --  !  ~</code> (Right to Left)</div>
+<div class="b"><b>2. Multiplicative</b><code>*  /  %</code> (Left to Right)</div>
+<div class="b hi"><b>3. Additive</b><code>+  -</code> (Left to Right)</div>
+<div class="b"><b>4. Shift &amp; Relational</b><code>&lt;&lt; &gt;&gt; &lt; &gt; &lt;= &gt;=</code> (Left to Right)</div>
+<div class="b hi"><b>5. Equality &amp; Bitwise</b><code>== != &amp; ^ |</code> (Left to Right)</div>
+<div class="b"><b>6. Logical &amp; Ternary &amp; Assign</b><code>&amp;&amp; || ?: = +=</code> (Right/Left)</div>
+</div></div>
+<figcaption><b>Fig 1.8</b> · Operator Precedence Hierarchy from highest to lowest</figcaption>
+<p class="draw">✍ Draw it: 6-tier box stack showing precedence from top (parentheses/unary) to bottom (assignment).</p></figure>
+
+<p>Program: Demonstrating unary increment, bitwise AND, and ternary operator.</p>
+<pre class="code" data-file="OperatorDemo.java"><code><span class="k">public class</span> OperatorDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> a = 10, b = 3;
+        <span class="k">int</span> pre = ++a;             <span class="c">// Pre-increment: a becomes 11, pre=11</span>
+        <span class="k">int</span> post = b++;            <span class="c">// Post-increment: post=3, b becomes 4</span>
+        <span class="k">int</span> bit = 5 &amp; 3;           <span class="c">// Bitwise AND: 101 & 011 = 001 (1)</span>
+        <span class="k">int</span> max = (a &gt; b) ? a : b;  <span class="c">// Ternary operator</span>
+        System.out.println("pre=" + pre + ", post=" + post + ", bit=" + bit + ", max=" + max);
+    }
+}</code></pre>
+<pre class="out">pre=11, post=3, bit=1, max=11</pre>
+
+<div class="note"><b>Common mistake:</b> Confusing <code>&amp;&amp;</code> (short-circuit logical AND) with <code>&amp;</code> (bitwise AND). <code>&amp;&amp;</code> stops evaluating if the first condition is false.</div>
+<div class="recall"><b>Quick recall</b> Pre-increment (<code>++i</code>) increments before value use; post-increment (<code>i++</code>) uses current value first. Ternary format: <code>cond ? trueVal : falseVal</code>.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-expr">
+<h3>1.6 Expressions, Evaluation, and Type Promotion</h3>
+<p class="hook">When mixed data types meet in an expression, Java automatically promotes smaller types to match the largest type in the expression. <span class="hg">(badi data type me promotion ho jata hai)</span></p>
+<div class="def"><b>Definition:</b> An <mark>expression</mark> is a combination of variables, constants, operators, and method calls that evaluates to a single value governed by operator precedence and type promotion rules.</div>
+<ul>
+<li><mark>Automatic Type Promotion Rules</mark>:
+  <ul>
+  <li>All <code>byte</code>, <code>short</code>, and <code>char</code> values are promoted to <code>int</code> during expression evaluation.</li>
+  <li>If one operand is <code>long</code>, the entire expression is promoted to <code>long</code>.</li>
+  <li>If one operand is <code>float</code>, the entire expression is promoted to <code>float</code>.</li>
+  <li>If any operand is <code>double</code>, the entire result is promoted to <code>double</code>.</li>
+  </ul>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<rect x="20" y="30" width="100" height="40" rx="6"/><text x="70" y="50">float * byte</text>
+<rect x="160" y="30" width="100" height="40" rx="6"/><text x="210" y="50">int / char</text>
+<rect x="300" y="30" width="100" height="40" rx="6"/><text x="350" y="50">double * int</text>
+<path class="arr" d="M70 70 L140 120"/>
+<path class="arr" d="M210 70 L140 120"/>
+<rect class="hi" x="100" y="120" width="100" height="40" rx="6"/><text x="150" y="140">float + int</text>
+<path class="arr" d="M150 160 L270 160"/>
+<path class="arr" d="M350 70 L270 160"/>
+<rect class="hi" x="270" y="140" width="140" height="35" rx="6"/><text x="340" y="157">Result: double</text>
+</svg></div>
+<figcaption><b>Fig 1.9</b> · Expression Evaluation and Type Promotion Flow</figcaption>
+<p class="draw">✍ Draw it: three top boxes for sub-expressions promoting to float, int, and double, combining down to a final double result box.</p></figure>
+
+<div class="ex"><b>Worked Example: Type Promotion Evaluation</b>
+<div class="step">Given: <code>byte b=40; char c='a' (ASCII 97); int i=50; float f=5.67f; double d=0.1234;</code></div>
+<div class="step">Expression: <code>(f * b) + (i / c) - (d * 5)</code></div>
+<div class="step">Step 1: <code>f * b</code> &rarr; <code>5.67f * 40</code> &rarr; <code>226.8f</code> (promoted to float)</div>
+<div class="step">Step 2: <code>i / c</code> &rarr; <code>50 / 97</code> &rarr; <code>0</code> (integer division)</div>
+<div class="step">Step 3: <code>d * 5</code> &rarr; <code>0.1234 * 5</code> &rarr; <code>0.6170</code> (promoted to double)</div>
+<div class="step">Step 4: <code>226.8f + 0 - 0.6170</code> &rarr; <code>226.8 + 0 - 0.6170</code> &rarr; <code>226.18300305175782</code></div>
+<span class="ans">Result = 226.18300305175782 (double)</span>
+</div>
+
+<p>Program: Verifying the worked expression result in Java.</p>
+<pre class="code" data-file="ExprDemo.java"><code><span class="k">public class</span> ExprDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">byte</span> b = 40;
+        <span class="k">char</span> c = 'a';
+        <span class="k">int</span> i = 50;
+        <span class="k">float</span> f = 5.67f;
+        <span class="k">double</span> d = 0.1234;
+        <span class="k">double</span> result = (f * b) + (i / c) - (d * 5);
+        System.out.println("Result = " + result);
+    }
+}</code></pre>
+<pre class="out">Result = 226.18300305175782</pre>
+
+<div class="recall"><b>Quick recall</b> In expressions, smaller types (byte, short, char) auto-promote to <code>int</code>; if any double exists, the entire result becomes <code>double</code>.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-select">
+<h3>1.7 Selection Statements (if, if-else, switch)</h3>
+<p class="hook">Selection statements branch code execution based on conditional true/false decisions or value matching. <span class="hg">(conditional decision ke hisaab se rasta chuno)</span></p>
+<div class="def"><b>Definition:</b> <mark>Selection statements</mark> (decision-making statements) allow a program to choose between different execution paths based on the boolean result of a condition or discrete value match.</div>
+
+<ul>
+<li><code>if</code> statement: Executes block only if condition evaluates to <code>true</code>.</li>
+<li><code>if-else</code> statement: Executes <code>if</code> block when <code>true</code>, <code>else</code> block when <code>false</code>.</li>
+<li><code>else-if</code> ladder: Tests multiple conditions sequentially until one evaluates to <code>true</code>.</li>
+<li><code>switch</code> statement: Multi-way branch comparing an integer/char/String expression against multiple <code>case</code> values. Requires <code>break</code> to prevent fall-through.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 500 200" width="500">
+<polygon points="250,20 370,60 250,100 130,60" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="250" y="60">number % 2 == 0 ?</text>
+<path class="arr" d="M370 60 H440 V130"/>
+<text class="s" x="400" y="50">false</text>
+<path class="arr" d="M130 60 H60 V130"/>
+<text class="s" x="90" y="50">true</text>
+<rect x="10" y="130" width="100" height="40" rx="6"/><text x="60" y="150">Print "Even"</text>
+<rect x="390" y="130" width="100" height="40" rx="6"/><text x="440" y="150">Print "Odd"</text>
+</svg></div>
+<figcaption><b>Fig 1.10</b> · Flowchart of if-else selection statement</figcaption>
+<p class="draw">✍ Draw it: decision diamond at top with true path going left to Even box and false path going right to Odd box.</p></figure>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 200" width="540">
+<rect x="200" y="10" width="140" height="40" rx="6"/><text x="270" y="30">switch(day)</text>
+<path class="arr" d="M200 30 H100 V80"/>
+<path class="arr" d="M270 50 V80"/>
+<path class="arr" d="M340 30 H440 V80"/>
+<rect x="40" y="80" width="120" height="40" rx="6"/><text x="100" y="100">case 1: "Monday"</text>
+<rect x="210" y="80" width="120" height="40" rx="6"/><text x="270" y="100">case 2: "Tuesday"</text>
+<rect x="380" y="80" width="120" height="40" rx="6"/><text x="440" y="100">default: "Other"</text>
+</svg></div>
+<figcaption><b>Fig 1.11</b> · Flowchart of multi-way switch statement branching</figcaption>
+<p class="draw">✍ Draw it: top box switch expression splitting into 3 parallel branch paths for case 1, case 2, and default.</p></figure>
+
+<p>Program: Selection using if-else and switch statements.</p>
+<pre class="code" data-file="SelectionDemo.java"><code><span class="k">public class</span> SelectionDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> number = 15;
+        <span class="k">if</span> (number % 2 == 0) {
+            System.out.println(number + " is Even");
+        } <span class="k">else</span> {
+            System.out.println(number + " is Odd");
+        }
+        <span class="k">int</span> day = 2;
+        <span class="k">switch</span> (day) {
+            <span class="k">case</span> 1: System.out.println("Monday"); <span class="k">break</span>;
+            <span class="k">case</span> 2: System.out.println("Tuesday"); <span class="k">break</span>;
+            <span class="k">default</span>: System.out.println("Other day");
+        }
+    }
+}</code></pre>
+<pre class="out">15 is Odd
+Tuesday</pre>
+
+<div class="recall"><b>Quick recall</b> <code>if-else</code> evaluates boolean expressions; <code>switch</code> matches discrete values. Always add <code>break</code> in <code>switch</code> cases.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-loops">
+<h3>1.8 Iteration &amp; Jump Statements (for, while, do-while, break, continue)</h3>
+<p class="hook">Looping statements repeat a block of code until a specified condition becomes false. <span class="hg">(jab tak condition true hai, tab tak chalao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Iteration statements</mark> (loops) repeatedly execute a statement block as long as a loop termination condition remains true.</div>
+
+<ul>
+<li><code>for</code> loop: Entry-controlled loop ideal when the number of iterations is known in advance (initialization; condition; update).</li>
+<li><code>while</code> loop: Entry-controlled loop that tests condition before executing the loop body.</li>
+<li><code>do-while</code> loop: Exit-controlled loop that executes the body at least once before testing condition.</li>
+<li><mark>Enhanced for</mark> loop (for-each): Simplifies traversing collections and arrays without manual index tracking.</li>
+<li><code>break</code>: Immediately terminates the innermost loop or switch block.</li>
+<li><code>continue</code>: Skips the rest of the current iteration and jumps to the next loop evaluation step.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 220" width="540">
+<text class="b" x="130" y="20">while Loop (Entry-controlled)</text>
+<polygon points="130,40 210,75 130,110 50,75" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="130" y="75">Condition?</text>
+<path class="arr" d="M130 110 V150"/>
+<rect x="70" y="150" width="120" height="40" rx="6"/><text x="130" y="170">Loop Body</text>
+<path class="arr" d="M70 170 H20 V75 H50"/>
+
+<text class="b" x="400" y="20">do-while Loop (Exit-controlled)</text>
+<rect x="340" y="40" width="120" height="40" rx="6"/><text x="400" y="60">Loop Body</text>
+<path class="arr" d="M400 80 V120"/>
+<polygon points="400,120 480,155 400,190 320,155" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="400" y="155">Condition?</text>
+<path class="arr" d="M320 155 H280 V60 H340"/>
+</svg></div>
+<figcaption><b>Fig 1.12</b> · Flowchart comparison between while (entry-controlled) and do-while (exit-controlled) loops</figcaption>
+<p class="draw">✍ Draw it: left diagram for while (condition top, body bottom), right diagram for do-while (body top, condition bottom).</p></figure>
+
+<div class="tw"><table>
+<tr><th>Feature</th><th>while Loop</th><th>do-while Loop</th></tr>
+<tr><td>Control Type</td><td>Entry-controlled</td><td>Exit-controlled</td></tr>
+<tr><td>Condition Check</td><td>Tested at the beginning</td><td>Tested at the end</td></tr>
+<tr><td>Minimum Executions</td><td>0 times (if condition is false initially)</td><td>At least 1 time guaranteed</td></tr>
+<tr><td>Syntax</td><td><code>while(cond) { ... }</code></td><td><code>do { ... } while(cond);</code></td></tr>
+</table></div>
+
+<p>Program: Demonstrating for loop, break/continue jump statements, and do-while loop.</p>
+<pre class="code" data-file="LoopDemo.java"><code><span class="k">public class</span> LoopDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> sum = 0;
+        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 5; i++) {
+            <span class="k">if</span> (i == 4) <span class="k">continue</span>; <span class="c">// Skip i=4</span>
+            sum += i;
+        }
+        System.out.println("Sum = " + sum);
+        <span class="k">int</span> count = 1;
+        <span class="k">do</span> {
+            System.out.print(count + " ");
+            count++;
+        } <span class="k">while</span> (count &lt;= 3);
+        System.out.println();
+    }
+}</code></pre>
+<pre class="out">Sum = 11
+1 2 3</pre>
+
+<div class="recall"><b>Quick recall</b> <code>while</code> checks condition first; <code>do-while</code> executes body at least once. <code>break</code> exits loop, <code>continue</code> skips iteration.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-array">
+<h3>1.9 Arrays (1D, 2D, and Jagged Arrays)</h3>
+<p class="hook">An array organizes multiple data items of the same type under a single variable name indexed sequentially. <span class="hg">(ek naam ke andar multiple elements rakhna)</span></p>
+<div class="def"><b>Definition:</b> An <mark>array</mark> is a fixed-size, contiguous indexed collection of homogeneous elements stored in contiguous heap memory.</div>
+
+<ul>
+<li><mark>1D Array</mark>: Single row of elements accessed by index <code>arr[i]</code> (0 to length-1).</li>
+<li><mark>2D Array</mark>: Array of 1D arrays forming a matrix/table of rows and columns accessed as <code>arr[r][c]</code>.</li>
+<li><mark>Jagged Array</mark>: Multi-dimensional array in which sub-arrays have different lengths.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 120" width="540">
+<rect class="hi" x="40" y="40" width="70" height="40"/><text x="75" y="60">12 [0]</text>
+<rect class="hi" x="110" y="40" width="70" height="40"/><text x="145" y="60">45 [1]</text>
+<rect class="hi" x="180" y="40" width="70" height="40"/><text x="215" y="60">7 [2]</text>
+<rect class="hi" x="250" y="40" width="70" height="40"/><text x="285" y="60">23 [3]</text>
+<rect class="hi" x="320" y="40" width="70" height="40"/><text x="355" y="60">89 [4]</text>
+<rect class="hi" x="390" y="40" width="70" height="40"/><text x="425" y="60">34 [5]</text>
+<text class="s" x="250" y="105">Contiguous Heap Memory Locations (arr.length = 6)</text>
+</svg></div>
+<figcaption><b>Fig 1.13</b> · 1D Array memory structure and zero-based indexing</figcaption>
+<p class="draw">✍ Draw it: horizontal strip of 6 contiguous boxes with values and zero-based indices [0] to [5].</p></figure>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<text class="b" x="140" y="20">2D Matrix Array (2x2)</text>
+<rect class="hi" x="40" y="40" width="80" height="40"/><text x="80" y="60">[0][0]=1</text>
+<rect class="hi" x="120" y="40" width="80" height="40"/><text x="160" y="60">[0][1]=2</text>
+<rect class="hi" x="40" y="80" width="80" height="40"/><text x="80" y="100">[1][0]=3</text>
+<rect class="hi" x="120" y="80" width="80" height="40"/><text x="160" y="100">[1][1]=4</text>
+
+<text class="b" x="390" y="20">Jagged Array Layout</text>
+<rect x="300" y="40" width="60" height="35"/><text x="330" y="57">row[0]</text>
+<rect class="hi" x="360" y="40" width="50" height="35"/><text x="385" y="57">val 1</text>
+<rect class="hi" x="410" y="40" width="50" height="35"/><text x="435" y="57">val 2</text>
+
+<rect x="300" y="85" width="60" height="35"/><text x="330" y="102">row[1]</text>
+<rect class="hi" x="360" y="85" width="50" height="35"/><text x="385" y="102">val 1</text>
+<rect class="hi" x="410" y="85" width="50" height="35"/><text x="435" y="102">val 2</text>
+<rect class="hi" x="460" y="85" width="50" height="35"/><text x="485" y="102">val 3</text>
+</svg></div>
+<figcaption><b>Fig 1.14</b> · Memory layout comparison between 2D Regular Array and Jagged Array</figcaption>
+<p class="draw">✍ Draw it: left diagram 2x2 grid for regular 2D array, right diagram rows with different column lengths for jagged array.</p></figure>
+
+<p>Program 1: 1D Array traversing, calculating sum and finding maximum element.</p>
+<pre class="code" data-file="Array1DDemo.java"><code><span class="k">public class</span> Array1DDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span>[] arr = {12, 45, 7, 23, 89, 34};
+        <span class="k">int</span> sum = 0;
+        <span class="k">int</span> max = arr[0];
+        <span class="k">for</span> (<span class="k">int</span> val : arr) {
+            sum += val;
+            <span class="k">if</span> (val &gt; max) max = val;
+        }
+        System.out.println("Sum = " + sum + ", Max = " + max);
+    }
+}</code></pre>
+<pre class="out">Sum = 210, Max = 89</pre>
+
+<p>Program 2: 2D Matrix Addition.</p>
+<pre class="code" data-file="Array2DDemo.java"><code><span class="k">public class</span> Array2DDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span>[][] a = {{1, 2}, {3, 4}};
+        <span class="k">int</span>[][] b = {{5, 6}, {7, 8}};
+        <span class="k">int</span>[][] sum = <span class="k">new int</span>[2][2];
+        <span class="k">for</span> (<span class="k">int</span> i = 0; i &lt; 2; i++) {
+            <span class="k">for</span> (<span class="k">int</span> j = 0; j &lt; 2; j++) {
+                sum[i][j] = a[i][j] + b[i][j];
+                System.out.print(sum[i][j] + " ");
+            }
+            System.out.println();
+        }
+    }
+}</code></pre>
+<pre class="out">6 8 
+10 12</pre>
+
+<div class="note"><b>Common mistake:</b> Array indices in Java start at <code>0</code> and end at <code>length - 1</code>. Accessing <code>arr[arr.length]</code> throws <code>ArrayIndexOutOfBoundsException</code>.</div>
+<div class="recall"><b>Quick recall</b> Arrays in Java are zero-indexed objects stored on the heap; <code>arr.length</code> gives total size. Jagged arrays have sub-arrays of different row lengths.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-short">
+<h3>1.10 Short answers (1.5 marks)</h3>
+<dl class="sa">
+<dt>1. Define JVM and Bytecode.</dt><dd>JVM is an abstract execution engine that executes Java bytecode. Bytecode is the platform-independent intermediate format compiled from <code>.java</code> source code.</dd>
+<dt>2. Differentiate JDK, JRE, and JVM.</dt><dd>JDK contains development tools + JRE; JRE contains class libraries + JVM; JVM is the execution runtime engine that runs bytecode.</dd>
+
+<dt>3. What is Write Once, Run Anywhere (WORA)?</dt><dd>Java's architecture principle where code compiled into bytecode on one platform can run without modification on any OS containing a compatible JVM.</dd>
+<dt>4. What is the role of the JIT compiler?</dt><dd>Just-In-Time compiler compiles frequently used bytecode sequences into native CPU instructions at runtime to accelerate execution speed.</dd>
+
+<dt>5. List the 8 primitive data types in Java.</dt><dd><code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>char</code>, and <code>boolean</code>.</dd>
+<dt>6. Differentiate widening and narrowing casting.</dt><dd>Widening is automatic conversion of a smaller type to a larger type (e.g., <code>int</code> to <code>double</code>); narrowing is manual conversion of a larger type to smaller type with cast syntax <code>(int) d</code>.</dd>
+
+<dt>7. What is automatic type promotion in expressions?</dt><dd>In expressions, <code>byte</code>, <code>short</code>, and <code>char</code> are promoted to <code>int</code>; if an operand is <code>long</code>, <code>float</code>, or <code>double</code>, the whole expression promotes to that larger type.</dd>
+<dt>8. Differentiate pre-increment and post-increment operators.</dt><dd>Pre-increment (<code>++x</code>) increments the variable before evaluating its value; post-increment (<code>x++</code>) evaluates current value first before incrementing.</dd>
+
+<dt>9. What is short-circuit evaluation in logical operators?</dt><dd>In <code>&amp;&amp;</code>, if the first condition is false, the second is skipped. In <code>||</code>, if the first condition is true, the second is skipped.</dd>
+<dt>10. Explain ternary operator syntax.</dt><dd>Conditional shorthand: <code>condition ? value_if_true : value_if_false;</code>.</dd>
+
+<dt>11. Differentiate while and do-while loops.</dt><dd><code>while</code> is an entry-controlled loop (0 min executions); <code>do-while</code> is exit-controlled, executing the loop body at least once.</dd>
+<dt>12. Differentiate break and continue statements.</dt><dd><code>break</code> exits the loop or switch block immediately; <code>continue</code> skips the remainder of the current iteration and jumps to the next loop evaluation.</dd>
+
+<dt>13. What is a jagged array?</dt><dd>A multi-dimensional array where each row/sub-array can have a different number of columns/elements.</dd>
+<dt>14. How is array length obtained in Java?</dt><dd>Using the built-in <code>.length</code> field of the array object (e.g., <code>arr.length</code>).</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-long">
+<h3>1.11 Long-answer frames (15 marks)</h3>
+
+<h4>Q1. Explain Java features and the JVM internal architecture with neat diagrams.</h4>
+<ol>
+<li>Define Java and list its primary features (Simple, Platform-independent, OOP, Robust, Secure, Multithreaded, JIT).</li>
+<li>Draw Fig 1.2 (Java Features box diagram).</li>
+<li>Explain the compile &amp; run pipeline: <code>.java</code> &rarr; <code>javac</code> &rarr; <code>.class</code> &rarr; JVM &rarr; native execution. Draw Fig 1.3.</li>
+<li>Explain JVM Architecture components: Class Loader subsystem (Load, Link, Initialize).</li>
+<li>Describe Runtime Data Areas: Method Area, Heap, Stack, PC Register, Native Method Stack. Draw Fig 1.4.</li>
+<li>Describe Execution Engine: Interpreter, JIT Compiler, and Garbage Collector.</li>
+<li>Conclusion: How JVM architecture ensures platform independence and automatic memory safety.</li>
+</ol>
+
+<h4>Q2. Explain primitive data types, variables, type conversion, and expression promotion with a worked example.</h4>
+<ol>
+<li>Define Primitive Data Types and draw the primitive classification tree (Fig 1.6).</li>
+<li>Present the 8 Primitives Table (size in bits/bytes, default values, ranges, examples).</li>
+<li>Explain Variables (local, instance, static) and Literals.</li>
+<li>Differentiate Widening (implicit) vs Narrowing (explicit casting) with diagram Fig 1.7.</li>
+<li>Explain Automatic Type Promotion rules in expressions.</li>
+<li>Provide the worked expression calculation step-by-step with output verified by program <code>ExprDemo.java</code>.</li>
+<li>Conclusion: Data type selection impact on memory efficiency and precision.</li>
+</ol>
+
+<h4>Q3. Explain all categories of Java operators with a precedence hierarchy table and program.</h4>
+<ol>
+<li>Define Operators and Operands.</li>
+<li>Detail Arithmetic, Unary (pre vs post increment), Relational, and Logical (short-circuit) operators.</li>
+<li>Explain Bitwise and Shift operators (<code>&amp;</code>, <code>|</code>, <code>^</code>, <code>~</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code>).</li>
+<li>Explain Assignment, Compound Assignment, Ternary, and <code>instanceof</code> operators.</li>
+<li>Draw Operator Precedence Hierarchy box diagram (Fig 1.8).</li>
+<li>Write <code>OperatorDemo.java</code> program with code and exact output.</li>
+<li>Conclusion: Importance of parenthesizing complex logical expressions.</li>
+</ol>
+
+<h4>Q4. Discuss decision-making and selection control statements in Java with flowcharts and code.</h4>
+<ol>
+<li>Define Selection Statements and their role in program control flow.</li>
+<li>Explain <code>if</code>, <code>if-else</code>, and <code>else-if</code> ladder with flowchart Fig 1.10.</li>
+<li>Explain <code>switch</code> statement, <code>case</code> matching, <code>default</code> block, and fall-through prevention with <code>break</code>.</li>
+<li>Draw Switch flowchart Fig 1.11.</li>
+<li>Write <code>SelectionDemo.java</code> illustrating both <code>if-else</code> and <code>switch</code>.</li>
+<li>Table comparing <code>if-else</code> vs <code>switch</code> statement suitability.</li>
+<li>Conclusion: Selection statements form the core of conditional execution logic.</li>
+</ol>
+
+<h4>Q5. Explain iteration statements (loops) and jump statements in Java with flowcharts.</h4>
+<ol>
+<li>Define Iteration Statements (loops) and differentiate entry-controlled vs exit-controlled loops.</li>
+<li>Explain <code>for</code> loop, <code>while</code> loop, <code>do-while</code> loop, and enhanced <code>for</code> loop.</li>
+<li>Draw flowchart comparing <code>while</code> vs <code>do-while</code> loop (Fig 1.12).</li>
+<li>Present Table comparing <code>while</code> vs <code>do-while</code> features.</li>
+<li>Explain jump statements: <code>break</code>, <code>continue</code>, and <code>return</code>.</li>
+<li>Write <code>LoopDemo.java</code> program demonstrating <code>for</code>, <code>continue</code>, and <code>do-while</code>.</li>
+<li>Conclusion: Loop selection guidelines based on iteration predictability.</li>
+</ol>
+
+<h4>Q6. What is an array? Explain 1D, 2D, and Jagged arrays with memory layouts and Java programs.</h4>
+<ol>
+<li>Define Array, indexing, and memory allocation on Heap.</li>
+<li>Explain 1D Array declaration, creation, initialization, and length field with memory layout Fig 1.13.</li>
+<li>Write 1D Array program (<code>Array1DDemo.java</code>) calculating sum and finding maximum.</li>
+<li>Explain 2D Arrays (matrices) and Jagged Arrays (varying column lengths). Draw Fig 1.14.</li>
+<li>Write 2D Matrix Addition program (<code>Array2DDemo.java</code>) with code and output.</li>
+<li>Common array exceptions (<code>ArrayIndexOutOfBoundsException</code>, <code>NullPointerException</code>).</li>
+<li>Conclusion: Arrays offer fast $O(1)$ index access for fixed-size homogeneous data.</li>
+</ol>
+<a class="top" href="#top">↑ top</a></section>
+</section>

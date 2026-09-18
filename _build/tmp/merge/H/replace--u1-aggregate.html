@@ -1,0 +1,67 @@
+<section class="topic" id="u1-aggregate">
+<h3>1.15 Aggregate data models</h3>
+<p class="hook">Instead of splitting an order across many tables, store the whole order (with its items and address) as one unit. <span class="hg">(poora packet ek saath rakho)</span></p>
+<div class="def"><b>Definition:</b> An <mark>aggregate</mark> is a collection of related objects that is treated as a single unit for data manipulation and consistency management. An <mark>aggregate data model</mark> organises data as such units, so that each aggregate is stored, retrieved, updated and distributed as a whole (Sadalage and Fowler, <i>NoSQL Distilled</i>; the term comes from Domain-Driven Design).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 340" width="760">
+<rect class="none dash" x="20" y="40" width="300" height="250" rx="10"/><text class="b" x="170" y="60">Customer aggregate</text>
+<rect class="hi" x="60" y="85" width="220" height="50" rx="6"/><text x="170" y="103">Customer</text><text class="s" x="170" y="122">id, name</text>
+<rect x="60" y="180" width="220" height="50" rx="6"/><text x="170" y="205">Billing Address</text>
+<line x1="170" y1="135" x2="170" y2="180"/>
+<rect class="none dash" x="380" y="40" width="360" height="250" rx="10"/><text class="b" x="560" y="60">Order aggregate</text>
+<rect class="hi" x="470" y="80" width="180" height="50" rx="6"/><text x="560" y="98">Order</text><text class="s" x="560" y="117">id, customerId</text>
+<rect x="400" y="180" width="100" height="50" rx="6"/><text x="450" y="205">Order Item</text>
+<rect x="510" y="180" width="100" height="50" rx="6"/><text x="560" y="197">Shipping</text><text x="560" y="215">Address</text>
+<rect x="620" y="180" width="100" height="50" rx="6"/><text x="670" y="205">Payment</text>
+<line x1="520" y1="130" x2="450" y2="180"/><line x1="560" y1="130" x2="560" y2="180"/><line x1="600" y1="130" x2="670" y2="180"/>
+<path class="dash arr" d="M470 110 H280"/><text class="s" x="350" y="98">by id</text>
+<text class="s" x="380" y="315">each dashed boundary = one unit stored, read and replicated together</text>
+</svg></div><figcaption><b>Fig 1.24</b> · Customer and Order aggregates (e-commerce example)</figcaption><p class="draw">✍ Draw it: two dashed boundaries; left holds Customer → Billing Address; right holds Order with three children (Item, Shipping Address, Payment); a dashed arrow "by id" from Order to Customer.</p></figure>
+<ul>
+<li><mark>Why aggregates</mark>: applications usually work with a whole order or a whole customer at once; relational models scatter it across many tables and rebuild it with joins.</li>
+<li>Aggregate boundary is a <mark>design choice</mark> driven by how data is accessed: the same data could be one "customer with all orders" aggregate or separate customer and order aggregates. As the notes put it, aggregation is not a logical property of the data itself — it depends entirely on how an application intends to use that data.</li>
+<li>Links <b>between</b> aggregates are stored as <mark>references by id</mark> (Order holds <code>customerId</code>), not nested copies.</li>
+<li><mark>Aggregate-oriented</mark> databases: <b>key-value</b>, <b>document</b> and <b>column-family</b> stores; they know (and are built around) the aggregate as their unit.</li>
+<li><mark>Aggregate-ignorant</mark> databases: <b>relational</b> and <b>graph</b> databases; they have no notion of aggregate boundaries, which is good when data is accessed in many different ways and relationships matter.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Data models</span><ul>
+<li><span>Aggregate-oriented</span><ul><li><span>Key-value</span></li><li><span>Document</span></li><li><span>Column-family</span></li></ul></li>
+<li><span>Aggregate-ignorant</span><ul><li><span>Relational</span></li><li><span>Graph</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.25</b> · Aggregate-oriented vs aggregate-ignorant data models</figcaption><p class="draw">✍ Draw it: root box, two child boxes, three leaves under "oriented" and two under "ignorant".</p></figure>
+<h4>How each NoSQL type treats the aggregate</h4>
+<ul>
+<li><mark>Key-value</mark>: aggregate is an <b>opaque</b> value under a key; the DB cannot see inside, so lookup is by key only. Aggregate can hold anything.</li>
+<li><mark>Document</mark>: aggregate is a <b>visible</b> document; DB understands its structure, so you can query fields and retrieve parts, but the document structure limits what can be stored.</li>
+<li><mark>Column-family</mark>: a <b>two-level map</b>: row key → column families → columns. The row is the aggregate; column families group parts of it that are read together (e.g. <code>profile</code> and <code>orders</code> of one customer).</li>
+<li><mark>Graph</mark>: breaks data into small nodes and edges and stresses relationships, so there is no aggregate unit (aggregate-ignorant); graph DBs typically support ACID transactions across many nodes.</li>
+</ul>
+<h4>Consequences of aggregate orientation</h4>
+<ul>
+<li><mark>Atomicity per aggregate</mark>: updates to a single aggregate are atomic; transactions spanning several aggregates are generally not supported and must be handled by application code.</li>
+<li><mark>Natural unit of distribution</mark>: a whole aggregate is kept on one node (sharding) and copied as one unit (replication), so a read needs one node.</li>
+<li><mark>Fast for the designed access path</mark> (get order by id), but <mark>awkward for other paths</mark> (e.g. "total sales of a product across all orders" needs scanning many aggregates, often via MapReduce).</li>
+<li><mark>Denormalisation</mark>: some data is duplicated inside aggregates, so updates may need care. A concrete case of exactly this: the same customer address might be copied into the Customer aggregate's billing address, the Order aggregate's shipping address, and again inside the Order's payment details — one real-world value, copied into up to three places instead of referenced once.</li>
+</ul>
+<div class="note"><b>Common mistake:</b> some class notes state flatly that "NoSQL databases don't support ACID transactions". This is stated as an absolute and is too strong. Aggregate-oriented databases DO give ACID guarantees <i>within one aggregate</i> — the same notes say this a line later ("aggregate-oriented databases support the atomic manipulation of a single aggregate at a time") — and several modern products go further still: MongoDB has supported multi-document ACID transactions since version 4.0 (2018), and graph databases such as Neo4j are fully ACID compliant. The accurate, narrower claim is that NoSQL databases generally do not give cheap ACID transactions spanning <i>many</i> aggregates/rows at once (e.g. a banking-style transfer between two accounts) the way an RDBMS does.</div>
+<pre class="code"><code><span class="c">// Order aggregate stored as one document</span>
+{
+  "id": 99,
+  "customerId": 1,
+  "orderItems": [
+    { "productId": 27, "price": 32.45, "productName": "NoSQL Distilled" }
+  ],
+  "shippingAddress": { "city": "Chicago" },
+  "orderPayment": { "method": "card", "txnId": "abelif879rft" }
+}</code></pre>
+<div class="tw"><table>
+<tr><th>Point</th><th>Aggregate-oriented</th><th>Aggregate-ignorant</th></tr>
+<tr><td>Examples</td><td>Key-value, document, column-family</td><td>Relational, graph</td></tr>
+<tr><td>Unit of storage</td><td>Whole aggregate</td><td>Rows / nodes and edges</td></tr>
+<tr><td>Transactions</td><td>Atomic within one aggregate</td><td>ACID across many rows / nodes</td></tr>
+<tr><td>Clusters</td><td>Easy to shard and replicate</td><td>Harder to distribute</td></tr>
+<tr><td>Best when</td><td>Data accessed as a unit in one main way</td><td>Data accessed in many ways, relationship-heavy</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>K</b>eep <b>D</b>ata <b>C</b>lubbed" = Key-value, Document, Column-family are aggregate-oriented; <b>G</b>raph (and relational) <b>G</b>o their own way (ignorant).</div>
+<div class="note"><b>Common mistake:</b> Graph databases are NoSQL but they are not aggregate-oriented; do not list them with key-value, document and column-family when asked for aggregate models.</div>
+<div class="recall"><b>Quick recall</b> Aggregate = related objects handled as one unit; KV (opaque), document (visible), column-family (two-level map) are aggregate-oriented; graph and relational are aggregate-ignorant; atomic per aggregate, aggregate = unit of distribution.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

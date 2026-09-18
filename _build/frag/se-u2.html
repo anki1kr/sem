@@ -1,0 +1,692 @@
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Software Requirements Analysis &amp; Specifications</h2>
+<p class="unit-sub">How we find out WHAT the customer wants, model it (DFD, data dictionary, ER) and write it down as an SRS. One running example throughout: a Student Result Management System (SRMS).</p>
+
+<section class="topic" id="u2-req">
+<h3>2.1 Requirements and their types</h3>
+<p class="hook">A requirement is one thing the software must do, or one condition it must satisfy. <span class="hg">(software se kya chahiye, uski list)</span></p>
+<div class="def"><b>Definition:</b> A <mark>requirement</mark> is a feature of the system or a description of something the system is capable of doing in order to fulfil the system's purpose. IEEE 610.12 defines it as a condition or capability needed by a user to solve a problem or achieve an objective.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Requirements</span><ul>
+<li><span>Functional</span><ul><li><span>Inputs</span></li><li><span>Processing</span></li><li><span>Outputs</span></li></ul></li>
+<li><span>Non-functional</span><ul><li><span>Product</span></li><li><span>Organisational</span></li><li><span>External</span></li></ul></li>
+<li><span>Domain</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.1</b> · Classification of software requirements</figcaption><p class="draw">✍ Draw it: one root box, three children (Functional, Non-functional, Domain), then 3 leaves under the first two.</p></figure>
+<ul>
+<li><mark>Functional requirements</mark>: what the system must DO: inputs, processing, outputs. SRMS example: "The system shall compute the total and grade of each student." <span class="hg">(kaam kya karega)</span></li>
+<li><mark>Non-functional requirements</mark>: HOW WELL it does it: performance, reliability, security, usability, portability. SRMS: "Result of 2,000 students shall be computed within 10 seconds." <span class="hg">(kitna achha karega)</span></li>
+<li><mark>Domain requirements</mark>: come from the application area, not from any one user. SRMS: "A student scoring below the university pass mark in a subject is declared FAIL in that subject."</li>
+<li>Non-functional sub-types (Sommerville): <mark>product</mark> (speed, reliability), <mark>organisational</mark> (standards, process), <mark>external</mark> (legal, ethical, interoperability).</li>
+<li><mark>Stakeholder</mark>: anyone who is affected by or has a say in the system: customer, end users, developers, testers, managers. SRMS stakeholders: students, teachers, exam cell, college management.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>Known</b>Stakeholder believes it must be implemented and says so.</div>
+<div class="b hi"><b>Unknown</b>Forgotten by the stakeholder: not needed now, or needed by another stakeholder.</div>
+<div class="b"><b>Undreamt</b>Stakeholder cannot even think of it due to limited domain knowledge.</div>
+</div></div><figcaption><b>Fig 2.2</b> · Known, unknown and undreamt requirements (Aggarwal &amp; Singh)</figcaption><p class="draw">✍ Draw it: three side-by-side boxes, each with the name and a 5-word meaning.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Functional requirement</th><th>Non-functional requirement</th></tr>
+<tr><td>Meaning</td><td>What the system does</td><td>How well the system does it (quality)</td></tr>
+<tr><td>Describes</td><td>Services, inputs, outputs, behaviour</td><td>Performance, security, reliability, usability</td></tr>
+<tr><td>Test</td><td>Functional (black-box) testing</td><td>Performance, load, security testing</td></tr>
+<tr><td>If missing</td><td>A feature is absent</td><td>System works but is slow / unsafe / unusable</td></tr>
+<tr><td>SRMS example</td><td>Generate marksheet for a roll number</td><td>Marksheet page opens in under 3 seconds</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> K-U-U: <b>K</b>nown = said, <b>U</b>nknown = forgot, <b>U</b>ndreamt = never imagined.</div>
+<div class="note"><b>Common mistake:</b> "The system shall be secure" is NOT a functional requirement just because it says "shall". Security is a quality, so it is non-functional.</div>
+<div class="recall"><b>Quick recall</b> Functional = what, Non-functional = how well, Domain = from the field. Known / Unknown / Undreamt.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-re">
+<h3>2.2 Requirement engineering process</h3>
+<p class="hook">Requirement engineering is the disciplined way of turning a customer's vague idea into a signed, checked document. <span class="hg">(idea se SRS tak ka safar)</span></p>
+<div class="def"><b>Definition:</b> <mark>Requirement engineering</mark> is the systematic use of proven principles, techniques and tools to elicit, analyse, document, review and manage the requirements of a software system. Its output is the Software Requirements Specification (SRS).</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Problem statement</div>
+<div class="n">Requirements elicitation</div>
+<div class="n">Requirements analysis</div>
+<div class="n">Requirements documentation</div>
+<div class="n">Requirements review</div>
+<div class="n t">SRS (approved)</div>
+<div class="n hi">Requirements management<small>runs alongside all steps</small></div>
+</div></div><figcaption><b>Fig 2.3</b> · Crucial process steps of requirement engineering (after Aggarwal &amp; Singh)</figcaption><p class="draw">✍ Draw it: oval "Problem statement", 4 boxes downward (Elicit, Analyse, Document, Review), oval "SRS"; write "Management" as a long box on the side.</p></figure>
+<ul>
+<li><mark>Requirements elicitation</mark>: gathering requirements from stakeholders by interviews, brainstorming, FAST, QFD, use cases. <span class="hg">(nikalwana / collect karna)</span></li>
+<li><mark>Requirements analysis</mark>: studying the gathered requirements, removing conflicts and gaps, and modelling them (context diagram, DFD, data dictionary, ER diagram, prototype).</li>
+<li><mark>Requirements documentation</mark>: writing the final requirements in a standard form: the SRS.</li>
+<li><mark>Requirements review</mark> (validation): customer and developers check the SRS for correctness, completeness and consistency before it is signed. <span class="hg">(sahi likha hai ya nahi)</span></li>
+<li><mark>Requirements management</mark>: controlling changes to requirements during the project, keeping them traceable to design, code and tests.</li>
+<li>Why it matters: an error in requirements found late costs far more to fix than the same error found early, so effort spent here saves rework.</li>
+</ul>
+<div class="note"><b>Common mistake:</b> Some books (Sommerville) list "feasibility study, elicitation and analysis, specification, validation". Same idea, different names; write the Aggarwal &amp; Singh four steps plus management for this syllabus.</div>
+<div class="mn"><b>Mnemonic</b> "Every Artist Draws, Reviews, Manages" = Elicitation, Analysis, Documentation, Review, Management.</div>
+<div class="recall"><b>Quick recall</b> Elicit, Analyse, Document, Review (+ Manage) → SRS.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-elicit">
+<h3>2.3 Requirement elicitation: interviews and brainstorming</h3>
+<p class="hook">Elicitation means drawing requirements out of people's heads. <span class="hg">(logon se pooch-pooch ke requirements nikalna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Requirement elicitation</mark> is the activity of discovering the requirements of a system by communicating with customers, users and other stakeholders. It is also called requirements gathering or requirements capture.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Elicitation techniques</span><ul>
+<li><span>Interviews</span><ul><li><span>Structured</span></li><li><span>Unstructured</span></li></ul></li>
+<li><span>Brainstorming</span></li>
+<li><span>FAST</span></li>
+<li><span>QFD</span></li>
+<li><span>Use case approach</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.4</b> · Requirement elicitation techniques</figcaption><p class="draw">✍ Draw it: root box, 5 children in a row; under "Interviews" add Structured and Unstructured.</p></figure>
+<h4>Interviews</h4>
+<ul>
+<li>Most common technique; analyst talks to stakeholders one-to-one or in small groups.</li>
+<li><mark>Unstructured (open-ended)</mark> interview: no pre-set agenda; free discussion to understand the problem. Good at the start. <span class="hg">(khuli baat-cheet)</span></li>
+<li><mark>Structured</mark> interview: a prepared agenda of fairly open questions; every interviewee answers the same set. Good for comparing views.</li>
+<li>Groups to interview (Aggarwal &amp; Singh): entry-level personnel, middle-level stakeholders, managers, and the <mark>users of the software</mark> (most important, they use it daily).</li>
+<li>Limitations: interviewee may not know what to ask for; takes time; answers depend on the interviewer's skill.</li>
+</ul>
+<h4>Brainstorming</h4>
+<ul>
+<li><mark>Brainstorming</mark>: a group technique to generate many new ideas quickly and share them freely.</li>
+<li>A <mark>facilitator</mark> leads, handles group bias and conflicts; one person records every idea where all can see it.</li>
+<li>Rule: <mark>no criticism</mark> during the session; even wild ideas are written down. <span class="hg">(koi idea galat nahi)</span></li>
+<li>Output: a list of ideas, which is then reviewed and <mark>prioritised</mark>; duplicate or impossible ideas are removed.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Structured interview</th><th>Unstructured interview</th></tr>
+<tr><td>Agenda</td><td>Pre-decided questions</td><td>No fixed agenda</td></tr>
+<tr><td>Best used</td><td>After basic understanding exists</td><td>Early, to explore the problem</td></tr>
+<tr><td>Comparison of answers</td><td>Easy</td><td>Difficult</td></tr>
+<tr><td>Risk</td><td>May miss unexpected points</td><td>May drift off topic</td></tr>
+</table></div>
+<div class="ex"><b>Example (SRMS)</b><div class="step">Interview teacher: "How do you submit internal marks today?" → requirement: bulk upload of marks.</div><div class="step">Brainstorm with exam cell: "SMS result alert", "re-evaluation request", "rank list" → prioritised later.</div><span class="ans">Interviews give depth; brainstorming gives breadth.</span></div>
+<div class="recall"><b>Quick recall</b> Interview = structured / unstructured. Brainstorming = facilitator, no criticism, record all, prioritise later.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-fast">
+<h3>2.4 FAST (Facilitated Application Specification Technique)</h3>
+<p class="hook">FAST is a well-run joint meeting where customers and developers build the requirement list together. <span class="hg">(dono team ek table pe)</span></p>
+<div class="def"><b>Definition:</b> <mark>FAST</mark> (Facilitated Application Specification Technique) is a team-oriented elicitation approach in which customers and developers work together in a facilitated meeting to identify the problem, propose elements of the solution, negotiate different approaches and specify a preliminary set of requirements.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Product request prepared</div>
+<div class="n">Each attendee makes lists<small>objects, services, constraints, performance</small></div>
+<div class="n">Lists presented and combined</div>
+<div class="n">Consensus list made</div>
+<div class="n hi">Sub-teams write mini-specs</div>
+<div class="n">Mini-specs discussed, refined</div>
+<div class="n">Issues list, validation criteria</div>
+<div class="n t">Draft specification</div>
+</div></div><figcaption><b>Fig 2.5</b> · Flow of a FAST meeting</figcaption><p class="draw">✍ Draw it: oval "Product request", 6 boxes top-to-bottom (lists, combine, consensus, mini-specs, refine, issues), oval "Draft spec".</p></figure>
+<h4>Guidelines</h4>
+<ul>
+<li>Meeting held at a <mark>neutral site</mark>; attended by both developers and customers.</li>
+<li>Rules for <mark>preparation and participation</mark> are fixed in advance.</li>
+<li>An <mark>agenda</mark> is formal enough to cover all important points, informal enough to allow free flow of ideas.</li>
+<li>A <mark>facilitator</mark> (customer, developer or an outsider) controls the meeting.</li>
+<li>A <mark>definition mechanism</mark> is used: worksheets, flip charts, wall stickers, electronic board or chat room.</li>
+</ul>
+<h4>The lists every participant brings</h4>
+<div class="tw"><table>
+<tr><th>List</th><th>Meaning</th><th>SRMS example</th></tr>
+<tr><td>Objects</td><td>Things around, produced by, or used by the system</td><td>Student, marks, marksheet, subject</td></tr>
+<tr><td>Services</td><td>Processes / functions acting on objects</td><td>Register student, enter marks, compute result</td></tr>
+<tr><td>Constraints</td><td>Cost, size, business rules</td><td>Pass mark rule, runs on college server</td></tr>
+<tr><td>Performance criteria</td><td>Speed, accuracy</td><td>Result of a class in under 10 s, zero calculation error</td></tr>
+</table></div>
+<ul>
+<li><mark>Mini-specification</mark>: a short elaboration of one list entry (an object or service) written by a sub-team, then presented to all for additions and deletions.</li>
+<li>Unresolved points go to an <mark>issues list</mark>; each attendee also writes <mark>validation criteria</mark>; one sub-team writes the complete draft specification.</li>
+<li>Advantage: shared ownership, fewer misunderstandings. Limitation: needs a skilled facilitator and everyone's time together.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> "OSCP" lists = <b>O</b>bjects, <b>S</b>ervices, <b>C</b>onstraints, <b>P</b>erformance criteria.</div>
+<div class="note"><b>Common mistake:</b> FAST here is NOT the "Function Analysis System Technique" of value engineering. In software requirements it means Facilitated Application Specification Technique.</div>
+<div class="recall"><b>Quick recall</b> Neutral site + facilitator + agenda; lists OSCP → consensus → mini-specs → draft spec.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-qfd">
+<h3>2.5 QFD (Quality Function Deployment)</h3>
+<p class="hook">QFD turns the voice of the customer into technical requirements, ranked by what the customer values most. <span class="hg">(customer ki awaaz ko technical bhasha mein)</span></p>
+<div class="def"><b>Definition:</b> <mark>Quality Function Deployment (QFD)</mark> is a quality management technique that translates the needs of the customer into technical requirements for software, with emphasis on maximising customer satisfaction. It originated in Japanese manufacturing in the 1970s.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>Normal</b>Stated explicitly by customer. Present = satisfied.<br>SRMS: print marksheet.</div>
+<div class="b"><b>Expected</b>So basic the customer never states them. Absent = very dissatisfied.<br>SRMS: totals are always correct.</div>
+<div class="b hi"><b>Exciting</b>Beyond expectations. Present = delighted.<br>SRMS: SMS alert on result.</div>
+</div></div><figcaption><b>Fig 2.6</b> · Three types of requirements identified by QFD</figcaption><p class="draw">✍ Draw it: three boxes Normal, Expected, Exciting, each with one line meaning and one example.</p></figure>
+<h4>Steps of QFD (Aggarwal &amp; Singh)</h4>
+<ol>
+<li><mark>Identify all stakeholders</mark> (customers, users, developers); note initial requirements and constraints.</li>
+<li><mark>List requirements</mark> from the customer's point of view.</li>
+<li>Assign a <mark>value of importance</mark> to each requirement, e.g. 5 very important, 4 important, 3 nice to have, 2 not important, 1 unrealistic / needs exploration.</li>
+<li><mark>Translate</mark> high-value customer requirements into technical requirements, and classify the final list: achievable now, deferred (with reason), impossible (dropped).</li>
+</ol>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 360" width="760">
+<polygon points="300,100 560,100 430,30"/><text x="430" y="78">Correlations</text>
+<rect x="300" y="100" width="260" height="50"/><text x="430" y="125">Technical req. (HOWs)</text>
+<rect x="60" y="150" width="180" height="140"/><text x="150" y="210">Customer req.</text><text x="150" y="230">(WHATs)</text>
+<rect x="240" y="150" width="60" height="140"/><text x="270" y="220">Imp.</text>
+<rect class="hi" x="300" y="150" width="260" height="140"/><text x="430" y="210">Relationship</text><text x="430" y="230">matrix</text>
+<rect x="560" y="150" width="140" height="140"/><text x="630" y="210">Competitor</text><text x="630" y="230">assessment</text>
+<rect x="300" y="290" width="260" height="50"/><text x="430" y="315">Target values (HOW MUCH)</text>
+</svg></div><figcaption><b>Fig 2.7</b> · Simplified House of Quality (the main QFD matrix)</figcaption><p class="draw">✍ Draw it: triangle roof on a top row (HOWs); below it a big middle box (matrix) with WHATs + Imp. on the left, competitor box on the right, target values at the bottom.</p></figure>
+<div class="ex"><b>Example (SRMS importance rating)</b>
+<div class="step">Correct grade calculation ........ 5 (expected)</div>
+<div class="step">Printable marksheet .............. 5 (normal)</div>
+<div class="step">Marks upload by Excel file ........ 4 (normal)</div>
+<div class="step">SMS alert when result declared .... 3 (exciting)</div>
+<div class="step">Voice-based result enquiry ........ 1 (needs exploration, deferred)</div>
+<span class="ans">Build the 5s and 4s first; defer or drop the 1s.</span></div>
+<div class="mn"><b>Mnemonic</b> "No Extra Excitement": <b>N</b>ormal, <b>E</b>xpected, <b>E</b>xciting.</div>
+<div class="note"><b>Common mistake:</b> Expected requirements are not "less important" because nobody states them. Their absence causes the most dissatisfaction.</div>
+<div class="recall"><b>Quick recall</b> QFD = customer voice → technical requirements. Normal / Expected / Exciting. Rate importance 1 to 5. House of Quality = WHATs vs HOWs.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-usecase">
+<h3>2.6 Use case approach and comparison of techniques</h3>
+<p class="hook">A use case tells the story of how a user and the system interact to get one job done. <span class="hg">(user system se kya karwata hai, step by step)</span></p>
+<div class="def"><b>Definition:</b> A <mark>use case</mark> is a structured description of a sequence of interactions between an actor and the system that yields a result of value to that actor. The use case approach (introduced by Ivar Jacobson) captures requirements from the user's point of view.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 340" width="760">
+<rect class="none" x="220" y="20" width="320" height="300" rx="8"/><text class="b" x="380" y="40">SRMS</text>
+<ellipse cx="380" cy="80" rx="90" ry="22"/><text x="380" y="80">Register Student</text>
+<ellipse cx="380" cy="140" rx="90" ry="22"/><text x="380" y="140">Compute Result</text>
+<ellipse cx="380" cy="200" rx="90" ry="22"/><text x="380" y="200">Enter Marks</text>
+<ellipse class="hi" cx="380" cy="260" rx="90" ry="22"/><text x="380" y="260">View Result</text>
+<circle cx="100" cy="62" r="12"/><path d="M100 74 V110 M82 88 H118 M100 110 L85 135 M100 110 L115 135"/><text x="100" y="152">Exam Cell</text>
+<circle cx="100" cy="202" r="12"/><path d="M100 214 V250 M82 228 H118 M100 250 L85 275 M100 250 L115 275"/><text x="100" y="292">Teacher</text>
+<circle cx="660" cy="182" r="12"/><path d="M660 194 V230 M642 208 H678 M660 230 L645 255 M660 230 L675 255"/><text x="660" y="272">Student</text>
+<line x1="120" y1="88" x2="290" y2="80"/>
+<line x1="120" y1="92" x2="290" y2="140"/>
+<line x1="120" y1="228" x2="290" y2="200"/>
+<line x1="640" y1="208" x2="470" y2="260"/>
+</svg></div><figcaption><b>Fig 2.8</b> · Use case diagram of the Student Result Management System</figcaption><p class="draw">✍ Draw it: big rectangle "SRMS" with 4 ovals inside; stick figures outside (Exam Cell, Teacher left; Student right); plain lines from actor to oval.</p></figure>
+<ul>
+<li><mark>Actor</mark>: an external role (person or another system) that interacts with the system; drawn as a stick figure. <span class="hg">(role, naam nahi)</span></li>
+<li><mark>Use case</mark>: one goal the actor achieves; drawn as an ellipse with a verb phrase ("Enter Marks").</li>
+<li><mark>System boundary</mark>: rectangle separating the system from actors.</li>
+<li><mark>Association</mark>: line between actor and use case. Relationships between use cases: <code>&lt;&lt;include&gt;&gt;</code> (always uses another) and <code>&lt;&lt;extend&gt;&gt;</code> (optional extra behaviour).</li>
+<li><mark>Use case description</mark> (template): name, brief description, actors, pre-condition, basic flow of events, alternative flows, post-condition, special requirements.</li>
+</ul>
+<div class="ex"><b>Example: use case "Enter Marks"</b>
+<div class="step">Actor: Teacher. Pre-condition: teacher is logged in.</div>
+<div class="step">Basic flow: 1 select subject → 2 system lists roll numbers → 3 teacher types marks → 4 system validates 0 to 100 → 5 marks saved.</div>
+<div class="step">Alternative flow: marks out of range → error shown, re-enter.</div>
+<span class="ans">Post-condition: marks stored for every student of that subject.</span></div>
+<h4>Comparison of elicitation techniques</h4>
+<div class="tw"><table>
+<tr><th>Technique</th><th>Who takes part</th><th>Main output</th><th>Best for</th><th>Limitation</th></tr>
+<tr><td>Interview</td><td>Analyst + one stakeholder</td><td>Notes, stated needs</td><td>Depth, individual views</td><td>Time-consuming, misses unknowns</td></tr>
+<tr><td>Brainstorming</td><td>Group + facilitator</td><td>Prioritised idea list</td><td>New ideas, undreamt needs</td><td>Can be dominated by a few</td></tr>
+<tr><td>FAST</td><td>Customers + developers</td><td>Mini-specs, draft specification</td><td>Joint agreement early</td><td>Needs skilled facilitator</td></tr>
+<tr><td>QFD</td><td>Stakeholders, rated</td><td>Ranked technical requirements</td><td>Customer satisfaction, priority</td><td>Matrix work is heavy</td></tr>
+<tr><td>Use case</td><td>Users (actors)</td><td>Use case diagram + descriptions</td><td>Functional behaviour, test cases</td><td>Weak for non-functional needs</td></tr>
+</table></div>
+<div class="recall"><b>Quick recall</b> Actor (stick figure) + use case (ellipse) + boundary (rectangle). Interview = depth, Brainstorm = ideas, FAST = joint, QFD = priority, Use case = behaviour.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-analysis">
+<h3>2.7 Requirements analysis</h3>
+<p class="hook">Analysis cleans the raw requirement list: removes conflicts, fills gaps and models the system on paper. <span class="hg">(kachcha maal ko saaf karna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Requirements analysis</mark> is the process of studying and refining the elicited requirements to remove inconsistencies, ambiguities and omissions, and representing them with models so that the customer and developer have the same understanding.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Draw context diagram</div><div class="n">Develop prototype<small>optional</small></div><div class="n hi">Model the requirements</div><div class="n">Finalise the requirements</div>
+</div></div><figcaption><b>Fig 2.9</b> · Steps of requirements analysis</figcaption><p class="draw">✍ Draw it: four boxes left to right joined by arrows: Context diagram → Prototype → Model → Finalise.</p></figure>
+<ul>
+<li><mark>Draw the context diagram</mark>: whole system as one bubble with external entities around it; fixes the system boundary.</li>
+<li><mark>Develop prototype</mark> (optional): a quick working model / screen mock-up so the customer can react to something visible. <span class="hg">(demo dikha ke feedback)</span></li>
+<li><mark>Model the requirements</mark>: graphical models of functions and data: DFD, data dictionary, ER diagram (also state diagrams, decision tables).</li>
+<li><mark>Finalise the requirements</mark>: inconsistencies and ambiguities resolved with the customer; the agreed set goes into the SRS.</li>
+<li>Typical problems found: conflicting requirements (two users want opposite things), vague words ("fast", "user-friendly"), missing cases (what if a student is absent?).</li>
+</ul>
+<div class="recall"><b>Quick recall</b> Context diagram → Prototype → Model (DFD, DD, ER) → Finalise.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-dfd">
+<h3>2.8 Data Flow Diagrams (DFD)</h3>
+<p class="hook">A DFD shows how data enters, moves through, is stored in and leaves a system. It shows data, not control. <span class="hg">(data kahan se aaya, kahan gaya)</span></p>
+<div class="def"><b>Definition:</b> A <mark>Data Flow Diagram (DFD)</mark> is a graphical representation of the flow of data through a system, showing the external entities, processes that transform data, data stores and the data flows between them. It is also called a bubble chart.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 160" width="760">
+<circle cx="95" cy="60" r="34"/><text x="95" y="60">1.0</text>
+<text class="b" x="95" y="118">Process</text><text class="s" x="95" y="138">circle / bubble</text>
+<rect x="225" y="38" width="120" height="44"/><text x="285" y="60">Student</text>
+<text class="b" x="285" y="118">External entity</text><text class="s" x="285" y="138">rectangle</text>
+<path d="M415 42 H535 M415 78 H535 M415 42 V78 M445 42 V78"/><text x="430" y="60">D1</text><text x="490" y="60">Marks</text>
+<text class="b" x="475" y="118">Data store</text><text class="s" x="475" y="138">open-ended box</text>
+<path class="arr" d="M600 62 H730"/><text x="665" y="46">marks</text>
+<text class="b" x="665" y="118">Data flow</text><text class="s" x="665" y="138">named arrow</text>
+</svg></div><figcaption><b>Fig 2.10</b> · DFD symbols (Yourdon / DeMarco notation)</figcaption><p class="draw">✍ Draw it: circle, rectangle, two parallel lines closed on the left, labelled arrow; write the name under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Symbol</th><th>Name</th><th>Meaning</th><th>Naming rule</th></tr>
+<tr><td>Circle</td><td>Process</td><td>Transforms input data into output data</td><td>Verb phrase + number: "3.0 Compute Result"</td></tr>
+<tr><td>Rectangle</td><td>External entity (source / sink)</td><td>Person or system outside, sends or receives data</td><td>Noun: "Teacher"</td></tr>
+<tr><td>Parallel lines</td><td>Data store</td><td>Data at rest (file, table)</td><td>Noun + id: "D2 Marks"</td></tr>
+<tr><td>Arrow</td><td>Data flow</td><td>Data in motion between components</td><td>Noun: "marks record"</td></tr>
+</table></div>
+<p>Gane and Sarson notation draws a process as a rounded rectangle; the meaning is the same.</p>
+<h4>Rules for drawing a DFD</h4>
+<ul>
+<li>Every process must have <mark>at least one input and one output</mark> (no black hole, no miracle). <span class="hg">(kuch aaye bina kuch nahi niklega)</span></li>
+<li>Data cannot flow <mark>directly</mark> entity → entity, entity → store, or store → store; a process must be in between.</li>
+<li>Every data flow is <mark>named</mark> (except flows into/out of a store may take the store's name).</li>
+<li>A DFD shows <mark>no control</mark>: no loops, no decisions, no sequence. It is not a flowchart.</li>
+<li><mark>Balancing</mark>: inputs and outputs of a parent process must equal the net inputs and outputs of its child diagram.</li>
+<li>Processes are numbered; child processes of 3.0 are 3.1, 3.2, 3.3 (<mark>leveling</mark>).</li>
+</ul>
+<h4>Levels of DFD</h4>
+<ul>
+<li><mark>Level 0 = context diagram</mark>: the whole system as ONE process, with all external entities and flows. No data stores.</li>
+<li><mark>Level 1</mark>: the single bubble exploded into main processes (usually 3 to 7), with data stores.</li>
+<li><mark>Level 2</mark>: one level-1 process exploded further. Stop when each process is simple enough to describe in a mini-spec.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 260" width="760">
+<rect x="40" y="48" width="140" height="44"/><text x="110" y="70">Student</text>
+<rect x="40" y="188" width="140" height="44"/><text x="110" y="210">Teacher</text>
+<rect x="580" y="128" width="140" height="44"/><text x="650" y="150">Exam Cell</text>
+<circle class="hi" cx="380" cy="150" r="70"/><text x="380" y="116">0</text><text x="380" y="138">Student Result</text><text x="380" y="156">Management</text><text x="380" y="174">System</text>
+<path class="arr" d="M180 64 L330 100"/><text x="262" y="50">enrolment details</text>
+<path class="arr" d="M318 118 L182 88"/><text x="250" y="124">marksheet</text>
+<path class="arr" d="M180 208 L320 188"/><text x="250" y="222">marks</text>
+<path class="arr" d="M450 150 H578"/><text x="515" y="134">result report</text>
+</svg></div><figcaption><b>Fig 2.11</b> · Level 0 DFD (context diagram) of SRMS</figcaption><p class="draw">✍ Draw it: one big circle "0 SRMS" in the centre; Student and Teacher boxes on the left, Exam Cell on the right; 4 named arrows.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 460" width="760">
+<rect x="20" y="58" width="120" height="44"/><text x="80" y="80">Student</text>
+<rect x="20" y="368" width="120" height="44"/><text x="80" y="390">Teacher</text>
+<rect x="600" y="58" width="120" height="44"/><text x="660" y="80">Exam Cell</text>
+<circle cx="270" cy="80" r="46"/><text x="270" y="64">1.0</text><text x="270" y="80">Register</text><text x="270" y="96">Student</text>
+<circle cx="270" cy="390" r="46"/><text x="270" y="374">2.0</text><text x="270" y="390">Enter</text><text x="270" y="406">Marks</text>
+<circle cx="640" cy="390" r="46"/><text x="640" y="374">3.0</text><text x="640" y="390">Compute</text><text x="640" y="406">Result</text>
+<circle class="hi" cx="450" cy="230" r="46"/><text x="450" y="214">4.0</text><text x="450" y="230">Generate</text><text x="450" y="246">Reports</text>
+<path d="M390 62 H510 M390 98 H510 M390 62 V98 M420 62 V98"/><text x="405" y="80">D1</text><text x="465" y="80">Students</text>
+<path d="M390 372 H510 M390 408 H510 M390 372 V408 M420 372 V408"/><text x="405" y="390">D2</text><text x="465" y="390">Marks</text>
+<path d="M580 212 H700 M580 248 H700 M580 212 V248 M610 212 V248"/><text x="595" y="230">D3</text><text x="655" y="230">Results</text>
+<path class="arr" d="M140 80 H222"/><text x="182" y="50">enrolment</text><text x="182" y="64">details</text>
+<path class="arr" d="M316 80 H388"/><text x="353" y="50">student</text><text x="353" y="64">record</text>
+<path class="arr" d="M140 390 H222"/><text x="182" y="374">marks</text>
+<path class="arr" d="M316 390 H388"/><text x="353" y="374">marks</text>
+<path class="arr" d="M510 390 H592"/><text x="552" y="374">marks</text>
+<path class="arr" d="M640 344 V250"/><text class="l" x="650" y="296">result</text>
+<path class="arr" d="M580 230 H498"/><text x="538" y="214">result</text>
+<path class="arr" d="M450 98 V182"/><text class="l" x="460" y="140">student data</text>
+<path class="arr" d="M404 230 H80 V103"/><text x="240" y="216">marksheet</text>
+<path class="arr" d="M483 197 L640 103"/><text x="620" y="160">result report</text>
+</svg></div><figcaption><b>Fig 2.12</b> · Level 1 DFD of SRMS (balanced with Fig 2.11)</figcaption><p class="draw">✍ Draw it: 4 circles (1.0 Register, 2.0 Enter Marks, 3.0 Compute, 4.0 Reports), 3 stores (D1 Students, D2 Marks, D3 Results), same 3 entities as level 0; join with named arrows.</p></figure>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Level 0: SRMS</span><ul>
+<li><span>1.0 Register</span></li>
+<li><span>2.0 Enter Marks</span></li>
+<li><span>3.0 Compute Result</span><ul><li><span>3.1 Fetch marks</span></li><li><span>3.2 Find total</span></li><li><span>3.3 Assign grade</span></li></ul></li>
+<li><span>4.0 Reports</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.13</b> · Leveling: level 0 → level 1 → level 2 (process 3.0 exploded)</figcaption><p class="draw">✍ Draw it: root "Level 0", four level-1 boxes, three level-2 boxes under 3.0 numbered 3.1 to 3.3.</p></figure>
+<div class="ex"><b>Balancing check (Fig 2.11 vs Fig 2.12)</b>
+<div class="step">Level 0 inputs : enrolment details, marks</div>
+<div class="step">Level 1 inputs from entities : enrolment details (to 1.0), marks (to 2.0)</div>
+<div class="step">Level 0 outputs : marksheet, result report</div>
+<div class="step">Level 1 outputs to entities : marksheet, result report (both from 4.0)</div>
+<span class="ans">Same external flows on both levels → DFD is balanced.</span></div>
+<div class="tw"><table>
+<tr><th>Basis</th><th>DFD</th><th>Flowchart</th></tr>
+<tr><td>Shows</td><td>Flow of data</td><td>Flow of control (steps)</td></tr>
+<tr><td>Decisions / loops</td><td>Not shown</td><td>Shown (diamond, loop back)</td></tr>
+<tr><td>Parallel activity</td><td>Processes may run in parallel</td><td>Sequential</td></tr>
+<tr><td>Levels</td><td>Hierarchical (level 0, 1, 2)</td><td>Usually a single level</td></tr>
+<tr><td>Used in</td><td>Requirements analysis</td><td>Program design</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "PEDS" symbols: <b>P</b>rocess (circle), <b>E</b>ntity (rectangle), <b>D</b>ata store (parallel lines), <b>S</b>ignal of data = flow (arrow).</div>
+<div class="note"><b>Common mistake:</b> Drawing an arrow straight from "Teacher" to "D2 Marks". An entity can never write to a store directly; the data must pass through a process (2.0 Enter Marks).</div>
+<div class="recall"><b>Quick recall</b> 4 symbols. Level 0 = one bubble, no stores. Level 1 = main processes + stores. Balance parent and child. No control flow.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-dd">
+<h3>2.9 Data dictionary</h3>
+<p class="hook">The data dictionary is the glossary of every data item named in the DFD, written in a precise notation. <span class="hg">(DFD ke har naam ka matlab)</span></p>
+<div class="def"><b>Definition:</b> A <mark>data dictionary</mark> is a repository that contains descriptions of all data objects used or produced by the software, i.e. every data flow, data store and data element in the DFD, together with their composition, aliases and usage.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>=</b>is composed of / is equivalent to</div>
+<div class="b"><b>+</b>and</div>
+<div class="b"><b>[ a | b ]</b>either a or b (select one)</div>
+<div class="b"><b>{ x }</b>iteration: x repeated 0 or more times; 1{x}6 = 1 to 6 times</div>
+<div class="b"><b>( x )</b>optional: x may be present or absent</div>
+<div class="b"><b>* text *</b>comment</div>
+</div></div><figcaption><b>Fig 2.14</b> · Data dictionary notation</figcaption><p class="draw">✍ Draw it: a 2 x 3 grid of boxes, symbol on top, meaning below.</p></figure>
+<ul>
+<li><mark>Purpose</mark>: gives one precise meaning to every name, so analysts, designers, programmers and testers use the same terms. <span class="hg">(sab ek hi bhasha bolein)</span></li>
+<li>Removes <mark>ambiguity</mark> and duplicate names (aliases); helps check DFD consistency and later database design.</li>
+<li>Typical <mark>contents</mark> of an entry: name, aliases, where used / how used (input, output, store), content description (in notation), supplementary information (type, range, default).</li>
+<li>Entries exist for data flows, data stores and elementary data items (the smallest units, e.g. roll_no).</li>
+<li>Usually maintained with a CASE tool so that it stays consistent with the diagrams.</li>
+</ul>
+<div class="ex"><b>Worked entries for the SRMS DFD (Fig 2.12)</b>
+<div class="step">enrolment_details = roll_no + student_name + course + semester + (phone_no)</div>
+<div class="step">student_name = first_name + (middle_name) + last_name</div>
+<div class="step">marks = roll_no + subject_code + marks_obtained</div>
+<div class="step">marks_obtained = * integer, range 0 to 100 *</div>
+<div class="step">result_record = roll_no + 1{subject_code + marks_obtained}8 + total + result_status</div>
+<div class="step">result_status = [ "PASS" | "FAIL" ]</div>
+<div class="step">marksheet = student_name + roll_no + {subject_code + marks_obtained} + total + result_status</div>
+<div class="step">result_report = semester + {roll_no + total + result_status}</div>
+<div class="step">roll_no = * 8-digit university roll number; alias: enrolment_no *</div>
+<span class="ans">Every arrow and store name in Fig 2.12 now has one exact definition.</span></div>
+<div class="tw"><table>
+<tr><th>Field</th><th>Entry for "marks_obtained"</th></tr>
+<tr><td>Name</td><td>marks_obtained</td></tr>
+<tr><td>Aliases</td><td>score</td></tr>
+<tr><td>Where / how used</td><td>Input to 2.0 Enter Marks; stored in D2 Marks; read by 3.0 Compute Result</td></tr>
+<tr><td>Content description</td><td>marks_obtained = * integer *</td></tr>
+<tr><td>Supplementary info</td><td>Range 0 to 100; absent student recorded separately</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "Equal Plus, Square Choice, Curly Repeat, Round Optional, Star Comment".</div>
+<div class="note"><b>Common mistake:</b> Mixing up { } and ( ). Curly braces mean REPEAT (many subjects); round brackets mean OPTIONAL (middle name).</div>
+<div class="recall"><b>Quick recall</b> = composed of, + and, [ | ] choose one, { } repeat, ( ) optional, * * comment.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-er">
+<h3>2.10 Entity-Relationship (ER) diagrams</h3>
+<p class="hook">A DFD models what the system does with data; an ER diagram models what the data itself is and how pieces of data are related. <span class="hg">(data ke beech rishte)</span></p>
+<div class="def"><b>Definition:</b> An <mark>Entity-Relationship (ER) diagram</mark> is a graphical data model, proposed by Peter Chen (1976), that represents the entities of a system, their attributes and the relationships among entities.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 240" width="760">
+<rect x="40" y="40" width="110" height="40"/><text x="95" y="60">Student</text>
+<text class="b" x="95" y="105">Entity</text>
+<rect x="225" y="40" width="120" height="40"/><rect x="231" y="46" width="108" height="28"/><text x="285" y="60">Dependent</text>
+<text class="b" x="285" y="105">Weak entity</text>
+<polygon points="415,60 475,34 535,60 475,86"/><text x="475" y="60">Takes</text>
+<text class="b" x="475" y="105">Relationship</text>
+<polygon points="600,60 665,32 730,60 665,88"/><polygon points="614,60 665,38 716,60 665,82"/><text x="665" y="60">Has</text>
+<text class="b" x="665" y="105">Identifying rel.</text>
+<ellipse cx="95" cy="160" rx="55" ry="22"/><text x="95" y="160">Name</text>
+<text class="b" x="95" y="205">Attribute</text>
+<ellipse cx="285" cy="160" rx="55" ry="22"/><text x="285" y="158">Roll_No</text><line x1="257" y1="170" x2="313" y2="170"/>
+<text class="b" x="285" y="205">Key attribute</text>
+<ellipse cx="475" cy="160" rx="55" ry="22"/><ellipse cx="475" cy="160" rx="48" ry="16"/><text x="475" y="160">Phone</text>
+<text class="b" x="475" y="205">Multivalued</text>
+<ellipse class="dash" cx="665" cy="160" rx="55" ry="22"/><text x="665" y="160">Age</text>
+<text class="b" x="665" y="205">Derived</text>
+</svg></div><figcaption><b>Fig 2.15</b> · Chen notation symbols for ER diagrams</figcaption><p class="draw">✍ Draw it: row 1 rectangle, double rectangle, diamond, double diamond; row 2 ellipse, ellipse with underlined text, double ellipse, dashed ellipse.</p></figure>
+<h4>Entities and attributes</h4>
+<ul>
+<li><mark>Entity</mark>: a real-world object with independent existence about which data is stored (Student, Subject). Entity set = collection of similar entities.</li>
+<li><mark>Weak entity</mark>: cannot be uniquely identified by its own attributes; depends on an owner entity through an identifying relationship (e.g. Dependent of an Employee). Double rectangle.</li>
+<li><mark>Key attribute</mark>: uniquely identifies each entity (Roll_No); underlined.</li>
+<li><mark>Composite attribute</mark>: can be divided into sub-parts (Name = First + Last); sub-ellipses attached to it.</li>
+<li><mark>Multivalued attribute</mark>: can hold many values for one entity (Phone numbers); double ellipse.</li>
+<li><mark>Derived attribute</mark>: computed from another attribute (Age from DOB, Total from marks); dashed ellipse. <span class="hg">(store nahi, calculate hota hai)</span></li>
+</ul>
+<h4>Relationships</h4>
+<ul>
+<li><mark>Relationship</mark>: an association among entities ("Student Takes Subject"); diamond. A relationship may have its own attribute (Marks on Takes).</li>
+<li><mark>Degree</mark>: number of entity sets taking part: unary (1, e.g. Student mentors Student), binary (2, most common), ternary (3).</li>
+<li><mark>Cardinality</mark>: maximum number of entities on one side related to one entity on the other side: 1:1, 1:N, M:N.</li>
+<li><mark>Participation</mark>: total (every entity must participate; double line) or partial (some may not; single line).</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>One-to-one (1:1)</b>One student has one ID card; one ID card belongs to one student.</div>
+<div class="b"><b>One-to-many (1:N)</b>One teacher teaches many subjects; each subject is taught by one teacher.</div>
+<div class="b hi"><b>Many-to-many (M:N)</b>A student takes many subjects; a subject is taken by many students.</div>
+</div></div><figcaption><b>Fig 2.16</b> · Cardinality ratios with SRMS examples</figcaption><p class="draw">✍ Draw it: three boxes 1:1, 1:N, M:N, each with a one-line example.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 430" width="760">
+<rect class="hi" x="40" y="200" width="120" height="40"/><text x="100" y="220">STUDENT</text>
+<polygon points="235,220 290,192 345,220 290,248"/><text x="290" y="220">Takes</text>
+<rect class="hi" x="390" y="200" width="120" height="40"/><text x="450" y="220">SUBJECT</text>
+<polygon points="542,220 590,194 638,220 590,246"/><text x="590" y="220">Teaches</text>
+<rect class="hi" x="660" y="200" width="80" height="40"/><text x="700" y="220">TEACHER</text>
+<line x1="160" y1="220" x2="235" y2="220"/><line x1="345" y1="220" x2="390" y2="220"/>
+<line x1="510" y1="217" x2="542" y2="217"/><line x1="510" y1="223" x2="542" y2="223"/>
+<line x1="638" y1="220" x2="660" y2="220"/>
+<text class="b" x="180" y="206">M</text><text class="b" x="372" y="206">N</text><text class="b" x="526" y="204">N</text><text class="b" x="649" y="206">1</text>
+<ellipse cx="65" cy="125" rx="42" ry="20"/><text x="65" y="123">Roll_No</text><line x1="37" y1="133" x2="93" y2="133"/>
+<ellipse cx="175" cy="125" rx="40" ry="20"/><text x="175" y="125">Name</text>
+<ellipse cx="120" cy="50" rx="40" ry="18"/><text x="120" y="50">First</text>
+<ellipse cx="225" cy="50" rx="40" ry="18"/><text x="225" y="50">Last</text>
+<ellipse cx="70" cy="310" rx="42" ry="20"/><ellipse cx="70" cy="310" rx="36" ry="14"/><text x="70" y="310">Phone</text>
+<ellipse cx="175" cy="320" rx="38" ry="18"/><text x="175" y="320">DOB</text>
+<ellipse class="dash" cx="130" cy="390" rx="36" ry="18"/><text x="130" y="390">Age</text>
+<ellipse cx="290" cy="120" rx="40" ry="20"/><text x="290" y="120">Marks</text>
+<ellipse cx="450" cy="125" rx="48" ry="20"/><text x="450" y="123">Sub_Code</text><line x1="416" y1="133" x2="484" y2="133"/>
+<ellipse cx="450" cy="320" rx="38" ry="18"/><text x="450" y="320">Title</text>
+<ellipse cx="700" cy="140" rx="40" ry="20"/><text x="700" y="138">Emp_ID</text><line x1="676" y1="148" x2="724" y2="148"/>
+<line x1="65" y1="145" x2="85" y2="200"/><line x1="175" y1="145" x2="140" y2="200"/>
+<line x1="160" y1="108" x2="130" y2="68"/><line x1="190" y1="108" x2="222" y2="68"/>
+<line x1="70" y1="290" x2="85" y2="240"/><line x1="170" y1="302" x2="140" y2="240"/><line x1="130" y1="372" x2="110" y2="240"/>
+<line x1="290" y1="140" x2="290" y2="192"/>
+<line x1="450" y1="145" x2="450" y2="200"/><line x1="450" y1="240" x2="450" y2="302"/>
+<line x1="700" y1="160" x2="700" y2="200"/>
+</svg></div><figcaption><b>Fig 2.17</b> · ER diagram of SRMS (Student M:N Subject via Takes; Teacher 1:N Subject via Teaches)</figcaption><p class="draw">✍ Draw it: 3 rectangles in a row with 2 diamonds between; ellipses around (underline keys, double ellipse Phone, dashed Age, First/Last under Name, Marks on Takes); write M, N, N, 1; double line Subject to Teaches.</p></figure>
+<ul>
+<li>Reading Fig 2.17: a student takes many subjects and a subject is taken by many students (M:N); <mark>Marks</mark> belongs to the pair (student, subject), so it is an attribute of the relationship.</li>
+<li>One teacher teaches many subjects (1:N). The double line shows <mark>total participation</mark> of SUBJECT: every subject must have a teacher.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>DFD</th><th>ER diagram</th></tr>
+<tr><td>Models</td><td>Processes and flow of data</td><td>Structure of data and relationships</td></tr>
+<tr><td>Main symbols</td><td>Circle, rectangle, parallel lines, arrow</td><td>Rectangle, diamond, ellipse, lines</td></tr>
+<tr><td>Question answered</td><td>What happens to data?</td><td>What data exists and how is it related?</td></tr>
+<tr><td>Leads to</td><td>Module / function design</td><td>Database (table) design</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> Putting Marks on STUDENT. A student has different marks in each subject, so Marks must hang on the Takes relationship, not on either entity.</div>
+<div class="recall"><b>Quick recall</b> Rectangle entity, diamond relationship, ellipse attribute (underline key, double = multivalued, dashed = derived). Cardinality 1:1, 1:N, M:N. Double line = total participation.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-srs">
+<h3>2.11 Requirements documentation and nature of SRS</h3>
+<p class="hook">The SRS is the contract between customer and developer: what will be built, written so both sides read it the same way. <span class="hg">(dono ke beech likhit agreement)</span></p>
+<div class="def"><b>Definition:</b> A <mark>Software Requirements Specification (SRS)</mark> is a document that completely describes what the proposed software should do, without describing how it will do it. Requirements documentation is the activity of writing the analysed requirements into this SRS.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c5">
+<div class="b"><b>Functionality</b>What the software does</div>
+<div class="b"><b>External interfaces</b>Users, hardware, other software</div>
+<div class="b"><b>Performance</b>Speed, response time, capacity</div>
+<div class="b"><b>Attributes</b>Portability, security, maintainability</div>
+<div class="b hi"><b>Design constraints</b>Standards, language, OS, limits</div>
+</div></div><figcaption><b>Fig 2.18</b> · Basic issues an SRS must address (IEEE 830)</figcaption><p class="draw">✍ Draw it: five boxes in a row: Functionality, External interfaces, Performance, Attributes, Design constraints.</p></figure>
+<h4>Requirements documentation</h4>
+<ul>
+<li>Documentation is the <mark>third step</mark> of requirement engineering; its output is the SRS, which is then reviewed.</li>
+<li>Readers of the SRS: <mark>customers and users</mark> (check it is what they want), <mark>developers</mark> (design from it), <mark>testers</mark> (write test cases), <mark>managers</mark> (estimate cost and schedule), maintainers.</li>
+<li>Uses of the SRS: basis of agreement, reduces development effort and rework, basis for cost and schedule estimates, baseline for validation and verification, eases enhancement later.</li>
+</ul>
+<h4>Nature of SRS: what it must address</h4>
+<ul>
+<li><mark>Functionality</mark>: what the software is supposed to do. SRMS: compute total and result status.</li>
+<li><mark>External interfaces</mark>: how the software interacts with people, hardware and other software. SRMS: web form for teachers, printer for marksheets.</li>
+<li><mark>Performance</mark>: speed, availability, response time, recovery time. SRMS: 200 teachers online at once.</li>
+<li><mark>Attributes</mark>: portability, correctness, maintainability, security. SRMS: only a teacher can change marks.</li>
+<li><mark>Design constraints</mark> imposed on the implementation: required standards, language, database integrity policy, resource limits, operating environment.</li>
+</ul>
+<h4>What an SRS should NOT include</h4>
+<ul>
+<li>No <mark>design details</mark>: module partitioning, algorithms, database table layout. <span class="hg">(kya banana hai, kaise nahi)</span></li>
+<li>No <mark>project requirements</mark>: cost, delivery schedule, staffing, reporting procedures, development method, quality assurance plan.</li>
+<li>No extra constraints beyond what is truly required; it should describe the product, not the project.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Belongs in SRS</th><th>Does NOT belong in SRS</th></tr>
+<tr><td>"The system shall show PASS/FAIL for each subject."</td><td>"Use bubble sort to rank students."</td></tr>
+<tr><td>"Marksheet shall be generated within 3 seconds."</td><td>"Project will finish by 30 November."</td></tr>
+<tr><td>"The system shall run on the college Linux server."</td><td>"Team of 4 developers will be hired."</td></tr>
+</table></div>
+<div class="ex"><b>SRS snippet (SRMS, section 3.2 Functional requirement)</b>
+<div class="step">FR-3 Compute Result</div>
+<div class="step">Input : marks_obtained of a student in all subjects of a semester (from D2 Marks)</div>
+<div class="step">Processing : total = sum of marks_obtained; result_status = "FAIL" if any subject is below the pass mark, else "PASS"</div>
+<div class="step">Output : result_record stored in D3 Results</div>
+<span class="ans">Priority: Essential. Traces to: use case "Compute Result", process 3.0.</span></div>
+<div class="mn"><b>Mnemonic</b> "Five Easy Pieces Are Done": <b>F</b>unctionality, <b>E</b>xternal interfaces, <b>P</b>erformance, <b>A</b>ttributes, <b>D</b>esign constraints.</div>
+<div class="recall"><b>Quick recall</b> SRS = WHAT not HOW. Addresses F-E-P-A-D. Excludes design details and project details (cost, schedule).</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-srschar">
+<h3>2.12 Characteristics of a good SRS</h3>
+<p class="hook">A good SRS is one that every reader interprets the same way and every requirement in it can be checked. <span class="hg">(ek hi matlab, har line test ho sake)</span></p>
+<div class="def"><b>Definition:</b> According to <mark>IEEE 830</mark>, a good SRS should be correct, unambiguous, complete, consistent, ranked for importance and/or stability, verifiable, modifiable and traceable.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b"><b>Correct</b>Every requirement is one the software must meet</div>
+<div class="b"><b>Unambiguous</b>Only one interpretation</div>
+<div class="b"><b>Complete</b>All requirements, all inputs, all pages labelled</div>
+<div class="b"><b>Consistent</b>No two requirements conflict</div>
+<div class="b hi"><b>Ranked</b>Importance / stability marked</div>
+<div class="b"><b>Verifiable</b>Can be checked by a finite, cost-effective test</div>
+<div class="b"><b>Modifiable</b>Easy to change; no redundancy</div>
+<div class="b"><b>Traceable</b>Origin known; referable forward</div>
+</div></div><figcaption><b>Fig 2.19</b> · Eight characteristics of a good SRS (IEEE 830)</figcaption><p class="draw">✍ Draw it: 2 x 4 grid of boxes, one characteristic per box with a 3-word meaning.</p></figure>
+<ul>
+<li><mark>Correct</mark>: every stated requirement is one that the software shall meet; checked against customer needs. Bad: pass mark written as 40 when the university rule says 35 (if the rule is 35).</li>
+<li><mark>Unambiguous</mark>: each requirement has exactly one interpretation. Bad: "result shall be shown quickly". Good: "within 3 seconds".</li>
+<li><mark>Complete</mark>: includes all significant requirements, the response to all valid and invalid inputs, labels for all figures and tables, and definitions of all terms; no "TBD" left.</li>
+<li><mark>Consistent</mark>: no subset of requirements conflicts (e.g. one line says grade scale A to F, another says 10-point CGPA only). <span class="hg">(aapas mein takraav nahi)</span></li>
+<li><mark>Ranked for importance and/or stability</mark>: each requirement tagged essential / conditional / optional, and how likely it is to change.</li>
+<li><mark>Verifiable</mark>: a finite, cost-effective process exists to check the software meets it. "User friendly" is not verifiable.</li>
+<li><mark>Modifiable</mark>: structure (contents, index, cross-references) lets changes be made easily and consistently; each requirement stated only once.</li>
+<li><mark>Traceable</mark>: backward traceability (to its source: a stakeholder, use case) and forward traceability (to design, code, test) via unique ids like FR-3.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Poor requirement</th><th>Violates</th><th>Improved</th></tr>
+<tr><td>"The system should be fast."</td><td>Unambiguous, Verifiable</td><td>"Marksheet generated in 3 s for 95% of requests."</td></tr>
+<tr><td>"Grade rules: TBD"</td><td>Complete</td><td>Grade table written in section 3.2</td></tr>
+<tr><td>Same rule written in two sections</td><td>Modifiable</td><td>State once, cross-reference</td></tr>
+<tr><td>Requirement with no id or source</td><td>Traceable</td><td>"FR-3 (source: Exam Cell interview)"</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>C</b>ute <b>U</b>nicorns <b>C</b>an <b>C</b>arry <b>R</b>ed <b>V</b>elvet <b>M</b>uffins <b>T</b>onight" = Correct, Unambiguous, Complete, Consistent, Ranked, Verifiable, Modifiable, Traceable.</div>
+<div class="note"><b>Common mistake:</b> "Understandable by customer" is often written as a characteristic. It is a desirable quality mentioned in some books, but the IEEE 830 list has exactly the eight above.</div>
+<div class="recall"><b>Quick recall</b> C-U-C-C-R-V-M-T. Verifiable = testable with numbers; Traceable = backward to source, forward to design/test.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-srsorg">
+<h3>2.13 Organization of SRS (IEEE 830 outline)</h3>
+<p class="hook">IEEE 830 gives a standard table of contents so every SRS is arranged the same way. <span class="hg">(SRS ka standard dhaancha)</span></p>
+<div class="def"><b>Definition:</b> <mark>IEEE Std 830-1998</mark> (Recommended Practice for Software Requirements Specifications) organises an SRS into three main sections: Introduction, Overall description and Specific requirements, followed by appendices and an index.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Table of contents</div>
+<div class="l hi">1 Introduction<small>1.1 Purpose · 1.2 Scope · 1.3 Definitions, acronyms · 1.4 References · 1.5 Overview</small></div>
+<div class="l hi">2 Overall description<small>2.1 Product perspective · 2.2 Product functions · 2.3 User characteristics · 2.4 Constraints · 2.5 Assumptions and dependencies</small></div>
+<div class="l hi">3 Specific requirements<small>3.1 External interfaces · 3.2 Functions · 3.3 Performance · 3.4 Logical database · 3.5 Design constraints · 3.6 Software system attributes</small></div>
+<div class="row"><div class="l">Appendices</div><div class="l">Index</div></div>
+</div></div><figcaption><b>Fig 2.20</b> · Organization of an SRS as per IEEE 830</figcaption><p class="draw">✍ Draw it: stacked boxes top to bottom: Contents, 1 Introduction, 2 Overall description, 3 Specific requirements (list sub-points in small text), then Appendices and Index side by side.</p></figure>
+<h4>1 Introduction</h4>
+<ul>
+<li><mark>Purpose</mark>: why this SRS exists and who its intended readers are.</li>
+<li><mark>Scope</mark>: name of the product, what it will and will not do, benefits and goals. SRMS: "computes and publishes semester results; does not handle fee payment".</li>
+<li><mark>Definitions, acronyms, abbreviations</mark>: SRMS, CGPA, DFD.</li>
+<li><mark>References</mark>: documents referred to (university ordinance, IEEE 830).</li>
+<li><mark>Overview</mark>: what the rest of the SRS contains and how it is organised.</li>
+</ul>
+<h4>2 Overall description (background, not detailed requirements)</h4>
+<ul>
+<li><mark>Product perspective</mark>: relation to other systems; system, user, hardware, software and communication interfaces; memory constraints; operations; site adaptation.</li>
+<li><mark>Product functions</mark>: summary of major functions (register, enter marks, compute, report).</li>
+<li><mark>User characteristics</mark>: education, experience, technical skill of users (teachers with basic computer skills).</li>
+<li><mark>Constraints</mark>: regulatory policies, hardware limits, interfaces to other applications, security, reliability needs.</li>
+<li><mark>Assumptions and dependencies</mark>: factors that, if changed, change the requirements (college server available during result week).</li>
+<li>IEEE 830-1998 also has 2.6 <mark>Apportioning of requirements</mark>: requirements delayed to future versions.</li>
+</ul>
+<h4>3 Specific requirements (the main body, detailed enough to design and test)</h4>
+<ul>
+<li><mark>External interfaces</mark>: every input and output: name, purpose, source/destination, range, format.</li>
+<li><mark>Functions</mark>: fundamental actions on inputs to produce outputs (validity checks, sequence, error handling). Often written as FR-1, FR-2 ...</li>
+<li><mark>Performance requirements</mark>: static (number of users, terminals, data size) and dynamic (transactions per second, response time).</li>
+<li><mark>Logical database requirements</mark>: types of data, access frequency, integrity constraints, retention.</li>
+<li><mark>Design constraints</mark>: standards compliance (report format, audit trail), hardware limitations.</li>
+<li><mark>Software system attributes</mark>: reliability, availability, security, maintainability, portability.</li>
+<li>The specific requirements can be organised by mode, user class, objects, feature, stimulus or functional hierarchy.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Section 1 "PSDRO" = <b>P</b>urpose, <b>S</b>cope, <b>D</b>efinitions, <b>R</b>eferences, <b>O</b>verview. Section 2 "PFUCA" = <b>P</b>erspective, <b>F</b>unctions, <b>U</b>sers, <b>C</b>onstraints, <b>A</b>ssumptions. Section 3 "EF-PLDS" = <b>E</b>xternal interfaces, <b>F</b>unctions, <b>P</b>erformance, <b>L</b>ogical database, <b>D</b>esign constraints, <b>S</b>ystem attributes.</div>
+<div class="note"><b>Common mistake:</b> Writing detailed requirements in section 2. Section 2 only gives background and a summary; every testable detail goes in section 3. (IEEE 830-1998 has since been superseded by ISO/IEC/IEEE 29148, but syllabi and textbooks still teach the 830 outline.)</div>
+<div class="recall"><b>Quick recall</b> 1 Introduction (PSDRO) → 2 Overall description (PFUCA) → 3 Specific requirements (EF-PLDS) → Appendices, Index.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-short">
+<h3>2.14 Short answers (1 mark)</h3>
+<dl class="sa">
+<dt>Define requirement engineering.</dt><dd>Systematic use of principles, techniques and tools to elicit, analyse, document, review and manage software requirements. Its output is the SRS.</dd>
+<dt>Differentiate functional and non-functional requirements.</dt><dd>Functional: what the system does (e.g. compute result). Non-functional: how well it does it: performance, security, usability (e.g. result in 3 seconds).</dd>
+<dt>What are known, unknown and undreamt requirements?</dt><dd>Known: stated by the stakeholder. Unknown: forgotten because not needed now or needed by another stakeholder. Undreamt: stakeholder cannot imagine them due to limited domain knowledge.</dd>
+<dt>Who is a stakeholder?</dt><dd>Any person or group affected by or having influence on the system: customer, users, developers, testers, managers.</dd>
+<dt>Expand FAST and QFD.</dt><dd>FAST: Facilitated Application Specification Technique. QFD: Quality Function Deployment.</dd>
+<dt>List the lists prepared in a FAST meeting.</dt><dd>Objects (around, produced, used by the system), services, constraints, and performance criteria. Sub-teams then write mini-specifications.</dd>
+<dt>What are normal, expected and exciting requirements?</dt><dd>Normal: explicitly stated. Expected: implicit, so basic that customers do not state them. Exciting: beyond customer expectations, delight when present (QFD).</dd>
+<dt>What is a use case? Name its diagram symbols.</dt><dd>Sequence of actor-system interactions giving a result of value. Actor = stick figure, use case = ellipse, system boundary = rectangle, association = line.</dd>
+<dt>Draw / name the symbols of a DFD.</dt><dd>Process = circle, external entity = rectangle, data store = two parallel lines (open box), data flow = named arrow.</dd>
+<dt>What is a context diagram?</dt><dd>Level 0 DFD showing the entire system as a single process with all external entities and data flows; it defines the system boundary.</dd>
+<dt>What is balancing in DFD?</dt><dd>The data flows entering and leaving a parent process must match the net inputs and outputs of its child (lower level) diagram.</dd>
+<dt>Define data dictionary.</dt><dd>A repository of definitions of all data flows, data stores and data items of the DFD, with composition, aliases and usage, written in notation such as =, +, [ | ], { }, ( ).</dd>
+<dt>What does { } and ( ) mean in a data dictionary?</dt><dd>{ } = iteration (repeated), ( ) = optional. Example: marksheet = roll_no + {subject_code + marks}; name = first + (middle) + last.</dd>
+<dt>Define cardinality in ER diagram.</dt><dd>Maximum number of entity instances on one side that can be related to one instance on the other side: 1:1, 1:N or M:N.</dd>
+<dt>What is a weak entity?</dt><dd>An entity that cannot be uniquely identified by its own attributes and depends on an owner entity via an identifying relationship. Drawn as a double rectangle.</dd>
+<dt>What is an SRS?</dt><dd>Software Requirements Specification: document describing completely WHAT the software will do, not HOW; the agreement between customer and developer.</dd>
+<dt>List characteristics of a good SRS.</dt><dd>Correct, unambiguous, complete, consistent, ranked for importance/stability, verifiable, modifiable, traceable (IEEE 830).</dd>
+<dt>Name the three main sections of an IEEE 830 SRS.</dt><dd>1 Introduction, 2 Overall description, 3 Specific requirements (plus appendices and index).</dd>
+</dl>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-long">
+<h3>2.15 Long-answer frames (8 marks)</h3>
+<h4>Q1. What is requirement engineering? Explain its process steps with a diagram. Classify requirements.</h4>
+<ol>
+<li>Define requirement and requirement engineering; output is SRS.</li>
+<li>Types: functional, non-functional (product, organisational, external), domain; draw Fig 2.1.</li>
+<li>Known, unknown, undreamt requirements (Fig 2.2); stakeholders.</li>
+<li>Draw Fig 2.3; explain elicitation, analysis, documentation, review, and management in 2-3 lines each.</li>
+<li>Table: functional vs non-functional with SRMS examples.</li>
+<li>Conclude: early, well-reviewed requirements reduce costly rework later.</li>
+</ol>
+<h4>Q2. Explain requirement elicitation techniques. Discuss FAST and QFD in detail.</h4>
+<ol>
+<li>Define elicitation; draw Fig 2.4 (list of techniques).</li>
+<li>Interviews (structured vs unstructured, groups interviewed) and brainstorming (facilitator, no criticism, prioritise).</li>
+<li>FAST: definition, guidelines (neutral site, rules, agenda, facilitator, definition mechanism), lists OSCP, mini-specs; draw Fig 2.5.</li>
+<li>QFD: definition, normal / expected / exciting (Fig 2.6), four steps with 1 to 5 importance scale; draw Fig 2.7 House of Quality.</li>
+<li>Use case approach in brief; comparison table of all techniques.</li>
+<li>Conclude: combine techniques; no single technique finds all requirements.</li>
+</ol>
+<h4>Q3. What is a DFD? Explain its symbols, rules and levels. Draw level 0 and level 1 DFD for a Student Result Management System.</h4>
+<ol>
+<li>Definition of DFD (bubble chart, shows data not control).</li>
+<li>Symbols with Fig 2.10 and the symbol table.</li>
+<li>Rules: input and output for each process, no entity-to-store flow, named flows, no control, balancing, numbering.</li>
+<li>Levels: context (level 0), level 1, level 2; leveling tree Fig 2.13.</li>
+<li>Draw Fig 2.11 (context diagram) and Fig 2.12 (level 1); show the balancing check.</li>
+<li>Table: DFD vs flowchart. Conclude with use in analysis.</li>
+</ol>
+<h4>Q4. What is a data dictionary? Explain its notation and write entries for a DFD.</h4>
+<ol>
+<li>Definition and purpose (single meaning, removes ambiguity, consistency with DFD).</li>
+<li>Contents of an entry: name, aliases, where/how used, content description, supplementary info.</li>
+<li>Notation with Fig 2.14: =, +, [ | ], { }, ( ), * *.</li>
+<li>Draw a small DFD (Fig 2.11) and write entries: enrolment_details, student_name, marks, result_status, marksheet.</li>
+<li>Show one full entry table (marks_obtained).</li>
+<li>Conclude: data dictionary + DFD together give a complete analysis model.</li>
+</ol>
+<h4>Q5. Explain ER diagrams: entities, attribute types, relationships, cardinality and participation. Draw an ER diagram for a result system.</h4>
+<ol>
+<li>Definition (Chen 1976); purpose: data modelling for database design.</li>
+<li>Symbols: draw Fig 2.15.</li>
+<li>Entity, weak entity; attributes: key, composite, multivalued, derived with examples.</li>
+<li>Relationship, degree (unary, binary, ternary), cardinality 1:1, 1:N, M:N (Fig 2.16), total vs partial participation.</li>
+<li>Draw Fig 2.17 and explain why Marks is on Takes.</li>
+<li>Table: DFD vs ER diagram. Conclude.</li>
+</ol>
+<h4>Q6. What is an SRS? Explain its nature, characteristics of a good SRS and its organization as per IEEE 830.</h4>
+<ol>
+<li>Define SRS; role of requirements documentation; readers and uses.</li>
+<li>Nature: five issues F-E-P-A-D (Fig 2.18); what must NOT be included (design and project details), with table.</li>
+<li>Eight IEEE characteristics with one-line meaning and a bad/good example each (Fig 2.19); mnemonic.</li>
+<li>Organization: draw Fig 2.20; explain sub-sections of sections 1, 2 and 3.</li>
+<li>Give a short SRS snippet (FR-3 Compute Result).</li>
+<li>Conclude: a good SRS is the baseline for design, testing and acceptance.</li>
+</ol>
+<h4>Q7. Explain the steps of requirements analysis. How do the use case approach and prototyping help?</h4>
+<ol>
+<li>Define requirements analysis; problems it fixes (conflicts, ambiguity, omissions).</li>
+<li>Draw Fig 2.9: context diagram → prototype → model → finalise; explain each.</li>
+<li>Use case approach: actor, use case, boundary, include/extend; draw Fig 2.8.</li>
+<li>Write one use case description (Enter Marks) with basic and alternative flow.</li>
+<li>Modelling tools used: DFD, data dictionary, ER diagram (one line each).</li>
+<li>Conclude: finalised requirements go into the SRS.</li>
+</ol>
+<a class="top" href="#top">↑ top</a>
+</section>
+</section>

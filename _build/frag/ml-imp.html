@@ -1,0 +1,468 @@
+<section class="unit" id="imp">
+<h2><span class="uno">Important questions</span>8-mark answers</h2>
+<p class="unit-sub">Paper: 6 × 1 mark + 3 × 8 marks (an 8 can come as 4 + 4). Each answer below is written to the 8-mark length.</p>
+
+<section class="topic" id="iq1"><h3>Q1. What are the different types of machine learning?</h3>
+<p class="hook">Unit I · 8 marks · Name each type, say what feedback it uses, give one example each; draw the type tree first.</p>
+<div class="def"><b>Definition:</b> Machine learning is divided into <mark>types</mark> based on the feedback available to the learner: <mark>supervised</mark> learning uses labelled data $(x, y)$, <mark>unsupervised</mark> learning finds structure in unlabelled data ($x$ only), <mark>reinforcement</mark> learning learns from reward signals through trial and error, and <mark>semi-supervised</mark> learning mixes a small labelled set with a large unlabelled one.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Machine Learning</span><ul>
+<li><span>Supervised</span><ul><li><span>Classification</span></li><li><span>Regression</span></li></ul></li>
+<li><span>Unsupervised</span><ul><li><span>Clustering</span></li><li><span>Dim. reduction</span></li><li><span>Association</span></li></ul></li>
+<li><span>Semi-supervised</span></li>
+<li><span>Reinforcement</span></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.11</b> · Types of machine learning</figcaption><p class="draw">✍ Draw it: root box, four children; two under supervised, three under unsupervised.</p></figure>
+<ul>
+<li><mark>Supervised learning</mark>: needs a teacher - every training example has the correct answer $(x,y)$. Category output → <mark>classification</mark> (spam/not spam); number output → <mark>regression</mark> (house price). Algorithms: KNN, decision tree, naive Bayes, logistic regression, SVM, linear regression.</li>
+<li><mark>Unsupervised learning</mark>: only $x$, no labels. Tasks: <mark>clustering</mark> (K-means - customer segmentation), <mark>dimensionality reduction</mark> (PCA), <mark>association rules</mark> (market basket, bread → butter).</li>
+<li><mark>Reinforcement learning</mark>: an <mark>agent</mark> takes <mark>actions</mark> in an <mark>environment</mark>, gets a <mark>reward</mark>, and learns a <mark>policy</mark> maximising cumulative reward, e.g. a maze robot or AlphaGo.</li>
+<li><mark>Semi-supervised learning</mark>: a few labelled examples plus many unlabelled ones - used when labelling is expensive (e.g. a few hundred labelled scans, thousands unlabelled).</li>
+<li>Feedback timing differs: supervised gets an answer every time, unsupervised gets none, reinforcement often gets a <mark>delayed</mark> reward.</li>
+<li><mark>Exploration vs exploitation</mark> is unique to RL: try a new action to learn, or use the best known action to earn reward.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Supervised</th><th>Unsupervised</th><th>Reinforcement</th></tr>
+<tr><td>Data / feedback</td><td>Labelled examples $(x, y)$</td><td>Unlabelled data $(x)$</td><td>Rewards from environment</td></tr>
+<tr><td>Goal</td><td>Predict correct output</td><td>Find hidden structure</td><td>Maximise cumulative reward</td></tr>
+<tr><td>Supervisor</td><td>Yes (answer key)</td><td>No</td><td>No; only reward signal</td></tr>
+<tr><td>Tasks</td><td>Classification, regression</td><td>Clustering, dim. reduction, association</td><td>Sequential decision making, control</td></tr>
+<tr><td>Example</td><td>Spam filter</td><td>Customer segmentation</td><td>Game-playing agent, robot</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Labelled emails → supervised classification (spam / not spam).</div><div class="step">Shop customer data with no labels → unsupervised clustering (frequent vs rare spenders).</div><div class="step">Maze robot: $+10$ reaching exit, $-1$ per step → reinforcement learns the shortest safe path.</div><span class="ans">Same kind of real-world data, different type of ML depending on whether an answer or a reward is available</span></div>
+<div class="mn"><b>Mnemonic</b> <b>S-U-R-S</b>: Supervised, Unsupervised, Reinforcement, Semi-supervised - "Some Uncles Read Slowly".</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.11, and explain only supervised and unsupervised, one example each.</div>
+<div class="recall"><b>Quick recall</b> Supervised = teacher (labelled); unsupervised = no teacher (structure); reinforcement = reward critic; semi-supervised = few labels + many unlabelled.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq2"><h3>Q2. What are the applications of machine learning?</h3>
+<p class="hook">Unit I · 8 marks · Pick 6-8 real domains, name the ML task and type (supervised / unsupervised / reinforcement) for each.</p>
+<div class="def"><b>Definition:</b> <mark>Applications of machine learning</mark> are real-world tasks where a model learned from data performs prediction, classification, grouping or decision making - spam filtering, recommendation, fraud detection, medical diagnosis, speech recognition, autonomous driving.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Internet</b>spam filter, search, recommendations</div>
+<div class="b"><b>Finance</b>fraud detection, credit scoring</div>
+<div class="b"><b>Healthcare</b>scan analysis, risk prediction</div>
+<div class="b"><b>Language</b>speech, translation, chatbots</div>
+<div class="b"><b>Vision</b>face unlock, number plates</div>
+<div class="b"><b>Transport</b>ETA, driver assistance</div>
+</div></div><figcaption><b>Fig 1.20</b> · Major application areas of machine learning</figcaption><p class="draw">✍ Draw it: 2 rows × 3 boxes, domain on top, two examples below.</p></figure>
+<ul>
+<li><mark>Prediction</mark>: numbers about the future - sales, delivery time, weather.</li>
+<li><mark>Recognition</mark>: images, speech, handwriting.</li>
+<li><mark>Personalisation</mark>: feeds, ads, playlists.</li>
+<li><mark>Anomaly / fraud detection</mark>: rare, unusual events (card or UPI transactions).</li>
+<li><mark>Decision and control</mark>: games, robots, traffic signals.</li>
+<li><mark>Large-scale science</mark>: physics, astronomy, biology produce more data than people can analyse by hand.</li>
+<li><mark>Data mining</mark>: applying ML to large databases to build a simple, high-accuracy model from huge volumes of data.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Domain</th><th>Application</th><th>ML task</th><th>Type</th></tr>
+<tr><td>Email</td><td>Spam filtering (Gmail)</td><td>Classification</td><td>Supervised</td></tr>
+<tr><td>E-commerce / OTT</td><td>Product / video recommendations</td><td>Recommendation, clustering</td><td>Supervised + unsupervised</td></tr>
+<tr><td>Banking / payments</td><td>Flagging unusual UPI transactions</td><td>Classification, anomaly detection</td><td>Supervised + unsupervised</td></tr>
+<tr><td>Healthcare</td><td>Disease signs in X-rays</td><td>Image classification</td><td>Supervised</td></tr>
+<tr><td>Retail</td><td>Customer segmentation</td><td>Clustering, association</td><td>Unsupervised</td></tr>
+<tr><td>Games</td><td>AlphaGo defeating Lee Sedol (2016)</td><td>Decision making</td><td>Reinforcement (+ supervised)</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>S-R-F-H-S-V</b>" = Spam, Recommendation, Fraud, Healthcare, Speech, Vision - "<b>S</b>ome <b>R</b>ich <b>F</b>riends <b>H</b>ave <b>S</b>mart <b>V</b>ehicles".</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.20, and give any 3-4 rows of the table (e.g. spam, healthcare, recommendation, fraud) with their type.</div>
+<div class="recall"><b>Quick recall</b> For each application write: domain, task (classification / regression / clustering / control), type (supervised / unsupervised / RL).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq3"><h3>Q3. What are the various issues in machine learning?</h3>
+<p class="hook">Unit I · 8 marks · Give Mitchell's six research questions first, then the practical, day-to-day problems.</p>
+<div class="def"><b>Definition:</b> <mark>Issues in machine learning</mark> are the fundamental questions (which algorithm, how much data, what prior knowledge, which experience, what function, what representation) and practical problems (data quality, overfitting, bias, interpretability, computation) that affect how well a learner generalizes.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>1. Algorithms</b>which one, when it converges</div>
+<div class="b"><b>2. Training data</b>how much is enough</div>
+<div class="b"><b>3. Prior knowledge</b>how it guides learning</div>
+<div class="b"><b>4. Next experience</b>which example to pick</div>
+<div class="b"><b>5. Function approx.</b>what function to learn</div>
+<div class="b"><b>6. Representation</b>change it automatically</div>
+</div></div><figcaption><b>Fig 1.10</b> · Mitchell's six issues in machine learning</figcaption><p class="draw">✍ Draw it: 2 rows × 3 numbered boxes, one short phrase each.</p></figure>
+<ul>
+<li><mark>Algorithms</mark>: which algorithms learn general target functions from specific examples, and when do they converge?</li>
+<li><mark>Amount of training data</mark>: how much is sufficient; how does confidence relate to the amount of experience?</li>
+<li><mark>Prior knowledge</mark>: when and how can prior knowledge guide generalization, even if only approximately correct?</li>
+<li><mark>Choosing training experience</mark>: what is the best strategy for picking the next training example?</li>
+<li><mark>Reducing to function approximation</mark>: what functions should be learned, and can this be automated?</li>
+<li><mark>Altering representation</mark>: how can the learner automatically improve its own representation?</li>
+<li>Practical issues: <mark>data quality</mark> (noise, missing values), <mark>overfitting / underfitting</mark>, <mark>bias and fairness</mark>, <mark>interpretability</mark> of black-box models, <mark>computation cost</mark>, <mark>privacy</mark>, and <mark>concept drift</mark> (accuracy drops as real-world data changes).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Issue</th><th>Effect</th><th>Common remedy</th></tr>
+<tr><td>Too little data</td><td>High variance, overfitting</td><td>Collect more data, simpler model</td></tr>
+<tr><td>Noisy / missing data</td><td>Wrong patterns learned</td><td>Cleaning, imputation</td></tr>
+<tr><td>Biased data</td><td>Unfair decisions</td><td>Balanced sampling, fairness checks</td></tr>
+<tr><td>Black-box model</td><td>Users cannot trust it</td><td>Simpler models, explanation tools</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>A</b>ll <b>D</b>ata <b>P</b>eople <b>C</b>an <b>F</b>ind <b>R</b>ight" = Algorithms, Data amount, Prior knowledge, Choosing experience, Function approximation, Representation.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.10, and list any three of Mitchell's six issues with one line each.</div>
+<div class="recall"><b>Quick recall</b> 6 Mitchell issues (ADPCFR) + practical: data quality, overfitting, bias, interpretability, computation, privacy, drift.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq4"><h3>Q4. Explain data representations in machine learning (numerical and graph).</h3>
+<p class="hook">Unit I · 8 marks · Cover both halves - numeric feature vectors AND graphs - and end on the comparison table.</p>
+<div class="def"><b>Definition:</b> <mark>Numerical representation</mark> expresses each example as a <mark>feature vector</mark> $x = (x_1, \ldots, x_d) \in \mathbb{R}^d$, stored for $n$ examples as an $n \times d$ <mark>feature matrix</mark>. A <mark>graph</mark> $G = (V, E)$ instead stores <mark>relationships</mark>: vertices $V$ are entities and edges $E$ are connections between pairs of them, directed or undirected, weighted or not.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Raw object<small>house, email, image</small></div>
+<div class="n">Extract features</div>
+<div class="n">Encode + scale</div>
+<div class="n hi">Feature vector x</div>
+<div class="n">ML model</div>
+</div></div><figcaption><b>Fig 1.16</b> · From a raw object to a numeric feature vector</figcaption><p class="draw">✍ Draw it: five boxes in a row joined by arrows.</p></figure>
+<ul>
+<li>Numeric feature vector: house → $x = (1200, 3, 5)$ for (area, rooms, age); $n$ houses give an $n \times 3$ matrix.</li>
+<li><mark>Label encoding</mark> gives each category one integer (good for ordered categories); <mark>one-hot encoding</mark> gives one 0/1 column per category (no false order).</li>
+<li><mark>Feature scaling</mark>: <mark>min-max</mark> $x' = \dfrac{x-x_{min}}{x_{max}-x_{min}}$ gives $[0,1]$; <mark>z-score</mark> $z = \dfrac{x-\mu}{\sigma}$ gives mean 0, std 1.</li>
+<li>Images flatten to a pixel-value vector (a $28\times28$ grayscale image → 784 features); text becomes a <mark>bag-of-words</mark> count vector.</li>
+<li>Graph: <mark>node</mark> = entity, <mark>edge</mark> = relation; <mark>weighted</mark> edges carry a number; <mark>undirected</mark> (friendship) vs <mark>directed</mark> (following).</li>
+<li><mark>Adjacency matrix</mark>: $V \times V$ table, symmetric for undirected graphs, space $O(V^2)$, edge check $O(1)$ - best for dense graphs. <mark>Adjacency list</mark>: neighbours per node, space $O(V+E)$ - best for sparse graphs.</li>
+<li>Uses of graphs in ML: social networks (link prediction), recommendation (user-item graph), knowledge graphs, molecules, road networks, fraud rings.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Numerical representation</th><th>Graph representation</th></tr>
+<tr><td>Unit</td><td>Feature vector per example</td><td>Nodes and edges</td></tr>
+<tr><td>Captures</td><td>Properties of each item</td><td>Relationships between items</td></tr>
+<tr><td>Storage</td><td>$n \times d$ matrix</td><td>Adjacency matrix / list</td></tr>
+<tr><td>Assumption</td><td>Examples treated as independent</td><td>Examples linked to each other</td></tr>
+<tr><td>Example</td><td>House price table</td><td>Friendship network</td></tr>
+</table></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 460 260" width="460">
+<line x1="80" y1="70" x2="260" y2="70"/><line x1="80" y1="70" x2="170" y2="200"/><line x1="260" y1="70" x2="170" y2="200"/><line x1="170" y1="200" x2="380" y2="200"/>
+<circle class="hi" cx="80" cy="70" r="24"/><text class="b" x="80" y="70">A</text>
+<circle class="hi" cx="260" cy="70" r="24"/><text class="b" x="260" y="70">B</text>
+<circle class="hi" cx="170" cy="200" r="24"/><text class="b" x="170" y="200">C</text>
+<circle class="hi" cx="380" cy="200" r="24"/><text class="b" x="380" y="200">D</text>
+<text x="170" y="56">4</text><text x="110" y="140">2</text><text x="232" y="140">5</text><text x="275" y="186">3</text>
+</svg></div><figcaption><b>Fig 1.18</b> · Undirected weighted graph with edges A-B (4), A-C (2), B-C (5), C-D (3)</figcaption><p class="draw">✍ Draw it: four circles A, B top and C, D bottom; four lines with weights written on them.</p></figure>
+<div class="ex"><b>Example: adjacency matrix of Fig 1.18</b><div class="step">$A\text{-}B=4,\ A\text{-}C=2,\ B\text{-}C=5,\ C\text{-}D=3$; all other entries 0; matrix is symmetric.</div><span class="ans">Degrees: $A=2,\ B=2,\ C=3,\ D=1$ (count non-zero entries per row)</span></div>
+<div class="note"><b>If it comes as 4 marks:</b> answer only ONE half - either numerical (feature vector, one encoding, one scaling formula) or graph (definition, Fig 1.18, its adjacency matrix).</div>
+<div class="recall"><b>Quick recall</b> Example → feature vector in $\mathbb{R}^d$; dataset → $n \times d$ matrix. Graph $G=(V,E)$: matrix $O(V^2)$, list $O(V+E)$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq5"><h3>Q5. Explain linear regression with an example.</h3>
+<p class="hook">Unit II · 8 marks · Definition, least-squares formulas, then fit a line to a small dataset and predict a new value.</p>
+<div class="def"><b>Definition:</b> <mark>Linear regression</mark> is a supervised regression method that models a continuous output as a linear function of the input, $\hat{y} = \beta_0 + \beta_1 x$, with $\beta_0$ (intercept) and $\beta_1$ (slope) found by the <mark>least squares</mark> method - minimising the sum of squared errors.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 300" width="600">
+<path class="arr" d="M60 260 H570"/><path class="arr" d="M60 260 V22"/>
+<text class="s" x="140" y="278">1</text><text class="s" x="220" y="278">2</text><text class="s" x="300" y="278">3</text><text class="s" x="380" y="278">4</text><text class="s" x="460" y="278">5</text><text class="s" x="540" y="278">6</text>
+<text class="s r" x="50" y="191">2</text><text class="s r" x="50" y="123">4</text><text class="s r" x="50" y="54">6</text>
+<path class="acc" d="M60 184.6 L540 61.1"/>
+<line class="dash" x1="140" y1="191.4" x2="140" y2="164"/><line class="dash" x1="220" y1="122.9" x2="220" y2="143.4"/>
+<line class="dash" x1="300" y1="88.6" x2="300" y2="122.9"/><line class="dash" x1="380" y1="122.9" x2="380" y2="102.3"/>
+<line class="dash" x1="460" y1="88.6" x2="460" y2="81.7"/>
+<circle class="dot" cx="140" cy="191.4" r="5"/><circle class="dot" cx="220" cy="122.9" r="5"/><circle class="dot" cx="300" cy="88.6" r="5"/><circle class="dot" cx="380" cy="122.9" r="5"/><circle class="dot" cx="460" cy="88.6" r="5"/>
+<circle class="hi" cx="540" cy="61.1" r="6"/><text class="r" x="526" y="40">ŷ(6) = 5.8</text>
+<text class="l b" x="80" y="40">ŷ = 2.2 + 0.6x</text>
+<text class="s l" x="160" y="222">dashed = residual (y − ŷ)</text>
+</svg></div><figcaption><b>Fig 2.13</b> · Least-squares line through the 5 points of the worked example, with residuals</figcaption><p class="draw">✍ Draw it: axes, 5 dots, one straight line through their middle, short vertical dashes from each dot to the line.</p></figure>
+<ul>
+<li>Model: $y = \beta_0 + \beta_1 x + \varepsilon$; $\beta_0$ = value when $x=0$, $\beta_1$ = change in $y$ per unit $x$.</li>
+<li><mark>Residual</mark> $e_i = y_i - \hat{y}_i$; least squares minimises $SSE = \sum e_i^2$.</li>
+<li>$$\beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}, \qquad \beta_0 = \bar{y} - \beta_1 \bar{x}$$</li>
+<li><mark>$R^2 = 1 - \dfrac{SSE}{SST}$</mark>: fraction of variance explained (1 = perfect fit); <mark>MSE</mark> $=SSE/n$.</li>
+<li>Only captures a <mark>linear</mark> relationship and is sensitive to outliers (squared error).</li>
+<li><mark>Applications</mark>: house price, sales forecasting, marks from study hours, crop yield from rainfall.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python) · $x$ = study hours, $y$ = marks: (1,35) (2,40) (3,50) (4,55) (5,65)
+<div class="step">$\bar{x} = \dfrac{15}{5}=3$, $\bar{y}=\dfrac{245}{5}=49$; $\sum(x-\bar{x})(y-\bar{y}) = 75$, $\sum(x-\bar{x})^2 = 10$</div>
+<div class="step">$\beta_1 = \dfrac{75}{10} = 7.5$;  $\beta_0 = 49 - 7.5 \times 3 = 26.5$  →  $\hat{y} = 7.5x + 26.5$</div>
+<div class="step">Predict $x=6$ study hours: $\hat{y} = 7.5 \times 6 + 26.5 = 71.5$</div>
+<span class="ans">$\hat{y} = 7.5x + 26.5$; predicted marks for 6 study hours $= 71.5$</span></div>
+<div class="mn"><b>Mnemonic</b> <b>M-S-I-P</b>: <b>M</b>eans, <b>S</b>lope, <b>I</b>ntercept, <b>P</b>redict.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, the two formulas for $\beta_1$/$\beta_0$, and the worked example up to the prediction (skip $R^2$/MSE).</div>
+<div class="recall"><b>Quick recall</b> $\beta_1$ from the sums, then $\beta_0 = \bar{y}-\beta_1\bar{x}$; least squares minimises $SSE$; $R^2 = 1-SSE/SST$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq6"><h3>Q6. Solve a basic numerical on linear regression.</h3>
+<p class="hook">Unit II · 8 marks · Show every column of the working table, then β₁, β₀, the prediction, and SSE/MSE/R² in order.</p>
+<div class="def"><b>What is asked:</b> Apply the least-squares formulas $\beta_1 = \dfrac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$, $\beta_0 = \bar{y}-\beta_1\bar{x}$ to one dataset, then use $\hat{y}=\beta_0+\beta_1x$ to predict a new value and $R^2$ to judge the fit.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Data points (x, y)</div>
+<div class="n">Find means x̄ and ȳ</div>
+<div class="n">β₁ = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)²</div>
+<div class="n">β₀ = ȳ − β₁x̄</div>
+<div class="n hi">Predict ŷ = β₀ + β₁x</div>
+<div class="n">Evaluate SSE, MSE, R²</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.14</b> · Simple linear regression (least squares) flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 5 boxes with the formulas, oval.</p></figure>
+<div class="ex"><b>Worked example</b> (computed in Python) · $x$ = hours studied, $y$ = test score (out of 10)
+<div class="tw"><table><tr><th>$x$</th><th>$y$</th><th>$x - \bar{x}$</th><th>$y - \bar{y}$</th><th>$(x-\bar{x})(y-\bar{y})$</th><th>$(x-\bar{x})^2$</th><th>$\hat{y}$</th><th>$e = y - \hat{y}$</th><th>$e^2$</th></tr>
+<tr><td>1</td><td>2</td><td>−2</td><td>−2</td><td>4</td><td>4</td><td>2.8</td><td>−0.8</td><td>0.64</td></tr>
+<tr><td>2</td><td>4</td><td>−1</td><td>0</td><td>0</td><td>1</td><td>3.4</td><td>0.6</td><td>0.36</td></tr>
+<tr><td>3</td><td>5</td><td>0</td><td>1</td><td>0</td><td>0</td><td>4.0</td><td>1.0</td><td>1.00</td></tr>
+<tr><td>4</td><td>4</td><td>1</td><td>0</td><td>0</td><td>1</td><td>4.6</td><td>−0.6</td><td>0.36</td></tr>
+<tr><td>5</td><td>5</td><td>2</td><td>1</td><td>2</td><td>4</td><td>5.2</td><td>−0.2</td><td>0.04</td></tr>
+<tr><th>$\sum$</th><th></th><th></th><th></th><th>6</th><th>10</th><th></th><th></th><th>2.40</th></tr></table></div>
+<div class="step">Step 1: $\bar{x} = \dfrac{15}{5} = 3$, $\bar{y} = \dfrac{20}{5} = 4$</div>
+<div class="step">Step 2: $\beta_1 = \dfrac{\sum(x-\bar{x})(y-\bar{y})}{\sum(x-\bar{x})^2} = \dfrac{6}{10} = 0.6$</div>
+<div class="step">Step 3: $\beta_0 = \bar{y} - \beta_1\bar{x} = 4 - 0.6 \times 3 = 2.2$  →  $\hat{y} = 2.2 + 0.6x$</div>
+<div class="step">Step 4: predict $x = 6$: $\hat{y} = 2.2 + 0.6 \times 6 = 5.8$</div>
+<div class="step">Step 5: $SSE = 2.40$;  $MSE = \dfrac{2.40}{5} = 0.48$</div>
+<div class="step">Step 6: $SST = \sum(y_i-\bar{y})^2 = 4+0+1+0+1 = 6$;  $R^2 = 1 - \dfrac{2.40}{6} = 0.60$</div>
+<span class="ans">$\hat{y} = 2.2 + 0.6x$, $\hat{y}(6) = 5.8$, $MSE = 0.48$, $R^2 = 0.60$</span></div>
+<div class="note"><b>If it comes as 4 marks:</b> compute up to $\beta_1$, $\beta_0$ (Steps 1-3) and give $\hat{y}$ for the asked $x$; skip $SSE/MSE/R^2$ unless asked separately.</div>
+<div class="recall"><b>Quick recall</b> Order matters: $\beta_1$ needs the sums first, $\beta_0$ needs $\beta_1$. $R^2 = 1-SSE/SST$, never $SSE/SST$ alone.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq7"><h3>Q7. What is a hypothesis function?</h3>
+<p class="hook">Unit II · 8 marks (small topic - write it precisely and link it to the cost function and hypothesis space).</p>
+<div class="def"><b>Definition:</b> The <mark>hypothesis function</mark> $h(x)$ is the function a learning algorithm uses to map an input $x$ to a predicted output. For linear regression: $$h(x) = \beta_0 + \beta_1 x$$ For logistic regression: $$h(x) = \sigma(\beta_0 + \beta_1 x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x)}}$$</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Labelled data<small>(x, y) pairs</small></div><div class="ar">train</div><div class="n hi">Model f(x)</div><div class="ar">new x</div><div class="n">Prediction ŷ</div>
+</div></div><figcaption><b>Fig 2.1</b> · Supervised learning pipeline</figcaption><p class="draw">✍ Draw it: three boxes left to right, arrows labelled "train" and "new x".</p></figure>
+<ul>
+<li>$h$ is one candidate function; the <mark>hypothesis space $H$</mark> is the set of ALL candidate functions the learner could choose.</li>
+<li>Learning = <mark>searching</mark> $H$ for the $h$ that best fits the training data (Mitchell's "learning as search" perspective).</li>
+<li>The hypothesis is only a <mark>guess</mark> - how good it is is measured separately by the <mark>cost function</mark> $J$; training changes $h$'s parameters to reduce $J$.</li>
+<li>Linear regression example: $\beta_0=2.2,\ \beta_1=0.6$, so $h(6)=2.2+0.6\times6=5.8$ - the model's predicted score for $x=6$.</li>
+<li>Logistic regression example: $\beta_0=-4,\ \beta_1=1$, $x=5$ hours → $h(5)=\sigma(1)=0.7311 \ge 0.5$ → predicted class Pass.</li>
+<li>The target function is the true, usually unknown, relationship; $h$ is only an <mark>approximation</mark> of it.</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Hypothesis function</th><th>Cost function</th></tr>
+<tr><td>What it is</td><td>The model's prediction rule</td><td>A score of how wrong the predictions are</td></tr>
+<tr><td>Input</td><td>One example $x$</td><td>All $m$ examples and the parameters</td></tr>
+<tr><td>Output</td><td>Predicted $\hat{y}$</td><td>One non-negative number $J$</td></tr>
+<tr><td>Goal</td><td>Fit the data</td><td>Be minimised</td></tr></table></div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, $h(x)=\beta_0+\beta_1x$ for linear regression, and one plugged-in example (skip hypothesis space and logistic form).</div>
+<div class="recall"><b>Quick recall</b> $h(x)$ = the model's guess for one input; $H$ = set of all such guesses; learning searches $H$ to minimise the cost function.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq8"><h3>Q8. Explain logistic regression.</h3>
+<p class="hook">Unit II · 8 marks · Sigmoid formula, decision boundary at p = 0.5, and a worked pass/fail example.</p>
+<div class="def"><b>Definition:</b> <mark>Logistic regression</mark> is a supervised <b>classification</b> method that models the probability of the positive class as $$p = \sigma(z) = \frac{1}{1 + e^{-z}}$$ where $z = \beta_0 + \beta_1 x$, and assigns class 1 when $p \ge 0.5$.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 290" width="600">
+<path class="arr" d="M50 240 H570"/><path class="arr" d="M300 250 V26"/>
+<line class="dash" x1="60" y1="40" x2="540" y2="40"/><line class="dash" x1="60" y1="140" x2="540" y2="140"/>
+<text class="r s" x="52" y="40">1.0</text><text class="r s" x="52" y="140">0.5</text><text class="r s" x="52" y="240">0</text>
+<text class="s" x="60" y="260">−6</text><text class="s" x="314" y="260">0</text><text class="s" x="540" y="260">6</text><text class="s" x="556" y="224">z</text>
+<polyline class="acc" points="60,239.5 80,239.2 100,238.7 120,237.8 140,236.4 160,234.1 180,230.5 200,224.8 220,216.2 240,203.5 260,186.2 280,164.5 300,140.0 320,115.5 340,93.8 360,76.5 380,63.8 400,55.2 420,49.5 440,45.9 460,43.6 480,42.2 500,41.3 520,40.8 540,40.5"/>
+<circle class="dot acc" cx="340" cy="93.8" r="5"/><text class="l s" x="354" y="102">z = 1, p = 0.731</text>
+<text class="s" x="440" y="170">predict 1 (p ≥ 0.5)</text><text class="s" x="150" y="110">predict 0 (p &lt; 0.5)</text>
+</svg></div><figcaption><b>Fig 2.17</b> · Sigmoid (S-curve) σ(z), plotted from computed values; threshold 0.5 at z = 0</figcaption><p class="draw">✍ Draw it: axes, dashed lines at 0.5 and 1, an S-shaped curve passing through (0, 0.5).</p></figure>
+<ul>
+<li><mark>Sigmoid</mark> $\sigma(0)=0.5$, $\sigma(+\infty)\to1$, $\sigma(-\infty)\to0$.</li>
+<li><mark>Log-odds (logit)</mark>: $\ln\dfrac{p}{1-p}=z$ - the model is linear in the log-odds.</li>
+<li><mark>Decision boundary</mark>: $p=0.5$ exactly where $z=0$, i.e. $\beta_0+\beta_1x=0$ → a straight line/hyperplane.</li>
+<li>Threshold need not be 0.5 - disease screening may use 0.3 to catch more true cases (fewer misses, more false alarms).</li>
+<li><mark>Log-loss</mark> $L=-\frac{1}{n}\sum[y_i\log\hat{y}_i+(1-y_i)\log(1-\hat{y}_i)]$; minimising it is the same as <mark>Maximum Likelihood Estimation</mark> (MLE).</li>
+<li>Multi-class extension: one-vs-rest or softmax logistic regression.</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Linear regression</th><th>Logistic regression</th></tr>
+<tr><td>Task</td><td>Regression</td><td>Classification</td></tr>
+<tr><td>Output</td><td>Any real number</td><td>Probability 0 to 1, then class</td></tr>
+<tr><td>Curve</td><td>Straight line</td><td>S-shaped sigmoid</td></tr>
+<tr><td>Loss</td><td>Squared error (MSE)</td><td>Log-loss (cross-entropy)</td></tr></table></div>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · $\beta_0=-4$, $\beta_1=1$
+<div class="step">Student with 5 hours: $z=-4+1\times5=1$; $p=\dfrac{1}{1+e^{-1}}=0.7311 \ge 0.5$ → Pass</div>
+<div class="step">Boundary: $z=0 \Rightarrow -4+x=0 \Rightarrow x=4$ hours ($p=0.5$)</div>
+<span class="ans">5 hours → $p=0.7311$ → Pass; decision boundary at 4 hours</span></div>
+<div class="mn"><b>Common mistake:</b> despite the name, logistic regression is a CLASSIFICATION algorithm, not regression.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, sigmoid formula, Fig 2.17, and the decision-boundary rule (skip log-loss and MLE).</div>
+<div class="recall"><b>Quick recall</b> $p=1/(1+e^{-z})$; boundary at $p=0.5$ ($z=0$); loss = log-loss = negative log-likelihood.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq9"><h3>Q9. Explain ensemble learning.</h3>
+<p class="hook">Unit II · 8 marks · Define it, explain bagging vs boosting, and show why combining classifiers raises accuracy.</p>
+<div class="def"><b>Definition:</b> <mark>Ensemble learning</mark> combines the predictions of multiple base models (weak learners) to produce a single prediction more accurate and stable than any individual model.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Ensemble methods</span><ul>
+<li><span>Bagging</span><ul><li><span>Random Forest</span></li></ul></li>
+<li><span>Boosting</span><ul><li><span>AdaBoost</span></li><li><span>Gradient Boosting</span></li></ul></li>
+<li><span>Stacking</span><ul><li><span>meta-learner</span></li></ul></li>
+<li><span>Voting</span><ul><li><span>hard / soft</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.27</b> · Types of ensemble methods</figcaption><p class="draw">✍ Draw it: root box, four children (Bagging, Boosting, Stacking, Voting), one example under each.</p></figure>
+<ul>
+<li><mark>Why it works</mark>: different models make different mistakes; combining them cancels many errors.</li>
+<li><mark>Bagging</mark> (Bootstrap Aggregating): bootstrap samples, models trained in <mark>parallel</mark>, equal-weight vote/average; mainly cuts <mark>variance</mark>. Example: Random Forest.</li>
+<li><mark>Boosting</mark>: models trained <mark>sequentially</mark>, each new one focuses on the previous ones' errors; mainly cuts <mark>bias</mark>. Example: AdaBoost, Gradient Boosting.</li>
+<li><mark>Stacking</mark>: different kinds of base models feed a second-level <mark>meta-learner</mark> that learns how to combine them.</li>
+<li><mark>Hard voting</mark> = majority label wins; <mark>soft voting</mark> = average predicted probabilities, pick the highest.</li>
+<li>Condition: base models must be better than random guessing and reasonably diverse.</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Bagging</th><th>Boosting</th></tr>
+<tr><td>Training</td><td>Parallel, independent</td><td>Sequential, dependent</td></tr>
+<tr><td>Model weights</td><td>Equal</td><td>Based on accuracy</td></tr>
+<tr><td>Mainly reduces</td><td>Variance (overfitting)</td><td>Bias (underfitting)</td></tr>
+<tr><td>Noise / outliers</td><td>Robust</td><td>Sensitive</td></tr>
+<tr><td>Example</td><td>Random Forest</td><td>AdaBoost, Gradient Boosting</td></tr></table></div>
+<div class="ex"><b>Worked example: why voting helps</b> (computed in Python) · 3 independent classifiers, each 70% accurate, majority vote
+<div class="step">$P(\text{all 3 correct}) = 0.7^3 = 0.343$;  $P(\text{exactly 2 correct}) = 3\times0.7^2\times0.3 = 0.441$</div>
+<div class="step">$P(\text{ensemble correct}) = 0.343+0.441 = 0.784$</div>
+<span class="ans">70% single-model accuracy → 78.4% by majority vote of 3, if errors are independent</span></div>
+<div class="mn"><b>Mnemonic</b> "Bagging = Parallel, Boosting = Before-me mistakes". B-B-S-V = <b>B</b>agging, <b>B</b>oosting, <b>S</b>tacking, <b>V</b>oting.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.27, and give the bagging vs boosting difference table only.</div>
+<div class="recall"><b>Quick recall</b> Ensemble = many models, one answer. Bagging: bootstrap + parallel + vote, cuts variance. Boosting: sequential, re-weight errors, cuts bias.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq10"><h3>Q10. Differentiate between classification and regression.</h3>
+<p class="hook">Unit I · 8 marks · State both definitions, then the difference table is the main content the examiner wants.</p>
+<div class="def"><b>Definition:</b> Both are <mark>supervised learning</mark> tasks that learn $f(x) \to y$ from labelled examples. <mark>Classification</mark> predicts a discrete <mark>class label</mark> (spam / not spam); <mark>regression</mark> predicts a continuous <mark>number</mark> (house price).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 260" width="640">
+<rect x="20" y="20" width="290" height="200" rx="6"/>
+<circle class="dot" cx="60" cy="60" r="5"/><circle class="dot" cx="90" cy="90" r="5"/><circle class="dot" cx="70" cy="120" r="5"/><circle class="dot" cx="120" cy="70" r="5"/><circle class="dot" cx="110" cy="110" r="5"/>
+<circle cx="220" cy="150" r="6"/><circle cx="250" cy="180" r="6"/><circle cx="200" cy="190" r="6"/><circle cx="260" cy="130" r="6"/><circle cx="230" cy="110" r="6"/>
+<line class="dash" x1="150" y1="200" x2="280" y2="40"/>
+<text class="s" x="95" y="38">Class A</text><text class="s" x="270" y="205">Class B</text>
+<text x="165" y="240">Classification: output = class</text>
+<rect x="330" y="20" width="290" height="200" rx="6"/>
+<circle class="dot" cx="360" cy="190" r="5"/><circle class="dot" cx="400" cy="170" r="5"/><circle class="dot" cx="430" cy="160" r="5"/><circle class="dot" cx="470" cy="130" r="5"/><circle class="dot" cx="510" cy="120" r="5"/><circle class="dot" cx="550" cy="90" r="5"/><circle class="dot" cx="590" cy="70" r="5"/>
+<line class="acc" x1="350" y1="195" x2="600" y2="55"/>
+<text class="s" x="560" y="40">fitted line</text>
+<text x="475" y="240">Regression: output = number</text>
+</svg></div><figcaption><b>Fig 1.13</b> · Classification separates classes with a boundary; regression fits a line through numeric values</figcaption><p class="draw">✍ Draw it: two boxes. Left: filled and hollow dots split by a dashed line. Right: rising dots with a straight line through them.</p></figure>
+<ul>
+<li>Classification asks "<mark>which class?</mark>" (binary: spam/not spam; multi-class: digit 0-9). Regression asks "<mark>how much / how many?</mark>".</li>
+<li>A <mark>discriminant</mark> is the rule/function used to assign a class, e.g. IF Score1+Score2 $\ge 60$ THEN Pass ELSE Fail; two different discriminants can fit ALL the training rows and still disagree on a new point.</li>
+<li>General regression model: $y = f(x,\theta)$, e.g. car $\text{Price} = a_0+a_1\!\cdot\!\text{Age}+a_2\!\cdot\!\text{Distance}+a_3\!\cdot\!\text{Weight}$.</li>
+<li>Classification algorithms: KNN, decision tree, naive Bayes, logistic regression, SVM. Regression algorithm: linear regression.</li>
+</ul>
+<div class="tw"><table><tr><th>Basis</th><th>Classification</th><th>Regression</th></tr>
+<tr><td>Output</td><td>Discrete label / category</td><td>Continuous number</td></tr>
+<tr><td>Question</td><td>"Which class?"</td><td>"How much / how many?"</td></tr>
+<tr><td>Example</td><td>Spam or not; benign or malignant</td><td>House price; tomorrow's temperature</td></tr>
+<tr><td>Algorithms</td><td>KNN, decision tree, naive Bayes, logistic regression, SVM</td><td>Linear regression, regression trees</td></tr>
+<tr><td>Metrics</td><td>Accuracy, precision, recall, F1</td><td>MSE, RMSE, MAE, $R^2$</td></tr></table></div>
+<div class="note"><b>If it comes as 4 marks:</b> give both one-line definitions and the difference table only (skip the discriminant example).</div>
+<div class="recall"><b>Quick recall</b> Supervised = labelled data either way. Category output = classification; number output = regression.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq11"><h3>Q11. What are outliers? Explain their types and detection.</h3>
+<p class="hook">Unit II · 8 marks · Definition, three types, IQR/z-score detection, then the worked numerical.</p>
+<div class="def"><b>Definition:</b> An <mark>outlier</mark> is a data point that differs significantly from the other observations in a dataset - caused by a measurement/entry error, or a genuine but rare event.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 190" width="600">
+<path d="M60 150 H570"/>
+<text class="s" x="60" y="170">10</text><text class="s" x="150.9" y="170">20</text><text class="s" x="241.8" y="170">30</text><text class="s" x="332.7" y="170">40</text><text class="s" x="423.6" y="170">50</text><text class="s" x="514.5" y="170">60</text>
+<line x1="78.2" y1="80" x2="105.5" y2="80"/><line x1="78.2" y1="65" x2="78.2" y2="95"/>
+<rect class="hi" x="105.5" y="55" width="36.3" height="50"/>
+<line class="acc" x1="119.1" y1="55" x2="119.1" y2="105"/>
+<line x1="141.8" y1="80" x2="150.9" y2="80"/><line x1="150.9" y1="65" x2="150.9" y2="95"/>
+<line class="dash" x1="196.4" y1="35" x2="196.4" y2="125"/>
+<circle class="dot acc" cx="532.7" cy="80" r="7"/>
+<text class="s" x="92" y="40">Q1 = 15</text><text class="s" x="160" y="40">Q3 = 19</text>
+<text class="s" x="119" y="122">median 16.5</text>
+<text class="s l" x="204" y="60">upper fence = 25</text>
+<text class="b" x="532.7" y="52">62 = outlier</text>
+</svg></div><figcaption><b>Fig 2.25</b> · Box plot of the worked example: whiskers stop at 12 and 20, the point 62 lies beyond the upper fence</figcaption><p class="draw">✍ Draw it: number line, a box from Q1 to Q3 with a line at the median, whiskers to the smallest and largest normal values, a dot far away = outlier.</p></figure>
+<ul>
+<li>Types: <mark>global / point</mark> (far from all data, e.g. age = 250), <mark>contextual</mark> (odd only in context, e.g. 35°C is normal in May, not January), <mark>collective</mark> (a group is odd together, e.g. many small transfers in one minute).</li>
+<li><mark>IQR method</mark>: $IQR=Q_3-Q_1$; outlier if value $\lt Q_1-1.5\cdot IQR$ or $\gt Q_3+1.5\cdot IQR$. Robust - quartiles are not moved by the outlier.</li>
+<li><mark>Z-score method</mark>: $z=\dfrac{x-\mu}{\sigma}$; outlier if $|z|\gt3$. Assumes roughly normal data; can be fooled by <mark>masking</mark> (the outlier inflates $\sigma$, shrinking its own $z$).</li>
+<li>Effects: pulls the mean, inflates variance, tilts a regression line, distorts distance-based methods (KNN, K-means).</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python) · marks: 12, 14, 15, 15, 16, 17, 18, 19, 20, 62
+<div class="step">Sorted, $n=10$. Median $=\dfrac{16+17}{2}=16.5$. Lower half ⇒ $Q_1=15$; upper half ⇒ $Q_3=19$</div>
+<div class="step">$IQR=19-15=4$;  $1.5\times IQR=6$; lower fence $=15-6=9$; upper fence $=19+6=25$</div>
+<div class="step">$62\gt25$ ⇒ 62 is an outlier. Z-check: $\mu=20.8,\sigma=13.92$, $z(62)=\dfrac{62-20.8}{13.92}=2.96$</div>
+<span class="ans">IQR flags 62 as an outlier; $|z|=2.96 \lt 3$, so the z-score rule MISSES it (masking)</span></div>
+<div class="mn"><b>Mnemonic</b> <b>G-C-C</b> types = <b>G</b>lobal, <b>C</b>ontextual, <b>C</b>ollective. Fences: "1.5 box-lengths out".</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, the three types, and the IQR rule with fences (skip the z-score masking discussion).</div>
+<div class="recall"><b>Quick recall</b> Outlier = far from the rest. IQR rule: outside $[Q_1-1.5\cdot IQR,\ Q_3+1.5\cdot IQR]$. Z-rule ($|z|\gt3$) can be fooled by masking.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq12"><h3>Q12. Define the cost function and derive it for linear regression.</h3>
+<p class="hook">Unit II · 8 marks · State J, explain why it is squared, then do the calculus derivation step by step - this is the LaTeX-heavy answer.</p>
+<div class="def"><b>Definition:</b> A <mark>cost function</mark> $J(\beta_0,\beta_1)$ measures the average error of the hypothesis over all $m$ training examples: $$J(\beta_0,\beta_1) = \frac{1}{2m}\sum_{i=1}^{m} \big(h(x_i) - y_i\big)^2$$ Learning means finding the $\beta_0, \beta_1$ that <mark>minimise</mark> $J$.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Training data (x, y)</div>
+<div class="n">Hypothesis h(x) = β₀ + β₁x</div>
+<div class="n hi">Cost J(β₀, β₁) = (1/2m) Σ (h(x) − y)²</div>
+<div class="n">Gradient: ∂J/∂β₀, ∂J/∂β₁</div>
+<div class="n">Update β := β − α · gradient</div>
+<div class="n d">J stops decreasing?</div>
+<div class="n t">Final β₀, β₁ = trained model</div>
+</div></div><figcaption><b>Fig 2.23</b> · How hypothesis, cost function and gradient descent fit together</figcaption><p class="draw">✍ Draw it: 7 boxes top to bottom; oval, 4 rectangles, a diamond "converged?", oval. Write the J formula inside the highlighted box.</p></figure>
+<ul>
+<li><mark>Why square?</mark> Positive and negative errors cannot cancel; big errors are punished more; the result is a smooth, differentiable bowl.</li>
+<li><mark>Why $1/2$?</mark> Convenience only - the 2 from differentiating the square cancels it; the minimising $\beta_0,\beta_1$ are unchanged.</li>
+<li>$J$ for linear regression is <mark>convex</mark> (one bowl, one minimum) - gradient descent cannot get stuck in a wrong valley.</li>
+<li><mark>Gradient descent update</mark> (when there is no closed form): $$\beta_0 := \beta_0 - \alpha \cdot \frac{1}{m}\sum (h(x_i)-y_i), \qquad \beta_1 := \beta_1 - \alpha \cdot \frac{1}{m}\sum (h(x_i)-y_i)\cdot x_i$$</li>
+<li>For logistic regression, MSE would be non-convex, so <mark>log loss</mark> is used instead (still minimised the same gradient-descent way).</li>
+</ul>
+<div class="ex"><b>Derivation</b>
+<div class="step">Step 1. $$J(\beta_0,\beta_1) = \frac{1}{2m}\sum (\beta_0 + \beta_1 x_i - y_i)^2$$</div>
+<div class="step">Step 2. Partial derivative w.r.t. $\beta_0$ (the 2 cancels the $1/2$): $$\frac{\partial J}{\partial \beta_0} = \frac{1}{m}\sum (\beta_0 + \beta_1 x_i - y_i)$$</div>
+<div class="step">Step 3. Partial derivative w.r.t. $\beta_1$ (inner derivative is $x_i$): $$\frac{\partial J}{\partial \beta_1} = \frac{1}{m}\sum (\beta_0 + \beta_1 x_i - y_i) \cdot x_i$$</div>
+<div class="step">Step 4. At the minimum both are 0. From $\dfrac{\partial J}{\partial \beta_0}=0$: $\sum y_i = m\beta_0+\beta_1\sum x_i$  ⇒  $$\beta_0 = \bar{y} - \beta_1 \bar{x}$$</div>
+<div class="step">Step 5. From $\dfrac{\partial J}{\partial \beta_1}=0$: $\sum x_iy_i = \beta_0\sum x_i + \beta_1\sum x_i^2$</div>
+<div class="step">Step 6. Substitute $\beta_0=\bar{y}-\beta_1\bar{x}$ and simplify:</div>
+<span class="ans">$$\beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}, \qquad \beta_0 = \bar{y} - \beta_1 \bar{x}$$</span></div>
+<div class="mn"><b>Mnemonic</b> <b>H-C-G</b> = <b>H</b>ypothesis guesses, <b>C</b>ost grades, <b>G</b>radient corrects.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition of $J$, why it is squared, and Steps 1-4 of the derivation up to $\beta_0=\bar{y}-\beta_1\bar{x}$ (skip the full $\beta_1$ simplification).</div>
+<div class="recall"><b>Quick recall</b> $J=\frac{1}{2m}\sum(h-y)^2$; set both partial derivatives to 0 to get $\beta_1=\frac{\sum(x_i-\bar{x})(y_i-\bar{y})}{\sum(x_i-\bar{x})^2}$, $\beta_0=\bar{y}-\beta_1\bar{x}$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq13"><h3>Q13. Using KNN, find the class of a new point (worked numerical).</h3>
+<p class="hook">Unit II · 8 marks · Compute distance to every training point, sort, take the k nearest, and vote - box the final class.</p>
+<div class="def"><b>Definition:</b> <mark>K-Nearest Neighbours</mark> is a non-parametric, instance-based supervised algorithm that classifies a new point by the <b>majority class of its k closest training points</b>, closeness measured by a distance such as Euclidean distance.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 490 470" width="490">
+<path class="arr" d="M40 410 H455"/><path class="arr" d="M40 410 V30"/>
+<text class="s" x="464" y="410">x</text><text class="s" x="26" y="34">y</text>
+<circle class="none dash" cx="250" cy="230" r="140"/>
+<circle class="dot" cx="70" cy="230" r="6"/><text x="70" y="212">A</text>
+<circle class="dot" cx="190" cy="290" r="6"/><text x="190" y="272">B</text>
+<circle class="dot" cx="250" cy="350" r="6"/><text class="l" x="264" y="350">C</text>
+<circle cx="310" cy="230" r="6"/><text x="310" y="212">D</text>
+<circle cx="370" cy="110" r="6"/><text x="370" y="92">E</text>
+<circle cx="310" cy="50" r="6"/><text x="310" y="32">F</text>
+<rect class="hi" x="243" y="223" width="14" height="14"/><text x="250" y="256">Q (3,3)</text>
+<circle class="dot" cx="420" cy="300" r="6"/><text class="l" x="432" y="300">Red</text>
+<circle cx="420" cy="325" r="6"/><text class="l" x="432" y="325">Blue</text>
+<rect class="hi" x="414" y="344" width="12" height="12"/><text class="l" x="432" y="350">Query</text>
+<text class="s" x="250" y="444">dashed circle holds the k = 3 nearest</text>
+</svg></div><figcaption><b>Fig 2.3</b> · KNN: query Q and the circle holding its 3 nearest neighbours (D, B, C)</figcaption><p class="draw">✍ Draw it: x-y axes, filled dots (Red), hollow dots (Blue), a square for Q, dashed circle around Q through the 3rd nearest point.</p></figure>
+<ul>
+<li>Algorithm: compute distance to every training point → sort ascending → take the $k$ nearest → majority vote of their classes.</li>
+<li>Euclidean distance (2D): $d=\sqrt{(x_1-x_2)^2+(y_1-y_2)^2}$.</li>
+<li><mark>Odd $k$</mark> avoids ties for two classes; feature scaling is compulsory since KNN is purely distance-based.</li>
+<li><mark>Lazy learner</mark>: no training phase, all work happens at prediction time.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (values computed in Python, 3 decimals) · Training: A(0,3) Red, B(2,2) Red, C(3,1) Red, D(4,3) Blue, E(5,5) Blue, F(4,6) Blue. Query $Q=(3,3)$, $k=3$.
+<div class="tw"><table><tr><th>Point</th><th>Class</th><th>Euclidean $=\sqrt{(x-3)^2+(y-3)^2}$</th><th>Distance</th><th>Rank</th></tr>
+<tr><td>D(4,3)</td><td>Blue</td><td>$\sqrt{1+0}$</td><td>1.000</td><td>1</td></tr>
+<tr><td>B(2,2)</td><td>Red</td><td>$\sqrt{1+1}$</td><td>1.414</td><td>2</td></tr>
+<tr><td>C(3,1)</td><td>Red</td><td>$\sqrt{0+4}$</td><td>2.000</td><td>3</td></tr>
+<tr><td>E(5,5)</td><td>Blue</td><td>$\sqrt{4+4}$</td><td>2.828</td><td>4</td></tr>
+<tr><td>A(0,3)</td><td>Red</td><td>$\sqrt{9+0}$</td><td>3.000</td><td>5</td></tr>
+<tr><td>F(4,6)</td><td>Blue</td><td>$\sqrt{1+9}$</td><td>3.162</td><td>6</td></tr></table></div>
+<div class="step">$k=3$ nearest: D (Blue), B (Red), C (Red) → votes Red = 2, Blue = 1.</div>
+<div class="step">Compare $k=1$: only D → Blue. So the answer depends on $k$, confirming $k$ must be chosen carefully, not fixed at 1.</div>
+<span class="ans">$k=3$ → Q is classified <b>Red</b></span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Very simple, no training time</td><td>Slow prediction (distance to every point)</td></tr>
+<tr><td>Works for classification and regression</td><td>Needs feature scaling</td></tr>
+<tr><td>Non-linear boundaries for free</td><td>Poor in high dimensions, memory heavy</td></tr></table></div>
+<div class="mn"><b>Mnemonic</b> <b>D-S-K-V</b>: <b>D</b>istance to all, <b>S</b>ort, pick <b>K</b>, <b>V</b>ote.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, the distance formula, and the worked distance table with the $k=3$ vote (skip the advantages/disadvantages table).</div>
+<div class="recall"><b>Quick recall</b> KNN = lazy learner; find $k$ nearest by Euclidean distance, majority vote; odd $k$, scale features.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq-1m"><h3>1-mark questions</h3>
+<dl class="sa">
+<dt>Q1. Define machine learning (Mitchell).</dt><dd>A program learns from experience E with respect to tasks T and performance measure P if its performance at T, measured by P, improves with E.</dd>
+<dt>Q2. What is a well-posed learning problem? Give T, P, E for checkers.</dt><dd>A learning problem with clearly identified task, performance measure and experience. Checkers: T = playing checkers, P = % games won, E = games played against itself.</dd>
+<dt>Q3. Differentiate traditional programming and ML.</dt><dd>Traditional: data + hand-written rules → output. ML: data + example outputs → learned rules (model), which then predict outputs for new data.</dd>
+<dt>Q4. How are AI, ML and DL related?</dt><dd>$\text{DL} \subset \text{ML} \subset \text{AI}$. AI = intelligent behaviour by machines; ML = AI that learns from data; DL = ML using multi-layer neural networks.</dd>
+<dt>Q5. What is overfitting?</dt><dd>The model fits training data including noise, giving very low training error but high test error, i.e. poor generalization. Caused by high variance.</dd>
+<dt>Q6. Define generalization.</dt><dd>The ability of a learned model to perform well on new, unseen data drawn from the same distribution as the training data.</dd>
+<dt>Q7. What is a hypothesis space?</dt><dd>The set $H$ of all candidate functions a learner can choose from; learning is a search through $H$ for the hypothesis that best fits the data.</dd>
+<dt>Q8. List the four choices in designing a learning system.</dt><dd>(1) Training experience, (2) target function, (3) representation of target function, (4) function approximation (learning) algorithm.</dd>
+<dt>Q9. List any four issues in machine learning.</dt><dd>Choice of algorithm, amount of training data, use of prior knowledge, choice of representation (also: data quality, overfitting, bias, interpretability).</dd>
+<dt>Q10. What is unsupervised learning? Give two tasks.</dt><dd>Learning patterns from unlabelled data. Tasks: clustering (K-means) and dimensionality reduction (PCA); also association rules.</dd>
+<dt>Q11. Define agent, state, action and reward in RL.</dt><dd>Agent = learner that acts; state = current situation; action = choice made by the agent; reward = numeric feedback from the environment for that action.</dd>
+<dt>Q12. What is semi-supervised learning?</dt><dd>Learning from a small labelled set together with a large unlabelled set, used when labelling data is expensive.</dd>
+<dt>Q13. Differentiate label encoding and one-hot encoding.</dt><dd>Label encoding gives each category one integer (Blue 0, Green 1, Red 2). One-hot gives one 0/1 column per category, avoiding false order.</dd>
+<dt>Q14. Why is KNN called a lazy learner?</dt><dd>It builds no model during training; it only stores the data and does all computation (distances, voting) at prediction time.</dd>
+<dt>Q15. Write the Euclidean and Manhattan distance formulas.</dt><dd>Euclidean $d = \sqrt{\sum (p_i - q_i)^2}$; Manhattan $d = \sum |p_i - q_i|$.</dd>
+<dt>Q16. Why is an odd value of k preferred in KNN?</dt><dd>For two-class problems an odd k prevents a tie in the majority vote.</dd>
+<dt>Q17. Define entropy.</dt><dd>Entropy measures impurity of a set: $H(S) = -\sum p_i \log_2 p_i$. It is 0 for a pure set and 1 for an equal two-class split.</dd>
+<dt>Q18. What is information gain?</dt><dd>Reduction in entropy after splitting on attribute $A$: $IG(S,A) = H(S) - \sum_v \frac{|S_v|}{|S|} H(S_v)$. ID3 splits on the attribute with the highest gain.</dd>
+<dt>Q19. Define Gini index.</dt><dd>$Gini = 1 - \sum p_i^2$; an impurity measure used by CART; 0 means pure, lower weighted Gini means a better split.</dd>
+<dt>Q20. What is pruning?</dt><dd>Removing branches of a decision tree that add little accuracy, to reduce overfitting. Pre-pruning stops growth early; post-pruning cuts a fully grown tree.</dd>
+<dt>Q21. State Bayes' theorem.</dt><dd>$P(C \mid X) = \dfrac{P(X \mid C)\,P(C)}{P(X)}$: posterior = likelihood × prior / evidence.</dd>
+<dt>Q22. Why is Naive Bayes called "naive"?</dt><dd>It assumes all features are conditionally independent of each other given the class, which is rarely true in practice.</dd>
+<dt>Q23. What is Laplace smoothing?</dt><dd>Adding 1 to every count, $P = \dfrac{\text{count} + 1}{n + k}$, so that an unseen feature value does not make the whole probability zero.</dd>
+<dt>Q24. What are support vectors?</dt><dd>Training points lying on the margin boundaries $w^T x + b = \pm 1$; they alone determine the SVM hyperplane.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+
+</section>

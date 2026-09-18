@@ -1,0 +1,80 @@
+<section class="topic" id="u1-hdfs">
+<h3>1.9 HDFS: Hadoop Distributed File System</h3>
+<p class="hook">HDFS cuts a huge file into big blocks and keeps 3 copies of each block on different machines.</p>
+<div class="def"><b>Definition:</b> <mark>HDFS</mark> is Hadoop's distributed file system that stores very large files as fixed-size blocks across many DataNodes, replicating each block for fault tolerance, and is designed for write-once, read-many, high-throughput streaming access.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 330" width="760">
+<rect x="20" y="40" width="120" height="50" rx="6"/><text x="80" y="65">HDFS Client</text>
+<rect class="hi" x="300" y="25" width="180" height="70" rx="6"/><text class="b" x="390" y="48">NameNode</text><text class="s" x="390" y="74">metadata: file → blocks</text>
+<rect x="560" y="30" width="180" height="60" rx="6"/><text x="650" y="52">Secondary NN</text><text class="s" x="650" y="74">checkpoint</text>
+<path class="arr" d="M140 58 H300"/><text class="s" x="220" y="46">metadata</text>
+<path class="dash arr" d="M480 60 H560"/>
+<path class="dash arr2" d="M390 95 V150"/><text class="s l" x="400" y="122">heartbeat + block report</text>
+<rect class="none dash" x="170" y="150" width="250" height="160" rx="8"/><text class="s" x="295" y="166">Rack 1</text>
+<rect class="none dash" x="440" y="150" width="250" height="160" rx="8"/><text class="s" x="565" y="166">Rack 2</text>
+<rect x="185" y="180" width="105" height="115" rx="6"/><text x="237" y="198">DataNode 1</text>
+<rect x="300" y="180" width="105" height="115" rx="6"/><text x="352" y="198">DataNode 2</text>
+<rect x="455" y="180" width="105" height="115" rx="6"/><text x="507" y="198">DataNode 3</text>
+<rect x="570" y="180" width="105" height="115" rx="6"/><text x="622" y="198">DataNode 4</text>
+<rect class="hi" x="202" y="215" width="70" height="26" rx="4"/><text x="237" y="228">B1</text>
+<rect x="317" y="215" width="70" height="26" rx="4"/><text x="352" y="228">B2</text>
+<rect class="hi" x="472" y="215" width="70" height="26" rx="4"/><text x="507" y="228">B1</text>
+<rect x="472" y="252" width="70" height="26" rx="4"/><text x="507" y="265">B2</text>
+<rect class="hi" x="587" y="215" width="70" height="26" rx="4"/><text x="622" y="228">B1</text>
+<rect x="587" y="252" width="70" height="26" rx="4"/><text x="622" y="265">B2</text>
+<path class="arr" d="M80 90 V270 H185"/><text class="s" x="125" y="284">data I/O</text>
+</svg></div><figcaption><b>Fig 1.12</b> · HDFS architecture: NameNode, DataNodes, racks and 3 replicas of blocks B1, B2</figcaption><p class="draw">✍ Draw it: NameNode box on top (Client left, Secondary NN right), two dashed racks below with 2 DataNodes each, write B1/B2 inside so each block appears 3 times.</p></figure>
+<ul>
+<li><mark>NameNode</mark> (master): stores the <b>metadata</b>: namespace (directory tree), file → block list, block → DataNode locations, permissions. It does not store the actual data. <span class="hg">(register rakhta hai, maal nahi)</span></li>
+<li><mark>DataNode</mark> (slave): stores the actual blocks on local disk, serves read/write requests, and sends a <b>heartbeat</b> (every 3 s by default) and periodic <b>block reports</b> to the NameNode. A cluster may have anywhere from a handful of DataNodes up to 500 or more; more DataNodes means more storage and more parallel I/O.</li>
+<li><mark>Secondary NameNode</mark>: periodically merges the edit log into the fsimage (checkpointing) so the NameNode restarts faster. It is <b>not</b> a hot standby. In HA setups a <b>Standby NameNode</b> does this job.</li>
+<li><mark>Block</mark>: a file is split into fixed-size blocks; default <b>128 MB</b> in Hadoop 2.x/3.x (64 MB in 1.x), configurable via <code>dfs.blocksize</code>. The last block holds only the remaining bytes, so it can be smaller.</li>
+<li><mark>Replication factor</mark>: default <b>3</b> (<code>dfs.replication</code>). Rack-aware default placement: 1st replica on the writer's node (or a random node), 2nd on a node in a different rack, 3rd on a different node in the same rack as the 2nd. A <mark>rack</mark> is simply the physical group of nodes (commonly on the order of 30–40 machines) sharing one network switch; choosing the closest rack for a read/write cuts network traffic.</li>
+<li>If a DataNode stops sending heartbeats, the NameNode marks it dead and <mark>re-replicates</mark> its blocks from surviving copies.</li>
+<li><mark>Write-once, read-many</mark>: files can be appended but not edited in the middle; good for large sequential reads, poor for random updates.</li>
+<li>Hadoop 3 adds optional <mark>erasure coding</mark>, which gives fault tolerance with less storage overhead than 3× replication.</li>
+<li><mark>fsimage and edit log</mark>: the NameNode keeps its metadata in two files. The <b>fsimage</b> is a complete snapshot of the namespace at one point in time; the <b>edit log</b> is an append-only record of every change (create, rename, append, ...) since that snapshot. On restart the NameNode reloads the fsimage and replays the edit log to rebuild its current state, instead of writing a brand-new snapshot on every single change.</li>
+<li>The Secondary NameNode periodically pulls the edit log over RPC and merges it into its own copy of the fsimage (this is exactly what "checkpointing" means), so a restarted NameNode has a shorter edit log to replay and recovers faster — but, as above, it still cannot take over automatically the way a Standby NameNode in HA mode can.</li>
+<li>Because the NameNode keeps this state in memory, production clusters typically also persist it to <mark>two local disks</mark> (in case one disk fails) and to an <mark>NFS-mounted volume</mark> (in case the whole machine fails).</li>
+<li><mark>Terms:</mark> <b>Heartbeat</b> — the signal a DataNode sends the NameNode at regular intervals; missing heartbeats mark it dead. <b>Balancing</b> — after a DataNode dies, its blocks become under-replicated, so the NameNode signals DataNodes holding surviving copies of those blocks to replicate them elsewhere, restoring even distribution. <b>Replication</b> — the copying itself is carried out by the DataNodes, not the NameNode. Rule: no two replicas of the same block are ever placed on the same DataNode.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">NameNode restart</div>
+<div class="n">Load last fsimage<small>snapshot of metadata</small></div>
+<div class="n hi">Replay edit log<small>every change since that snapshot</small></div>
+<div class="n t">Current namespace in memory</div>
+</div></div><figcaption><b>Fig 1.52</b> · How the NameNode rebuilds its state from fsimage + edit log</figcaption><p class="draw">✍ Draw it: three boxes top to bottom (oval, box, highlighted box, oval) joined by arrows.</p></figure>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Block 1</b>128 MB</div><div class="b hi"><b>Block 2</b>128 MB</div><div class="b hi"><b>Block 3</b>128 MB</div><div class="b"><b>Block 4</b>116 MB (last)</div>
+</div></div><figcaption><b>Fig 1.13</b> · A 500 MB file split into HDFS blocks (block size 128 MB)</figcaption><p class="draw">✍ Draw it: four equal boxes in a row, the last one labelled with the leftover size.</p></figure>
+<div class="ex"><b>Example</b> A 500 MB file, block size 128 MB, replication factor 3:
+<div class="step">Number of blocks = ceil(500 / 128) = ceil(3.906...) = 4</div>
+<div class="step">Block sizes = 128 + 128 + 128 + (500 − 3 × 128) = 128, 128, 128, 116 MB</div>
+<div class="step">Block replicas stored = 4 × 3 = 12</div>
+<div class="step">Raw disk used = 500 × 3 = 1500 MB (the last block uses only 116 MB per copy, not 128)</div>
+<span class="ans">4 blocks, 12 replicas, 1500 MB raw storage</span></div>
+<h4>Features of HDFS</h4>
+<ul>
+<li><mark>Distributed data storage</mark> across many DataNodes rather than one machine.</li>
+<li><mark>Blocks reduce seek time</mark>: splitting a huge file into fixed blocks makes parallel reads/writes far faster than seeking through one giant file on a single disk.</li>
+<li><mark>High availability</mark>: the same block sits on multiple DataNodes, so data stays reachable even if one copy is unreachable.</li>
+<li><mark>High reliability</mark>: even if several DataNodes go down at once, work can continue as long as one replica of each block survives.</li>
+<li><mark>High fault tolerance</mark>: lost blocks are automatically re-replicated from surviving copies.</li>
+</ul>
+<h4>Limitations of HDFS</h4>
+<ul>
+<li><mark>Low-latency data access</mark>: HDFS is built for high-throughput streaming reads, not millisecond-level random access, so it suits batch jobs poorly suited to interactive, low-latency lookups.</li>
+<li><mark>Small file problem</mark>: lots of small files mean lots of seeks between DataNodes to fetch each one, which is a very inefficient access pattern (and, as covered under Hadoop's limitations, it also bloats NameNode memory since every file/block is metadata there).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>NameNode</th><th>DataNode</th></tr>
+<tr><td>Role</td><td>Master</td><td>Slave / worker</td></tr>
+<tr><td>Stores</td><td>Metadata (namespace, block map)</td><td>Actual data blocks</td></tr>
+<tr><td>Number per cluster</td><td>One active (plus standby in HA)</td><td>Many</td></tr>
+<tr><td>Hardware</td><td>Reliable machine, large RAM</td><td>Commodity machines, large disks</td></tr>
+<tr><td>Failure effect</td><td>Whole file system unavailable (without HA)</td><td>Blocks re-replicated from other copies</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> HDFS numbers "<b>128-3-3</b>": 128 MB block, 3 replicas, heartbeat every 3 seconds.</div>
+<div class="note"><b>Common mistake:</b> The Secondary NameNode is not a backup NameNode that takes over on failure; it only does checkpointing.</div>
+<div class="recall"><b>Quick recall</b> NameNode = metadata master; DataNode = blocks; blocks 128 MB; replication 3, rack-aware; heartbeats detect failure; write-once read-many.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

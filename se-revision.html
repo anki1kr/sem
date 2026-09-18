@@ -1,0 +1,1045 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Software Engineering &middot; Quick Revision</title>
+<style>
+:root{--brand:#1f4299;--brand2:#142c66;--paper:#faf8f4;--card:#ffffff;--ink:#1d1b18;
+--muted:#5f5a52;--rule:#e2ddd3;--soft:color-mix(in srgb,var(--brand) 8%,#fff);
+--boxfill:#fffdf9;--hifill:color-mix(in srgb,var(--brand) 16%,#fff);--mark:#fde68a;--good:#1f7a4d;--bad:#b3203a;
+--body:"Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans",sans-serif;--disp:Georgia,"Times New Roman",serif;
+--mono:"Cascadia Mono",Consolas,"Courier New",monospace;--maxw:900px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 var(--body);-webkit-text-size-adjust:100%}
+main{max-width:var(--maxw);margin:0 auto;padding:0 16px 80px}
+a{color:var(--brand2)}
+.cover{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;padding:44px 16px 34px}
+.cover .in{max-width:var(--maxw);margin:0 auto}
+.cover .code{font:600 13px var(--mono);letter-spacing:.08em;opacity:.85}
+.cover h1{font:700 clamp(30px,6vw,46px)/1.12 var(--disp);margin:8px 0 10px}
+.cover p{margin:0;opacity:.92}
+.cover .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.cover .chips a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.5);border-radius:99px;padding:3px 12px;font-size:14px}
+nav.toc{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin:24px 0;padding:6px 18px}
+nav.toc summary{cursor:pointer;font-weight:700;padding:8px 0}
+nav.toc ol{margin:4px 0 12px;padding-left:22px}nav.toc li{margin:3px 0}
+nav.toc .tu{font-weight:700;margin-top:10px;color:var(--brand2)}
+.unit>h2{font:700 clamp(25px,4.5vw,34px)/1.2 var(--disp);margin:56px 0 6px;padding-top:10px;border-top:3px solid var(--brand)}
+.unit>h2 .uno{display:block;font:700 13px var(--mono);letter-spacing:.12em;color:var(--brand);text-transform:uppercase}
+.unit-sub{color:var(--muted);margin:0 0 10px}
+.topic{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:6px 22px 18px;margin:26px 0;scroll-margin-top:12px}
+.topic>h3{font:700 23px/1.3 var(--disp);margin:18px 0 8px;color:var(--brand2)}
+h4{font-size:18px;margin:26px 0 6px}
+.hook{font-size:18px;background:var(--soft);border-left:4px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0}
+.def{border:1.5px solid var(--brand);border-radius:10px;padding:10px 14px;margin:14px 0}
+.def>b:first-child{color:var(--brand2)}
+ul,ol{padding-left:24px}li{margin:8px 0}
+mark{background:var(--mark);padding:0 3px;border-radius:3px;color:inherit}
+.hg{color:var(--muted);font-style:italic;font-size:.93em}
+.mn{background:#fff7d6;border:1px dashed #d4a514;border-radius:10px;padding:10px 14px;margin:14px 0}
+.mn>b:first-child{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#8a6500}
+.recall{background:#eef6f1;border:1px solid #b8dcc6;border-radius:10px;padding:10px 14px;margin:16px 0 4px}
+.recall>b:first-child{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--good)}
+.note{background:#fdf0f2;border:1px solid #f1c3cc;border-radius:10px;padding:10px 14px;margin:14px 0}
+.note>b:first-child{color:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:15.5px;margin:14px 0;background:var(--card)}
+.tw{overflow-x:auto;margin:14px 0}.tw table{margin:0;min-width:520px}
+th,td{border:1px solid var(--rule);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--brand2)}
+pre{font:14.5px/1.6 var(--mono);font-variant-ligatures:none;overflow-x:auto;border-radius:10px;padding:12px 14px;margin:12px 0}
+pre.code{background:#fbf6ee;border:1px solid #eadfcd}
+pre.code[data-file]::before{content:attr(data-file);display:block;font:600 12px var(--body);color:var(--muted);margin-bottom:6px}
+pre.out{background:#1f2328;color:#e6edf3}pre.out::before{content:"Output";display:block;font:600 12px var(--body);color:#9aa4ae;margin-bottom:4px}
+.code .c{color:#7a7266;font-style:italic}.code .k{color:var(--brand2);font-weight:600}
+code{font-family:var(--mono);font-size:.92em;background:#f1ece3;padding:1px 5px;border-radius:4px}pre code{background:none;padding:0}
+.ex{border:1px solid var(--rule);border-radius:10px;padding:10px 16px;margin:14px 0;background:#fcfbf9}
+.ex>b:first-child{color:var(--brand2)}.ex .step{margin:7px 0;font-size:16px;overflow-x:auto;overflow-y:hidden}
+.ans{display:inline-block;border:2px solid var(--good);border-radius:8px;padding:2px 10px;font-weight:700;margin:6px 0}
+/* ---------- figures ---------- */
+figure.fig{margin:18px 0;border:1px solid var(--rule);border-radius:12px;background:#fff;padding:14px 12px 10px;cursor:zoom-in}
+figure.fig .canvas{overflow-x:auto;padding:4px}
+figcaption{font-size:14.5px;color:var(--muted);text-align:center;margin-top:8px}
+figcaption b{color:var(--ink)}
+.draw{font-size:14.5px;background:var(--soft);border-radius:8px;padding:6px 10px;margin:8px 0 0}
+.n{border:1.8px solid var(--ink);background:var(--boxfill);border-radius:6px;padding:6px 12px;text-align:center;font-size:15px;line-height:1.35}
+.n.t{border-radius:999px;background:var(--hifill)}
+.n.hi{background:var(--hifill);border-color:var(--brand2)}
+.n.io,.n.d{border:0;border-radius:0;background:no-repeat center/100% 100%}
+.n.io{padding:6px 26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpolygon points='10,1 99,1 90,39 1,39' fill='%23fffdf9' stroke='%231d1b18' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+.n.d{padding:10px 34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpolygon points='50,1 99,20 50,39 1,20' fill='%23fbe9d8' stroke='%231d1b18' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+.n small{display:block;color:var(--muted);font-size:12.5px}
+.flow{display:flex;flex-direction:column;align-items:center;gap:26px;margin:4px auto;width:max-content;max-width:100%}
+.flow>.n{position:relative;min-width:180px;max-width:360px}
+.flow>.n+.n::before{content:"";position:absolute;left:calc(50% - 1px);top:-25px;height:20px;border-left:2px solid var(--ink)}
+.flow>.n+.n::after{content:"";position:absolute;left:calc(50% - 5px);top:-8px;border:5px solid transparent;border-top:7px solid var(--ink)}
+.flow>.ar{margin:-22px 0;font-size:13px;color:var(--muted)}
+.chain{display:flex;align-items:center;gap:0;width:max-content;min-width:100%;justify-content:center}
+.chain>.n{flex:0 0 auto;max-width:190px}
+.chain>.n+.n{margin-left:40px;position:relative}
+.chain>.n+.n::before{content:"";position:absolute;left:-36px;top:50%;width:28px;border-top:2px solid var(--ink)}
+.chain>.n+.n::after{content:"";position:absolute;left:-10px;top:calc(50% - 5px);border:5px solid transparent;border-left:7px solid var(--ink)}
+.chain>.ar{flex:0 0 auto;min-width:56px;text-align:center;font-size:12.5px;color:var(--muted);position:relative;padding:0 6px 14px}
+.chain>.ar::after{content:"";position:absolute;left:4px;right:10px;bottom:6px;border-top:2px solid var(--ink)}
+.chain>.ar::before{content:"";position:absolute;right:2px;bottom:1px;border:5px solid transparent;border-left:8px solid var(--ink)}
+.tree{overflow-x:auto;text-align:center}
+.tree ul{display:flex;justify-content:center;padding:18px 0 0;margin:0;position:relative;list-style:none}
+.tree>ul{padding-top:0}
+.tree li{position:relative;padding:18px 6px 0;margin:0;display:flex;flex-direction:column;align-items:center}
+.tree li::before,.tree li::after{content:"";position:absolute;top:0;right:50%;width:50%;height:18px;border-top:2px solid var(--ink)}
+.tree li::after{right:auto;left:50%;border-left:2px solid var(--ink)}
+.tree li:only-child::before,.tree li:only-child::after{border-top:0}
+.tree li:first-child::before,.tree li:last-child::after{border-top:0}
+.tree li:last-child::before{border-right:2px solid var(--ink);border-radius:0 6px 0 0}
+.tree li:first-child::after{border-radius:6px 0 0 0}
+.tree>ul>li{padding-top:0}.tree>ul>li::before,.tree>ul>li::after{display:none}
+.tree ul ul::before{content:"";position:absolute;top:0;left:50%;height:18px;border-left:2px solid var(--ink)}
+.tree li>span{display:inline-block;border:1.8px solid var(--ink);background:var(--boxfill);border-radius:6px;padding:5px 10px;font-size:14.5px;line-height:1.3;max-width:180px}
+.tree li>span.hi{background:var(--hifill)}
+.stack{display:flex;flex-direction:column;gap:6px;max-width:560px;margin:0 auto}
+.stack>.l{border:1.8px solid var(--ink);border-radius:6px;padding:8px 12px;text-align:center;background:var(--boxfill)}
+.stack>.l.hi{background:var(--hifill)}.stack>.l small{display:block;color:var(--muted);font-size:13px}
+.stack .row{display:flex;gap:6px}.stack .row>.l{flex:1;border:1.8px solid var(--ink);border-radius:6px;padding:8px;text-align:center;background:var(--boxfill)}
+.boxes{display:grid;gap:10px;grid-template-columns:repeat(var(--c,2),minmax(0,1fr))}
+.boxes.c3{--c:3}.boxes.c4{--c:4}.boxes.c5{--c:5}
+.boxes>.b{border:1.8px solid var(--ink);border-radius:8px;padding:8px 10px;background:var(--boxfill);font-size:14.5px;line-height:1.45}
+.boxes>.b>b:first-child{display:block;color:var(--brand2);font-size:15.5px;margin-bottom:2px}
+.boxes>.b.hi{background:var(--hifill)}
+@media (max-width:640px){.boxes.c3,.boxes.c4,.boxes.c5{--c:2}body{font-size:16px}.topic{padding:4px 14px 14px}}
+svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--body)}
+.sv rect,.sv circle,.sv ellipse,.sv polygon{fill:var(--boxfill);stroke:var(--ink);stroke-width:1.8}
+.sv line,.sv path,.sv polyline{fill:none;stroke:var(--ink);stroke-width:1.8}
+.sv .arr{marker-end:url(#ah)}.sv .arr2{marker-start:url(#ahs);marker-end:url(#ah)}
+.sv .hi{fill:var(--hifill)}.sv .acc{stroke:var(--brand)}.sv .dash{stroke-dasharray:6 5}
+.sv .dot{fill:var(--ink);stroke:none}.sv .dot.acc{fill:var(--brand)}.sv .none{fill:none}
+.sv text{font-size:14px;fill:var(--ink);stroke:none;text-anchor:middle;dominant-baseline:middle}
+.sv text.l{text-anchor:start}.sv text.r{text-anchor:end}.sv text.s{font-size:12px;fill:var(--muted)}.sv text.b{font-weight:700}
+.sa dt{font-weight:700;margin-top:14px}.sa dd{margin:4px 0 0 0;padding-left:14px;border-left:3px solid var(--rule)}
+.top{display:block;text-align:right;font-size:13px;margin-top:6px}
+#zoom{position:fixed;inset:0;background:rgba(20,18,15,.92);display:none;z-index:9;overflow:auto;padding:54px 12px 20px}
+#zoom.on{display:block}#zoom .zb{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:10}
+#zoom button{font:600 16px var(--body);border:0;border-radius:8px;padding:6px 14px;cursor:pointer}
+#zoom .zc{background:#fff;border-radius:12px;padding:16px;margin:0 auto;transform-origin:top center}
+@media print{.cover{background:none;color:#000;padding:0}.cover .chips,nav.toc,.top,#zoom{display:none}
+.topic,figure.fig{break-inside:avoid-page;box-shadow:none}body{background:#fff;font-size:12pt}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:#1d1b18;stroke:none"/></marker><marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:#1d1b18;stroke:none"/></marker></defs></svg>
+<header class="cover" id="top"><div class="in">
+<div class="code">CEU-314-V &middot; BCA SEMESTER V</div>
+<h1>Software Engineering</h1>
+<p>Quick revision &middot; exam Tue 22 Sep 2026, 2:00&ndash;3:30 PM &middot; definitions, diagrams, differences, mnemonics, short answers. Full notes: <a style="color:#fff" href="se-sessional-u1-u2.html">se-sessional-u1-u2.html</a></p>
+<div class="chips"><a href="#u1">Unit I &middot; Introduction</a><a href="#u2">Unit II &middot; Software Requirements Analysis &amp; Specifications</a></div>
+</div></header>
+<main>
+<nav class="toc"><details open><summary>Contents</summary><ol><li class="tu"><a href="#u1">Unit I &middot; Introduction</a><ol><li><a href="#u1-software">1.1 Software and Software Engineering</a></li><li><a href="#u1-char">1.2 Software Characteristics</a></li><li><a href="#u1-crisis">1.3 Software Crisis</a></li><li><a href="#u1-process">1.4 Software Process</a></li><li><a href="#u1-goodchar">1.5 Characteristics of a Good Software Process and a Good Software Product</a></li><li><a href="#u1-sdlc">1.6 Software Life Cycle (SDLC) and Life Cycle Models</a></li><li><a href="#u1-waterfall">1.7 Waterfall Model (Classical and Iterative)</a></li><li><a href="#u1-proto">1.8 Prototype Model</a></li><li><a href="#u1-evol">1.9 Evolutionary Models: Incremental and Evolutionary Development</a></li><li><a href="#u1-spiral">1.10 Spiral Model</a></li><li><a href="#u1-compare">1.11 Comparison of Life Cycle Models and Choosing a Model</a></li><li><a href="#u1-short">1.12 Short answers (1 mark)</a></li><li><a href="#u1-long">1.13 Long-answer frames (8 marks)</a></li></ol></li><li class="tu"><a href="#u2">Unit II &middot; Software Requirements Analysis &amp; Specifications</a><ol><li><a href="#u2-req">2.1 Requirements and their types</a></li><li><a href="#u2-re">2.2 Requirement engineering process</a></li><li><a href="#u2-elicit">2.3 Requirement elicitation: interviews and brainstorming</a></li><li><a href="#u2-fast">2.4 FAST (Facilitated Application Specification Technique)</a></li><li><a href="#u2-qfd">2.5 QFD (Quality Function Deployment)</a></li><li><a href="#u2-usecase">2.6 Use case approach and comparison of techniques</a></li><li><a href="#u2-analysis">2.7 Requirements analysis</a></li><li><a href="#u2-dfd">2.8 Data Flow Diagrams (DFD)</a></li><li><a href="#u2-dd">2.9 Data dictionary</a></li><li><a href="#u2-er">2.10 Entity-Relationship (ER) diagrams</a></li><li><a href="#u2-srs">2.11 Requirements documentation and nature of SRS</a></li><li><a href="#u2-srschar">2.12 Characteristics of a good SRS</a></li><li><a href="#u2-srsorg">2.13 Organization of SRS (IEEE 830 outline)</a></li><li><a href="#u2-short">2.14 Short answers (1 mark)</a></li><li><a href="#u2-long">2.15 Long-answer frames (8 marks)</a></li></ol></li></ol></details></nav>
+<section class="unit" id="u1">
+<h2><span class="uno">Unit I</span>Introduction</h2>
+<p class="unit-sub">What software is, why its development went into "crisis", and the life cycle models engineers use to build it in a planned way.</p>
+
+<section class="topic" id="u1-software"><h3>1.1 Software and Software Engineering</h3>
+<div class="def"><b>Definition (Software):</b> Software is a collection of computer <mark>programs</mark>, <mark>documentation</mark> and <mark>operating procedures</mark> that together make a computer system perform a useful task.</div>
+<div class="def"><b>Definition (Software Engineering, IEEE):</b> Software engineering is "the application of a <mark>systematic, disciplined, quantifiable approach</mark> to the development, operation and maintenance of software; that is, the application of engineering to software." (IEEE Std 610.12)</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Software</span><ul>
+<li><span>Programs</span><ul><li><span>Source code</span></li><li><span>Object code</span></li></ul></li>
+<li><span>Documentation</span><ul><li><span>SRS, design</span></li><li><span>Test reports</span></li></ul></li>
+<li><span>Operating procedures</span><ul><li><span>User manual</span></li><li><span>Install guide</span></li></ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.1</b> · Software = Programs + Documentation + Operating procedures</figcaption>
+<p class="draw">✍ Draw it: one root box "Software", three child boxes, two small leaf boxes under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Program</th><th>Software (product)</th></tr>
+<tr><td>Size</td><td>Small, usually one module</td><td>Large, many modules</td></tr>
+<tr><td>Developer</td><td>Single person</td><td>Team of developers</td></tr>
+<tr><td>Users</td><td>Author himself / few users</td><td>Many unknown users</td></tr>
+<tr><td>Documentation</td><td>Little or none</td><td>Full: SRS, design, manuals</td></tr>
+<tr><td>User interface</td><td>Not important</td><td>Carefully designed</td></tr>
+<tr><td>Development</td><td>Ad-hoc, personal style</td><td>Systematic, follows a process model</td></tr>
+<tr><td>Formula</td><td>Code only</td><td>Programs + documentation + operating procedures</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Type</th><th>Myth</th><th>Reality</th></tr>
+<tr><td>Management</td><td>"If we are behind schedule, add more programmers."</td><td>Adding people to a late project makes it later (new people need training time).</td></tr>
+<tr><td>Management</td><td>"We have a book of standards, that is enough."</td><td>A book nobody uses or updates does not improve quality.</td></tr>
+<tr><td>Customer</td><td>"A general statement of objectives is enough to start coding."</td><td>Vague requirements are a major cause of failure.</td></tr>
+<tr><td>Customer</td><td>"Changes can be easily accommodated because software is flexible."</td><td>Cost of change grows sharply in later phases.</td></tr>
+<tr><td>Practitioner</td><td>"Once the program works, our job is done."</td><td>Most effort is spent after first delivery (maintenance).</td></tr>
+<tr><td>Practitioner</td><td>"The only deliverable is the working program."</td><td>Documentation and test results are also deliverables.</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Software = <b>P-D-O</b> : Programs, Documentation, Operating procedures. Myths come from <b>M-C-P</b> : Management, Customer, Practitioner.</div>
+<div class="note"><b>Common mistake:</b> Writing "software = program". A program is only one of the three parts of software.</div>
+<div class="recall"><b>Quick recall</b> IEEE: SE = systematic, disciplined, quantifiable approach to develop, operate, maintain software.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-char"><h3>1.2 Software Characteristics</h3>
+<div class="def"><b>Definition:</b> Software characteristics are the properties that distinguish software from physical (hardware) products and that decide how it must be developed and maintained.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 300" width="760">
+<path class="arr" d="M60 230 V45"/><path class="arr" d="M60 230 H355"/>
+<path class="arr" d="M440 230 V45"/><path class="arr" d="M440 230 H735"/>
+<text class="s" x="60" y="30">Failure rate</text><text class="s" x="440" y="30">Failure rate</text>
+<text class="s r" x="355" y="248">Time</text><text class="s r" x="735" y="248">Time</text>
+<polyline class="acc" points="60,95 70,131 79,155 89,171 99,183 108,191 118,196 128,200 137,202 147,204 157,205 166,206 176,206 186,207 195,207 205,207 214,207 224,207 234,206 243,206 253,205 263,204 272,203 282,200 292,196 301,190 311,181 321,168 330,148 340,117"/>
+<text class="s" x="150" y="80">Infant mortality</text>
+<text class="s" x="300" y="100">Wear out</text>
+<text class="s" x="200" y="190">Steady</text>
+<polyline class="dash" points="440,95 450,131 459,155 469,171 479,183 488,191 498,196 508,200 517,202 527,204 537,205 546,206 556,206 566,207 575,207 585,207 594,207 604,207 614,207 623,207 633,207 643,207 652,207 662,207 672,207 681,207 691,207 701,207 710,207 720,207"/>
+<polyline class="acc" points="440,95 443,106 446,116 448,125 451,134 454,141 457,147 460,153 462,158 465,162 468,166 471,170 474,173 476,176 479,178 482,180 485,182 488,184 490,185 493,186 496,188 499,188 502,189 504,190 507,190 510,191 513,191 516,192 518,192 521,192 524,192 524,140 527,150 530,158 532,165 535,170 538,175 541,178 544,180 546,182 549,184 552,185 555,186 558,187 560,187 563,188 566,188 569,188 572,188 574,188 577,188 580,188 583,187 586,187 588,187 591,187 594,186 594,134 597,144 600,152 602,158 605,163 608,167 611,170 614,173 616,175 619,176 622,177 625,178 628,179 630,179 633,179 636,179 639,179 642,179 644,179 647,179 650,179 653,178 656,178 658,178 661,178 664,177 664,125 667,135 670,143 672,149 675,154 678,158 681,161 684,164 686,165 689,167 692,168 695,169 698,169 700,170 703,170 706,170 709,170 712,170 714,170 717,170 720,169"/>
+<text class="s" x="524" y="126">change</text><text class="s" x="594" y="120">change</text><text class="s" x="664" y="111">change</text>
+<text class="s" x="718" y="148">Actual</text>
+<text class="s" x="600" y="220">Idealized (dashed)</text>
+<text class="b" x="205" y="280">(a) Hardware: bathtub curve</text>
+<text class="b" x="590" y="280">(b) Software failure curves</text>
+</svg></div><figcaption><b>Fig 1.2</b> · Hardware bathtub curve vs software idealized and actual failure curves (shape only, not to scale)</figcaption>
+<p class="draw">✍ Draw it: two axes side by side; left a "U" (bathtub); right a falling curve that flattens (dashed) plus a solid curve with upward spikes at each change, slowly rising.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Hardware</th><th>Software</th></tr>
+<tr><td>Production</td><td>Manufactured</td><td>Developed / engineered</td></tr>
+<tr><td>Wear</td><td>Wears out with time</td><td>Does not wear out, but deteriorates due to changes</td></tr>
+<tr><td>Failure curve</td><td>Bathtub curve</td><td>Idealized flat curve; actual curve with spikes</td></tr>
+<tr><td>Repair</td><td>Replace spare part</td><td>Fix the design/code, no spare parts</td></tr>
+<tr><td>Copy cost</td><td>High (material, labour)</td><td>Almost zero</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>E-W-C</b> : Engineered (not manufactured), does not Wear out, Custom built (moving to component reuse).</div>
+<div class="note"><b>Common mistake:</b> Drawing the bathtub curve for software. The bathtub curve is for hardware; software gets the idealized and actual curves.</div>
+<div class="recall"><b>Quick recall</b> Hardware wears out (bathtub). Software does not wear out but deteriorates, because every change can add defects.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-crisis"><h3>1.3 Software Crisis</h3>
+<div class="def"><b>Definition:</b> Software crisis is the set of problems faced in developing software: projects running <mark>over budget</mark>, <mark>behind schedule</mark>, of <mark>poor quality</mark>, hard to <mark>maintain</mark> and not meeting user requirements.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Software crisis symptoms</span><ul>
+<li><span>Over budget</span></li><li><span>Late delivery</span></li><li><span>Poor quality, unreliable</span></li>
+<li><span>Hard to maintain</span></li><li><span>Requirement mismatch</span></li><li><span>Project cancelled</span></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.3</b> · Symptoms of software crisis</figcaption>
+<p class="draw">✍ Draw it: one root box, six small leaf boxes in a row joined by a bracket line.</p></figure>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Causes<small>growing size, no process</small></div><div class="n hi">Software crisis</div><div class="n">Solution<small>software engineering</small></div>
+</div></div><figcaption><b>Fig 1.4</b> · Causes lead to crisis; software engineering is the solution</figcaption>
+<p class="draw">✍ Draw it: three boxes left to right with arrows; middle box shaded.</p></figure>
+<div class="mn"><b>Mnemonic</b> Symptoms <b>"BLQMR"</b> : over Budget, Late, poor Quality, hard to Maintain, Requirement mismatch.</div>
+<div class="recall"><b>Quick recall</b> Crisis = late, costly, buggy, unmaintainable software. Cause = no discipline. Cure = software engineering.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-process"><h3>1.4 Software Process</h3>
+<div class="def"><b>Definition:</b> A software process is a <mark>set of activities, actions and tasks</mark>, with their associated results, that are carried out to develop and maintain a software product.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">Umbrella activities<small>project tracking, risk management, SQA, reviews, measurement, configuration management, reusability management, work product preparation</small></div>
+<div class="row"><div class="l">Communication</div><div class="l">Planning</div><div class="l">Modeling</div><div class="l">Construction</div><div class="l">Deployment</div></div>
+<div class="l">Process framework<small>generic framework activities</small></div>
+</div></div><figcaption><b>Fig 1.5</b> · Generic process framework: five framework activities under umbrella activities (Pressman)</figcaption>
+<p class="draw">✍ Draw it: wide shaded top box "Umbrella activities", a row of five boxes below, base box "Process framework".</p></figure>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Process<small>how: set of activities</small></div><div class="ar">applied in</div><div class="n">Project<small>one time-bound effort</small></div><div class="ar">produces</div><div class="n hi">Product<small>software delivered</small></div>
+</div></div><figcaption><b>Fig 1.6</b> · Relation between process, project and product</figcaption>
+<p class="draw">✍ Draw it: three boxes in a line with labelled arrows "applied in" and "produces".</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Process</th><th>Project</th><th>Product</th></tr>
+<tr><td>Meaning</td><td>Set of activities to build software</td><td>A time-bound effort to build one specific software</td><td>The software (code + documents) delivered</td></tr>
+<tr><td>Question answered</td><td>How is it built?</td><td>What, when, by whom, with what budget?</td><td>What is delivered?</td></tr>
+<tr><td>Life</td><td>Reused across many projects</td><td>Has start and end date</td><td>Used and maintained after delivery</td></tr>
+<tr><td>Example</td><td>Waterfall / spiral process</td><td>"Build hostel portal by March"</td><td>The hostel portal itself</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Framework activities <b>"C-P-M-C-D"</b> : "Come, Plan, Make, Code, Deliver" = Communication, Planning, Modeling, Construction, Deployment.</div>
+<div class="note"><b>Common mistake:</b> Listing testing as a separate framework activity. In Pressman's generic framework, testing is part of Construction (code + test).</div>
+<div class="recall"><b>Quick recall</b> Process = activities to build software: Communication, Planning, Modeling, Construction, Deployment + umbrella activities.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-goodchar"><h3>1.5 Characteristics of a Good Software Process and a Good Software Product</h3>
+<div class="def"><b>Definition:</b> Process characteristics are the qualities that make a software process effective and usable by a team; product characteristics (quality attributes) are the qualities that make the delivered software acceptable to users and maintainers.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b"><b>Understandability</b>process clearly defined</div>
+<div class="b"><b>Visibility</b>progress visible via outputs</div>
+<div class="b"><b>Supportability</b>CASE tools can support it</div>
+<div class="b"><b>Acceptability</b>engineers accept and use it</div>
+<div class="b"><b>Reliability</b>errors caught before product</div>
+<div class="b"><b>Robustness</b>continues despite problems</div>
+<div class="b"><b>Maintainability</b>process can evolve</div>
+<div class="b hi"><b>Rapidity</b>fast delivery from spec</div>
+</div></div><figcaption><b>Fig 1.7</b> · Eight characteristics of a good software process</figcaption>
+<p class="draw">✍ Draw it: a 2 x 4 grid of small boxes, each with the word and three-word meaning.</p></figure>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Good software product</span><ul>
+<li><span>Operational</span><ul><li><span>Correctness</span></li><li><span>Efficiency, usability</span></li><li><span>Reliability, security</span></li></ul></li>
+<li><span>Transition</span><ul><li><span>Portability</span></li><li><span>Reusability</span></li><li><span>Interoperability</span></li></ul></li>
+<li><span>Maintenance</span><ul><li><span>Maintainability</span></li><li><span>Flexibility</span></li><li><span>Modularity, scalability</span></li></ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.8</b> · Characteristics of a good software product in three views</figcaption>
+<p class="draw">✍ Draw it: root box, three branches (Operational, Transition, Maintenance), three leaves under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Good process characteristics</th><th>Good product characteristics</th></tr>
+<tr><td>Applies to</td><td>The way software is built</td><td>The software delivered</td></tr>
+<tr><td>Judged by</td><td>Development team, management</td><td>Users and maintainers</td></tr>
+<tr><td>Examples</td><td>Visibility, rapidity, robustness</td><td>Correctness, portability, maintainability</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Process: <b>"U-V-S-A R-R-M-R"</b> : "Understand, View, Support, Accept, then Rely, be Robust, Maintain, be Rapid". Product: <b>O-T-M</b> : Operational, Transition, Maintenance.</div>
+<div class="note"><b>Common mistake:</b> Mixing the two lists. Portability and correctness are product qualities; visibility and rapidity are process qualities.</div>
+<div class="recall"><b>Quick recall</b> Process: understandability, visibility, supportability, acceptability, reliability, robustness, maintainability, rapidity. Product: operational, transition, maintenance.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-sdlc"><h3>1.6 Software Life Cycle (SDLC) and Life Cycle Models</h3>
+<div class="def"><b>Definition:</b> The software life cycle is the period from the <mark>conception</mark> of a software product until it is <mark>retired</mark>. A <mark>software life cycle model</mark> (process model) is a descriptive and diagrammatic representation of the life cycle that identifies all activities and the order in which they are done.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n">Feasibility study</div>
+<div class="n">Requirement analysis &amp; specification</div>
+<div class="n">Design</div>
+<div class="n">Coding &amp; unit testing</div>
+<div class="n">Integration &amp; system testing</div>
+<div class="n hi">Deployment &amp; maintenance</div>
+</div></div><figcaption><b>Fig 1.9</b> · Generic phases of the software development life cycle</figcaption>
+<p class="draw">✍ Draw it: six boxes top to bottom joined by down arrows; shade the last one.</p></figure>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Life cycle models</span><ul>
+<li><span>Linear</span><ul><li><span>Build and fix</span></li><li><span>Waterfall</span></li></ul></li>
+<li><span>Incremental</span><ul><li><span>Iterative enhancement</span></li><li><span>RAD</span></li></ul></li>
+<li><span>Evolutionary</span><ul><li><span>Prototyping</span></li><li><span>Spiral</span></li></ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.10</b> · Classification of life cycle models</figcaption>
+<p class="draw">✍ Draw it: root box, three category boxes, two model boxes under each.</p></figure>
+<div class="recall"><b>Quick recall</b> SDLC: feasibility, requirements, design, coding, testing, maintenance. A life cycle model fixes the order of these activities.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-waterfall"><h3>1.7 Waterfall Model (Classical and Iterative)</h3>
+<div class="def"><b>Definition:</b> The waterfall model (classical life cycle / linear sequential model) is a model in which development proceeds <mark>sequentially</mark> through phases, each phase starting only after the previous one is <mark>complete</mark> and its output document is approved. It is usually attributed to W. W. Royce (1970).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 440" width="760">
+<text class="s r" x="740" y="20">solid arrows: classical flow</text>
+<text class="s r" x="740" y="40">dashed arrows: feedback (iterative)</text>
+<rect x="20" y="40" width="180" height="50" rx="6"/><text x="110" y="56">Requirement analysis</text><text x="110" y="75">&amp; specification</text>
+<rect x="155" y="120" width="180" height="50" rx="6"/><text x="245" y="145">Design</text>
+<rect x="290" y="200" width="180" height="50" rx="6"/><text x="380" y="216">Implementation</text><text x="380" y="235">&amp; unit testing</text>
+<rect x="425" y="280" width="180" height="50" rx="6"/><text x="515" y="296">Integration &amp;</text><text x="515" y="315">system testing</text>
+<rect class="hi" x="560" y="360" width="180" height="50" rx="6"/><text x="650" y="376">Operation &amp;</text><text x="650" y="395">maintenance</text>
+<path class="arr" d="M180 90 V120"/><path class="arr" d="M315 170 V200"/><path class="arr" d="M450 250 V280"/><path class="arr" d="M585 330 V360"/>
+<path class="arr dash" d="M155 145 H70 V90"/><path class="arr dash" d="M290 225 H205 V170"/><path class="arr dash" d="M425 305 H340 V250"/><path class="arr dash" d="M560 385 H475 V330"/>
+</svg></div><figcaption><b>Fig 1.11</b> · Waterfall model: solid arrows = classical waterfall; adding dashed feedback arrows = iterative waterfall</figcaption>
+<p class="draw">✍ Draw it: five boxes as a staircase going down-right, solid arrow down between steps; for iterative, add a dashed arrow from each box back up to the previous one.</p></figure>
+<div class="tw"><table>
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple, easy to understand and explain</td><td>Requirements must be fully known at the start; real projects rarely have this</td></tr>
+<tr><td>Clear milestones and documents; easy to manage</td><td>Working software appears only late in the life cycle</td></tr>
+<tr><td>Each phase is reviewed before the next begins</td><td>Changes are costly once a phase is frozen</td></tr>
+<tr><td>Works well for small, well-understood projects</td><td>Poor risk handling; errors found late are expensive</td></tr>
+<tr><td>Good documentation for maintenance</td><td>Customer sees nothing until the end; "blocking states" as teams wait for previous phase</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Classical waterfall</th><th>Iterative waterfall</th></tr>
+<tr><td>Feedback</td><td>None</td><td>Feedback paths to previous phases</td></tr>
+<tr><td>Error correction</td><td>Not planned for</td><td>Errors fixed in the phase where they occurred</td></tr>
+<tr><td>Practical use</td><td>Theoretical / idealistic</td><td>Used in practice</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Phases <b>"R-D-I-I-O"</b> : "Rahul Does Its Integration Once" = Requirements, Design, Implementation, Integration, Operation.</div>
+<div class="note"><b>Common mistake:</b> Saying the classical waterfall allows going back. Only the iterative waterfall has feedback arrows.</div>
+<div class="recall"><b>Quick recall</b> Waterfall = sequential phases, document at each end, needs fixed requirements. Iterative waterfall = same + feedback paths.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-proto"><h3>1.8 Prototype Model</h3>
+<div class="def"><b>Definition:</b> The prototyping model builds a <mark>working prototype</mark> (a partial, quick, low-cost version with limited functionality) of the system, gets <mark>customer evaluation</mark>, refines it repeatedly until requirements are clear, and then <mark>engineers the actual product</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 550" width="620">
+<ellipse class="hi" cx="220" cy="30" rx="50" ry="18"/><text x="220" y="30">Start</text>
+<path class="arr" d="M220 48 V70"/>
+<rect x="115" y="70" width="210" height="40" rx="6"/><text x="220" y="90">Requirements gathering</text>
+<path class="arr" d="M220 110 V135"/>
+<rect x="115" y="135" width="210" height="40" rx="6"/><text x="220" y="155">Quick design</text>
+<path class="arr" d="M220 175 V200"/>
+<rect x="115" y="200" width="210" height="40" rx="6"/><text x="220" y="220">Build prototype</text>
+<path class="arr" d="M220 240 V265"/>
+<rect x="115" y="265" width="210" height="40" rx="6"/><text x="220" y="285">Customer evaluation</text>
+<path class="arr" d="M220 305 V330"/>
+<polygon points="220,330 310,365 220,400 130,365"/><text x="220" y="365">Satisfied?</text>
+<path class="arr" d="M310 365 H400"/><text class="s" x="355" y="352">No</text>
+<rect x="400" y="345" width="180" height="40" rx="6"/><text x="490" y="365">Refine prototype</text>
+<path class="arr" d="M490 345 V155 H325"/><text class="s l" x="498" y="250">feedback</text>
+<path class="arr" d="M220 400 V430"/><text class="s l" x="230" y="415">Yes</text>
+<rect class="hi" x="115" y="430" width="210" height="40" rx="6"/><text x="220" y="450">Engineer product</text>
+<path class="arr" d="M220 470 V495"/>
+<ellipse class="hi" cx="220" cy="513" rx="50" ry="18"/><text x="220" y="513">Stop</text>
+</svg></div><figcaption><b>Fig 1.12</b> · Prototype model with the refine loop</figcaption>
+<p class="draw">✍ Draw it: Start oval, four boxes down, diamond "Satisfied?"; No goes right to "Refine" and loops up to Quick design; Yes goes down to "Engineer product" and Stop.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Throwaway (rapid) prototyping</th><th>Evolutionary prototyping</th></tr>
+<tr><td>Fate of prototype</td><td>Discarded after requirements are clear</td><td>Refined step by step into the final system</td></tr>
+<tr><td>Purpose</td><td>Clarify requirements</td><td>Deliver a working system gradually</td></tr>
+<tr><td>Code quality</td><td>Quick, low quality is acceptable</td><td>Must be good quality from the start</td></tr>
+<tr><td>Best for</td><td>Poorly understood requirements</td><td>Well-understood parts built first, rest evolves</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Customer sees a working model early; better requirements</td><td>Customer may think the prototype is the final product and want it delivered as is</td></tr>
+<tr><td>Missing or confusing features found early</td><td>Extra cost and time of building prototypes</td></tr>
+<tr><td>High user involvement, higher satisfaction</td><td>Developers may keep poor quick choices in the final system</td></tr>
+<tr><td>Reduces risk of requirement mismatch</td><td>Too many refine cycles if not controlled</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>"G-Q-B-E-R-E"</b> : "Good Quality Buns Everyone Really Enjoys" = Gather, Quick design, Build, Evaluate, Refine, Engineer.</div>
+<div class="note"><b>Common mistake:</b> Delivering the throwaway prototype as the product. It was built fast and is not meant for real use.</div>
+<div class="recall"><b>Quick recall</b> Prototype = quick sample, customer feedback loop, then build properly. Use when requirements are unclear.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-evol"><h3>1.9 Evolutionary Models: Incremental and Evolutionary Development</h3>
+<div class="def"><b>Definition (Incremental model):</b> The incremental model delivers software in a series of <mark>increments</mark>; each increment passes through analysis, design, coding and testing, and adds new functionality to the previous release. The first increment is the <mark>core product</mark>. Aggarwal &amp; Singh call this the <mark>iterative enhancement model</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 340" width="760">
+<text class="l" x="20" y="70">Increment 1</text><text class="l" x="20" y="150">Increment 2</text><text class="l" x="20" y="230">Increment 3</text>
+<rect x="120" y="50" width="80" height="40"/><text x="160" y="70">Analysis</text>
+<rect x="200" y="50" width="80" height="40"/><text x="240" y="70">Design</text>
+<rect x="280" y="50" width="80" height="40"/><text x="320" y="70">Code</text>
+<rect x="360" y="50" width="80" height="40"/><text x="400" y="70">Test</text>
+<path class="arr" d="M440 70 H470"/><text class="l b" x="478" y="70">Release 1</text>
+<rect x="205" y="130" width="80" height="40"/><text x="245" y="150">Analysis</text>
+<rect x="285" y="130" width="80" height="40"/><text x="325" y="150">Design</text>
+<rect x="365" y="130" width="80" height="40"/><text x="405" y="150">Code</text>
+<rect x="445" y="130" width="80" height="40"/><text x="485" y="150">Test</text>
+<path class="arr" d="M525 150 H555"/><text class="l b" x="563" y="150">Release 2</text>
+<rect x="290" y="210" width="80" height="40"/><text x="330" y="230">Analysis</text>
+<rect x="370" y="210" width="80" height="40"/><text x="410" y="230">Design</text>
+<rect x="450" y="210" width="80" height="40"/><text x="490" y="230">Code</text>
+<rect x="530" y="210" width="80" height="40"/><text x="570" y="230">Test</text>
+<path class="arr" d="M610 230 H640"/><text class="l b" x="648" y="230">Release 3</text>
+<path class="arr" d="M120 290 H720"/><text class="s" x="420" y="312">Calendar time</text>
+</svg></div><figcaption><b>Fig 1.13</b> · Incremental model: overlapping increments, each giving a release</figcaption>
+<p class="draw">✍ Draw it: three rows of four joined boxes (A-D-C-T), each row shifted right; arrow to "Release n"; time arrow at the bottom.</p></figure>
+<div class="def"><b>Definition (Evolutionary development model):</b> In evolutionary development an <mark>initial version</mark> is built from an outline description, exposed to user comments, and refined through <mark>many versions</mark> until an adequate system is developed; specification, development and validation happen <mark>concurrently</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 270" width="700">
+<text class="s" x="315" y="18">Concurrent activities</text>
+<rect x="20" y="120" width="130" height="60" rx="6"/><text x="85" y="140">Outline</text><text x="85" y="160">description</text>
+<rect x="230" y="40" width="170" height="44" rx="6"/><text x="315" y="62">Specification</text>
+<rect class="hi" x="230" y="120" width="170" height="44" rx="6"/><text x="315" y="142">Development</text>
+<rect x="230" y="200" width="170" height="44" rx="6"/><text x="315" y="222">Validation</text>
+<rect x="480" y="40" width="190" height="44" rx="6"/><text x="575" y="62">Initial version</text>
+<rect x="480" y="120" width="190" height="44" rx="6"/><text x="575" y="142">Intermediate versions</text>
+<rect x="480" y="200" width="190" height="44" rx="6"/><text x="575" y="222">Final version</text>
+<path class="arr" d="M150 150 L230 62"/><path class="arr" d="M150 150 L230 142"/><path class="arr" d="M150 150 L230 222"/>
+<path class="arr" d="M400 62 H480"/><path class="arr" d="M400 142 H480"/><path class="arr" d="M400 222 H480"/>
+</svg></div><figcaption><b>Fig 1.14</b> · Evolutionary development: concurrent activities produce a series of versions</figcaption>
+<p class="draw">✍ Draw it: one box on left, three stacked boxes in the middle (Spec, Develop, Validate), three stacked version boxes on right; arrows left to right.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Incremental model</th><th>Evolutionary development</th></tr>
+<tr><td>Requirements</td><td>Mostly known at start, divided into increments</td><td>Not fully known; discovered through versions</td></tr>
+<tr><td>Each cycle delivers</td><td>A new set of planned features</td><td>An improved version of the whole system</td></tr>
+<tr><td>Planning</td><td>Increments planned in advance</td><td>Next version decided by user feedback</td></tr>
+<tr><td>Documentation</td><td>Documented per increment</td><td>Often weak; low visibility</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>Incremental = Add</b> (new room each release); <b>Evolutionary = Grow</b> (same plant keeps changing shape).</div>
+<div class="note"><b>Common mistake:</b> Treating incremental and evolutionary as identical. Incremental needs requirements up front; evolutionary discovers them.</div>
+<div class="recall"><b>Quick recall</b> Incremental: core first, planned releases, each a mini waterfall. Evolutionary: outline &rarr; versions refined by user feedback.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-spiral"><h3>1.10 Spiral Model</h3>
+<div class="def"><b>Definition:</b> The spiral model, proposed by <mark>Barry Boehm</mark>, is a <mark>risk-driven</mark> evolutionary model that combines the iterative nature of prototyping with the systematic aspects of the waterfall model. Development proceeds in <mark>loops of a spiral</mark>; each loop passes through four quadrants.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 490" width="760">
+<line class="dash" x1="190" y1="245" x2="570" y2="245"/><line class="dash" x1="380" y1="55" x2="380" y2="435"/>
+<path class="arr acc" d="M366 245 L365 242 L364 239 L364 236 L365 232 L366 229 L369 225 L372 222 L375 219 L380 218 L385 217 L390 216 L396 217 L401 219 L407 223 L411 227 L416 232 L419 238 L421 245 L422 252 L421 260 L419 268 L416 275 L411 282 L405 288 L398 293 L389 297 L380 299 L370 300 L360 299 L351 296 L341 291 L333 285 L325 277 L319 267 L315 256 L312 245 L312 233 L314 221 L318 209 L324 198 L332 187 L342 179 L353 172 L366 167 L380 164 L394 164 L409 166 L423 171 L436 178 L448 188 L458 200 L466 214 L472 229 L474 245 L475 262 L472 278 L466 294 L457 310 L446 323 L432 335 L416 344 L398 350 L380 353 L361 353 L342 349 L324 342 L307 332 L292 319 L279 303 L269 285 L262 266 L259 245 L259 224 L263 202 L271 182 L282 163 L297 146 L315 132 L335 121 L357 114 L380 110 L404 111 L427 116 L450 124 L470 137 L489 154 L504 173 L516 195 L524 220 L528 245 L527 271 L522 297 L512 321 L498 344 L480 364 L459 381 L434 394 L408 403 L380 407 L352 406 L324 400 L297 389 L272 373 L251 354 L232 330 L218 304 L209 275 L205 245"/>
+<circle class="dot acc" cx="366" cy="245" r="4"/><text class="s" x="392" y="254">Start</text>
+<text class="b l" x="20" y="35">1. Determine objectives,</text><text class="b l" x="20" y="57">alternatives, constraints</text>
+<text class="b r" x="740" y="35">2. Evaluate alternatives;</text><text class="b r" x="740" y="57">identify, resolve risks</text><text class="s r" x="740" y="79">(risk analysis, prototype)</text>
+<text class="b r" x="740" y="440">3. Develop and verify</text><text class="b r" x="740" y="462">next-level product</text>
+<text class="b l" x="20" y="440">4. Plan the next</text><text class="b l" x="20" y="462">iteration (review)</text>
+</svg></div><figcaption><b>Fig 1.15</b> · Boehm's spiral model: each loop crosses four quadrants; radius = cumulative cost, angle = progress</figcaption>
+<p class="draw">✍ Draw it: a "+" of dashed axes, a spiral starting at the centre moving clockwise outward (top-left, top-right, bottom-right, bottom-left), and one quadrant label in each corner.</p></figure>
+<div class="tw"><table>
+<tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Explicit risk analysis in every loop; risks reduced early</td><td>Needs experts in risk assessment; success depends on them</td></tr>
+<tr><td>Suits large, complex, high-risk projects</td><td>Costly; not worth it for small or low-risk projects</td></tr>
+<tr><td>Changes and new requirements can enter in later loops</td><td>Complex to manage; end of project not easy to predict</td></tr>
+<tr><td>Customer reviews each loop; prototypes give early feedback</td><td>Needs more documentation and review meetings per loop</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Quadrants <b>"O-R-D-P"</b> : "Only Risky Designs Pay" = Objectives, Risk analysis, Develop, Plan. Clockwise from top-left.</div>
+<div class="note"><b>Common mistake:</b> Forgetting the risk analysis quadrant, or labelling the spiral anticlockwise with random order. The order is Objectives &rarr; Risk &rarr; Develop &rarr; Plan.</div>
+<div class="recall"><b>Quick recall</b> Spiral (Boehm) = risk-driven loops of 4 quadrants: objectives, risk analysis, develop &amp; verify, plan next. A meta-model.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-compare"><h3>1.11 Comparison of Life Cycle Models and Choosing a Model</h3>
+<div class="def"><b>Definition:</b> Selection of a life cycle model is the decision of which process model to follow, based on <mark>requirement clarity</mark>, <mark>project size</mark>, <mark>risk</mark>, customer involvement and delivery needs.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 350" width="760">
+<polygon points="380,25 500,60 380,95 260,60"/><text x="380" y="60">Requirements clear?</text>
+<path d="M380 95 V120 H190"/><path class="arr" d="M190 120 V145"/>
+<path d="M380 120 H570"/><path class="arr" d="M570 120 V145"/>
+<text class="s" x="285" y="108">Yes</text><text class="s" x="475" y="108">No</text>
+<polygon points="190,145 315,180 190,215 65,180"/><text x="190" y="180">Early partial delivery?</text>
+<polygon points="570,145 680,180 570,215 460,180"/><text x="570" y="180">Large, high risk?</text>
+<path d="M190 215 V240 H90"/><path class="arr" d="M90 240 V280"/>
+<path d="M190 240 H290"/><path class="arr" d="M290 240 V280"/>
+<text class="s" x="140" y="230">Yes</text><text class="s" x="240" y="230">No</text>
+<path d="M570 215 V240 H480"/><path class="arr" d="M480 240 V280"/>
+<path d="M570 240 H680"/><path class="arr" d="M680 240 V280"/>
+<text class="s" x="525" y="230">No</text><text class="s" x="625" y="230">Yes</text>
+<rect class="hi" x="20" y="280" width="140" height="40" rx="6"/><text x="90" y="300">Incremental</text>
+<rect class="hi" x="220" y="280" width="140" height="40" rx="6"/><text x="290" y="300">Waterfall</text>
+<rect class="hi" x="380" y="280" width="200" height="40" rx="6"/><text x="480" y="300">Prototype / Evolutionary</text>
+<rect class="hi" x="620" y="280" width="120" height="40" rx="6"/><text x="680" y="300">Spiral</text>
+</svg></div><figcaption><b>Fig 1.16</b> · Which model when: a simple decision flowchart</figcaption>
+<p class="draw">✍ Draw it: top diamond "Requirements clear?"; Yes to diamond "Early partial delivery?" (Yes Incremental, No Waterfall); No to diamond "Large, high risk?" (Yes Spiral, No Prototype/Evolutionary).</p></figure>
+<div class="tw"><table>
+<tr><th>Feature</th><th>Waterfall</th><th>Iterative waterfall</th><th>Prototype</th><th>Incremental</th><th>Evolutionary</th><th>Spiral</th></tr>
+<tr><td>Requirements clarity needed</td><td>Complete, frozen</td><td>Mostly complete</td><td>Unclear at start</td><td>Clear, prioritised</td><td>Unclear, evolving</td><td>Can be unclear, complex</td></tr>
+<tr><td>Risk handling</td><td>Very low</td><td>Low</td><td>Medium (requirement risk)</td><td>Medium</td><td>Medium</td><td>High (explicit risk analysis)</td></tr>
+<tr><td>Customer involvement</td><td>Start and end only</td><td>Low</td><td>High</td><td>After each release</td><td>High, continuous</td><td>High, each loop review</td></tr>
+<tr><td>Cost</td><td>Low</td><td>Low</td><td>Medium (extra prototypes)</td><td>Medium</td><td>Hard to estimate</td><td>High</td></tr>
+<tr><td>Flexibility to change</td><td>Very low</td><td>Low</td><td>High before final build</td><td>Medium (between increments)</td><td>High</td><td>High</td></tr>
+<tr><td>Working software</td><td>At the end</td><td>At the end</td><td>Prototype early, product late</td><td>Early (release 1)</td><td>Early versions</td><td>After loops, prototypes early</td></tr>
+<tr><td>Best for</td><td>Small, well-understood projects</td><td>Most small/medium projects with stable needs</td><td>UI-heavy, unclear requirements</td><td>Long projects needing early release</td><td>Small/medium interactive systems</td><td>Large, complex, high-risk projects</td></tr>
+</table></div>
+<div class="recall"><b>Quick recall</b> Clear + small = waterfall; clear + early delivery = incremental; unclear = prototype/evolutionary; high risk = spiral.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-short">
+<h3>1.12 Short answers (1 mark)</h3>
+<dl class="sa">
+<dt>Define software engineering (IEEE).</dt><dd>The application of a systematic, disciplined, quantifiable approach to the development, operation and maintenance of software, that is, the application of engineering to software.</dd>
+<dt>What is software? Give its formula.</dt><dd>Software is a set of programs with their documentation and operating procedures. Software = Programs + Documentation + Operating procedures.</dd>
+<dt>Differentiate program and software.</dt><dd>A program is small code written by one person for personal use with little documentation. Software is large, built by a team for many users, with full documentation and a user interface.</dd>
+<dt>"Software does not wear out." Explain.</dt><dd>Software has no physical parts, so it does not suffer wear like hardware (bathtub curve). It deteriorates because changes introduce new defects, shown as spikes on the actual failure curve.</dd>
+<dt>What is software crisis?</dt><dd>The problems of software development: projects over budget, late, poor in quality, unmaintainable and not meeting requirements. Software engineering emerged as its solution.</dd>
+<dt>List two causes of software crisis.</dt><dd>Growing size and complexity of software, and the absence of a systematic process (ad-hoc code-and-fix development, poor estimation and requirements).</dd>
+<dt>Define software process.</dt><dd>A set of activities, actions and tasks, with associated results, carried out to develop and maintain software. Generic activities: communication, planning, modeling, construction, deployment.</dd>
+<dt>What are umbrella activities?</dt><dd>Activities applied throughout the process: project tracking and control, risk management, SQA, technical reviews, measurement, configuration management, reusability management, work product preparation.</dd>
+<dt>List any four characteristics of a good software process.</dt><dd>Understandability, visibility, reliability, rapidity (others: supportability, acceptability, robustness, maintainability).</dd>
+<dt>What is SDLC?</dt><dd>The software development life cycle is the period from conception of software to its retirement, passing through feasibility, requirements, design, coding, testing and maintenance.</dd>
+<dt>Differentiate classical and iterative waterfall.</dt><dd>Classical waterfall is strictly sequential with no going back. Iterative waterfall adds feedback paths so errors found in a later phase can be corrected in the earlier phase where they occurred.</dd>
+<dt>What is a prototype?</dt><dd>A quick, partial, low-cost working version of a system with limited functionality, built to understand and confirm customer requirements.</dd>
+<dt>Throwaway vs evolutionary prototyping.</dt><dd>A throwaway prototype is discarded after requirements are clarified. An evolutionary prototype is refined step by step into the final system.</dd>
+<dt>What is an increment?</dt><dd>A deliverable part of the software that adds new functionality to earlier releases; the first increment is the core product.</dd>
+<dt>Name the four quadrants of the spiral model.</dt><dd>(1) Determine objectives, alternatives, constraints; (2) evaluate alternatives, identify and resolve risks; (3) develop and verify next-level product; (4) plan next iteration.</dd>
+<dt>Why is the spiral model called a meta-model?</dt><dd>Because it includes other models: a single low-risk loop behaves like waterfall, prototyping is used in risk analysis, and repeated loops give evolutionary development.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u1-long">
+<h3>1.13 Long-answer frames (8 marks)</h3>
+<h4>Q1. What is software crisis? Discuss its symptoms and causes. How does software engineering solve it?</h4>
+<ol>
+<li>Define software and software engineering (IEEE definition).</li>
+<li>Define software crisis; mention the term became common around the 1968 NATO conference.</li>
+<li>Draw Fig 1.3 (symptoms) and explain each: over budget, late, poor quality, unmaintainable, requirement mismatch.</li>
+<li>Causes: size and complexity, no process, poor requirements, poor estimation, little testing, poor communication.</li>
+<li>Draw Fig 1.4 (causes &rarr; crisis &rarr; solution).</li>
+<li>Solution: process models, requirement analysis (SRS), design methods, testing, SQA, project management, CASE tools.</li>
+<li>Small example (admission portal) and conclusion: SE brings discipline.</li>
+</ol>
+<h4>Q2. Explain the characteristics of software. How is software different from hardware? Draw failure curves.</h4>
+<ol>
+<li>Definition of software; formula P + D + O (Fig 1.1).</li>
+<li>Characteristic 1: developed/engineered, not manufactured.</li>
+<li>Characteristic 2: does not wear out but deteriorates; draw Fig 1.2 (bathtub vs idealized and actual curves) and explain the spikes.</li>
+<li>Characteristic 3: custom built, moving to component reuse; also no spare parts, flexible.</li>
+<li>Table: hardware vs software.</li>
+<li>Add program vs software table and software myths briefly.</li>
+<li>Conclusion: these characteristics make maintenance and quality control central.</li>
+</ol>
+<h4>Q3. What is a software process? Explain the generic process framework and characteristics of a good software process and product.</h4>
+<ol>
+<li>Define software process and process model.</li>
+<li>Draw Fig 1.5; explain communication, planning, modeling, construction, deployment.</li>
+<li>List umbrella activities.</li>
+<li>Draw Fig 1.6; table process vs project vs product.</li>
+<li>Explain eight process characteristics with Fig 1.7.</li>
+<li>Product characteristics: operational, transition, maintenance with Fig 1.8.</li>
+<li>Conclusion: good process leads to good product.</li>
+</ol>
+<h4>Q4. Explain the waterfall model with a neat diagram. How does the iterative waterfall model improve it? Give advantages, disadvantages and applicability.</h4>
+<ol>
+<li>Define SDLC and life cycle model (Fig 1.9).</li>
+<li>Define waterfall model (sequential, document-driven; Royce).</li>
+<li>Draw Fig 1.11 and explain the five phases with their outputs (SRS, SDD, code, tested system).</li>
+<li>Classical limitation: no going back; iterative waterfall adds feedback paths (dashed arrows).</li>
+<li>Table classical vs iterative.</li>
+<li>Advantages and disadvantages table.</li>
+<li>When to use with example; conclusion.</li>
+</ol>
+<h4>Q5. Explain the prototype model. Differentiate throwaway and evolutionary prototyping.</h4>
+<ol>
+<li>Need: unclear requirements; define prototype and prototyping model.</li>
+<li>Draw Fig 1.12; explain gathering, quick design, build, evaluation, refine loop, engineer product.</li>
+<li>Throwaway vs evolutionary table.</li>
+<li>Advantages and disadvantages.</li>
+<li>When to use and example (canteen app).</li>
+<li>Conclusion: reduces requirement risk.</li>
+</ol>
+<h4>Q6. Explain the spiral model with a diagram. Why is it called a meta-model? Compare it with other models.</h4>
+<ol>
+<li>Define spiral model (Boehm, risk-driven).</li>
+<li>Draw Fig 1.15 with four quadrant labels.</li>
+<li>Explain each quadrant; stress risk analysis; radius = cost, angle = progress.</li>
+<li>Meta-model explanation.</li>
+<li>Advantages, disadvantages, when to use.</li>
+<li>Comparison table of all models (Section 1.11) and Fig 1.16.</li>
+<li>Conclusion: best for large, high-risk projects.</li>
+</ol>
+<h4>Q7. Explain evolutionary process models: incremental model and evolutionary development. Compare them.</h4>
+<ol>
+<li>Why evolutionary models: requirements change, early delivery needed.</li>
+<li>Incremental model definition; draw Fig 1.13; core product, mini waterfall per increment; pros, cons, when (mention RAD in one line).</li>
+<li>Evolutionary development definition; draw Fig 1.14; exploratory vs throwaway; pros, cons, when.</li>
+<li>Table incremental vs evolutionary.</li>
+<li>Examples (food-delivery app releases, lost-and-found portal).</li>
+<li>Conclusion with choice guidance (Fig 1.16).</li>
+</ol>
+<a class="top" href="#top">↑ top</a>
+</section>
+</section>
+
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Software Requirements Analysis &amp; Specifications</h2>
+<p class="unit-sub">How we find out WHAT the customer wants, model it (DFD, data dictionary, ER) and write it down as an SRS. One running example throughout: a Student Result Management System (SRMS).</p>
+
+<section class="topic" id="u2-req"><h3>2.1 Requirements and their types</h3>
+<div class="def"><b>Definition:</b> A <mark>requirement</mark> is a feature of the system or a description of something the system is capable of doing in order to fulfil the system's purpose. IEEE 610.12 defines it as a condition or capability needed by a user to solve a problem or achieve an objective.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Requirements</span><ul>
+<li><span>Functional</span><ul><li><span>Inputs</span></li><li><span>Processing</span></li><li><span>Outputs</span></li></ul></li>
+<li><span>Non-functional</span><ul><li><span>Product</span></li><li><span>Organisational</span></li><li><span>External</span></li></ul></li>
+<li><span>Domain</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.1</b> · Classification of software requirements</figcaption><p class="draw">✍ Draw it: one root box, three children (Functional, Non-functional, Domain), then 3 leaves under the first two.</p></figure>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>Known</b>Stakeholder believes it must be implemented and says so.</div>
+<div class="b hi"><b>Unknown</b>Forgotten by the stakeholder: not needed now, or needed by another stakeholder.</div>
+<div class="b"><b>Undreamt</b>Stakeholder cannot even think of it due to limited domain knowledge.</div>
+</div></div><figcaption><b>Fig 2.2</b> · Known, unknown and undreamt requirements (Aggarwal &amp; Singh)</figcaption><p class="draw">✍ Draw it: three side-by-side boxes, each with the name and a 5-word meaning.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Functional requirement</th><th>Non-functional requirement</th></tr>
+<tr><td>Meaning</td><td>What the system does</td><td>How well the system does it (quality)</td></tr>
+<tr><td>Describes</td><td>Services, inputs, outputs, behaviour</td><td>Performance, security, reliability, usability</td></tr>
+<tr><td>Test</td><td>Functional (black-box) testing</td><td>Performance, load, security testing</td></tr>
+<tr><td>If missing</td><td>A feature is absent</td><td>System works but is slow / unsafe / unusable</td></tr>
+<tr><td>SRMS example</td><td>Generate marksheet for a roll number</td><td>Marksheet page opens in under 3 seconds</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> K-U-U: <b>K</b>nown = said, <b>U</b>nknown = forgot, <b>U</b>ndreamt = never imagined.</div>
+<div class="note"><b>Common mistake:</b> "The system shall be secure" is NOT a functional requirement just because it says "shall". Security is a quality, so it is non-functional.</div>
+<div class="recall"><b>Quick recall</b> Functional = what, Non-functional = how well, Domain = from the field. Known / Unknown / Undreamt.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-re"><h3>2.2 Requirement engineering process</h3>
+<div class="def"><b>Definition:</b> <mark>Requirement engineering</mark> is the systematic use of proven principles, techniques and tools to elicit, analyse, document, review and manage the requirements of a software system. Its output is the Software Requirements Specification (SRS).</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Problem statement</div>
+<div class="n">Requirements elicitation</div>
+<div class="n">Requirements analysis</div>
+<div class="n">Requirements documentation</div>
+<div class="n">Requirements review</div>
+<div class="n t">SRS (approved)</div>
+<div class="n hi">Requirements management<small>runs alongside all steps</small></div>
+</div></div><figcaption><b>Fig 2.3</b> · Crucial process steps of requirement engineering (after Aggarwal &amp; Singh)</figcaption><p class="draw">✍ Draw it: oval "Problem statement", 4 boxes downward (Elicit, Analyse, Document, Review), oval "SRS"; write "Management" as a long box on the side.</p></figure>
+<div class="note"><b>Common mistake:</b> Some books (Sommerville) list "feasibility study, elicitation and analysis, specification, validation". Same idea, different names; write the Aggarwal &amp; Singh four steps plus management for this syllabus.</div>
+<div class="mn"><b>Mnemonic</b> "Every Artist Draws, Reviews, Manages" = Elicitation, Analysis, Documentation, Review, Management.</div>
+<div class="recall"><b>Quick recall</b> Elicit, Analyse, Document, Review (+ Manage) → SRS.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-elicit"><h3>2.3 Requirement elicitation: interviews and brainstorming</h3>
+<div class="def"><b>Definition:</b> <mark>Requirement elicitation</mark> is the activity of discovering the requirements of a system by communicating with customers, users and other stakeholders. It is also called requirements gathering or requirements capture.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Elicitation techniques</span><ul>
+<li><span>Interviews</span><ul><li><span>Structured</span></li><li><span>Unstructured</span></li></ul></li>
+<li><span>Brainstorming</span></li>
+<li><span>FAST</span></li>
+<li><span>QFD</span></li>
+<li><span>Use case approach</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.4</b> · Requirement elicitation techniques</figcaption><p class="draw">✍ Draw it: root box, 5 children in a row; under "Interviews" add Structured and Unstructured.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Structured interview</th><th>Unstructured interview</th></tr>
+<tr><td>Agenda</td><td>Pre-decided questions</td><td>No fixed agenda</td></tr>
+<tr><td>Best used</td><td>After basic understanding exists</td><td>Early, to explore the problem</td></tr>
+<tr><td>Comparison of answers</td><td>Easy</td><td>Difficult</td></tr>
+<tr><td>Risk</td><td>May miss unexpected points</td><td>May drift off topic</td></tr>
+</table></div>
+<div class="recall"><b>Quick recall</b> Interview = structured / unstructured. Brainstorming = facilitator, no criticism, record all, prioritise later.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-fast"><h3>2.4 FAST (Facilitated Application Specification Technique)</h3>
+<div class="def"><b>Definition:</b> <mark>FAST</mark> (Facilitated Application Specification Technique) is a team-oriented elicitation approach in which customers and developers work together in a facilitated meeting to identify the problem, propose elements of the solution, negotiate different approaches and specify a preliminary set of requirements.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Product request prepared</div>
+<div class="n">Each attendee makes lists<small>objects, services, constraints, performance</small></div>
+<div class="n">Lists presented and combined</div>
+<div class="n">Consensus list made</div>
+<div class="n hi">Sub-teams write mini-specs</div>
+<div class="n">Mini-specs discussed, refined</div>
+<div class="n">Issues list, validation criteria</div>
+<div class="n t">Draft specification</div>
+</div></div><figcaption><b>Fig 2.5</b> · Flow of a FAST meeting</figcaption><p class="draw">✍ Draw it: oval "Product request", 6 boxes top-to-bottom (lists, combine, consensus, mini-specs, refine, issues), oval "Draft spec".</p></figure>
+<div class="tw"><table>
+<tr><th>List</th><th>Meaning</th><th>SRMS example</th></tr>
+<tr><td>Objects</td><td>Things around, produced by, or used by the system</td><td>Student, marks, marksheet, subject</td></tr>
+<tr><td>Services</td><td>Processes / functions acting on objects</td><td>Register student, enter marks, compute result</td></tr>
+<tr><td>Constraints</td><td>Cost, size, business rules</td><td>Pass mark rule, runs on college server</td></tr>
+<tr><td>Performance criteria</td><td>Speed, accuracy</td><td>Result of a class in under 10 s, zero calculation error</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "OSCP" lists = <b>O</b>bjects, <b>S</b>ervices, <b>C</b>onstraints, <b>P</b>erformance criteria.</div>
+<div class="note"><b>Common mistake:</b> FAST here is NOT the "Function Analysis System Technique" of value engineering. In software requirements it means Facilitated Application Specification Technique.</div>
+<div class="recall"><b>Quick recall</b> Neutral site + facilitator + agenda; lists OSCP → consensus → mini-specs → draft spec.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-qfd"><h3>2.5 QFD (Quality Function Deployment)</h3>
+<div class="def"><b>Definition:</b> <mark>Quality Function Deployment (QFD)</mark> is a quality management technique that translates the needs of the customer into technical requirements for software, with emphasis on maximising customer satisfaction. It originated in Japanese manufacturing in the 1970s.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>Normal</b>Stated explicitly by customer. Present = satisfied.<br>SRMS: print marksheet.</div>
+<div class="b"><b>Expected</b>So basic the customer never states them. Absent = very dissatisfied.<br>SRMS: totals are always correct.</div>
+<div class="b hi"><b>Exciting</b>Beyond expectations. Present = delighted.<br>SRMS: SMS alert on result.</div>
+</div></div><figcaption><b>Fig 2.6</b> · Three types of requirements identified by QFD</figcaption><p class="draw">✍ Draw it: three boxes Normal, Expected, Exciting, each with one line meaning and one example.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 360" width="760">
+<polygon points="300,100 560,100 430,30"/><text x="430" y="78">Correlations</text>
+<rect x="300" y="100" width="260" height="50"/><text x="430" y="125">Technical req. (HOWs)</text>
+<rect x="60" y="150" width="180" height="140"/><text x="150" y="210">Customer req.</text><text x="150" y="230">(WHATs)</text>
+<rect x="240" y="150" width="60" height="140"/><text x="270" y="220">Imp.</text>
+<rect class="hi" x="300" y="150" width="260" height="140"/><text x="430" y="210">Relationship</text><text x="430" y="230">matrix</text>
+<rect x="560" y="150" width="140" height="140"/><text x="630" y="210">Competitor</text><text x="630" y="230">assessment</text>
+<rect x="300" y="290" width="260" height="50"/><text x="430" y="315">Target values (HOW MUCH)</text>
+</svg></div><figcaption><b>Fig 2.7</b> · Simplified House of Quality (the main QFD matrix)</figcaption><p class="draw">✍ Draw it: triangle roof on a top row (HOWs); below it a big middle box (matrix) with WHATs + Imp. on the left, competitor box on the right, target values at the bottom.</p></figure>
+<div class="mn"><b>Mnemonic</b> "No Extra Excitement": <b>N</b>ormal, <b>E</b>xpected, <b>E</b>xciting.</div>
+<div class="note"><b>Common mistake:</b> Expected requirements are not "less important" because nobody states them. Their absence causes the most dissatisfaction.</div>
+<div class="recall"><b>Quick recall</b> QFD = customer voice → technical requirements. Normal / Expected / Exciting. Rate importance 1 to 5. House of Quality = WHATs vs HOWs.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-usecase"><h3>2.6 Use case approach and comparison of techniques</h3>
+<div class="def"><b>Definition:</b> A <mark>use case</mark> is a structured description of a sequence of interactions between an actor and the system that yields a result of value to that actor. The use case approach (introduced by Ivar Jacobson) captures requirements from the user's point of view.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 340" width="760">
+<rect class="none" x="220" y="20" width="320" height="300" rx="8"/><text class="b" x="380" y="40">SRMS</text>
+<ellipse cx="380" cy="80" rx="90" ry="22"/><text x="380" y="80">Register Student</text>
+<ellipse cx="380" cy="140" rx="90" ry="22"/><text x="380" y="140">Compute Result</text>
+<ellipse cx="380" cy="200" rx="90" ry="22"/><text x="380" y="200">Enter Marks</text>
+<ellipse class="hi" cx="380" cy="260" rx="90" ry="22"/><text x="380" y="260">View Result</text>
+<circle cx="100" cy="62" r="12"/><path d="M100 74 V110 M82 88 H118 M100 110 L85 135 M100 110 L115 135"/><text x="100" y="152">Exam Cell</text>
+<circle cx="100" cy="202" r="12"/><path d="M100 214 V250 M82 228 H118 M100 250 L85 275 M100 250 L115 275"/><text x="100" y="292">Teacher</text>
+<circle cx="660" cy="182" r="12"/><path d="M660 194 V230 M642 208 H678 M660 230 L645 255 M660 230 L675 255"/><text x="660" y="272">Student</text>
+<line x1="120" y1="88" x2="290" y2="80"/>
+<line x1="120" y1="92" x2="290" y2="140"/>
+<line x1="120" y1="228" x2="290" y2="200"/>
+<line x1="640" y1="208" x2="470" y2="260"/>
+</svg></div><figcaption><b>Fig 2.8</b> · Use case diagram of the Student Result Management System</figcaption><p class="draw">✍ Draw it: big rectangle "SRMS" with 4 ovals inside; stick figures outside (Exam Cell, Teacher left; Student right); plain lines from actor to oval.</p></figure>
+<div class="tw"><table>
+<tr><th>Technique</th><th>Who takes part</th><th>Main output</th><th>Best for</th><th>Limitation</th></tr>
+<tr><td>Interview</td><td>Analyst + one stakeholder</td><td>Notes, stated needs</td><td>Depth, individual views</td><td>Time-consuming, misses unknowns</td></tr>
+<tr><td>Brainstorming</td><td>Group + facilitator</td><td>Prioritised idea list</td><td>New ideas, undreamt needs</td><td>Can be dominated by a few</td></tr>
+<tr><td>FAST</td><td>Customers + developers</td><td>Mini-specs, draft specification</td><td>Joint agreement early</td><td>Needs skilled facilitator</td></tr>
+<tr><td>QFD</td><td>Stakeholders, rated</td><td>Ranked technical requirements</td><td>Customer satisfaction, priority</td><td>Matrix work is heavy</td></tr>
+<tr><td>Use case</td><td>Users (actors)</td><td>Use case diagram + descriptions</td><td>Functional behaviour, test cases</td><td>Weak for non-functional needs</td></tr>
+</table></div>
+<div class="recall"><b>Quick recall</b> Actor (stick figure) + use case (ellipse) + boundary (rectangle). Interview = depth, Brainstorm = ideas, FAST = joint, QFD = priority, Use case = behaviour.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-analysis"><h3>2.7 Requirements analysis</h3>
+<div class="def"><b>Definition:</b> <mark>Requirements analysis</mark> is the process of studying and refining the elicited requirements to remove inconsistencies, ambiguities and omissions, and representing them with models so that the customer and developer have the same understanding.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Draw context diagram</div><div class="n">Develop prototype<small>optional</small></div><div class="n hi">Model the requirements</div><div class="n">Finalise the requirements</div>
+</div></div><figcaption><b>Fig 2.9</b> · Steps of requirements analysis</figcaption><p class="draw">✍ Draw it: four boxes left to right joined by arrows: Context diagram → Prototype → Model → Finalise.</p></figure>
+<div class="recall"><b>Quick recall</b> Context diagram → Prototype → Model (DFD, DD, ER) → Finalise.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-dfd"><h3>2.8 Data Flow Diagrams (DFD)</h3>
+<div class="def"><b>Definition:</b> A <mark>Data Flow Diagram (DFD)</mark> is a graphical representation of the flow of data through a system, showing the external entities, processes that transform data, data stores and the data flows between them. It is also called a bubble chart.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 160" width="760">
+<circle cx="95" cy="60" r="34"/><text x="95" y="60">1.0</text>
+<text class="b" x="95" y="118">Process</text><text class="s" x="95" y="138">circle / bubble</text>
+<rect x="225" y="38" width="120" height="44"/><text x="285" y="60">Student</text>
+<text class="b" x="285" y="118">External entity</text><text class="s" x="285" y="138">rectangle</text>
+<path d="M415 42 H535 M415 78 H535 M415 42 V78 M445 42 V78"/><text x="430" y="60">D1</text><text x="490" y="60">Marks</text>
+<text class="b" x="475" y="118">Data store</text><text class="s" x="475" y="138">open-ended box</text>
+<path class="arr" d="M600 62 H730"/><text x="665" y="46">marks</text>
+<text class="b" x="665" y="118">Data flow</text><text class="s" x="665" y="138">named arrow</text>
+</svg></div><figcaption><b>Fig 2.10</b> · DFD symbols (Yourdon / DeMarco notation)</figcaption><p class="draw">✍ Draw it: circle, rectangle, two parallel lines closed on the left, labelled arrow; write the name under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Symbol</th><th>Name</th><th>Meaning</th><th>Naming rule</th></tr>
+<tr><td>Circle</td><td>Process</td><td>Transforms input data into output data</td><td>Verb phrase + number: "3.0 Compute Result"</td></tr>
+<tr><td>Rectangle</td><td>External entity (source / sink)</td><td>Person or system outside, sends or receives data</td><td>Noun: "Teacher"</td></tr>
+<tr><td>Parallel lines</td><td>Data store</td><td>Data at rest (file, table)</td><td>Noun + id: "D2 Marks"</td></tr>
+<tr><td>Arrow</td><td>Data flow</td><td>Data in motion between components</td><td>Noun: "marks record"</td></tr>
+</table></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 260" width="760">
+<rect x="40" y="48" width="140" height="44"/><text x="110" y="70">Student</text>
+<rect x="40" y="188" width="140" height="44"/><text x="110" y="210">Teacher</text>
+<rect x="580" y="128" width="140" height="44"/><text x="650" y="150">Exam Cell</text>
+<circle class="hi" cx="380" cy="150" r="70"/><text x="380" y="116">0</text><text x="380" y="138">Student Result</text><text x="380" y="156">Management</text><text x="380" y="174">System</text>
+<path class="arr" d="M180 64 L330 100"/><text x="262" y="50">enrolment details</text>
+<path class="arr" d="M318 118 L182 88"/><text x="250" y="124">marksheet</text>
+<path class="arr" d="M180 208 L320 188"/><text x="250" y="222">marks</text>
+<path class="arr" d="M450 150 H578"/><text x="515" y="134">result report</text>
+</svg></div><figcaption><b>Fig 2.11</b> · Level 0 DFD (context diagram) of SRMS</figcaption><p class="draw">✍ Draw it: one big circle "0 SRMS" in the centre; Student and Teacher boxes on the left, Exam Cell on the right; 4 named arrows.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 460" width="760">
+<rect x="20" y="58" width="120" height="44"/><text x="80" y="80">Student</text>
+<rect x="20" y="368" width="120" height="44"/><text x="80" y="390">Teacher</text>
+<rect x="600" y="58" width="120" height="44"/><text x="660" y="80">Exam Cell</text>
+<circle cx="270" cy="80" r="46"/><text x="270" y="64">1.0</text><text x="270" y="80">Register</text><text x="270" y="96">Student</text>
+<circle cx="270" cy="390" r="46"/><text x="270" y="374">2.0</text><text x="270" y="390">Enter</text><text x="270" y="406">Marks</text>
+<circle cx="640" cy="390" r="46"/><text x="640" y="374">3.0</text><text x="640" y="390">Compute</text><text x="640" y="406">Result</text>
+<circle class="hi" cx="450" cy="230" r="46"/><text x="450" y="214">4.0</text><text x="450" y="230">Generate</text><text x="450" y="246">Reports</text>
+<path d="M390 62 H510 M390 98 H510 M390 62 V98 M420 62 V98"/><text x="405" y="80">D1</text><text x="465" y="80">Students</text>
+<path d="M390 372 H510 M390 408 H510 M390 372 V408 M420 372 V408"/><text x="405" y="390">D2</text><text x="465" y="390">Marks</text>
+<path d="M580 212 H700 M580 248 H700 M580 212 V248 M610 212 V248"/><text x="595" y="230">D3</text><text x="655" y="230">Results</text>
+<path class="arr" d="M140 80 H222"/><text x="182" y="50">enrolment</text><text x="182" y="64">details</text>
+<path class="arr" d="M316 80 H388"/><text x="353" y="50">student</text><text x="353" y="64">record</text>
+<path class="arr" d="M140 390 H222"/><text x="182" y="374">marks</text>
+<path class="arr" d="M316 390 H388"/><text x="353" y="374">marks</text>
+<path class="arr" d="M510 390 H592"/><text x="552" y="374">marks</text>
+<path class="arr" d="M640 344 V250"/><text class="l" x="650" y="296">result</text>
+<path class="arr" d="M580 230 H498"/><text x="538" y="214">result</text>
+<path class="arr" d="M450 98 V182"/><text class="l" x="460" y="140">student data</text>
+<path class="arr" d="M404 230 H80 V103"/><text x="240" y="216">marksheet</text>
+<path class="arr" d="M483 197 L640 103"/><text x="620" y="160">result report</text>
+</svg></div><figcaption><b>Fig 2.12</b> · Level 1 DFD of SRMS (balanced with Fig 2.11)</figcaption><p class="draw">✍ Draw it: 4 circles (1.0 Register, 2.0 Enter Marks, 3.0 Compute, 4.0 Reports), 3 stores (D1 Students, D2 Marks, D3 Results), same 3 entities as level 0; join with named arrows.</p></figure>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Level 0: SRMS</span><ul>
+<li><span>1.0 Register</span></li>
+<li><span>2.0 Enter Marks</span></li>
+<li><span>3.0 Compute Result</span><ul><li><span>3.1 Fetch marks</span></li><li><span>3.2 Find total</span></li><li><span>3.3 Assign grade</span></li></ul></li>
+<li><span>4.0 Reports</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.13</b> · Leveling: level 0 → level 1 → level 2 (process 3.0 exploded)</figcaption><p class="draw">✍ Draw it: root "Level 0", four level-1 boxes, three level-2 boxes under 3.0 numbered 3.1 to 3.3.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>DFD</th><th>Flowchart</th></tr>
+<tr><td>Shows</td><td>Flow of data</td><td>Flow of control (steps)</td></tr>
+<tr><td>Decisions / loops</td><td>Not shown</td><td>Shown (diamond, loop back)</td></tr>
+<tr><td>Parallel activity</td><td>Processes may run in parallel</td><td>Sequential</td></tr>
+<tr><td>Levels</td><td>Hierarchical (level 0, 1, 2)</td><td>Usually a single level</td></tr>
+<tr><td>Used in</td><td>Requirements analysis</td><td>Program design</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "PEDS" symbols: <b>P</b>rocess (circle), <b>E</b>ntity (rectangle), <b>D</b>ata store (parallel lines), <b>S</b>ignal of data = flow (arrow).</div>
+<div class="note"><b>Common mistake:</b> Drawing an arrow straight from "Teacher" to "D2 Marks". An entity can never write to a store directly; the data must pass through a process (2.0 Enter Marks).</div>
+<div class="recall"><b>Quick recall</b> 4 symbols. Level 0 = one bubble, no stores. Level 1 = main processes + stores. Balance parent and child. No control flow.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-dd"><h3>2.9 Data dictionary</h3>
+<div class="def"><b>Definition:</b> A <mark>data dictionary</mark> is a repository that contains descriptions of all data objects used or produced by the software, i.e. every data flow, data store and data element in the DFD, together with their composition, aliases and usage.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>=</b>is composed of / is equivalent to</div>
+<div class="b"><b>+</b>and</div>
+<div class="b"><b>[ a | b ]</b>either a or b (select one)</div>
+<div class="b"><b>{ x }</b>iteration: x repeated 0 or more times; 1{x}6 = 1 to 6 times</div>
+<div class="b"><b>( x )</b>optional: x may be present or absent</div>
+<div class="b"><b>* text *</b>comment</div>
+</div></div><figcaption><b>Fig 2.14</b> · Data dictionary notation</figcaption><p class="draw">✍ Draw it: a 2 x 3 grid of boxes, symbol on top, meaning below.</p></figure>
+<div class="tw"><table>
+<tr><th>Field</th><th>Entry for "marks_obtained"</th></tr>
+<tr><td>Name</td><td>marks_obtained</td></tr>
+<tr><td>Aliases</td><td>score</td></tr>
+<tr><td>Where / how used</td><td>Input to 2.0 Enter Marks; stored in D2 Marks; read by 3.0 Compute Result</td></tr>
+<tr><td>Content description</td><td>marks_obtained = * integer *</td></tr>
+<tr><td>Supplementary info</td><td>Range 0 to 100; absent student recorded separately</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "Equal Plus, Square Choice, Curly Repeat, Round Optional, Star Comment".</div>
+<div class="note"><b>Common mistake:</b> Mixing up { } and ( ). Curly braces mean REPEAT (many subjects); round brackets mean OPTIONAL (middle name).</div>
+<div class="recall"><b>Quick recall</b> = composed of, + and, [ | ] choose one, { } repeat, ( ) optional, * * comment.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-er"><h3>2.10 Entity-Relationship (ER) diagrams</h3>
+<div class="def"><b>Definition:</b> An <mark>Entity-Relationship (ER) diagram</mark> is a graphical data model, proposed by Peter Chen (1976), that represents the entities of a system, their attributes and the relationships among entities.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 240" width="760">
+<rect x="40" y="40" width="110" height="40"/><text x="95" y="60">Student</text>
+<text class="b" x="95" y="105">Entity</text>
+<rect x="225" y="40" width="120" height="40"/><rect x="231" y="46" width="108" height="28"/><text x="285" y="60">Dependent</text>
+<text class="b" x="285" y="105">Weak entity</text>
+<polygon points="415,60 475,34 535,60 475,86"/><text x="475" y="60">Takes</text>
+<text class="b" x="475" y="105">Relationship</text>
+<polygon points="600,60 665,32 730,60 665,88"/><polygon points="614,60 665,38 716,60 665,82"/><text x="665" y="60">Has</text>
+<text class="b" x="665" y="105">Identifying rel.</text>
+<ellipse cx="95" cy="160" rx="55" ry="22"/><text x="95" y="160">Name</text>
+<text class="b" x="95" y="205">Attribute</text>
+<ellipse cx="285" cy="160" rx="55" ry="22"/><text x="285" y="158">Roll_No</text><line x1="257" y1="170" x2="313" y2="170"/>
+<text class="b" x="285" y="205">Key attribute</text>
+<ellipse cx="475" cy="160" rx="55" ry="22"/><ellipse cx="475" cy="160" rx="48" ry="16"/><text x="475" y="160">Phone</text>
+<text class="b" x="475" y="205">Multivalued</text>
+<ellipse class="dash" cx="665" cy="160" rx="55" ry="22"/><text x="665" y="160">Age</text>
+<text class="b" x="665" y="205">Derived</text>
+</svg></div><figcaption><b>Fig 2.15</b> · Chen notation symbols for ER diagrams</figcaption><p class="draw">✍ Draw it: row 1 rectangle, double rectangle, diamond, double diamond; row 2 ellipse, ellipse with underlined text, double ellipse, dashed ellipse.</p></figure>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>One-to-one (1:1)</b>One student has one ID card; one ID card belongs to one student.</div>
+<div class="b"><b>One-to-many (1:N)</b>One teacher teaches many subjects; each subject is taught by one teacher.</div>
+<div class="b hi"><b>Many-to-many (M:N)</b>A student takes many subjects; a subject is taken by many students.</div>
+</div></div><figcaption><b>Fig 2.16</b> · Cardinality ratios with SRMS examples</figcaption><p class="draw">✍ Draw it: three boxes 1:1, 1:N, M:N, each with a one-line example.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 430" width="760">
+<rect class="hi" x="40" y="200" width="120" height="40"/><text x="100" y="220">STUDENT</text>
+<polygon points="235,220 290,192 345,220 290,248"/><text x="290" y="220">Takes</text>
+<rect class="hi" x="390" y="200" width="120" height="40"/><text x="450" y="220">SUBJECT</text>
+<polygon points="542,220 590,194 638,220 590,246"/><text x="590" y="220">Teaches</text>
+<rect class="hi" x="660" y="200" width="80" height="40"/><text x="700" y="220">TEACHER</text>
+<line x1="160" y1="220" x2="235" y2="220"/><line x1="345" y1="220" x2="390" y2="220"/>
+<line x1="510" y1="217" x2="542" y2="217"/><line x1="510" y1="223" x2="542" y2="223"/>
+<line x1="638" y1="220" x2="660" y2="220"/>
+<text class="b" x="180" y="206">M</text><text class="b" x="372" y="206">N</text><text class="b" x="526" y="204">N</text><text class="b" x="649" y="206">1</text>
+<ellipse cx="65" cy="125" rx="42" ry="20"/><text x="65" y="123">Roll_No</text><line x1="37" y1="133" x2="93" y2="133"/>
+<ellipse cx="175" cy="125" rx="40" ry="20"/><text x="175" y="125">Name</text>
+<ellipse cx="120" cy="50" rx="40" ry="18"/><text x="120" y="50">First</text>
+<ellipse cx="225" cy="50" rx="40" ry="18"/><text x="225" y="50">Last</text>
+<ellipse cx="70" cy="310" rx="42" ry="20"/><ellipse cx="70" cy="310" rx="36" ry="14"/><text x="70" y="310">Phone</text>
+<ellipse cx="175" cy="320" rx="38" ry="18"/><text x="175" y="320">DOB</text>
+<ellipse class="dash" cx="130" cy="390" rx="36" ry="18"/><text x="130" y="390">Age</text>
+<ellipse cx="290" cy="120" rx="40" ry="20"/><text x="290" y="120">Marks</text>
+<ellipse cx="450" cy="125" rx="48" ry="20"/><text x="450" y="123">Sub_Code</text><line x1="416" y1="133" x2="484" y2="133"/>
+<ellipse cx="450" cy="320" rx="38" ry="18"/><text x="450" y="320">Title</text>
+<ellipse cx="700" cy="140" rx="40" ry="20"/><text x="700" y="138">Emp_ID</text><line x1="676" y1="148" x2="724" y2="148"/>
+<line x1="65" y1="145" x2="85" y2="200"/><line x1="175" y1="145" x2="140" y2="200"/>
+<line x1="160" y1="108" x2="130" y2="68"/><line x1="190" y1="108" x2="222" y2="68"/>
+<line x1="70" y1="290" x2="85" y2="240"/><line x1="170" y1="302" x2="140" y2="240"/><line x1="130" y1="372" x2="110" y2="240"/>
+<line x1="290" y1="140" x2="290" y2="192"/>
+<line x1="450" y1="145" x2="450" y2="200"/><line x1="450" y1="240" x2="450" y2="302"/>
+<line x1="700" y1="160" x2="700" y2="200"/>
+</svg></div><figcaption><b>Fig 2.17</b> · ER diagram of SRMS (Student M:N Subject via Takes; Teacher 1:N Subject via Teaches)</figcaption><p class="draw">✍ Draw it: 3 rectangles in a row with 2 diamonds between; ellipses around (underline keys, double ellipse Phone, dashed Age, First/Last under Name, Marks on Takes); write M, N, N, 1; double line Subject to Teaches.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>DFD</th><th>ER diagram</th></tr>
+<tr><td>Models</td><td>Processes and flow of data</td><td>Structure of data and relationships</td></tr>
+<tr><td>Main symbols</td><td>Circle, rectangle, parallel lines, arrow</td><td>Rectangle, diamond, ellipse, lines</td></tr>
+<tr><td>Question answered</td><td>What happens to data?</td><td>What data exists and how is it related?</td></tr>
+<tr><td>Leads to</td><td>Module / function design</td><td>Database (table) design</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> Putting Marks on STUDENT. A student has different marks in each subject, so Marks must hang on the Takes relationship, not on either entity.</div>
+<div class="recall"><b>Quick recall</b> Rectangle entity, diamond relationship, ellipse attribute (underline key, double = multivalued, dashed = derived). Cardinality 1:1, 1:N, M:N. Double line = total participation.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-srs"><h3>2.11 Requirements documentation and nature of SRS</h3>
+<div class="def"><b>Definition:</b> A <mark>Software Requirements Specification (SRS)</mark> is a document that completely describes what the proposed software should do, without describing how it will do it. Requirements documentation is the activity of writing the analysed requirements into this SRS.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c5">
+<div class="b"><b>Functionality</b>What the software does</div>
+<div class="b"><b>External interfaces</b>Users, hardware, other software</div>
+<div class="b"><b>Performance</b>Speed, response time, capacity</div>
+<div class="b"><b>Attributes</b>Portability, security, maintainability</div>
+<div class="b hi"><b>Design constraints</b>Standards, language, OS, limits</div>
+</div></div><figcaption><b>Fig 2.18</b> · Basic issues an SRS must address (IEEE 830)</figcaption><p class="draw">✍ Draw it: five boxes in a row: Functionality, External interfaces, Performance, Attributes, Design constraints.</p></figure>
+<div class="tw"><table>
+<tr><th>Belongs in SRS</th><th>Does NOT belong in SRS</th></tr>
+<tr><td>"The system shall show PASS/FAIL for each subject."</td><td>"Use bubble sort to rank students."</td></tr>
+<tr><td>"Marksheet shall be generated within 3 seconds."</td><td>"Project will finish by 30 November."</td></tr>
+<tr><td>"The system shall run on the college Linux server."</td><td>"Team of 4 developers will be hired."</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "Five Easy Pieces Are Done": <b>F</b>unctionality, <b>E</b>xternal interfaces, <b>P</b>erformance, <b>A</b>ttributes, <b>D</b>esign constraints.</div>
+<div class="recall"><b>Quick recall</b> SRS = WHAT not HOW. Addresses F-E-P-A-D. Excludes design details and project details (cost, schedule).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-srschar"><h3>2.12 Characteristics of a good SRS</h3>
+<div class="def"><b>Definition:</b> According to <mark>IEEE 830</mark>, a good SRS should be correct, unambiguous, complete, consistent, ranked for importance and/or stability, verifiable, modifiable and traceable.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b"><b>Correct</b>Every requirement is one the software must meet</div>
+<div class="b"><b>Unambiguous</b>Only one interpretation</div>
+<div class="b"><b>Complete</b>All requirements, all inputs, all pages labelled</div>
+<div class="b"><b>Consistent</b>No two requirements conflict</div>
+<div class="b hi"><b>Ranked</b>Importance / stability marked</div>
+<div class="b"><b>Verifiable</b>Can be checked by a finite, cost-effective test</div>
+<div class="b"><b>Modifiable</b>Easy to change; no redundancy</div>
+<div class="b"><b>Traceable</b>Origin known; referable forward</div>
+</div></div><figcaption><b>Fig 2.19</b> · Eight characteristics of a good SRS (IEEE 830)</figcaption><p class="draw">✍ Draw it: 2 x 4 grid of boxes, one characteristic per box with a 3-word meaning.</p></figure>
+<div class="tw"><table>
+<tr><th>Poor requirement</th><th>Violates</th><th>Improved</th></tr>
+<tr><td>"The system should be fast."</td><td>Unambiguous, Verifiable</td><td>"Marksheet generated in 3 s for 95% of requests."</td></tr>
+<tr><td>"Grade rules: TBD"</td><td>Complete</td><td>Grade table written in section 3.2</td></tr>
+<tr><td>Same rule written in two sections</td><td>Modifiable</td><td>State once, cross-reference</td></tr>
+<tr><td>Requirement with no id or source</td><td>Traceable</td><td>"FR-3 (source: Exam Cell interview)"</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>C</b>ute <b>U</b>nicorns <b>C</b>an <b>C</b>arry <b>R</b>ed <b>V</b>elvet <b>M</b>uffins <b>T</b>onight" = Correct, Unambiguous, Complete, Consistent, Ranked, Verifiable, Modifiable, Traceable.</div>
+<div class="note"><b>Common mistake:</b> "Understandable by customer" is often written as a characteristic. It is a desirable quality mentioned in some books, but the IEEE 830 list has exactly the eight above.</div>
+<div class="recall"><b>Quick recall</b> C-U-C-C-R-V-M-T. Verifiable = testable with numbers; Traceable = backward to source, forward to design/test.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-srsorg"><h3>2.13 Organization of SRS (IEEE 830 outline)</h3>
+<div class="def"><b>Definition:</b> <mark>IEEE Std 830-1998</mark> (Recommended Practice for Software Requirements Specifications) organises an SRS into three main sections: Introduction, Overall description and Specific requirements, followed by appendices and an index.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Table of contents</div>
+<div class="l hi">1 Introduction<small>1.1 Purpose · 1.2 Scope · 1.3 Definitions, acronyms · 1.4 References · 1.5 Overview</small></div>
+<div class="l hi">2 Overall description<small>2.1 Product perspective · 2.2 Product functions · 2.3 User characteristics · 2.4 Constraints · 2.5 Assumptions and dependencies</small></div>
+<div class="l hi">3 Specific requirements<small>3.1 External interfaces · 3.2 Functions · 3.3 Performance · 3.4 Logical database · 3.5 Design constraints · 3.6 Software system attributes</small></div>
+<div class="row"><div class="l">Appendices</div><div class="l">Index</div></div>
+</div></div><figcaption><b>Fig 2.20</b> · Organization of an SRS as per IEEE 830</figcaption><p class="draw">✍ Draw it: stacked boxes top to bottom: Contents, 1 Introduction, 2 Overall description, 3 Specific requirements (list sub-points in small text), then Appendices and Index side by side.</p></figure>
+<div class="mn"><b>Mnemonic</b> Section 1 "PSDRO" = <b>P</b>urpose, <b>S</b>cope, <b>D</b>efinitions, <b>R</b>eferences, <b>O</b>verview. Section 2 "PFUCA" = <b>P</b>erspective, <b>F</b>unctions, <b>U</b>sers, <b>C</b>onstraints, <b>A</b>ssumptions. Section 3 "EF-PLDS" = <b>E</b>xternal interfaces, <b>F</b>unctions, <b>P</b>erformance, <b>L</b>ogical database, <b>D</b>esign constraints, <b>S</b>ystem attributes.</div>
+<div class="note"><b>Common mistake:</b> Writing detailed requirements in section 2. Section 2 only gives background and a summary; every testable detail goes in section 3. (IEEE 830-1998 has since been superseded by ISO/IEC/IEEE 29148, but syllabi and textbooks still teach the 830 outline.)</div>
+<div class="recall"><b>Quick recall</b> 1 Introduction (PSDRO) → 2 Overall description (PFUCA) → 3 Specific requirements (EF-PLDS) → Appendices, Index.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-short">
+<h3>2.14 Short answers (1 mark)</h3>
+<dl class="sa">
+<dt>Define requirement engineering.</dt><dd>Systematic use of principles, techniques and tools to elicit, analyse, document, review and manage software requirements. Its output is the SRS.</dd>
+<dt>Differentiate functional and non-functional requirements.</dt><dd>Functional: what the system does (e.g. compute result). Non-functional: how well it does it: performance, security, usability (e.g. result in 3 seconds).</dd>
+<dt>What are known, unknown and undreamt requirements?</dt><dd>Known: stated by the stakeholder. Unknown: forgotten because not needed now or needed by another stakeholder. Undreamt: stakeholder cannot imagine them due to limited domain knowledge.</dd>
+<dt>Who is a stakeholder?</dt><dd>Any person or group affected by or having influence on the system: customer, users, developers, testers, managers.</dd>
+<dt>Expand FAST and QFD.</dt><dd>FAST: Facilitated Application Specification Technique. QFD: Quality Function Deployment.</dd>
+<dt>List the lists prepared in a FAST meeting.</dt><dd>Objects (around, produced, used by the system), services, constraints, and performance criteria. Sub-teams then write mini-specifications.</dd>
+<dt>What are normal, expected and exciting requirements?</dt><dd>Normal: explicitly stated. Expected: implicit, so basic that customers do not state them. Exciting: beyond customer expectations, delight when present (QFD).</dd>
+<dt>What is a use case? Name its diagram symbols.</dt><dd>Sequence of actor-system interactions giving a result of value. Actor = stick figure, use case = ellipse, system boundary = rectangle, association = line.</dd>
+<dt>Draw / name the symbols of a DFD.</dt><dd>Process = circle, external entity = rectangle, data store = two parallel lines (open box), data flow = named arrow.</dd>
+<dt>What is a context diagram?</dt><dd>Level 0 DFD showing the entire system as a single process with all external entities and data flows; it defines the system boundary.</dd>
+<dt>What is balancing in DFD?</dt><dd>The data flows entering and leaving a parent process must match the net inputs and outputs of its child (lower level) diagram.</dd>
+<dt>Define data dictionary.</dt><dd>A repository of definitions of all data flows, data stores and data items of the DFD, with composition, aliases and usage, written in notation such as =, +, [ | ], { }, ( ).</dd>
+<dt>What does { } and ( ) mean in a data dictionary?</dt><dd>{ } = iteration (repeated), ( ) = optional. Example: marksheet = roll_no + {subject_code + marks}; name = first + (middle) + last.</dd>
+<dt>Define cardinality in ER diagram.</dt><dd>Maximum number of entity instances on one side that can be related to one instance on the other side: 1:1, 1:N or M:N.</dd>
+<dt>What is a weak entity?</dt><dd>An entity that cannot be uniquely identified by its own attributes and depends on an owner entity via an identifying relationship. Drawn as a double rectangle.</dd>
+<dt>What is an SRS?</dt><dd>Software Requirements Specification: document describing completely WHAT the software will do, not HOW; the agreement between customer and developer.</dd>
+<dt>List characteristics of a good SRS.</dt><dd>Correct, unambiguous, complete, consistent, ranked for importance/stability, verifiable, modifiable, traceable (IEEE 830).</dd>
+<dt>Name the three main sections of an IEEE 830 SRS.</dt><dd>1 Introduction, 2 Overall description, 3 Specific requirements (plus appendices and index).</dd>
+</dl>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-long">
+<h3>2.15 Long-answer frames (8 marks)</h3>
+<h4>Q1. What is requirement engineering? Explain its process steps with a diagram. Classify requirements.</h4>
+<ol>
+<li>Define requirement and requirement engineering; output is SRS.</li>
+<li>Types: functional, non-functional (product, organisational, external), domain; draw Fig 2.1.</li>
+<li>Known, unknown, undreamt requirements (Fig 2.2); stakeholders.</li>
+<li>Draw Fig 2.3; explain elicitation, analysis, documentation, review, and management in 2-3 lines each.</li>
+<li>Table: functional vs non-functional with SRMS examples.</li>
+<li>Conclude: early, well-reviewed requirements reduce costly rework later.</li>
+</ol>
+<h4>Q2. Explain requirement elicitation techniques. Discuss FAST and QFD in detail.</h4>
+<ol>
+<li>Define elicitation; draw Fig 2.4 (list of techniques).</li>
+<li>Interviews (structured vs unstructured, groups interviewed) and brainstorming (facilitator, no criticism, prioritise).</li>
+<li>FAST: definition, guidelines (neutral site, rules, agenda, facilitator, definition mechanism), lists OSCP, mini-specs; draw Fig 2.5.</li>
+<li>QFD: definition, normal / expected / exciting (Fig 2.6), four steps with 1 to 5 importance scale; draw Fig 2.7 House of Quality.</li>
+<li>Use case approach in brief; comparison table of all techniques.</li>
+<li>Conclude: combine techniques; no single technique finds all requirements.</li>
+</ol>
+<h4>Q3. What is a DFD? Explain its symbols, rules and levels. Draw level 0 and level 1 DFD for a Student Result Management System.</h4>
+<ol>
+<li>Definition of DFD (bubble chart, shows data not control).</li>
+<li>Symbols with Fig 2.10 and the symbol table.</li>
+<li>Rules: input and output for each process, no entity-to-store flow, named flows, no control, balancing, numbering.</li>
+<li>Levels: context (level 0), level 1, level 2; leveling tree Fig 2.13.</li>
+<li>Draw Fig 2.11 (context diagram) and Fig 2.12 (level 1); show the balancing check.</li>
+<li>Table: DFD vs flowchart. Conclude with use in analysis.</li>
+</ol>
+<h4>Q4. What is a data dictionary? Explain its notation and write entries for a DFD.</h4>
+<ol>
+<li>Definition and purpose (single meaning, removes ambiguity, consistency with DFD).</li>
+<li>Contents of an entry: name, aliases, where/how used, content description, supplementary info.</li>
+<li>Notation with Fig 2.14: =, +, [ | ], { }, ( ), * *.</li>
+<li>Draw a small DFD (Fig 2.11) and write entries: enrolment_details, student_name, marks, result_status, marksheet.</li>
+<li>Show one full entry table (marks_obtained).</li>
+<li>Conclude: data dictionary + DFD together give a complete analysis model.</li>
+</ol>
+<h4>Q5. Explain ER diagrams: entities, attribute types, relationships, cardinality and participation. Draw an ER diagram for a result system.</h4>
+<ol>
+<li>Definition (Chen 1976); purpose: data modelling for database design.</li>
+<li>Symbols: draw Fig 2.15.</li>
+<li>Entity, weak entity; attributes: key, composite, multivalued, derived with examples.</li>
+<li>Relationship, degree (unary, binary, ternary), cardinality 1:1, 1:N, M:N (Fig 2.16), total vs partial participation.</li>
+<li>Draw Fig 2.17 and explain why Marks is on Takes.</li>
+<li>Table: DFD vs ER diagram. Conclude.</li>
+</ol>
+<h4>Q6. What is an SRS? Explain its nature, characteristics of a good SRS and its organization as per IEEE 830.</h4>
+<ol>
+<li>Define SRS; role of requirements documentation; readers and uses.</li>
+<li>Nature: five issues F-E-P-A-D (Fig 2.18); what must NOT be included (design and project details), with table.</li>
+<li>Eight IEEE characteristics with one-line meaning and a bad/good example each (Fig 2.19); mnemonic.</li>
+<li>Organization: draw Fig 2.20; explain sub-sections of sections 1, 2 and 3.</li>
+<li>Give a short SRS snippet (FR-3 Compute Result).</li>
+<li>Conclude: a good SRS is the baseline for design, testing and acceptance.</li>
+</ol>
+<h4>Q7. Explain the steps of requirements analysis. How do the use case approach and prototyping help?</h4>
+<ol>
+<li>Define requirements analysis; problems it fixes (conflicts, ambiguity, omissions).</li>
+<li>Draw Fig 2.9: context diagram → prototype → model → finalise; explain each.</li>
+<li>Use case approach: actor, use case, boundary, include/extend; draw Fig 2.8.</li>
+<li>Write one use case description (Enter Marks) with basic and alternative flow.</li>
+<li>Modelling tools used: DFD, data dictionary, ER diagram (one line each).</li>
+<li>Conclude: finalised requirements go into the SRS.</li>
+</ol>
+<a class="top" href="#top">↑ top</a>
+</section>
+</section>
+
+</main>
+<div id="zoom"><div class="zb"><button class="zout" type="button">&minus;</button><button class="zin" type="button">+</button><button class="zx" type="button">Close</button></div><div class="zc"></div></div>
+<script>
+(function(){var z=document.getElementById('zoom'),c=z.querySelector('.zc'),s=1;
+function set(){c.style.transform='scale('+s+')';}
+document.querySelectorAll('figure.fig').forEach(function(f){f.addEventListener('click',function(){
+c.innerHTML='';var k=f.cloneNode(true);k.style.cursor='default';c.appendChild(k);s=1;
+c.style.width=Math.max(f.scrollWidth,Math.min(window.innerWidth-40,1100))+'px';set();z.classList.add('on');});});
+z.querySelector('.zin').onclick=function(e){e.stopPropagation();s=Math.min(s+.25,3);set();};
+z.querySelector('.zout').onclick=function(e){e.stopPropagation();s=Math.max(s-.25,.5);set();};
+z.querySelector('.zx').onclick=function(){z.classList.remove('on');};
+z.addEventListener('click',function(e){if(e.target===z)z.classList.remove('on');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')z.classList.remove('on');});})();
+</script>
+</body>
+</html>

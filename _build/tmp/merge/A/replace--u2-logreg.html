@@ -1,0 +1,65 @@
+<section class="topic" id="u2-logreg">
+<h3>2.6 Linear models: Logistic Regression</h3>
+<p class="hook">Take the linear score, squash it into a probability between 0 and 1, then say "Yes" if it is above 0.5. <span class="hg">(score ko 0-1 mein dabao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Logistic regression</mark> is a supervised <b>classification</b> method that models the probability of the positive class as $$p = \sigma(z) = \frac{1}{1 + e^{-z}}$$ where $z = \beta_0 + \beta_1 x_1 + \dots + \beta_n x_n$, and assigns class 1 when $p \ge 0.5$. <i>(Class notes write $z = wx+b$, where $w=\beta_1$ is the weight and $b=\beta_0$ is the bias.)</i></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 290" width="600">
+<path class="arr" d="M50 240 H570"/><path class="arr" d="M300 250 V26"/>
+<line class="dash" x1="60" y1="40" x2="540" y2="40"/><line class="dash" x1="60" y1="140" x2="540" y2="140"/>
+<text class="r s" x="52" y="40">1.0</text><text class="r s" x="52" y="140">0.5</text><text class="r s" x="52" y="240">0</text>
+<text class="s" x="60" y="260">−6</text><text class="s" x="314" y="260">0</text><text class="s" x="540" y="260">6</text><text class="s" x="556" y="224">z</text>
+<polyline class="acc" points="60,239.5 80,239.2 100,238.7 120,237.8 140,236.4 160,234.1 180,230.5 200,224.8 220,216.2 240,203.5 260,186.2 280,164.5 300,140.0 320,115.5 340,93.8 360,76.5 380,63.8 400,55.2 420,49.5 440,45.9 460,43.6 480,42.2 500,41.3 520,40.8 540,40.5"/>
+<circle class="dot acc" cx="340" cy="93.8" r="5"/><text class="l s" x="354" y="102">z = 1, p = 0.731</text>
+<text class="s" x="440" y="170">predict 1 (p ≥ 0.5)</text><text class="s" x="150" y="110">predict 0 (p &lt; 0.5)</text>
+</svg></div><figcaption><b>Fig 2.12</b> · Sigmoid (S-curve) σ(z), plotted from computed values; threshold 0.5 at z = 0</figcaption><p class="draw">✍ Draw it: axes, dashed lines at 0.5 and 1, an S-shaped curve passing through (0, 0.5).</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Input x, weights β</div>
+<div class="n">z = β₀ + β₁x₁ + … + βₙxₙ</div>
+<div class="n">p = 1 / (1 + e^(−z))</div>
+<div class="n d">p ≥ 0.5 ?</div>
+<div class="n hi">Yes: class 1 · No: class 0</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.13</b> · Logistic regression prediction flowchart (weights learned by minimising log-loss)</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 2 boxes (z, sigmoid), diamond, result box, oval.</p></figure>
+<ul>
+<li><mark>Sigmoid</mark> $\sigma(z) = \dfrac{1}{1 + e^{-z}}$: $\sigma(0) = 0.5$, $\sigma(+\infty) \to 1$, $\sigma(-\infty) \to 0$.</li>
+<li><mark>Odds</mark> compare success to failure: $$Odds = \frac{p}{1-p}$$ e.g. $p=0.8 \Rightarrow Odds = 0.8/0.2 = 4$, meaning success is 4 times as likely as failure.</li>
+<li><mark>Log-odds (logit)</mark>: $\ln \dfrac{p}{1 - p} = z = \beta_0 + \beta_1 x$. The model is linear in the log-odds, hence a "linear model".</li>
+<li><mark>Decision boundary</mark>: $p = 0.5$ exactly where $z = 0$, i.e. $\beta_0 + \beta_1 x_1 + \dots = 0$ → a straight line / hyperplane. e.g. $p=\sigma(-6+2x)$: boundary where $-6+2x=0 \Rightarrow x=3$; so $x \gt 3 \to$ class 1, $x \lt 3 \to$ class 0.</li>
+<li>The threshold need not be 0.5 — e.g. disease screening may use $0.3$ so fewer true cases are missed (accepting more false alarms), trading precision for recall.</li>
+<li><mark>Log-loss</mark> (binary cross-entropy), with $\hat{y}_i = p$ for example $i$: $$L = -\frac{1}{n}\sum \left[y_i \log \hat{y}_i + (1-y_i)\log(1-\hat{y}_i)\right]$$ weights are learned by minimising it with gradient descent (no closed form).</li>
+<li>Multi-class: one-vs-rest or softmax (multinomial) logistic regression.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · pass / fail from hours studied, learned weights $\beta_0 = -4$, $\beta_1 = 1$
+<div class="step">Student with 5 hours: $z = -4 + 1 \times 5 = 1$</div>
+<div class="step">$p = \dfrac{1}{1 + e^{-1}} = \dfrac{1}{1 + 0.3679} = 0.7311 \ge 0.5$ → Pass</div>
+<div class="step">If actual $y = 1$: log-loss $= -\ln(0.7311) = 0.3133$ (in log loss, $\log$ means the natural log $\ln$)</div>
+<div class="step">Student with 3 hours: $z = -1$, $p = 0.2689 \lt 0.5$ → Fail</div>
+<div class="step">Boundary: $z = 0$ → $-4 + x = 0$ → $x = 4$ hours ($p = 0.5$)</div>
+<span class="ans">5 hours → $p = 0.7311$ → Pass; boundary at 4 hours</span></div>
+<div class="ex"><b>More sigmoid / multi-feature examples</b> (computed in Python, 3 decimals)
+<div class="step">$\sigma(z)$ for $z=2.5$: $\sigma(2.5) = \dfrac{1}{1+e^{-2.5}} = \dfrac{1}{1+0.082} \approx 0.924$ → class 1</div>
+<div class="step">$\beta_0=-4,\ \beta_1=0.8,\ x=7$: $z=-4+0.8(7)=1.6$; $p=\sigma(1.6)\approx0.832$ → class 1</div>
+<div class="step">Two features, $z=-3+0.5x_1+1.2x_2$, $x_1=4,\ x_2=2$: $z=-3+2+2.4=1.4$; $p=\sigma(1.4)\approx0.802$ → class 1</div>
+<span class="ans">All three examples predict class 1 (each $p \gt 0.5$)</span></div>
+<h4>Maximum Likelihood Estimation (MLE)</h4>
+<ul>
+<li><mark>Maximum Likelihood Estimation</mark>: choose the weights ($\beta_0,\beta_1,\dots$) that make the OBSERVED training labels most probable under the model — i.e. maximise the likelihood of the data actually seen.</li>
+<li>For logistic regression, maximising the likelihood is the SAME optimisation problem as minimising the log-loss cost function above (log-loss is the negative log-likelihood) — this is why gradient descent on log-loss finds the MLE weights.</li>
+<li>Analogy: among several doctors with different diagnostic accuracy, you would trust the one whose past diagnoses were most often correct; MLE "trusts" the parameter values that best explain the data actually observed.</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Linear regression</th><th>Logistic regression</th></tr>
+<tr><td>Task</td><td>Regression</td><td>Classification</td></tr>
+<tr><td>Output</td><td>Any real number</td><td>Probability 0 to 1, then class</td></tr>
+<tr><td>Function</td><td>$\hat{y} = \beta_0 + \beta_1 x$</td><td>$p = \sigma(\beta_0 + \beta_1 x)$</td></tr>
+<tr><td>Curve</td><td>Straight line</td><td>S-shaped sigmoid</td></tr>
+<tr><td>Loss</td><td>Squared error (MSE)</td><td>Log-loss (cross-entropy)</td></tr>
+<tr><td>Fitting</td><td>Closed-form least squares</td><td>Iterative (gradient descent)</td></tr></table></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Gives probabilities, not just labels</td><td>Linear decision boundary only</td></tr>
+<tr><td>Fast, simple, interpretable weights</td><td>Needs feature engineering for non-linear data</td></tr>
+<tr><td>Less prone to overfitting with regularisation</td><td>Affected by strongly correlated features</td></tr></table></div>
+<ul><li><mark>Applications</mark>: credit default risk, email spam detection, disease yes/no prediction, click-through prediction for online ads.</li></ul>
+<div class="note"><b>Common mistake:</b> despite the name, logistic regression is a CLASSIFICATION algorithm.</div>
+<div class="recall"><b>Quick recall</b> $p = 1/(1+e^{-z})$; log-odds linear; boundary at $p = 0.5$ ($z = 0$); loss = log-loss = negative log-likelihood (MLE).</div>
+<a class="top" href="#top">↑ top</a>
+</section>

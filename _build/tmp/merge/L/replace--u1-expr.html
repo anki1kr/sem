@@ -1,0 +1,81 @@
+<section class="topic" id="u1-expr">
+<h3>1.6 Expressions, Evaluation, and Type Promotion</h3>
+<p class="hook">When mixed data types meet in an expression, Java automatically promotes smaller types to match the largest type in the expression. <span class="hg">(badi data type me promotion ho jata hai)</span></p>
+<div class="def"><b>Definition:</b> An <mark>expression</mark> is a combination of variables, constants, operators, and method calls that evaluates to a single value governed by operator precedence and type promotion rules.</div>
+<p>Simple example: <code>int marks = 25; int extmarks = 75; int total = 0; total = marks + extmarks;</code> &rarr; <code>total</code> becomes <code>100</code>.</p>
+<ul>
+<li><mark>Automatic Type Promotion Rules</mark>:
+  <ul>
+  <li>All <code>byte</code>, <code>short</code>, and <code>char</code> values are promoted to <code>int</code> during expression evaluation.</li>
+  <li>If one operand is <code>long</code>, the entire expression is promoted to <code>long</code>.</li>
+  <li>If one operand is <code>float</code>, the entire expression is promoted to <code>float</code>.</li>
+  <li>If any operand is <code>double</code>, the entire result is promoted to <code>double</code>.</li>
+  </ul>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<rect x="20" y="30" width="100" height="40" rx="6"/><text x="70" y="50">float * byte</text>
+<rect x="160" y="30" width="100" height="40" rx="6"/><text x="210" y="50">int / char</text>
+<rect x="300" y="30" width="100" height="40" rx="6"/><text x="350" y="50">double * int</text>
+<path class="arr" d="M70 70 L140 120"/>
+<path class="arr" d="M210 70 L140 120"/>
+<rect class="hi" x="100" y="120" width="100" height="40" rx="6"/><text x="150" y="140">float + int</text>
+<path class="arr" d="M150 160 L270 160"/>
+<path class="arr" d="M350 70 L270 160"/>
+<rect class="hi" x="270" y="140" width="140" height="35" rx="6"/><text x="340" y="157">Result: double</text>
+</svg></div>
+<figcaption><b>Fig 1.15</b> · Expression Evaluation and Type Promotion Flow</figcaption>
+<p class="draw">✍ Draw it: three top boxes for sub-expressions promoting to float, int, and double, combining down to a final double result box.</p></figure>
+
+<div class="ex"><b>Worked Example: Type Promotion Evaluation</b>
+<div class="step">Given: <code>byte b=40; char c='a' (ASCII 97); int i=50; float f=5.67f; double d=0.1234;</code></div>
+<div class="step">Expression: <code>(f * b) + (i / c) - (d * 5)</code></div>
+<div class="step">Step 1: <code>f * b</code> &rarr; <code>5.67f * 40</code> &rarr; <code>226.8f</code> (promoted to float)</div>
+<div class="step">Step 2: <code>i / c</code> &rarr; <code>50 / 97</code> &rarr; <code>0</code> (integer division)</div>
+<div class="step">Step 3: <code>d * 5</code> &rarr; <code>0.1234 * 5</code> &rarr; <code>0.6170</code> (promoted to double)</div>
+<div class="step">Step 4: <code>226.8f + 0 - 0.6170</code> &rarr; <code>226.8 + 0 - 0.6170</code> &rarr; <code>226.18300305175782</code></div>
+<span class="ans">Result = 226.18300305175782 (double)</span>
+</div>
+
+<p>Program: Verifying the worked expression result in Java.</p>
+<pre class="code" data-file="ExprDemo.java"><code><span class="k">public class</span> ExprDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">byte</span> b = 40;
+        <span class="k">char</span> c = 'a';
+        <span class="k">int</span> i = 50;
+        <span class="k">float</span> f = 5.67f;
+        <span class="k">double</span> d = 0.1234;
+        <span class="k">double</span> result = (f * b) + (i / c) - (d * 5);
+        System.out.println("Result = " + result);
+    }
+}</code></pre>
+<pre class="out">Result = 226.18300305175782</pre>
+
+<p><b>Type Conversion vs. Type Casting</b> &mdash; both change a value from one data type to another, but differ in who does the work:</p>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Type Conversion</th><th>Type Casting</th></tr>
+<tr><td>Performed by</td><td>The Java <b>compiler</b>, automatically</td><td>The <b>programmer</b>, manually</td></tr>
+<tr><td>Direction</td><td>Widening (smaller &rarr; larger, e.g. <code>int</code> &rarr; <code>float</code>)</td><td>Usually narrowing (larger &rarr; smaller, e.g. <code>double</code> &rarr; <code>int</code>)</td></tr>
+<tr><td>Syntax</td><td>None needed &mdash; happens implicitly</td><td>Explicit cast operator: <code>(type) value</code></td></tr>
+<tr><td>Data loss</td><td>Never (safe)</td><td>Possible (may truncate/lose precision)</td></tr>
+</table></div>
+<p>Type conversion is <mark>automatic</mark> and done by the compiler when the source and target types are compatible; type casting is <mark>manual</mark> and done by the programmer with the cast operator, typically to force a larger/incompatible type into a smaller one.</p>
+
+<p>Program: Chained explicit type casting (<code>double</code> &rarr; <code>long</code> &rarr; <code>int</code>), each step truncating the decimal part.</p>
+<pre class="code" data-file="TypeCastChainDemo.java"><code><span class="k">public class</span> TypeCastChainDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">double</span> d = 10.04;
+        <span class="k">long</span> L = (<span class="k">long</span>) d;   <span class="c">// explicit narrowing: double -> long</span>
+        <span class="k">int</span> i = (<span class="k">int</span>) L;      <span class="c">// explicit narrowing: long -> int</span>
+        System.out.println("d value is " + d);
+        System.out.println("L value is " + L);
+        System.out.println("i value is " + i);
+    }
+}</code></pre>
+<pre class="out">d value is 10.04
+L value is 10
+i value is 10</pre>
+
+<div class="recall"><b>Quick recall</b> In expressions, smaller types (byte, short, char) auto-promote to <code>int</code>; if any double exists, the entire result becomes <code>double</code>. Conversion = compiler, automatic; Casting = programmer, manual <code>(type)</code>.</div>
+<a class="top" href="#top">↑ top</a></section>

@@ -1,0 +1,129 @@
+<section class="topic" id="u1-select">
+<h3>1.7 Selection Statements (if, if-else, switch)</h3>
+<p class="hook">Selection statements branch code execution based on conditional true/false decisions or value matching. <span class="hg">(conditional decision ke hisaab se rasta chuno)</span></p>
+<div class="def"><b>Definition:</b> <mark>Selection statements</mark> (decision-making statements) allow a program to choose between different execution paths based on the boolean result of a condition or discrete value match.</div>
+
+<ul>
+<li><code>if</code> statement: Executes block only if condition evaluates to <code>true</code>.</li>
+<li><code>if-else</code> statement: Executes <code>if</code> block when <code>true</code>, <code>else</code> block when <code>false</code>.</li>
+<li><code>else-if</code> ladder: Tests multiple conditions sequentially until one evaluates to <code>true</code>.</li>
+<li><code>switch</code> statement: Multi-way branch comparing an integer/char/String expression against multiple <code>case</code> values. Requires <code>break</code> to prevent fall-through.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 500 200" width="500">
+<polygon points="250,20 370,60 250,100 130,60" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="250" y="60">number % 2 == 0 ?</text>
+<path class="arr" d="M370 60 H440 V130"/>
+<text class="s" x="400" y="50">false</text>
+<path class="arr" d="M130 60 H60 V130"/>
+<text class="s" x="90" y="50">true</text>
+<rect x="10" y="130" width="100" height="40" rx="6"/><text x="60" y="150">Print "Even"</text>
+<rect x="390" y="130" width="100" height="40" rx="6"/><text x="440" y="150">Print "Odd"</text>
+</svg></div>
+<figcaption><b>Fig 1.16</b> · Flowchart of if-else selection statement</figcaption>
+<p class="draw">✍ Draw it: decision diamond at top with true path going left to Even box and false path going right to Odd box.</p></figure>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 200" width="540">
+<rect x="200" y="10" width="140" height="40" rx="6"/><text x="270" y="30">switch(day)</text>
+<path class="arr" d="M200 30 H100 V80"/>
+<path class="arr" d="M270 50 V80"/>
+<path class="arr" d="M340 30 H440 V80"/>
+<rect x="40" y="80" width="120" height="40" rx="6"/><text x="100" y="100">case 1: "Monday"</text>
+<rect x="210" y="80" width="120" height="40" rx="6"/><text x="270" y="100">case 2: "Tuesday"</text>
+<rect x="380" y="80" width="120" height="40" rx="6"/><text x="440" y="100">default: "Other"</text>
+</svg></div>
+<figcaption><b>Fig 1.17</b> · Flowchart of multi-way switch statement branching</figcaption>
+<p class="draw">✍ Draw it: top box switch expression splitting into 3 parallel branch paths for case 1, case 2, and default.</p></figure>
+
+<p>Program: Selection using if-else and switch statements.</p>
+<pre class="code" data-file="SelectionDemo.java"><code><span class="k">public class</span> SelectionDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> number = 15;
+        <span class="k">if</span> (number % 2 == 0) {
+            System.out.println(number + " is Even");
+        } <span class="k">else</span> {
+            System.out.println(number + " is Odd");
+        }
+        <span class="k">int</span> day = 2;
+        <span class="k">switch</span> (day) {
+            <span class="k">case</span> 1: System.out.println("Monday"); <span class="k">break</span>;
+            <span class="k">case</span> 2: System.out.println("Tuesday"); <span class="k">break</span>;
+            <span class="k">default</span>: System.out.println("Other day");
+        }
+    }
+}</code></pre>
+<pre class="out">15 is Odd
+Tuesday</pre>
+
+<p>The <mark>if-else-if ladder</mark> chains conditions top to bottom; the first condition that is <code>true</code> runs its block and skips the rest, and a final plain <code>else</code> catches every remaining case (grade computation is the classic example).</p>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 500" width="540">
+<ellipse cx="170" cy="40" rx="45" ry="16"/><text x="170" y="45">Start</text>
+<path class="arr" d="M170 56 V76"/>
+<polygon points="170,78 270,118 170,158 70,118"/><text x="170" y="122">marks&gt;=90?</text>
+<path class="arr" d="M270 118 H338"/><text class="s" x="300" y="108">Yes</text>
+<rect class="hi" x="340" y="93" width="150" height="50" rx="6"/><text x="415" y="123">Grade = A</text>
+<path class="arr" d="M170 158 V196"/><text class="s" x="188" y="182">No</text>
+<polygon points="170,198 270,238 170,278 70,238"/><text x="170" y="242">marks&gt;=80?</text>
+<path class="arr" d="M270 238 H338"/><text class="s" x="300" y="228">Yes</text>
+<rect class="hi" x="340" y="213" width="150" height="50" rx="6"/><text x="415" y="243">Grade = B</text>
+<path class="arr" d="M170 278 V316"/><text class="s" x="188" y="302">No</text>
+<polygon points="170,318 270,358 170,398 70,358"/><text x="170" y="362">marks&gt;=70?</text>
+<path class="arr" d="M270 358 H338"/><text class="s" x="300" y="348">Yes</text>
+<rect class="hi" x="340" y="333" width="150" height="50" rx="6"/><text x="415" y="363">Grade = C</text>
+<path class="arr" d="M170 398 V428"/><text class="s" x="188" y="417">No</text>
+<rect x="100" y="430" width="140" height="44" rx="6"/><text x="170" y="456">Grade = F</text>
+</svg></div>
+<figcaption><b>Fig 1.50</b> · If-else-if ladder flowchart (grade calculation, pattern continues for D/E)</figcaption>
+<p class="draw">✍ Draw it: a vertical chain of diamonds, each "No" going down to the next diamond, each "Yes" branching right to a grade box; the last "No" ends at grade F.</p></figure>
+
+<p>Program: Grading using an if-else-if ladder.</p>
+<pre class="code" data-file="IfElseDemo.java"><code><span class="k">public class</span> IfElseDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> marks = 76;
+        <span class="k">char</span> grade;
+        <span class="k">if</span> (marks &gt;= 90) {
+            grade = 'A';
+        } <span class="k">else if</span> (marks &gt;= 80) {
+            grade = 'B';
+        } <span class="k">else if</span> (marks &gt;= 70) {
+            grade = 'C';
+        } <span class="k">else if</span> (marks &gt;= 60) {
+            grade = 'D';
+        } <span class="k">else if</span> (marks &gt;= 50) {
+            grade = 'E';
+        } <span class="k">else</span> {
+            grade = 'F';
+        }
+        System.out.println("Grade is " + grade);
+    }
+}</code></pre>
+<pre class="out">Grade is C</pre>
+
+<div class="tw"><table>
+<tr><th>Basis</th><th>if-else / ladder</th><th>switch</th></tr>
+<tr><td>Tests</td><td>Any boolean condition (ranges, multiple variables)</td><td>One variable/expression against fixed <code>int</code>/<code>char</code>/<code>String</code> values</td></tr>
+<tr><td>Readability</td><td>Gets messy with many conditions</td><td>Cleaner for many discrete values</td></tr>
+<tr><td>Fall-through</td><td>Not applicable</td><td>Happens if <code>break</code> is missed</td></tr>
+<tr><td>Best for</td><td>Range checks (e.g. <code>marks&gt;=90</code>)</td><td>Exact-value menus (e.g. day number, choice)</td></tr>
+</table></div>
+
+<p>Program: <code>switch</code> over all seven days of the week, with a <code>default</code> for invalid input.</p>
+<pre class="code" data-file="SwitchDemo.java"><code><span class="k">public class</span> SwitchDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> day = 2;
+        <span class="k">switch</span> (day) {
+            <span class="k">case</span> 1: System.out.println("Sunday"); <span class="k">break</span>;
+            <span class="k">case</span> 2: System.out.println("Monday"); <span class="k">break</span>;
+            <span class="k">case</span> 3: System.out.println("Tuesday"); <span class="k">break</span>;
+            <span class="k">case</span> 4: System.out.println("Wednesday"); <span class="k">break</span>;
+            <span class="k">case</span> 5: System.out.println("Thursday"); <span class="k">break</span>;
+            <span class="k">case</span> 6: System.out.println("Friday"); <span class="k">break</span>;
+            <span class="k">case</span> 7: System.out.println("Saturday"); <span class="k">break</span>;
+            <span class="k">default</span>: System.out.println("Invalid day");
+        }
+    }
+}</code></pre>
+<pre class="out">Monday</pre>
+
+<div class="recall"><b>Quick recall</b> <code>if-else</code> evaluates boolean expressions; <code>switch</code> matches discrete values. Always add <code>break</code> in <code>switch</code> cases.</div>
+<a class="top" href="#top">↑ top</a></section>

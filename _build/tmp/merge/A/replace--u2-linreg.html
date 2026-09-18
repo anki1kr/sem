@@ -1,0 +1,82 @@
+<section class="topic" id="u2-linreg">
+<h3>2.5 Linear models: Linear Regression</h3>
+<p class="hook">Fit the straightest ruler line through scattered dots so that the dots are, on average, as close to the line as possible. <span class="hg">(beech se seedhi line)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear regression</mark> is a supervised regression method that models a continuous output as a linear function of the input, $\hat{y} = \beta_0 + \beta_1 x$, with $\beta_0$ (intercept) and $\beta_1$ (slope) found by the <mark>least squares</mark> method, i.e. minimising the sum of squared errors. <i>(Class notes write this as $y = mx + c$, where $m = \beta_1$ is the slope and $c = \beta_0$ is the intercept.)</i></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 300" width="600">
+<path class="arr" d="M60 260 H570"/><path class="arr" d="M60 260 V22"/>
+<text class="s" x="140" y="278">1</text><text class="s" x="220" y="278">2</text><text class="s" x="300" y="278">3</text><text class="s" x="380" y="278">4</text><text class="s" x="460" y="278">5</text><text class="s" x="540" y="278">6</text>
+<text class="s r" x="50" y="191">2</text><text class="s r" x="50" y="123">4</text><text class="s r" x="50" y="54">6</text>
+<path class="acc" d="M60 184.6 L540 61.1"/>
+<line class="dash" x1="140" y1="191.4" x2="140" y2="164"/><line class="dash" x1="220" y1="122.9" x2="220" y2="143.4"/>
+<line class="dash" x1="300" y1="88.6" x2="300" y2="122.9"/><line class="dash" x1="380" y1="122.9" x2="380" y2="102.3"/>
+<line class="dash" x1="460" y1="88.6" x2="460" y2="81.7"/>
+<circle class="dot" cx="140" cy="191.4" r="5"/><circle class="dot" cx="220" cy="122.9" r="5"/><circle class="dot" cx="300" cy="88.6" r="5"/><circle class="dot" cx="380" cy="122.9" r="5"/><circle class="dot" cx="460" cy="88.6" r="5"/>
+<circle class="hi" cx="540" cy="61.1" r="6"/><text class="r" x="526" y="40">ŷ(6) = 5.8</text>
+<text class="l b" x="80" y="40">ŷ = 2.2 + 0.6x</text>
+<text class="s l" x="160" y="222">dashed = residual (y − ŷ)</text>
+</svg></div><figcaption><b>Fig 2.10</b> · Least-squares line through the 5 points of the worked example, with residuals</figcaption><p class="draw">✍ Draw it: axes, 5 dots, one straight line through their middle, short vertical dashes from each dot to the line.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Data points (x, y)</div>
+<div class="n">Find means x̄ and ȳ</div>
+<div class="n">β₁ = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)²</div>
+<div class="n">β₀ = ȳ − β₁x̄</div>
+<div class="n hi">Predict ŷ = β₀ + β₁x</div>
+<div class="n">Evaluate SSE, MSE, R²</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.11</b> · Simple linear regression (least squares) flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 5 boxes with the formulas, oval.</p></figure>
+<ul>
+<li><mark>Model</mark>: $$y = \beta_0 + \beta_1 x + \varepsilon$$ $\beta_0$ = intercept (value when $x = 0$), $\beta_1$ = slope (change in $y$ per unit $x$), $\varepsilon$ = error.</li>
+<li><mark>Residual</mark> $e_i = y_i - \hat{y}_i$. <mark>Least squares</mark> chooses $\beta_0, \beta_1$ to minimise $$SSE = \sum e_i^2 = \sum (y_i - \hat{y}_i)^2$$</li>
+<li><mark>MSE</mark> $= SSE/n$. <mark>$R^2$</mark>: $$R^2 = 1 - \frac{SS_{res}}{SS_{tot}} = 1 - \frac{SSE}{SST}$$ where $SST = \sum (y_i - \bar{y})^2$; $R^2$ = fraction of variance explained (1 = perfect fit).</li>
+<li><mark>MAE</mark> (Mean Absolute Error) $$MAE = \frac{1}{n}\sum |y_i - \hat{y}_i|$$ averages the absolute error — no squaring, so a few huge errors don't dominate as much as in MSE. <mark>RMSE</mark> $= \sqrt{MSE}$, back in the same unit as $y$ (MSE's own unit is $y$ squared).</li>
+<li><mark>Gradient descent</mark> (iterative alternative): (1) start with $\beta_0 = \beta_1 = 0$; (2) compute gradient of MSE w.r.t. each coefficient; (3) update $\beta_j := \beta_j - \alpha \cdot \text{gradient}$ ($\alpha$ = learning rate) and repeat until the error stops falling.</li>
+<li><mark>Multiple linear regression</mark>: $y = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n$ (many inputs, e.g. price from area, rooms, floor).</li>
+<li>Assumptions: linear relation, independent errors, constant error variance, no strong multicollinearity.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python) · $x$ = hours studied, $y$ = test score (out of 10)
+<div class="tw"><table><tr><th>$x$</th><th>$y$</th><th>$x - \bar{x}$</th><th>$y - \bar{y}$</th><th>$(x-\bar{x})(y-\bar{y})$</th><th>$(x-\bar{x})^2$</th><th>$\hat{y}$</th><th>$e = y - \hat{y}$</th><th>$e^2$</th></tr>
+<tr><td>1</td><td>2</td><td>−2</td><td>−2</td><td>4</td><td>4</td><td>2.8</td><td>−0.8</td><td>0.64</td></tr>
+<tr><td>2</td><td>4</td><td>−1</td><td>0</td><td>0</td><td>1</td><td>3.4</td><td>0.6</td><td>0.36</td></tr>
+<tr><td>3</td><td>5</td><td>0</td><td>1</td><td>0</td><td>0</td><td>4.0</td><td>1.0</td><td>1.00</td></tr>
+<tr><td>4</td><td>4</td><td>1</td><td>0</td><td>0</td><td>1</td><td>4.6</td><td>−0.6</td><td>0.36</td></tr>
+<tr><td>5</td><td>5</td><td>2</td><td>1</td><td>2</td><td>4</td><td>5.2</td><td>−0.2</td><td>0.04</td></tr>
+<tr><th>$\sum$</th><th></th><th></th><th></th><th>6</th><th>10</th><th></th><th></th><th>2.40</th></tr></table></div>
+<div class="step">$\bar{x} = \dfrac{15}{5} = 3$, $\bar{y} = \dfrac{20}{5} = 4$</div>
+<div class="step">$\beta_1 = \dfrac{6}{10} = 0.6$;  $\beta_0 = 4 - 0.6 \times 3 = 2.2$  →  $\hat{y} = 2.2 + 0.6x$</div>
+<div class="step">Predict $x = 6$: $\hat{y} = 2.2 + 0.6 \times 6 = 5.8$</div>
+<div class="step">$SSE = 2.40$;  $MSE = \dfrac{2.40}{5} = 0.48$</div>
+<div class="step">$SST = \sum (y_i - \bar{y})^2 = 4 + 0 + 1 + 0 + 1 = 6$;  $R^2 = 1 - \dfrac{2.40}{6} = 0.60$</div>
+<span class="ans">$\hat{y} = 2.2 + 0.6x$, $\hat{y}(6) = 5.8$, $MSE = 0.48$, $R^2 = 0.60$</span></div>
+<div class="ex"><b>Worked example</b> (computed in Python) · $x$ = study hours, $y$ = marks
+<div class="tw"><table><tr><th>$x$</th><th>$y$</th><th>$x-\bar{x}$</th><th>$y-\bar{y}$</th><th>$(x-\bar{x})(y-\bar{y})$</th><th>$(x-\bar{x})^2$</th></tr>
+<tr><td>1</td><td>35</td><td>−2</td><td>−14</td><td>28</td><td>4</td></tr>
+<tr><td>2</td><td>40</td><td>−1</td><td>−9</td><td>9</td><td>1</td></tr>
+<tr><td>3</td><td>50</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>4</td><td>55</td><td>1</td><td>6</td><td>6</td><td>1</td></tr>
+<tr><td>5</td><td>65</td><td>2</td><td>16</td><td>32</td><td>4</td></tr>
+<tr><th>$\sum$</th><th></th><th></th><th></th><th>75</th><th>10</th></tr></table></div>
+<div class="step">$\bar{x} = \dfrac{15}{5} = 3$, $\bar{y} = \dfrac{245}{5} = 49$</div>
+<div class="step">$\beta_1 = \dfrac{75}{10} = 7.5$;  $\beta_0 = 49 - 7.5 \times 3 = 26.5$  →  $\hat{y} = 7.5x + 26.5$</div>
+<div class="step">Predict $x = 6$ study hours: $\hat{y} = 7.5 \times 6 + 26.5 = 71.5$</div>
+<span class="ans">$\hat{y} = 7.5x + 26.5$; predicted marks for 6 study hours $= 71.5$</span></div>
+<div class="ex"><b>Worked example</b> (error metrics; computed in Python) · actual $y$ and predicted $\hat{y}$
+<div class="step">$y = 10, 20, 30, 40$; $\hat{y} = 12, 18, 29, 42$; errors $e = y-\hat{y} = -2, 2, 1, -2$</div>
+<div class="step">$MAE = \dfrac{|-2|+|2|+|1|+|-2|}{4} = \dfrac{7}{4} = 1.75$</div>
+<div class="step">$e^2 = 4,4,1,4 \Rightarrow \sum e^2 = 13 \Rightarrow MSE = \dfrac{13}{4} = 3.25$;  $RMSE = \sqrt{3.25} \approx 1.803$</div>
+<div class="step">$\bar{y} = 25$; $SST=\sum(y-\bar{y})^2 = 15^2+5^2+5^2+15^2=500$; $R^2 = 1-\dfrac{13}{500} = 0.974$ (97.4% of the variance is explained)</div>
+<span class="ans">$MAE=1.75$, $MSE=3.25$, $RMSE\approx1.803$, $R^2=0.974$</span></div>
+<div class="ex"><b>Worked example</b> (computed in Python) · model $\hat{y}=2x+3$ checked against real data, $x=1,\dots,5$, actual $y = 6,7,10,11,14$
+<div class="step">$\hat{y} = 5,7,9,11,13$; $e=y-\hat{y}=1,0,1,0,1$</div>
+<div class="step">$MSE=\dfrac{1+0+1+0+1}{5}=0.6$; $MAE=\dfrac{1+0+1+0+1}{5}=0.6$ (equal here only because every non-zero error happens to be exactly 1); $RMSE=\sqrt{0.6}\approx0.775$</div>
+<span class="ans">$MSE=0.6$, $MAE=0.6$, $RMSE\approx0.775$</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple, fast, closed-form solution</td><td>Only captures linear relationships</td></tr>
+<tr><td>Coefficients are easy to interpret</td><td>Very sensitive to outliers (squared error)</td></tr>
+<tr><td>Basis for many advanced models</td><td>Assumptions (constant variance etc.) often violated</td></tr></table></div>
+<ul><li><mark>Applications</mark>: house price estimation, sales forecasting from ad spend, predicting marks from study hours, crop yield from rainfall.</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>M-S-I-P</b>: <b>M</b>eans, <b>S</b>lope, <b>I</b>ntercept, <b>P</b>redict.</div>
+<div class="note"><b>Common mistake:</b> compute $\beta_1$ BEFORE $\beta_0$ ($\beta_0$ needs $\beta_1$). And $R^2 = 1 - SSE/SST$, not $SSE/SST$.</div>
+<div class="recall"><b>Quick recall</b> $$\beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}, \qquad \beta_0 = \bar{y} - \beta_1 \bar{x}$$ least squares minimises $SSE$; $R^2 = 1 - SSE/SST$; $MAE$ and $RMSE$ are the other two common error metrics.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

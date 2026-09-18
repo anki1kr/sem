@@ -1,0 +1,109 @@
+<section class="topic" id="u2-final">
+<h3>2.11 The final keyword</h3>
+<p class="hook">"final" is Java's way of saying "this is locked, do not touch." <span class="hg">(ek baar final, phir badlega nahi)</span></p>
+<div class="def"><b>Definition:</b> <mark>final</mark> is a non-access modifier used to restrict the user. It can be applied to a <mark>variable</mark> (its value cannot be changed once initialised), a <mark>method</mark> (it cannot be overridden by a subclass) or a <mark>class</mark> (it cannot be extended/inherited by any class).</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>final variable</b>value fixed after initialisation &mdash; behaves like a constant</div>
+<div class="b hi"><b>final method</b>body fixed &mdash; a subclass cannot override it</div>
+<div class="b hi"><b>final class</b>class fixed &mdash; no subclass, cannot be extended</div>
+</div></div><figcaption><b>Fig 2.50</b> · The three places final can appear and what each one locks</figcaption><p class="draw">✍ Draw it: three boxes in a row, shade all three, one line of text under each.</p></figure>
+<ul>
+<li><mark>final variable</mark>: usually written in <code>UPPER_CASE</code> by convention (it is a constant); must be given a value either at declaration or in the constructor, and never re-assigned after that.</li>
+<li><mark>final method</mark>: can still be <b>inherited and called</b> normally by a subclass &mdash; only <b>overriding</b> it is blocked.</li>
+<li><mark>final class</mark>: its methods can still be called and its objects created as usual &mdash; only being the <b>parent of another class</b> is blocked. <code>String</code> is a well-known final class.</li>
+<li>A <code>final</code> variable that is <b>not</b> given a value at declaration (given one later, exactly once, e.g. in every constructor) is sometimes called a <mark>blank final</mark> variable; the notes for this unit do not go into that case.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Applied to</th><th>What it prevents</th><th>Still allowed</th></tr>
+<tr><td>Variable</td><td>Re-assigning the value after it is initialised</td><td>Reading the value anywhere it is visible</td></tr>
+<tr><td>Method</td><td>A subclass overriding it (same signature, own body)</td><td>A subclass inheriting it and calling it as-is</td></tr>
+<tr><td>Class</td><td>Any other class extending it (<code>extends</code>)</td><td>Creating objects of it, calling its methods</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> final <b>V-M-C</b>: stops a Value from changing, a Method from being overridden, a Class from being extended.</div>
+
+<p><b>(a) final variable</b> &mdash; the class notes' own Bike-style example, a speed limit that must not change:</p>
+<pre class="code"><code><span class="k">class</span> Glamour {
+    <span class="k">final</span> <span class="k">int</span> speedLimit = 100;   <span class="c">// final variable</span>
+
+    <span class="k">void</span> run() {
+        speedLimit = 400;
+    }
+
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Glamour obj = <span class="k">new</span> Glamour();
+        obj.run();
+    }
+}</code></pre>
+<p><b>Compile error (real javac message):</b></p>
+<pre class="out">Glamour.java:5: error: cannot assign a value to final variable speedLimit
+        speedLimit = 400;
+        ^
+1 error</pre>
+<div class="note"><b>Common mistake:</b> the notes declare the field <code>speedLimit</code> (capital L) but the re-assignment line reads <code>Speedlimit = 400;</code> (capital S, lowercase l) &mdash; a different, undeclared identifier. Java is case-sensitive, so javac never even reaches the final-variable rule; it stops one step earlier with "cannot find symbol: variable Speedlimit". Using the <b>same</b> spelling everywhere (as above) gives the error the example is actually meant to teach: "cannot assign a value to final variable speedLimit".</div>
+<p>A final variable is perfectly usable &mdash; only re-assignment is blocked; reading it works exactly like any other field:</p>
+<pre class="code" data-file="FinalConstDemo.java"><code><span class="k">class</span> Bike3 {
+    <span class="k">final</span> <span class="k">int</span> SPEED_LIMIT = 90;   <span class="c">// final variable used as a constant</span>
+
+    <span class="k">void</span> show() {
+        System.out.println("Speed limit is: " + SPEED_LIMIT);
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> FinalConstDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Bike3 b = <span class="k">new</span> Bike3();
+        b.show();                 <span class="c">// read is fine; only re-assignment is blocked</span>
+    }
+}</code></pre>
+<pre class="out">Speed limit is: 90</pre>
+
+<p><b>(b) final method</b> &mdash; the class notes' Bike/Hero example, a run() that must not be overridden:</p>
+<pre class="code"><code><span class="k">class</span> Bike {
+    <span class="k">final</span> <span class="k">void</span> run() {                 <span class="c">// final method</span>
+        System.out.println("running");
+    }
+}
+
+<span class="k">class</span> Hero <span class="k">extends</span> Bike {
+    <span class="k">void</span> run() {                       <span class="c">// attempting to override a final method</span>
+        System.out.println("running safely with 60mph");
+    }
+
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Hero obj = <span class="k">new</span> Hero();
+        obj.run();
+    }
+}</code></pre>
+<p><b>Compile error (real javac message):</b></p>
+<pre class="out">Hero.java:8: error: run() in Hero cannot override run() in Bike
+    void run() {
+         ^
+  overridden method is final
+1 error</pre>
+
+<p><b>(c) final class</b> &mdash; the class notes' Bike/Honda example, a class that must not be extended:</p>
+<pre class="code"><code><span class="k">final</span> <span class="k">class</span> Bike {                     <span class="c">// final class</span>
+    <span class="k">void</span> run() {
+        System.out.println("running safely with 60kmph");
+    }
+}
+
+<span class="k">class</span> Honda <span class="k">extends</span> Bike {             <span class="c">// attempting to inherit a final class</span>
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Honda obj = <span class="k">new</span> Honda();
+        obj.run();
+    }
+}</code></pre>
+<p><b>Compile error (real javac message):</b></p>
+<pre class="out">Honda.java:7: error: cannot inherit from final Bike
+class Honda extends Bike {
+                    ^
+1 error</pre>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">final class Bike</div>
+<div class="n">class Honda extends Bike</div>
+<div class="n hi">javac: cannot inherit from final Bike</div>
+<div class="n t">Compile stops here</div>
+</div></div><figcaption><b>Fig 2.51</b> · A final class blocks inheritance at compile time, before the program can even build</figcaption><p class="draw">✍ Draw it: a vertical flowchart of 4 boxes, ovals at start/end, shade the "cannot inherit" box.</p></figure>
+<div class="recall"><b>Quick recall</b> final on a variable = constant (no re-assign); final on a method = no overriding; final on a class = no extending; in all three cases, normal use (read / call / instantiate) still works.</div>
+<a class="top" href="#top">↑ top</a></section>

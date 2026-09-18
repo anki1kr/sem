@@ -1,39 +1,9 @@
-# OS
-.DS_Store
-Thumbs.db
-desktop.ini
-$RECYCLE.BIN/
-.mcp.json
-# Editors / IDEs
-.vscode/
-.idea/
-.vs/
-*.swp
-*.swo
-*~
+Sem 4/
 
 # Claude Code workspace
 .claude/
+.claude-flow/
+.swarm/
+.mcp.json
 CLAUDE.md
 ruvector.db
-
-# Env / secrets
-.env
-.env.*
-!.env.example
-
-# Node tooling (in case it gets added later)
-node_modules/
-dist/
-build/
-.cache/
-.parcel-cache/
-
-# Service-worker generated artifacts (none right now, but reserved)
-workbox-*.js
-.playwright-mcp
-dbms-exam-guide.html
-ctrc-exam-guide.html
-iks-exam-guide.html
-loc-exam-guide.html
-*.bak*

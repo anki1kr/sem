@@ -1,0 +1,57 @@
+<section class="topic" id="u1-yarn">
+<h3>1.11 YARN and Hadoop architecture</h3>
+<p class="hook">YARN is Hadoop's "operating system": it hands out CPU and memory on the cluster to whichever application needs them.</p>
+<div class="def"><b>Definition:</b> <mark>YARN</mark> (Yet Another Resource Negotiator), introduced in Hadoop 2, is the cluster resource-management layer that separates resource management and job scheduling from data processing, allowing multiple processing engines (MapReduce, Spark, etc.) to share one Hadoop cluster.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 320" width="760">
+<rect x="20" y="40" width="120" height="50" rx="6"/><text x="80" y="65">Client</text>
+<rect class="hi" x="280" y="25" width="220" height="80" rx="6"/><text class="b" x="390" y="50">ResourceManager</text><text class="s" x="390" y="78">Scheduler + AppsManager</text>
+<path class="arr" d="M140 65 H280"/><text class="s" x="210" y="53">submit job</text>
+<path class="dash arr2" d="M340 105 L210 170"/><path class="dash arr2" d="M440 105 L570 170"/>
+<text class="s" x="390" y="140">heartbeat / status</text>
+<path class="arr" d="M140 190 L290 105"/><text class="s r" x="200" y="132">resource request</text>
+<rect class="none" x="60" y="170" width="300" height="130" rx="8"/><text x="210" y="284">NodeManager 1</text>
+<rect class="hi" x="80" y="190" width="120" height="60" rx="6"/><text x="140" y="220">App Master</text>
+<rect x="220" y="190" width="120" height="60" rx="6"/><text x="280" y="220">Container</text>
+<rect class="none" x="420" y="170" width="300" height="130" rx="8"/><text x="570" y="284">NodeManager 2</text>
+<rect x="440" y="190" width="120" height="60" rx="6"/><text x="500" y="220">Container</text>
+<rect x="580" y="190" width="120" height="60" rx="6"/><text x="640" y="220">Container</text>
+</svg></div><figcaption><b>Fig 1.16</b> · YARN architecture</figcaption><p class="draw">✍ Draw it: ResourceManager box on top with Client on its left; two big NodeManager boxes below, each holding two small boxes (App Master / Containers); dashed arrows RM ↔ NMs.</p></figure>
+<ul>
+<li><mark>ResourceManager (RM)</mark>: master daemon, one per cluster; arbitrates all cluster resources. Two parts: <b>Scheduler</b> (allocates resources, e.g. FIFO, Capacity, Fair schedulers) and <b>ApplicationsManager</b> (accepts job submissions, starts the ApplicationMaster, restarts it on failure). The scheduler side also tracks each job's priority, its dependencies on other jobs, and timing information.</li>
+<li><mark>NodeManager (NM)</mark>: slave daemon on every worker node; launches and monitors containers and reports the node's resource usage and health to the RM.</li>
+<li><mark>ApplicationMaster (AM)</mark>: one per application; negotiates containers from the RM and works with NMs to run and monitor the application's tasks.</li>
+<li><mark>Container</mark>: a bundle of resources (memory, CPU cores) on one node in which a task runs.</li>
+<li><mark>Job flow</mark>: client submits → RM starts AM in a container → AM requests containers → RM grants → AM asks NMs to launch tasks → tasks report to AM → AM finishes and deregisters.</li>
+<li>YARN replaced Hadoop 1's <mark>JobTracker/TaskTracker</mark>, which mixed resource management with MapReduce and limited scalability.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">Master node(s)<small>NameNode (HDFS) + ResourceManager (YARN)</small></div>
+<div class="row"><div class="l">Worker 1<small>DataNode + NodeManager</small></div><div class="l">Worker 2<small>DataNode + NodeManager</small></div><div class="l">Worker N<small>DataNode + NodeManager</small></div></div>
+</div></div><figcaption><b>Fig 1.17</b> · Overall Hadoop cluster architecture (master–slave)</figcaption><p class="draw">✍ Draw it: one wide master box on top, three worker boxes in a row below, write the two daemons in each.</p></figure>
+<ul>
+<li>Storage layer (HDFS) and compute layer (YARN) run <mark>side by side on the same worker nodes</mark>, which is what makes data locality possible.</li>
+</ul>
+<h4>Features of YARN</h4>
+<ul>
+<li><mark>Multi-tenancy</mark>: several processing engines (MapReduce, Spark, Hive, ...) and several applications/users can share the same cluster at the same time.</li>
+<li><mark>Scalability</mark>: moving resource management out of MapReduce lets a YARN cluster scale far beyond what Hadoop 1's JobTracker could manage.</li>
+<li><mark>Cluster utilisation</mark>: the ResourceManager hands out CPU and memory dynamically to whichever application needs them, instead of Hadoop 1's fixed map/reduce "slots" which often sat idle.</li>
+<li><mark>Compatibility</mark>: existing Hadoop 1 MapReduce applications keep running on YARN unchanged, since MapReduce is now just one of several application types on top of it.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Multi-tenancy</b>many engines, one cluster</div>
+<div class="b"><b>Scalability</b>bigger clusters than Hadoop 1</div>
+<div class="b"><b>Cluster utilisation</b>dynamic resource sharing</div>
+<div class="b"><b>Compatibility</b>old MapReduce jobs still run</div>
+</div></div><figcaption><b>Fig 1.53</b> · Features of YARN</figcaption><p class="draw">✍ Draw it: a row of four boxes, one feature name and its one-line benefit in each.</p></figure>
+<div class="tw"><table>
+<tr><th>Layer</th><th>Master daemon</th><th>Slave daemon</th></tr>
+<tr><td>HDFS (storage)</td><td>NameNode (+ Secondary / Standby)</td><td>DataNode</td></tr>
+<tr><td>YARN (resources)</td><td>ResourceManager</td><td>NodeManager</td></tr>
+<tr><td>Per application</td><td colspan="2">ApplicationMaster running in a container</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "<b>R</b>am <b>N</b>eeds <b>A</b> <b>C</b>ontainer": ResourceManager, NodeManager, ApplicationMaster, Container. Features of YARN, <b>M-S-C-C</b>: "<b>M</b>eri <b>S</b>abzi <b>C</b>hatpati <b>C</b>hahiye": Multi-tenancy, Scalability, Cluster-utilisation, Compatibility.</div>
+<div class="note"><b>Common mistake:</b> The ApplicationMaster is per application, not per cluster; the ResourceManager is per cluster.</div>
+<div class="recall"><b>Quick recall</b> YARN = RM (Scheduler + AppsManager) + NM per node + AM per app + containers; separates resource management from processing; features: multi-tenancy, scalability, cluster-utilisation, compatibility.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

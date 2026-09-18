@@ -1,0 +1,40 @@
+<section class="topic" id="u2-5p">
+<h3>2.4 Five P's of Data Science</h3>
+<p class="hook">The 5 P's answer: why (Purpose), who (People), how (Process), on what (Platforms) and with what code (Programmability). <span class="hg">(kyun, kaun, kaise, kis par, kis se)</span></p>
+<div class="def"><b>Definition:</b> The <mark>five P's of data science</mark> are <mark>Purpose, People, Process, Platforms and Programmability</mark>: the interdependent parts that together turn big data into a data product and value.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 400" width="600">
+<line x1="300" y1="151" x2="300" y2="85"/>
+<line x1="361" y1="195" x2="428" y2="175"/>
+<line x1="338" y1="267" x2="379" y2="320"/>
+<line x1="262" y1="267" x2="221" y2="320"/>
+<line x1="239" y1="195" x2="172" y2="175"/>
+<circle class="hi" cx="300" cy="215" r="64"/><text class="b" x="300" y="206">Data</text><text class="b" x="300" y="226">Science</text>
+<ellipse cx="300" cy="55" rx="70" ry="26"/><text x="300" y="55">Purpose</text>
+<ellipse cx="457" cy="166" rx="70" ry="26"/><text x="457" y="166">People</text>
+<ellipse cx="397" cy="344" rx="70" ry="26"/><text x="397" y="344">Process</text>
+<ellipse cx="203" cy="344" rx="70" ry="26"/><text x="203" y="344">Platforms</text>
+<ellipse cx="143" cy="166" rx="80" ry="26"/><text x="143" y="166">Programmability</text>
+</svg></div><figcaption><b>Fig 2.4</b> · 5P wheel: five P's around data science</figcaption><p class="draw">✍ Draw it: centre circle "Data Science", 5 ellipses around it like a star, one spoke line to each.</p></figure>
+<ul>
+<li><mark>Purpose</mark>: the challenge or set of challenges defined by the big data strategy; a scientific hypothesis or a business metric to improve. <span class="hg">(sawaal kya hai)</span></li>
+<li><mark>People</mark>: data scientists, domain experts, engineers, managers; data science is teamwork because it needs varied expertise.</li>
+<li><mark>Process</mark>: the organised steps: acquire, prepare, analyse, report, act (2.5). Also covers how the team works and reviews.</li>
+<li><mark>Platforms</mark>: the computing and storage systems: Hadoop / HDFS, Spark, NoSQL databases, cloud, clusters. <span class="hg">(kis machine / system par)</span></li>
+<li><mark>Programmability</mark>: the ability to program the analysis: languages (Python, R, SQL, Java), MapReduce jobs, scripts and workflow tools that make steps repeatable and scalable.</li>
+<li><mark>Interdependence</mark>: purpose chooses people; process decides which platform; platform decides which programming tools.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>P</th><th>Question it answers</th><th>Example (food-delivery app)</th></tr>
+<tr><td>Purpose</td><td>Why?</td><td>Predict delivery time accurately</td></tr>
+<tr><td>People</td><td>Who?</td><td>Operations expert, ML engineer, data engineer</td></tr>
+<tr><td>Process</td><td>How (steps)?</td><td>Acquire GPS + order data → prepare → model → report → act</td></tr>
+<tr><td>Platforms</td><td>On what systems?</td><td>Cloud storage, Spark cluster, streaming system</td></tr>
+<tr><td>Programmability</td><td>With what code/tools?</td><td>Python, SQL, scheduled workflows</td></tr>
+</table></div>
+<p><mark>Three kinds of elements</mark>: the 5 P's mix a business element (<mark>Purpose</mark>), a human element (<mark>People</mark>), and technological elements (<mark>Platforms</mark> + <mark>Programmability</mark>) — with <mark>Process</mark> as the repeatable workflow that bridges all three.</p>
+<div class="ex"><b>Worked example: a retail company predicting customer churn</b><div class="step">Purpose: identify and predict which customers are most likely to churn (stop buying) in the next three months.</div><div class="step">People: data scientists (analysis + models), a domain expert from marketing (business context), data engineers (pipelines), and a business stakeholder (defines the problem, uses the result).</div><div class="step">Process: acquire customer data → clean it → EDA to find correlations → build a churn-prediction model → deploy it to a dashboard for the marketing team.</div><div class="step">Platforms: a cloud platform (e.g. AWS / Azure / GCP) to store data, plus a big-data framework (e.g. Spark / Hadoop) to process it at scale.</div><span class="ans">Programmability: Python with a machine-learning library (e.g. scikit-learn) scripts, automates and makes the churn model reproducible.</span></div>
+<div class="mn"><b>Mnemonic</b> <b>"Pooja's People Prefer Paneer Pakoda"</b> = Purpose, People, Process, Platforms, Programmability (same order as the wheel, clockwise from top).</div>
+<div class="note"><b>Common mistake:</b> writing "Product" or "Price" (marketing 4P) in place of Programmability. Product is the output of the 5 P's, not one of the five.</div>
+<div class="recall"><b>Quick recall</b> Why-Purpose, Who-People, How-Process, On what-Platforms, With what code-Programmability.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

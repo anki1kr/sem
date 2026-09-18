@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Data Acquisition, Analysis &amp; Visualization &middot; Important Questions</title>
+<style>
+:root{--brand:#0f6b64;--brand2:#0a4843;--paper:#faf8f4;--card:#ffffff;--ink:#1d1b18;
+--muted:#5f5a52;--rule:#e2ddd3;--soft:color-mix(in srgb,var(--brand) 8%,#fff);
+--boxfill:#fffdf9;--hifill:color-mix(in srgb,var(--brand) 16%,#fff);--mark:#fde68a;--good:#1f7a4d;--bad:#b3203a;
+--body:"Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans",sans-serif;--disp:Georgia,"Times New Roman",serif;
+--mono:"Cascadia Mono",Consolas,"Courier New",monospace;--maxw:900px}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 var(--body);-webkit-text-size-adjust:100%}
+main{max-width:var(--maxw);margin:0 auto;padding:0 16px 80px}
+a{color:var(--brand2)}
+.cover{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;padding:44px 16px 34px}
+.cover .in{max-width:var(--maxw);margin:0 auto}
+.cover .code{font:600 13px var(--mono);letter-spacing:.08em;opacity:.85}
+.cover h1{font:700 clamp(30px,6vw,46px)/1.12 var(--disp);margin:8px 0 10px}
+.cover p{margin:0;opacity:.92}
+.cover .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.cover .chips a{color:#fff;text-decoration:none;border:1px solid rgba(255,255,255,.5);border-radius:99px;padding:3px 12px;font-size:14px}
+nav.toc{background:var(--card);border:1px solid var(--rule);border-radius:12px;margin:24px 0;padding:6px 18px}
+nav.toc summary{cursor:pointer;font-weight:700;padding:8px 0}
+nav.toc ol{margin:4px 0 12px;padding-left:22px}nav.toc li{margin:3px 0}
+nav.toc .tu{font-weight:700;margin-top:10px;color:var(--brand2)}
+.unit>h2{font:700 clamp(25px,4.5vw,34px)/1.2 var(--disp);margin:56px 0 6px;padding-top:10px;border-top:3px solid var(--brand)}
+.unit>h2 .uno{display:block;font:700 13px var(--mono);letter-spacing:.12em;color:var(--brand);text-transform:uppercase}
+.unit-sub{color:var(--muted);margin:0 0 10px}
+.topic{background:var(--card);border:1px solid var(--rule);border-radius:14px;padding:6px 22px 18px;margin:26px 0;scroll-margin-top:12px}
+.topic>h3{font:700 23px/1.3 var(--disp);margin:18px 0 8px;color:var(--brand2)}
+h4{font-size:18px;margin:26px 0 6px}
+.hook{font-size:18px;background:var(--soft);border-left:4px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0}
+.def{border:1.5px solid var(--brand);border-radius:10px;padding:10px 14px;margin:14px 0}
+.def>b:first-child{color:var(--brand2)}
+ul,ol{padding-left:24px}li{margin:8px 0}
+mark{background:var(--mark);padding:0 3px;border-radius:3px;color:inherit}
+.hg{color:var(--muted);font-style:italic;font-size:.93em}
+.mn{background:#fff7d6;border:1px dashed #d4a514;border-radius:10px;padding:10px 14px;margin:14px 0}
+.mn>b:first-child{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#8a6500}
+.recall{background:#eef6f1;border:1px solid #b8dcc6;border-radius:10px;padding:10px 14px;margin:16px 0 4px}
+.recall>b:first-child{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:var(--good)}
+.note{background:#fdf0f2;border:1px solid #f1c3cc;border-radius:10px;padding:10px 14px;margin:14px 0}
+.note>b:first-child{color:var(--bad)}
+table{border-collapse:collapse;width:100%;font-size:15.5px;margin:14px 0;background:var(--card)}
+.tw{overflow-x:auto;margin:14px 0}.tw table{margin:0;min-width:520px}
+th,td{border:1px solid var(--rule);padding:7px 10px;text-align:left;vertical-align:top}
+th{background:var(--soft);color:var(--brand2)}
+pre{font:14.5px/1.6 var(--mono);font-variant-ligatures:none;overflow-x:auto;border-radius:10px;padding:12px 14px;margin:12px 0}
+pre.code{background:#fbf6ee;border:1px solid #eadfcd}
+pre.code[data-file]::before{content:attr(data-file);display:block;font:600 12px var(--body);color:var(--muted);margin-bottom:6px}
+pre.out{background:#1f2328;color:#e6edf3}pre.out::before{content:"Output";display:block;font:600 12px var(--body);color:#9aa4ae;margin-bottom:4px}
+.code .c{color:#7a7266;font-style:italic}.code .k{color:var(--brand2);font-weight:600}
+code{font-family:var(--mono);font-size:.92em;background:#f1ece3;padding:1px 5px;border-radius:4px}pre code{background:none;padding:0}
+.ex{border:1px solid var(--rule);border-radius:10px;padding:10px 16px;margin:14px 0;background:#fcfbf9}
+.ex>b:first-child{color:var(--brand2)}.ex .step{margin:7px 0;font-size:16px;overflow-x:auto;overflow-y:hidden}
+.ans{display:inline-block;border:2px solid var(--good);border-radius:8px;padding:2px 10px;font-weight:700;margin:6px 0}
+/* ---------- figures ---------- */
+figure.fig{margin:18px 0;border:1px solid var(--rule);border-radius:12px;background:#fff;padding:14px 12px 10px;cursor:zoom-in}
+figure.fig .canvas{overflow-x:auto;padding:4px}
+figcaption{font-size:14.5px;color:var(--muted);text-align:center;margin-top:8px}
+figcaption b{color:var(--ink)}
+.draw{font-size:14.5px;background:var(--soft);border-radius:8px;padding:6px 10px;margin:8px 0 0}
+.n{border:1.8px solid var(--ink);background:var(--boxfill);border-radius:6px;padding:6px 12px;text-align:center;font-size:15px;line-height:1.35}
+.n.t{border-radius:999px;background:var(--hifill)}
+.n.hi{background:var(--hifill);border-color:var(--brand2)}
+.n.io,.n.d{border:0;border-radius:0;background:no-repeat center/100% 100%}
+.n.io{padding:6px 26px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpolygon points='10,1 99,1 90,39 1,39' fill='%23fffdf9' stroke='%231d1b18' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+.n.d{padding:10px 34px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 40' preserveAspectRatio='none'%3E%3Cpolygon points='50,1 99,20 50,39 1,20' fill='%23fbe9d8' stroke='%231d1b18' stroke-width='1.8' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E")}
+.n small{display:block;color:var(--muted);font-size:12.5px}
+.flow{display:flex;flex-direction:column;align-items:center;gap:26px;margin:4px auto;width:max-content;max-width:100%}
+.flow>.n{position:relative;min-width:180px;max-width:360px}
+.flow>.n+.n::before{content:"";position:absolute;left:calc(50% - 1px);top:-25px;height:20px;border-left:2px solid var(--ink)}
+.flow>.n+.n::after{content:"";position:absolute;left:calc(50% - 5px);top:-8px;border:5px solid transparent;border-top:7px solid var(--ink)}
+.flow>.ar{margin:-22px 0;font-size:13px;color:var(--muted)}
+.chain{display:flex;align-items:center;gap:0;width:max-content;min-width:100%;justify-content:center}
+.chain>.n{flex:0 0 auto;max-width:190px}
+.chain>.n+.n{margin-left:40px;position:relative}
+.chain>.n+.n::before{content:"";position:absolute;left:-36px;top:50%;width:28px;border-top:2px solid var(--ink)}
+.chain>.n+.n::after{content:"";position:absolute;left:-10px;top:calc(50% - 5px);border:5px solid transparent;border-left:7px solid var(--ink)}
+.chain>.ar{flex:0 0 auto;min-width:56px;text-align:center;font-size:12.5px;color:var(--muted);position:relative;padding:0 6px 14px}
+.chain>.ar::after{content:"";position:absolute;left:4px;right:10px;bottom:6px;border-top:2px solid var(--ink)}
+.chain>.ar::before{content:"";position:absolute;right:2px;bottom:1px;border:5px solid transparent;border-left:8px solid var(--ink)}
+.tree{overflow-x:auto;text-align:center}
+.tree ul{display:flex;justify-content:center;padding:18px 0 0;margin:0;position:relative;list-style:none}
+.tree>ul{padding-top:0}
+.tree li{position:relative;padding:18px 6px 0;margin:0;display:flex;flex-direction:column;align-items:center}
+.tree li::before,.tree li::after{content:"";position:absolute;top:0;right:50%;width:50%;height:18px;border-top:2px solid var(--ink)}
+.tree li::after{right:auto;left:50%;border-left:2px solid var(--ink)}
+.tree li:only-child::before,.tree li:only-child::after{border-top:0}
+.tree li:first-child::before,.tree li:last-child::after{border-top:0}
+.tree li:last-child::before{border-right:2px solid var(--ink);border-radius:0 6px 0 0}
+.tree li:first-child::after{border-radius:6px 0 0 0}
+.tree>ul>li{padding-top:0}.tree>ul>li::before,.tree>ul>li::after{display:none}
+.tree ul ul::before{content:"";position:absolute;top:0;left:50%;height:18px;border-left:2px solid var(--ink)}
+.tree li>span{display:inline-block;border:1.8px solid var(--ink);background:var(--boxfill);border-radius:6px;padding:5px 10px;font-size:14.5px;line-height:1.3;max-width:180px}
+.tree li>span.hi{background:var(--hifill)}
+.stack{display:flex;flex-direction:column;gap:6px;max-width:560px;margin:0 auto}
+.stack>.l{border:1.8px solid var(--ink);border-radius:6px;padding:8px 12px;text-align:center;background:var(--boxfill)}
+.stack>.l.hi{background:var(--hifill)}.stack>.l small{display:block;color:var(--muted);font-size:13px}
+.stack .row{display:flex;gap:6px}.stack .row>.l{flex:1;border:1.8px solid var(--ink);border-radius:6px;padding:8px;text-align:center;background:var(--boxfill)}
+.boxes{display:grid;gap:10px;grid-template-columns:repeat(var(--c,2),minmax(0,1fr))}
+.boxes.c3{--c:3}.boxes.c4{--c:4}.boxes.c5{--c:5}
+.boxes>.b{border:1.8px solid var(--ink);border-radius:8px;padding:8px 10px;background:var(--boxfill);font-size:14.5px;line-height:1.45}
+.boxes>.b>b:first-child{display:block;color:var(--brand2);font-size:15.5px;margin-bottom:2px}
+.boxes>.b.hi{background:var(--hifill)}
+@media (max-width:640px){.boxes.c3,.boxes.c4,.boxes.c5{--c:2}body{font-size:16px}.topic{padding:4px 14px 14px}}
+svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--body)}
+.sv rect,.sv circle,.sv ellipse,.sv polygon{fill:var(--boxfill);stroke:var(--ink);stroke-width:1.8}
+.sv line,.sv path,.sv polyline{fill:none;stroke:var(--ink);stroke-width:1.8}
+.sv .arr{marker-end:url(#ah)}.sv .arr2{marker-start:url(#ahs);marker-end:url(#ah)}
+.sv .hi{fill:var(--hifill)}.sv .acc{stroke:var(--brand)}.sv .dash{stroke-dasharray:6 5}
+.sv .dot{fill:var(--ink);stroke:none}.sv .dot.acc{fill:var(--brand)}.sv .none{fill:none}
+.sv text{font-size:14px;fill:var(--ink);stroke:none;text-anchor:middle;dominant-baseline:middle}
+.sv text.l{text-anchor:start}.sv text.r{text-anchor:end}.sv text.s{font-size:12px;fill:var(--muted)}.sv text.b{font-weight:700}
+.sa dt{font-weight:700;margin-top:14px}.sa dd{margin:4px 0 0 0;padding-left:14px;border-left:3px solid var(--rule)}
+.top{display:block;text-align:right;font-size:13px;margin-top:6px}
+#zoom{position:fixed;inset:0;background:rgba(20,18,15,.92);display:none;z-index:9;overflow:auto;padding:54px 12px 20px}
+#zoom.on{display:block}#zoom .zb{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:10}
+#zoom button{font:600 16px var(--body);border:0;border-radius:8px;padding:6px 14px;cursor:pointer}
+#zoom .zc{background:#fff;border-radius:12px;padding:16px;margin:0 auto;transform-origin:top center}
+@media print{.cover{background:none;color:#000;padding:0}.cover .chips,nav.toc,.top,#zoom{display:none}
+.topic,figure.fig{break-inside:avoid-page;box-shadow:none}body{background:#fff;font-size:12pt}}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:#1d1b18;stroke:none"/></marker><marker id="ahs" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" style="fill:#1d1b18;stroke:none"/></marker></defs></svg>
+<header class="cover" id="top"><div class="in">
+<div class="code">BCD-301-V &middot; BCA SEMESTER V</div>
+<h1>Data Acquisition, Analysis &amp; Visualization</h1>
+<p>Important questions &middot; exam Thu 24 Sep 2026, 9:30&ndash;11:00 AM &middot; 30 marks = 6 &times; 1 + 3 &times; 8 &middot; Full notes: <a style="color:#fff" href="daav-sessional-u1-u2.html">daav-sessional-u1-u2.html</a></p>
+
+</div></header>
+<main>
+<nav class="toc"><details open><summary>Questions</summary><ol><li><a href="#iq1">Q1. What is Big Data? Discuss in detail.</a></li><li><a href="#iq2">Q2. Discuss the sources of Big Data.</a></li><li><a href="#iq3">Q3. Explain the types of Big Data with real-world examples.</a></li><li><a href="#iq4">Q4. Explain the technologies used in Big Data.</a></li><li><a href="#iq5">Q5. Explain Hadoop architecture (HDFS, MapReduce and YARN) with a diagram.</a></li><li><a href="#iq6">Q6. Explain the 5 V's of Big Data.</a></li><li><a href="#iq7">Q7. What is NoSQL? Discuss its advantages and disadvantages.</a></li><li><a href="#iq8">Q8. Explain integrating diverse data and the aggregate data model.</a></li><li><a href="#iq9">Q9. Explain the components of Data Science and the 5 P's.</a></li><li><a href="#iq10">Q10. Explain the complete Data Science process with an example.</a></li><li><a href="#iq11">Q11. What is Big Data Modeling and Management? Explain its six concerns.</a></li><li><a href="#iq12">Q12. Case study: design a Big Data Management Plan for a company's customer data (from website, mobile app and social media).</a></li><li><a href="#iq13">Q13. Explain a real-world Data Science example using advanced techniques.</a></li><li><a href="#iq-1m">1-mark questions</a></li></ol></details></nav>
+<section class="unit" id="imp">
+<h2><span class="uno">Important questions</span>8-mark answers</h2>
+<p class="unit-sub">Paper: 6 × 1 mark + 3 × 8 marks (an 8 can come as 4 + 4). Each answer below is written to the 8-mark length.</p>
+
+<section class="topic" id="iq1"><h3>Q1. What is Big Data? Discuss in detail.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants the definition, why an ordinary RDBMS fails at this scale, the evolution, and a quick advantages/disadvantages sweep.</p>
+<div class="def"><b>Definition:</b> <mark>Big data</mark> refers to data sets whose volume, velocity and variety exceed the capacity of traditional database systems to capture, store, manage and analyse them, and which therefore need new, distributed, cost-effective forms of processing to extract insight and support decisions.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
+</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes left to right joined by arrows, a decade under each.</p></figure>
+<ul>
+<li><mark>Evolution</mark>: file systems → relational databases (1970) → data warehouses → web-scale data → Google's GFS/MapReduce papers → open-source Hadoop (2006) → NoSQL, Spark, cloud.</li>
+<li><mark>Why traditional RDBMS fails</mark>: <b>scale-up only</b> (one bigger server has a cost and hardware ceiling), <b>fixed schema</b> (cannot hold JSON/logs/video without redesign), <b>speed</b> (row-by-row inserts cannot keep up with continuous streams), <b>cost</b> (licensed DB + high-end storage), <b>single point of failure</b>.</li>
+<li><mark>Big data approach</mark>: split data across many cheap commodity machines, move computation to where data sits (data locality), store raw data first and decide structure later (schema-on-read).</li>
+<li><mark>Advantages</mark> (mnemonic D-C-F-P-S-A): better <b>D</b>ecisions, reduced <b>C</b>ost, <b>F</b>raud detection, increased <b>P</b>roductivity, improved <b>S</b>ervice, increased <b>A</b>gility.</li>
+<li><mark>Disadvantages</mark> (T-S-C): lack of skilled <b>T</b>alent, <b>S</b>ecurity risks, <b>C</b>ompliance burden.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Traditional data</th><th>Big data</th></tr>
+<tr><td>Size</td><td>Gigabytes to a few terabytes</td><td>Terabytes to petabytes and beyond</td></tr>
+<tr><td>Structure</td><td>Mostly structured (tables)</td><td>Structured + semi-structured + unstructured</td></tr>
+<tr><td>Schema</td><td>Schema-on-write, fixed</td><td>Often schema-on-read, flexible</td></tr>
+<tr><td>Architecture</td><td>Centralised, scale-up</td><td>Distributed, scale-out</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Advantages <b>D-C-F-P-S-A</b>: Decisions, Cost, Fraud, Productivity, Service, Agility. Disadvantages <b>T-S-C</b>: Talent, Security, Compliance.</div>
+<div class="note"><b>Common mistake:</b> "Big data" is not only about size — a small but very fast stream, or data in many mixed formats, is also a big-data problem.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.1, and give any 3 reasons RDBMS fails (scale-up, fixed schema, cost) — skip the advantages/disadvantages table.</div>
+<div class="recall"><b>Quick recall</b> Big data = beyond traditional DB capacity (volume/velocity/variety); RDBMS fails on scale-up, schema, speed, cost; approach = commodity clusters + schema-on-read.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq2"><h3>Q2. Discuss the sources of Big Data.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants the three-family classification (Human / Machine / Organisation) with concrete examples of each.</p>
+<div class="def"><b>Definition:</b> <mark>Sources of big data</mark> are the origins from which large data sets are generated; they are broadly grouped as human-generated, machine-generated and organisation (transactional) data.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Sources of big data</span><ul>
+<li><span>Human-generated</span><ul><li><span>Social media</span></li><li><span>Emails, reviews</span></li></ul></li>
+<li><span>Machine-generated</span><ul><li><span>IoT sensors</span></li><li><span>Web / server logs</span></li><li><span>GPS, satellites</span></li></ul></li>
+<li><span>Organisational</span><ul><li><span>Transactions</span></li><li><span>ERP / CRM</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.5</b> · Three families of big data sources</figcaption><p class="draw">✍ Draw it: root box, three category boxes, 2-3 example boxes under each.</p></figure>
+<ul>
+<li><mark>Human-generated</mark> (social data): posts, likes, comments, tweets, photos, emails, blogs, reviews, search queries — mostly unstructured.</li>
+<li><mark>Machine-generated</mark> (sensor data): IoT devices, smart meters, CCTV, GPS in cabs, satellite imagery, RFID tags, and <mark>logs</mark> written by web servers/apps (clickstreams) — high velocity. Smart TVs, wearables and connected cars are further examples.</li>
+<li><mark>Organisational / transactional</mark>: sales, billing, banking/UPI transactions, stock trades, ERP (inventory, HR) and CRM records — mostly structured.</li>
+<li>Other named sources: <mark>public/open data</mark> (government portals, census), scientific data, healthcare records, mobile call detail records.</li>
+<li>Also split as <mark>internal</mark> (ERP, logs, inside the company) vs <mark>external</mark> (social media, open data, outside the company).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Source</th><th>Typical type</th><th>V stressed</th><th>Example</th></tr>
+<tr><td>Social media</td><td>Unstructured / semi</td><td>Variety, Volume</td><td>Instagram posts</td></tr>
+<tr><td>IoT / sensors</td><td>Semi-structured</td><td>Velocity</td><td>Smart meter readings</td></tr>
+<tr><td>Transactions</td><td>Structured</td><td>Volume, Veracity</td><td>UPI payment records</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>H-M-O</b>: Humans, Machines, Organisations.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.5, and name one example under each of the three families (skip the internal/external split and the table).</div>
+<div class="recall"><b>Quick recall</b> Human (social, email) · Machine (sensors, IoT, logs, GPS) · Organisation (transactions, ERP/CRM) · plus open/public data.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq3"><h3>Q3. Explain the types of Big Data with real-world examples.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants the structured / semi-structured / unstructured classification, a comparison table and one example spanning all three.</p>
+<div class="def"><b>Definition:</b> Based on organisation, big data is classified as <mark>structured</mark> (fixed schema, rows and columns), <mark>semi-structured</mark> (self-describing tags/keys but no rigid schema) and <mark>unstructured</mark> (no predefined data model).</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Big data types</span><ul>
+<li><span>Structured</span><ul><li><span>RDBMS tables</span></li><li><span>Spreadsheets</span></li></ul></li>
+<li><span>Semi-structured</span><ul><li><span>JSON / XML</span></li><li><span>Email headers</span></li></ul></li>
+<li><span>Unstructured</span><ul><li><span>Text documents</span></li><li><span>Images, video</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.4</b> · Classification of big data by structure</figcaption><p class="draw">✍ Draw it: root box, three child boxes, two example boxes under each.</p></figure>
+<ul>
+<li><mark>Structured</mark>: predefined schema, rows/columns, easy to query with SQL. Examples: bank account table, IRCTC booking records.</li>
+<li><mark>Semi-structured</mark>: no fixed table schema but tags/keys mark the fields, so it is self-describing. Examples: JSON from an API, XML files, web server logs.</li>
+<li><mark>Unstructured</mark>: no data model; needs special processing (text mining, image/speech analysis). Examples: WhatsApp messages, YouTube videos, CCTV footage.</li>
+<li>Unstructured data is widely quoted as forming the largest share of an organisation's data (often cited around ~80%) — a useful sense of scale, not an exact measurement.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr>
+<tr><td>Schema</td><td>Fixed, before storing</td><td>Flexible (tags/keys)</td><td>None</td></tr>
+<tr><td>Storage</td><td>RDBMS, warehouse</td><td>Document DBs, JSON/XML</td><td>HDFS, data lakes</td></tr>
+<tr><td>Querying</td><td>Easy (SQL)</td><td>Moderate</td><td>Hard (text/image analytics)</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> One online order, three types:
+<div class="step">Structured → orders table row: (order_id=501, amount=499, date=2024-05-10)</div>
+<div class="step">Semi-structured → {"order_id": 501, "items": [{"sku": "B12", "qty": 2}]}</div>
+<div class="step">Unstructured → customer's photo of a damaged parcel + review text</div>
+<span class="ans">Same business event, three data types</span></div>
+<div class="mn"><b>Mnemonic</b> <b>T</b>able · <b>T</b>agged · <b>P</b>ile → Structured · Semi-structured · Unstructured.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.4, and give one example each of structured/semi-structured/unstructured (skip the order-in-three-types example).</div>
+<div class="recall"><b>Quick recall</b> Structured = fixed schema (SQL); Semi = tags/keys (JSON, XML); Unstructured = no model (text, image, video).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq4"><h3>Q4. Explain the technologies used in Big Data.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants the layered technology stack (ingest → store → process → analyse → visualise) with named tools at each layer.</p>
+<div class="def"><b>Definition:</b> <mark>Big data technologies</mark> are the software frameworks and platforms used to ingest, store, process, analyse and visualise very large and diverse data sets, typically on distributed clusters.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Visualisation<small>Tableau, Power BI, dashboards</small></div>
+<div class="l">Analytics / query<small>Hive, Pig, Spark SQL, ML libraries</small></div>
+<div class="row"><div class="l hi">Batch processing<small>MapReduce, Spark</small></div><div class="l hi">Stream processing<small>Spark Streaming, Flink, Storm</small></div></div>
+<div class="row"><div class="l">Distributed storage<small>HDFS, cloud object store</small></div><div class="l">NoSQL databases<small>HBase, Cassandra, MongoDB</small></div></div>
+<div class="l">Ingestion<small>Sqoop, Flume, Kafka</small></div>
+<div class="l">Data sources<small>apps, sensors, logs, RDBMS</small></div>
+</div></div><figcaption><b>Fig 1.8</b> · Big data technology landscape as layers</figcaption><p class="draw">✍ Draw it: six stacked rectangles bottom-up (sources, ingestion, storage | NoSQL, batch | stream, analytics, visualisation).</p></figure>
+<ul>
+<li><mark>Ingestion</mark>: Sqoop (bulk RDBMS ↔ Hadoop), Flume (log collection), Kafka (event streaming).</li>
+<li><mark>Storage</mark>: HDFS (distributed file system), cloud object storage (Amazon S3), data lakes.</li>
+<li><mark>NoSQL databases</mark>: HBase, Cassandra, MongoDB, Redis, Neo4j.</li>
+<li><mark>Batch processing</mark>: Hadoop MapReduce, Apache Spark. <mark>Streaming</mark>: Kafka Streams, Spark Streaming, Apache Flink/Storm.</li>
+<li><mark>Analytics</mark>: SQL-on-Hadoop (Hive, Impala), scripting (Pig), ML (Spark MLlib), R and Python.</li>
+<li><mark>Visualisation</mark>: Tableau, Power BI. <mark>Cloud platforms</mark> (AWS, Azure, GCP) package all of this as managed services.</li>
+<li><mark>Languages</mark>: Hadoop's core is written in <b>Java</b>; Hadoop Streaming lets jobs be written in <b>Python</b>, and Hadoop Pipes gives a native <b>C++</b> API.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Batch processing</th><th>Stream processing</th></tr>
+<tr><td>Data</td><td>Stored, bounded set</td><td>Continuous, unbounded flow</td></tr>
+<tr><td>Latency</td><td>Minutes to hours</td><td>Milliseconds to seconds</td></tr>
+<tr><td>Use</td><td>Monthly sales report</td><td>Live fraud alert</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>I S P A V</b> = "I Sell Pani And Vada" → Ingest, Store, Process, Analyse, Visualise.</div>
+<div class="note"><b>Common mistake:</b> Scala is a general-purpose JVM language, not a big-data framework by itself; Apache Spark (written in Scala) is the framework usually meant.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.8, and name one tool each for ingestion, storage, processing (skip the batch vs stream table).</div>
+<div class="recall"><b>Quick recall</b> Layers: ingest (Sqoop/Flume/Kafka) → store (HDFS/NoSQL) → process (MapReduce/Spark) → analyse (Hive/Pig) → visualise. Core Hadoop is Java.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq5"><h3>Q5. Explain Hadoop architecture (HDFS, MapReduce and YARN) with a diagram.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants the four core modules, then one paragraph each on HDFS storage, MapReduce processing and YARN resource management.</p>
+<div class="def"><b>Definition:</b> <mark>Apache Hadoop</mark> is an open-source Java-based framework for distributed storage and processing of very large data sets across clusters of commodity hardware, built from four core modules: Hadoop Common, HDFS, YARN and MapReduce.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Applications<small>MapReduce, Spark, Hive, Pig ...</small></div>
+<div class="l hi">YARN<small>resource management + job scheduling</small></div>
+<div class="l hi">HDFS<small>distributed storage</small></div>
+<div class="l">Hadoop Common<small>shared Java libraries and utilities</small></div>
+</div></div><figcaption><b>Fig 1.11</b> · Core components of Hadoop (Hadoop 2.x / 3.x)</figcaption><p class="draw">✍ Draw it: four stacked boxes, top to bottom: Applications, YARN, HDFS, Common.</p></figure>
+<ul>
+<li><mark>HDFS (storage)</mark>: master–slave. <b>NameNode</b> stores metadata only (namespace, file→block map); <b>DataNodes</b> store the actual blocks (default 128 MB) and send heartbeats. Each block is <mark>replicated 3 times</mark>, rack-aware, for fault tolerance.</li>
+<li><mark>MapReduce (processing)</mark>: a <b>map</b> function turns each input record into (key, value) pairs; the framework <b>shuffles and sorts</b> them by key; a <b>reduce</b> function aggregates all values sharing a key and writes the result to HDFS. Classic example: word count.</li>
+<li><mark>YARN (resource management)</mark>: introduced in Hadoop 2 to separate resource management from processing. <b>ResourceManager</b> (Scheduler + ApplicationsManager) is the per-cluster master; <b>NodeManager</b> runs on every worker node; an <b>ApplicationMaster</b> per job negotiates <b>Containers</b> (CPU + memory bundles) to run tasks.</li>
+<li><mark>How they fit together</mark>: HDFS and YARN's worker daemons (DataNode + NodeManager) run on the <i>same</i> physical nodes, so a MapReduce/Spark task can run right where its data block already sits — <mark>data locality</mark>.</li>
+<li><mark>Key features</mark>: scalable (add nodes), fault tolerant (replication + task re-run), cost-effective (commodity hardware, open source).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Layer</th><th>Master daemon</th><th>Slave daemon</th></tr>
+<tr><td>HDFS (storage)</td><td>NameNode</td><td>DataNode</td></tr>
+<tr><td>YARN (resources)</td><td>ResourceManager</td><td>NodeManager</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>C-H-Y-M</b> = "Chai Hai Yaar, Masala": Common, HDFS, YARN, MapReduce.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.11, and cover only HDFS (NameNode/DataNode/replication) + YARN (ResourceManager/NodeManager) — drop the MapReduce phases.</div>
+<div class="recall"><b>Quick recall</b> Hadoop = Common + HDFS (store) + YARN (resources: RM, NM, AM, Container) + MapReduce (map → shuffle/sort → reduce); worker nodes carry both a DataNode and a NodeManager, giving data locality.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq6"><h3>Q6. Explain the 5 V's of Big Data.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants all 5 Vs defined with one example each, plus the two extra V's some books add.</p>
+<div class="def"><b>Definition:</b> The <mark>characteristics of big data</mark> are commonly summarised as the 5 Vs: Volume, Velocity, Variety, Veracity and Value.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 320" width="760">
+<line x1="380" y1="170" x2="380" y2="45"/><line x1="380" y1="170" x2="564" y2="131"/><line x1="380" y1="170" x2="494" y2="271"/><line x1="380" y1="170" x2="266" y2="271"/><line x1="380" y1="170" x2="196" y2="131"/>
+<ellipse class="hi" cx="380" cy="170" rx="72" ry="32"/><text class="b" x="380" y="170">Big Data</text>
+<rect x="315" y="21" width="130" height="48" rx="6"/><text x="380" y="37">Volume</text><text class="s" x="380" y="56">size</text>
+<rect x="499" y="107" width="130" height="48" rx="6"/><text x="564" y="123">Velocity</text><text class="s" x="564" y="142">speed</text>
+<rect x="429" y="247" width="130" height="48" rx="6"/><text x="494" y="263">Variety</text><text class="s" x="494" y="282">formats</text>
+<rect x="201" y="247" width="130" height="48" rx="6"/><text x="266" y="263">Veracity</text><text class="s" x="266" y="282">trust / quality</text>
+<rect x="131" y="107" width="130" height="48" rx="6"/><text x="196" y="123">Value</text><text class="s" x="196" y="142">usefulness</text>
+</svg></div><figcaption><b>Fig 1.3</b> · The 5 Vs of big data</figcaption><p class="draw">✍ Draw it: an oval "Big Data" in the centre, five boxes around it like a star, one V in each.</p></figure>
+<ul>
+<li><mark>Volume</mark>: sheer amount of data (TB, PB, EB). Example: years of bank transaction records.</li>
+<li><mark>Velocity</mark>: speed of generation/processing. Example: UPI fraud checks in real time.</li>
+<li><mark>Variety</mark>: different forms — structured tables, JSON/XML, text, images, video.</li>
+<li><mark>Veracity</mark>: trustworthiness/quality — noise, missing values, duplicates, sensor errors.</li>
+<li><mark>Value</mark>: the business/social benefit extracted; judged by positive <mark>Return on Investment</mark>.</li>
+<li><mark>Extensions</mark>: <mark>Variability</mark> (meaning/flow rate changes over time, e.g. seasonal spikes) and <mark>Visualization</mark> (presenting huge data so humans understand it).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>V</th><th>Question</th><th>Example</th></tr>
+<tr><td>Volume</td><td>How much?</td><td>Photos stored by a social app</td></tr>
+<tr><td>Velocity</td><td>How fast?</td><td>Live cricket-score stream</td></tr>
+<tr><td>Variety</td><td>What kinds?</td><td>Order table + review text + images</td></tr>
+<tr><td>Veracity</td><td>Trustable?</td><td>GPS points that jump due to weak signal</td></tr>
+<tr><td>Value</td><td>Worth it?</td><td>Recommendations that raise sales</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>S</b>ize · <b>S</b>peed · <b>S</b>orts · <b>S</b>ach · <b>S</b>ona → Volume, Velocity, Variety, Veracity, Value.</div>
+<div class="note"><b>Common mistake:</b> Veracity is about accuracy/quality, not size; Variability is about change over time, not many formats (that is Variety).</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.3, and define the original 3 Vs (Volume, Velocity, Variety) with one example each.</div>
+<div class="recall"><b>Quick recall</b> 3 Vs (Laney) → 5 Vs: Volume, Velocity, Variety, Veracity, Value; + Variability, Visualization.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq7"><h3>Q7. What is NoSQL? Discuss its advantages and disadvantages.</h3>
+<p class="hook">Unit I · 8 marks · examiner wants a short NoSQL definition, why it exists (scale-out), then a clean advantages-vs-disadvantages table.</p>
+<div class="def"><b>Definition:</b> <mark>NoSQL</mark> ("Not only SQL") databases are non-relational, usually schema-less, distributed databases designed to store structured, semi-structured and unstructured data with horizontal scalability and high availability.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 260" width="620">
+<rect x="20" y="30" width="140" height="60" rx="6"/><text x="90" y="60">Bigger server</text>
+<path class="arr" d="M90 135 V95"/>
+<rect x="45" y="135" width="90" height="45" rx="6"/><text x="90" y="157">Server</text>
+<text class="b" x="90" y="212">Scale up</text><text class="s" x="90" y="235">buy a bigger machine</text>
+<rect class="none dash" x="265" y="120" width="335" height="75" rx="8"/>
+<rect x="280" y="135" width="64" height="45" rx="6"/><text x="312" y="157">Node</text>
+<rect x="360" y="135" width="64" height="45" rx="6"/><text x="392" y="157">Node</text>
+<rect x="440" y="135" width="64" height="45" rx="6"/><text x="472" y="157">Node</text>
+<rect class="hi" x="520" y="135" width="64" height="45" rx="6"/><text x="552" y="157">+ Node</text>
+<text class="b" x="432" y="212">Scale out</text><text class="s" x="432" y="235">add commodity nodes</text>
+</svg></div><figcaption><b>Fig 1.24</b> · Vertical scaling (RDBMS) vs horizontal scaling (NoSQL)</figcaption><p class="draw">✍ Draw it: left, small box with an up-arrow to a bigger box; right, a dashed cluster of equal boxes with one "+ Node".</p></figure>
+<ul>
+<li><mark>Why NoSQL</mark>: RDBMS clusters are hard to shard; NoSQL runs natively on commodity clusters (scale-out), allows flexible schema, and avoids the impedance mismatch between application objects and flat rows.</li>
+<li>Consistency model is usually <mark>BASE</mark> (eventual consistency) rather than strict <mark>ACID</mark>.</li>
+</ul>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td><mark>Horizontal scaling</mark> on cheap commodity servers</td><td><mark>Weaker consistency</mark>: many systems are only eventually consistent</td></tr>
+<tr><td><mark>Flexible schema</mark>: add fields without ALTER TABLE</td><td><mark>No standard query language</mark>: each product has its own API</td></tr>
+<tr><td>Handles structured, semi- and unstructured data</td><td><mark>Weak joins</mark> and complex queries</td></tr>
+<tr><td><mark>High availability</mark> through replication</td><td><mark>Data duplication</mark> (denormalisation) must be kept in sync</td></tr>
+<tr><td>Fast reads/writes for simple access patterns</td><td>Not suited to multi-row transactions (banking ledgers)</td></tr>
+<tr><td>Mostly open source, lower cost</td><td>Less mature tooling/reporting than SQL</td></tr>
+</table></div>
+<p><b>When to use NoSQL:</b> huge, fast-growing, varied data with simple access patterns (catalogues, sessions, feeds, IoT). <b>When to stay with RDBMS:</b> strong consistency and complex joins (banking, accounting).</p>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.24, and give any 2 advantages + 2 disadvantages from the table.</div>
+<div class="recall"><b>Quick recall</b> NoSQL = non-relational, schema-less, scale-out, BASE; strong on scale/flexibility, weak on joins/standard query language/strict consistency.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq8"><h3>Q8. Explain integrating diverse data and the aggregate data model.</h3>
+<p class="hook">Unit I · 8 marks · two-part question — examiner wants ETL/ELT integration in Part A and the NoSQL aggregate concept in Part B.</p>
+<h4>Part A · Integrating diverse data</h4>
+<div class="def"><b>Definition:</b> <mark>Data integration</mark> is combining data from heterogeneous sources (different formats, schemas, systems) into a unified, consistent, usable view for analysis.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Sources<small>DB, files, APIs, logs</small></div><div class="n">Extract</div><div class="n hi">Transform<small>clean, map, join</small></div><div class="n">Load</div><div class="n">Data warehouse<small>→ BI reports</small></div>
+</div></div><figcaption><b>Fig 1.9</b> · ETL integration pipeline</figcaption><p class="draw">✍ Draw it: five boxes in a row: Sources → Extract → Transform → Load → Warehouse.</p></figure>
+<ul>
+<li><mark>Challenges</mark>: heterogeneous formats (CSV/JSON/XML/images), schema mismatch (<code>cust_id</code> vs <code>customerNo</code>), data quality/veracity, mixing batch and streaming, semantic conflicts.</li>
+<li><mark>Schema mapping</mark>: match each source field to a target field (types, units). <mark>Entity resolution</mark>: recognise the same real-world entity across sources.</li>
+<li><mark>ETL</mark> (Extract-Transform-Load): transform before loading, suits data warehouses. <mark>ELT</mark> (Extract-Load-Transform): load raw first, transform inside the target — suits big data/lakes.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>ETL</th><th>ELT</th></tr>
+<tr><td>Order</td><td>Extract → Transform → Load</td><td>Extract → Load → Transform</td></tr>
+<tr><td>Schema</td><td>Schema-on-write</td><td>Schema-on-read</td></tr>
+<tr><td>Best for</td><td>Structured, traditional DW</td><td>Large, diverse, big data</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> ETL = "Tidy then Load" (warehouse). ELT = "Load then Tidy" (lake).</div>
+<h4>Part B · Aggregate data model</h4>
+<div class="def"><b>Definition:</b> An <mark>aggregate</mark> is a collection of related objects treated as a single unit for storage, retrieval, update and distribution (Sadalage &amp; Fowler, <i>NoSQL Distilled</i>).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 340" width="760">
+<rect class="none dash" x="20" y="40" width="300" height="250" rx="10"/><text class="b" x="170" y="60">Customer aggregate</text>
+<rect class="hi" x="60" y="85" width="220" height="50" rx="6"/><text x="170" y="103">Customer</text><text class="s" x="170" y="122">id, name</text>
+<rect x="60" y="180" width="220" height="50" rx="6"/><text x="170" y="205">Billing Address</text>
+<line x1="170" y1="135" x2="170" y2="180"/>
+<rect class="none dash" x="380" y="40" width="360" height="250" rx="10"/><text class="b" x="560" y="60">Order aggregate</text>
+<rect class="hi" x="470" y="80" width="180" height="50" rx="6"/><text x="560" y="98">Order</text><text class="s" x="560" y="117">id, customerId</text>
+<rect x="400" y="180" width="100" height="50" rx="6"/><text x="450" y="205">Order Item</text>
+<rect x="510" y="180" width="100" height="50" rx="6"/><text x="560" y="197">Shipping</text><text x="560" y="215">Address</text>
+<rect x="620" y="180" width="100" height="50" rx="6"/><text x="670" y="205">Payment</text>
+<line x1="520" y1="130" x2="450" y2="180"/><line x1="560" y1="130" x2="560" y2="180"/><line x1="600" y1="130" x2="670" y2="180"/>
+<path class="dash arr" d="M470 110 H280"/><text class="s" x="350" y="98">by id</text>
+<text class="s" x="380" y="315">each dashed boundary = one unit stored, read and replicated together</text>
+</svg></div><figcaption><b>Fig 1.29</b> · Customer and Order aggregates (e-commerce example)</figcaption><p class="draw">✍ Draw it: two dashed boundaries; left holds Customer → Billing Address; right holds Order with three children (Item, Shipping Address, Payment); a dashed arrow "by id" from Order to Customer.</p></figure>
+<ul>
+<li>Links <b>between</b> aggregates are stored as <mark>references by id</mark>, not nested copies.</li>
+<li><mark>Aggregate-oriented</mark> databases: key-value, document, column-family. <mark>Aggregate-ignorant</mark>: relational and graph.</li>
+<li><mark>Consequence</mark>: updates are atomic <i>within</i> one aggregate; a whole aggregate is the natural unit of sharding and replication (one node serves a read).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Aggregate-oriented</th><th>Aggregate-ignorant</th></tr>
+<tr><td>Examples</td><td>Key-value, document, column-family</td><td>Relational, graph</td></tr>
+<tr><td>Transactions</td><td>Atomic within one aggregate</td><td>ACID across many rows/nodes</td></tr>
+</table></div>
+<div class="note"><b>If it comes as 4 marks:</b> write ONLY the part named in the question. If unnamed, write Part A (integration + ETL/ELT) with Fig 1.9 and its table — it is the more commonly asked half.</div>
+<div class="recall"><b>Quick recall</b> Integration = combine heterogeneous data via ETL (warehouse) or ELT (lake). Aggregate = related objects handled as one unit; key-value/document/column-family are aggregate-oriented, relational/graph are aggregate-ignorant.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq9"><h3>Q9. Explain the components of Data Science and the 5 P's.</h3>
+<p class="hook">Unit II · 8 marks · examiner wants each of the five P's named, explained and tied together with an example.</p>
+<div class="def"><b>Definition:</b> The five components of data science, in the UC San Diego framing, are the <mark>5 P's</mark>: <mark>Purpose</mark>, <mark>People</mark>, <mark>Process</mark>, <mark>Platforms</mark> and <mark>Programmability</mark> — the interdependent parts that turn big data into a data product and value.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 400" width="600">
+<line x1="300" y1="151" x2="300" y2="85"/>
+<line x1="361" y1="195" x2="428" y2="175"/>
+<line x1="338" y1="267" x2="379" y2="320"/>
+<line x1="262" y1="267" x2="221" y2="320"/>
+<line x1="239" y1="195" x2="172" y2="175"/>
+<circle class="hi" cx="300" cy="215" r="64"/><text class="b" x="300" y="206">Data</text><text class="b" x="300" y="226">Science</text>
+<ellipse cx="300" cy="55" rx="70" ry="26"/><text x="300" y="55">Purpose</text>
+<ellipse cx="457" cy="166" rx="70" ry="26"/><text x="457" y="166">People</text>
+<ellipse cx="397" cy="344" rx="70" ry="26"/><text x="397" y="344">Process</text>
+<ellipse cx="203" cy="344" rx="70" ry="26"/><text x="203" y="344">Platforms</text>
+<ellipse cx="143" cy="166" rx="80" ry="26"/><text x="143" y="166">Programmability</text>
+</svg></div><figcaption><b>Fig 2.8</b> · 5P wheel: five P's around data science</figcaption><p class="draw">✍ Draw it: centre circle "Data Science", 5 ellipses around it like a star, one spoke line to each.</p></figure>
+<ul>
+<li><mark>Purpose</mark>: the challenge from the big data strategy — why. <mark>People</mark>: data scientists, domain experts, engineers — who.</li>
+<li><mark>Process</mark>: acquire, prepare, analyse, report, act — how. <mark>Platforms</mark>: Hadoop/HDFS, Spark, NoSQL, cloud — on what.</li>
+<li><mark>Programmability</mark>: Python, R, SQL, Java, workflow scripts — with what code, making steps repeatable/scalable.</li>
+<li><mark>Interdependence</mark>: purpose chooses people; process decides the platform; platform decides the programming tools.</li>
+<li><mark>Alternate framing</mark> (skill-based): domain knowledge, statistics/maths, programming, machine learning, communication.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>P</th><th>Question</th><th>Food-delivery example</th></tr>
+<tr><td>Purpose</td><td>Why?</td><td>Predict delivery time accurately</td></tr>
+<tr><td>People</td><td>Who?</td><td>Ops expert, ML engineer, data engineer</td></tr>
+<tr><td>Process</td><td>How?</td><td>Acquire GPS/order data → model → act</td></tr>
+<tr><td>Platforms</td><td>On what?</td><td>Cloud storage, Spark cluster</td></tr>
+<tr><td>Programmability</td><td>With what?</td><td>Python, SQL, scheduled workflows</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> "Pooja's People Prefer Paneer Pakoda" = Purpose, People, Process, Platforms, Programmability.</div>
+<div class="note"><b>Common mistake:</b> writing "Product" or "Price" in place of Programmability — Product is the output of the 5 P's, not one of them.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.8, and explain any 3 P's with one example each.</div>
+<div class="recall"><b>Quick recall</b> Why-Purpose, Who-People, How-Process, On what-Platforms, With what code-Programmability.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq10"><h3>Q10. Explain the complete Data Science process with an example.</h3>
+<p class="hook">Unit II · 8 marks · examiner wants all five steps explained in order, with the iterative loop and one worked example.</p>
+<div class="def"><b>Definition:</b> The <mark>data science process</mark> is an iterative sequence of five steps: <mark>Acquire</mark>, <mark>Prepare</mark> (explore + pre-process), <mark>Analyze</mark>, <mark>Report</mark>, and <mark>Act</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 740 200" width="740">
+<text class="s" x="75" y="42">find, retrieve</text>
+<text class="s" x="220" y="42">explore, clean</text>
+<text class="s" x="365" y="42">model, evaluate</text>
+<text class="s" x="510" y="42">communicate</text>
+<text class="s" x="655" y="42">apply insight</text>
+<rect class="hi" x="20" y="60" width="110" height="44" rx="6"/><text x="75" y="82">Acquire</text>
+<rect x="165" y="60" width="110" height="44" rx="6"/><text x="220" y="82">Prepare</text>
+<rect x="310" y="60" width="110" height="44" rx="6"/><text x="365" y="82">Analyze</text>
+<rect x="455" y="60" width="110" height="44" rx="6"/><text x="510" y="82">Report</text>
+<rect x="600" y="60" width="110" height="44" rx="6"/><text x="655" y="82">Act</text>
+<path class="arr" d="M130 82 H163"/>
+<path class="arr" d="M275 82 H308"/>
+<path class="arr" d="M420 82 H453"/>
+<path class="arr" d="M565 82 H598"/>
+<path class="arr" d="M655 104 V150 H75 V106"/>
+<text class="s" x="365" y="170">iterate with new questions</text>
+</svg></div><figcaption><b>Fig 2.9</b> · Data science process loop (5 steps, iterative)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row with arrows, a return arrow under them from Act back to Acquire; write 2-word hints above.</p></figure>
+<ul>
+<li><mark>1. Acquire</mark>: identify and retrieve data — from traditional databases, text files, remote/web APIs, or NoSQL storage.</li>
+<li><mark>2. Prepare</mark> = <b>Explore</b> (summary stats, correlations, outliers, plots) + <b>Pre-process</b> (clean missing/invalid/duplicate values; wrangle — scaling, feature selection).</li>
+<li><mark>3. Analyze</mark>: select a technique (classification, regression, clustering, association, graph analytics), build the model, evaluate it.</li>
+<li><mark>4. Report</mark>: communicate findings with visualisations to non-technical decision makers.</li>
+<li><mark>5. Act</mark>: deploy the model / change the business process, monitor results; new questions restart the loop.</li>
+<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark> (business understanding → data understanding → data preparation → modeling → evaluation → deployment).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Step</th><th>Input</th><th>Output</th></tr>
+<tr><td>Acquire</td><td>Question + sources</td><td>Raw data set</td></tr>
+<tr><td>Prepare</td><td>Raw data</td><td>Clean, understood data</td></tr>
+<tr><td>Analyze</td><td>Clean data</td><td>Evaluated model</td></tr>
+<tr><td>Report</td><td>Model results</td><td>Insights, charts</td></tr>
+<tr><td>Act</td><td>Insights</td><td>Decision, value</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (IPL team picking bowlers)<div class="step">Acquire: ball-by-ball data from files + a stats API.</div><div class="step">Prepare: explore economy rates; remove duplicate rain-shortened rows.</div><div class="step">Analyze: regression to predict runs conceded per over at each venue.</div><div class="step">Report: chart of best death-over bowlers per venue.</div><span class="ans">Act: choose bowlers per ground; refine after matches</span></div>
+<div class="mn"><b>Mnemonic</b> "All Players Are Really Active" = Acquire, Prepare, Analyze, Report, Act.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.9, and explain Acquire, Prepare and Analyze only (drop Report/Act and the example).</div>
+<div class="recall"><b>Quick recall</b> A-P-A-R-A, iterative; Prepare = explore + pre-process; same idea as CRISP-DM's 6 stages.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq11"><h3>Q11. What is Big Data Modeling and Management? Explain its six concerns.</h3>
+<p class="hook">Unit II · 8 marks · examiner wants the data-model definition (structure/operations/constraints) plus all six management concerns, one line each.</p>
+<div class="def"><b>Definition:</b> <mark>Big data management</mark> is the set of activities and systems for ingesting, storing, ensuring quality of, operating on, scaling and securing very large and varied data so it stays usable. A <mark>data model</mark> describes data by <mark>structure</mark>, <mark>operations</mark> and <mark>constraints</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Big data management</span><ul>
+<li><span>Ingestion</span></li><li><span>Storage</span></li><li><span>Quality</span></li><li><span>Operations</span></li><li><span>Scalability</span></li><li><span>Security</span></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.11</b> · Six concerns of big data management</figcaption><p class="draw">✍ Draw it: one root box, 6 child boxes in a row joined by tree lines.</p></figure>
+<ul>
+<li><mark>Ingestion</mark>: bringing data in, in <b>batch</b> (periodic) or <b>streaming</b> (continuous) mode, under an ingestion/error policy (e.g. Kafka, Sqoop).</li>
+<li><mark>Storage</mark>: choice across the memory hierarchy (cache → RAM → SSD → HDD → tape) and models (HDFS, NoSQL, data warehouse vs data lake).</li>
+<li><mark>Quality</mark>: keeping data accurate/complete/consistent — cleaning missing, invalid, duplicate, inconsistent values (MIDIO) and outliers.</li>
+<li><mark>Operations</mark>: what can be done with the data — selection, projection, join, union, aggregation — run in parallel at scale.</li>
+<li><mark>Scalability</mark>: <b>scale up</b> (bigger single machine) or <b>scale out</b> (more commodity machines, via partitioning + replication).</li>
+<li><mark>Security</mark>: access control, encryption at rest and in transit, privacy/anonymisation, auditing — protecting the CIA triad (Confidentiality, Integrity, Availability).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"I Saw Queen Oprah Speak Secretly"</b> = Ingestion, Storage, Quality, Operations, Scalability, Security. Data model = <b>SOC</b>: Structure, Operations, Constraints.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.11, and explain only Ingestion and Storage (the two most-asked concerns) in one line each.</div>
+<div class="recall"><b>Quick recall</b> Six concerns I-S-Q-O-S-S; data model = structure + operations + constraints; each concern gets its own deeper treatment (ingestion, storage, security etc.) in the full notes.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq12"><h3>Q12. Case study: design a Big Data Management Plan for a company's customer data (from website, mobile app and social media).</h3>
+<p class="hook">Unit II · 8 marks · examiner wants the plan structured dimension-by-dimension (ingestion → storage → quality → operations → scalability → security) with the sizing numbers.</p>
+<div class="def"><b>Big Data Management Plan:</b> A documented design stating, for one organisation's data, how it enters (ingestion), where it is kept (storage), how it is kept correct (quality), what is done with it (operations), how the system grows (scalability), and how it is protected (security).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 330" width="760">
+<rect x="20" y="30" width="130" height="44" rx="6"/><text x="85" y="52">Website</text>
+<rect x="20" y="110" width="130" height="44" rx="6"/><text x="85" y="132">Mobile app</text>
+<rect x="20" y="190" width="130" height="44" rx="6"/><text x="85" y="212">Social media</text>
+<rect class="hi" x="200" y="95" width="130" height="74" rx="6"/><text x="265" y="122">1. Ingestion</text><text class="s" x="265" y="146">stream + batch</text>
+<path class="arr" d="M150 52 L198 115"/><path class="arr" d="M150 132 H198"/><path class="arr" d="M150 212 L198 150"/>
+<rect x="380" y="95" width="130" height="74" rx="6"/><text x="445" y="122">2. Storage</text><text class="s" x="445" y="146">data lake + NoSQL</text>
+<path class="arr" d="M330 132 H378"/>
+<rect x="560" y="95" width="180" height="74" rx="6"/><text x="650" y="122">3. Data quality</text><text class="s" x="650" y="146">clean, dedupe, validate</text>
+<path class="arr" d="M510 132 H558"/>
+<rect class="hi" x="560" y="215" width="180" height="74" rx="6"/><text x="650" y="242">4. Operations</text><text class="s" x="650" y="266">360° customer view</text>
+<path class="arr" d="M650 169 V213"/>
+<rect x="330" y="215" width="180" height="74" rx="6"/><text x="420" y="242">Reports, offers</text><text class="s" x="420" y="266">dashboards, ML models</text>
+<path class="arr" d="M560 252 H512"/>
+<rect class="none dash" x="185" y="10" width="570" height="300" rx="10"/>
+<text class="s l" x="200" y="302">5. Scalability + 6. Security wrap every stage</text>
+</svg></div><figcaption><b>Fig 2.26</b> · Big data management plan for customer data from website, app and social media</figcaption><p class="draw">✍ Draw it: three source boxes on the left into Ingestion → Storage → Quality, then down to Operations → Reports; draw one dashed border around the pipeline and write "Scalability + Security" on it.</p></figure>
+<div class="ex"><b>Assumptions and sizing</b> (computed in Python; 1 GB = 10⁶ KB)
+<div class="step">Assume 5,000,000 events/day (page views, app events, orders, posts), average 2 KB each</div>
+<div class="step">Per day: 5,000,000 × 2 KB = 10,000,000 KB = 10 GB/day</div>
+<div class="step">Per year: 10 GB × 365 = 3,650 GB ≈ 3.65 TB; with HDFS replication ×3 ≈ 10.95 TB of disk/year</div>
+<span class="ans">≈ 10 GB/day, ≈ 11 TB/year of raw disk ⇒ needs a distributed, scale-out design</span></div>
+<div class="tw"><table><tr><th>Dimension</th><th>Plan</th></tr>
+<tr><td><b>1. Ingestion</b></td><td>Real-time streaming (Kafka) for clicks/app events; nightly batch (Sqoop) for order DB and social exports; validate at entry, keep raw copy.</td></tr>
+<tr><td><b>2. Storage</b></td><td>Data lake (HDFS) for raw data; NoSQL document store for profiles; column-family for event history; warehouse for clean reporting data.</td></tr>
+<tr><td><b>3. Data quality</b></td><td>Remove duplicates (same customer across web/app/social), validate email/phone, standardise formats, link one customer across channels (entity resolution).</td></tr>
+<tr><td><b>4. Operations</b></td><td>Filter, join (profile + orders + events), aggregate (spend/month), build the 360° customer view, feed ML models.</td></tr>
+<tr><td><b>5. Scalability</b></td><td>Scale out with commodity nodes; partition by date/customer id; replicate (factor 3); auto-scale on sale days.</td></tr>
+<tr><td><b>6. Security</b></td><td>Encryption at rest and in transit; authentication + role-based access control; masking of personal data; audit logs; comply with India's DPDP Act.</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>"I Saw Queen Operate Scaled Security"</b> = Ingestion, Storage, Quality, Operations, Scalability, Security.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.26, give the sizing example, and cover only Ingestion + Storage from the table.</div>
+<div class="recall"><b>Quick recall</b> Sources → ingest (stream+batch) → lake+NoSQL → clean/dedupe → join/aggregate into a 360° view → reports/ML; scale out with partitions+replication; secure with encryption, RBAC, masking, audit.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq13"><h3>Q13. Explain a real-world Data Science example using advanced techniques.</h3>
+<p class="hook">Unit II · 8 marks · examiner wants a recommendation system walked through the 5-step process, plus the named advanced techniques and one worked similarity example.</p>
+<div class="def"><b>Definition:</b> A <mark>recommendation system</mark> is a data science application that predicts which items (movies, products, songs) a user is likely to prefer, using the user's past behaviour and the behaviour of similar users.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Question: what should each user watch next?</div>
+<div class="n">Acquire: viewing history, ratings, searches, device, time</div>
+<div class="n">Prepare: clean logs, remove bots, build user × show matrix</div>
+<div class="n hi">Analyze: collaborative filtering, matrix factorisation, deep learning</div>
+<div class="n">Report: A/B test results, watch-time dashboards</div>
+<div class="n t">Act: personalised home page for every user</div>
+</div></div><figcaption><b>Fig 2.27</b> · A recommendation system walked through the five data science steps</figcaption><p class="draw">✍ Draw it: six boxes top to bottom, ovals at both ends; write the step name first in each box.</p></figure>
+<ul>
+<li><mark>Well-known fact</mark>: the Netflix Prize (2006-2009) offered a US$1 million prize for a 10% ratings-accuracy improvement; winners relied heavily on matrix factorisation and model ensembles.</li>
+<li>Similar systems: Amazon product suggestions, YouTube videos, Spotify playlists.</li>
+</ul>
+<div class="tw"><table><tr><th>Technique</th><th>What it does</th></tr>
+<tr><td>Collaborative filtering</td><td>Recommends what similar users liked</td></tr>
+<tr><td>Matrix factorisation</td><td>Breaks the sparse user × item matrix into hidden taste factors</td></tr>
+<tr><td>Content-based filtering</td><td>Uses item features (genre, cast) to find similar shows</td></tr>
+<tr><td>Deep learning</td><td>Neural networks learn patterns from long viewing sequences</td></tr>
+<tr><td>A/B testing</td><td>Shows two versions to two user groups, keeps the better one</td></tr>
+</table></div>
+<div class="ex"><b>Worked example: user-based collaborative filtering</b> (computed in Python) · ratings for 5 shows, 0 = not watched
+<div class="step">A = (5, 4, 0, 1, 5), B = (4, 5, 0, 1, 4), C = (1, 0, 5, 4, 1)</div>
+<div class="step">Cosine similarity = (A·B) / (|A| × |B|)</div>
+<div class="step">A·B = 61; |A| = 8.185; |B| = 7.616 ⇒ sim(A,B) = 61/(8.185×7.616) = 0.979</div>
+<div class="step">A·C = 14; |C| = 6.557 ⇒ sim(A,C) = 14/(8.185×6.557) = 0.261</div>
+<span class="ans">B is most similar to A (0.979 vs 0.261) ⇒ recommend to A the shows B rated highly that A has not watched</span></div>
+<div class="mn"><b>Mnemonic</b> <b>C-M-D-N</b> = Collaborative filtering, Matrix factorisation, Deep learning, NLP; checked by A/B testing.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.27, name 3 techniques from the table (skip the cosine similarity numbers).</div>
+<div class="recall"><b>Quick recall</b> Recommendation system: acquire viewing data → prepare user×item matrix → collaborative filtering / matrix factorisation / deep learning → A/B test → personalised page.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="iq-1m"><h3>1-mark questions</h3>
+<dl class="sa">
+<dt>Q1. Define big data.</dt><dd>Data sets whose volume, velocity and variety exceed traditional database capacity, needing distributed, cost-effective processing.</dd>
+<dt>Q2. List the 5 Vs of big data.</dt><dd>Volume, Velocity, Variety, Veracity, Value (some books add Variability and Visualization).</dd>
+<dt>Q3. Differentiate structured and unstructured data.</dt><dd>Structured has a fixed schema in rows/columns (SQL tables); unstructured has no model and needs special analysis (images, video, text).</dd>
+<dt>Q4. Name three sources of big data.</dt><dd>Human-generated (social media), machine-generated (IoT sensors, logs), organisational (transactions, ERP/CRM).</dd>
+<dt>Q5. Expand ETL and ELT.</dt><dd>ETL = Extract, Transform, Load (transform before loading, for warehouses). ELT = Extract, Load, Transform (raw first, for data lakes).</dd>
+<dt>Q6. Differentiate data lake and data warehouse.</dt><dd>A warehouse holds processed, structured data (schema-on-write); a lake holds raw data of all types (schema-on-read).</dd>
+<dt>Q7. What is Hadoop?</dt><dd>An open-source Apache framework for distributed storage (HDFS) and processing (MapReduce, YARN for resources) on commodity clusters.</dd>
+<dt>Q8. What is the role of the NameNode?</dt><dd>HDFS master; stores metadata (namespace, block map, locations) but not actual data.</dd>
+<dt>Q9. Default HDFS block size and replication factor?</dt><dd>128 MB block size (Hadoop 2.x/3.x) and replication factor 3, both configurable.</dd>
+<dt>Q10. Expand YARN and name its components.</dt><dd>Yet Another Resource Negotiator. Components: ResourceManager, NodeManager, ApplicationMaster, Container.</dd>
+<dt>Q11. Expand NoSQL and list its four types.</dt><dd>"Not only SQL". Types: key-value (Redis), document (MongoDB), column-family (Cassandra, HBase), graph (Neo4j).</dd>
+<dt>Q12. State the CAP theorem.</dt><dd>A distributed store cannot guarantee Consistency, Availability and Partition tolerance together; during a partition it must give up C or A.</dd>
+<dt>Q13. Define data science.</dt><dd>Using data with statistics, computing and domain knowledge to produce insights that lead to actions and value.</dd>
+<dt>Q14. List the five P's of data science.</dt><dd>Purpose, People, Process, Platforms, Programmability.</dd>
+<dt>Q15. List the steps of the data science process.</dt><dd>Acquire, Prepare, Analyze, Report, Act — iterative.</dd>
+<dt>Q16. Define data ingestion.</dt><dd>Getting data from its sources into the data system, in batches or as a stream, under an ingestion policy.</dd>
+<dt>Q17. Differentiate batch and streaming ingestion.</dt><dd>Batch loads large chunks periodically (high latency); streaming loads records continuously (low latency).</dd>
+<dt>Q18. Differentiate selection and projection.</dt><dd>Selection picks rows satisfying a condition; projection picks chosen columns of each row.</dd>
+<dt>Q19. Differentiate scale up and scale out.</dt><dd>Scale up = a more powerful single machine (hardware ceiling); scale out = more commodity machines (partition + replicate).</dd>
+<dt>Q20. List data security measures.</dt><dd>Access control, encryption at rest and in transit, privacy/masking, auditing.</dd>
+<dt>Q21. What is a big data management plan?</dt><dd>A design stating how data is ingested, stored, kept at quality, operated on, scaled and secured for an organisation.</dd>
+<dt>Q22. What is collaborative filtering?</dt><dd>A recommendation technique suggesting items liked by users with similar behaviour (e.g. by cosine similarity).</dd>
+<dt>Q23. What is A/B testing?</dt><dd>Showing two versions to two random user groups and keeping the one that performs better on a chosen metric.</dd>
+<dt>Q24. What is the CIA triad in data security?</dt><dd>Confidentiality, Integrity, Availability — the three goals every security control protects.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+</section>
+
+</main>
+<div id="zoom"><div class="zb"><button class="zout" type="button">&minus;</button><button class="zin" type="button">+</button><button class="zx" type="button">Close</button></div><div class="zc"></div></div>
+<script>
+(function(){var z=document.getElementById('zoom'),c=z.querySelector('.zc'),s=1;
+function set(){c.style.transform='scale('+s+')';}
+document.querySelectorAll('figure.fig').forEach(function(f){f.addEventListener('click',function(){
+c.innerHTML='';var k=f.cloneNode(true);k.style.cursor='default';c.appendChild(k);s=1;
+c.style.width=Math.max(f.scrollWidth,Math.min(window.innerWidth-40,1100))+'px';set();z.classList.add('on');});});
+z.querySelector('.zin').onclick=function(e){e.stopPropagation();s=Math.min(s+.25,3);set();};
+z.querySelector('.zout').onclick=function(e){e.stopPropagation();s=Math.max(s-.25,.5);set();};
+z.querySelector('.zx').onclick=function(){z.classList.remove('on');};
+z.addEventListener('click',function(e){if(e.target===z)z.classList.remove('on');});
+document.addEventListener('keydown',function(e){if(e.key==='Escape')z.classList.remove('on');});})();
+</script>
+</body>
+</html>

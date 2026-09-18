@@ -1,0 +1,113 @@
+<section class="topic" id="u1-types">
+<h3>1.4 Primitive Data Types, Variables, Literals, and Type Casting</h3>
+<p class="hook">Primitive types are the foundational building blocks of Java data storage with fixed memory sizes across all CPUs. <span class="hg">(data types ki size fix hoti hai)</span></p>
+<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a predefined, built-in data type provided by Java that directly holds simple values in memory without creating an object.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Java Data Types</span><ul>
+<li><span>Primitive</span><ul>
+  <li><span>Integral (byte, short, int, long)</span></li>
+  <li><span>Floating Point (float, double)</span></li>
+  <li><span>Character (char)</span></li>
+  <li><span>Boolean (boolean)</span></li>
+</ul></li>
+<li><span>Non-Primitive</span><ul>
+  <li><span>Classes, Arrays, Interfaces</span></li>
+</ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.6</b> · Hierarchy tree of Java Data Types</figcaption>
+<p class="draw">✍ Draw it: top node Data Types branching into Primitive and Non-Primitive, listing the 8 primitives under Primitive.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Type</th><th>Size (bits / bytes)</th><th>Default Value</th><th>Range</th><th>Example</th></tr>
+<tr><td><code>byte</code></td><td>8 bits (1 byte)</td><td><code>0</code></td><td>-128 to 127</td><td><code>byte b = 100;</code></td></tr>
+<tr><td><code>short</code></td><td>16 bits (2 bytes)</td><td><code>0</code></td><td>-32,768 to 32,767</td><td><code>short s = 5000;</code></td></tr>
+<tr><td><code>int</code></td><td>32 bits (4 bytes)</td><td><code>0</code></td><td>-2<sup>31</sup> to 2<sup>31</sup>-1</td><td><code>int i = 42;</code></td></tr>
+<tr><td><code>long</code></td><td>64 bits (8 bytes)</td><td><code>0L</code></td><td>-2<sup>63</sup> to 2<sup>63</sup>-1</td><td><code>long l = 999L;</code></td></tr>
+<tr><td><code>float</code></td><td>32 bits (4 bytes)</td><td><code>0.0f</code></td><td>~1.4e-45 to ~3.4e+38</td><td><code>float f = 3.14f;</code></td></tr>
+<tr><td><code>double</code></td><td>64 bits (8 bytes)</td><td><code>0.0d</code></td><td>~4.9e-324 to ~1.7e+308</td><td><code>double d = 99.99;</code></td></tr>
+<tr><td><code>char</code></td><td>16 bits (2 bytes)</td><td><code>'&#92;u0000'</code></td><td>0 to 65,535 (Unicode)</td><td><code>char c = 'A';</code></td></tr>
+<tr><td><code>boolean</code></td><td>1 bit (JVM dependent)</td><td><code>false</code></td><td><code>true</code> or <code>false</code></td><td><code>boolean flag = true;</code></td></tr>
+</table></div>
+
+<p><b>Variables &amp; Type Conversion / Casting:</b></p>
+<ul>
+<li><mark>Variables</mark>: Named storage locations in memory (Local, Instance, Static variables).</li>
+<li><mark>Literals</mark>: Constant values assigned directly to variables (e.g., <code>100</code>, <code>'A'</code>, <code>3.14f</code>).</li>
+<li><mark>Widening (Implicit Casting)</mark>: Converting a smaller type to a larger type automatically. Safe with no data loss: <code>byte</code> &rarr; <code>short</code> &rarr; <code>int</code> &rarr; <code>long</code> &rarr; <code>float</code> &rarr; <code>double</code>.</li>
+<li><mark>Narrowing (Explicit Casting)</mark>: Converting a larger type to a smaller type manually using cast syntax <code>(target_type)</code>. May result in data loss.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">byte</div><div class="ar">auto</div>
+<div class="n">short / char</div><div class="ar">auto</div>
+<div class="n">int</div><div class="ar">auto</div>
+<div class="n">long</div><div class="ar">auto</div>
+<div class="n hi">float / double</div>
+</div></div>
+<figcaption><b>Fig 1.7</b> · Automatic Widening Conversion hierarchy</figcaption>
+<p class="draw">✍ Draw it: horizontal chain of types from byte up to double connected with right arrows for implicit widening.</p></figure>
+
+<p>Program: Demonstrating primitive data types, widening, and narrowing type casting.</p>
+<pre class="code" data-file="DataTypeDemo.java"><code><span class="k">public class</span> DataTypeDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">byte</span> b = 100;
+        <span class="k">int</span> i = b;            <span class="c">// Implicit widening: byte -> int</span>
+        <span class="k">double</span> d = 10.5;
+        <span class="k">int</span> x = (<span class="k">int</span>) d;      <span class="c">// Explicit narrowing: double -> int</span>
+        <span class="k">char</span> c = 'A';
+        <span class="k">boolean</span> flag = <span class="k">true</span>;
+        System.out.println("b=" + b + ", i=" + i + ", x=" + x + ", c=" + c + ", flag=" + flag);
+    }
+}</code></pre>
+<pre class="out">b=100, i=100, x=10, c=A, flag=true</pre>
+
+<p><b>Variables — three categories:</b></p>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Local variable</b>declared inside a method or block; exists only there</div>
+<div class="b"><b>Instance variable</b>declared inside the class, outside any method; one copy per object; not <code>static</code></div>
+<div class="b hi"><b>Static variable</b>declared with <code>static</code>; one copy shared by the whole class; cannot be local</div>
+</div></div>
+<figcaption><b>Fig 1.34</b> · The three categories of Java variables</figcaption>
+<p class="draw">✍ Draw it: 3 boxes side by side — Local, Instance, Static — one line in each.</p></figure>
+<div class="tw"><table>
+<tr><th>Local</th><th>Instance</th><th>Static</th></tr>
+<tr><td>Declared inside a method/block</td><td>Declared inside the class, outside methods</td><td>Declared inside the class, marked <code>static</code></td></tr>
+<tr><td>Exists only during that call</td><td>Exists as long as the object does</td><td>Exists as long as the class is loaded</td></tr>
+<tr><td>One copy per method call</td><td>One copy per object</td><td>One copy shared by all objects</td></tr>
+</table></div>
+<p>Some values never change (e.g. the value of pi, about 3.142; a day always has 24 hours) — these are called <mark>constants</mark>. Java has no separate "constant" keyword; a <code>static final</code> variable is used as one, e.g. <code>static final double PI_APPROX = 3.142;</code> (<code>final</code> itself is covered fully in Unit II).</p>
+<p>Program: Local, instance and static variables, and a constant, in one class.</p>
+<pre class="code" data-file="VariableScopeDemo.java"><code><span class="k">public class</span> VariableScopeDemo {
+    <span class="k">static final double</span> PI_APPROX = 3.142;  <span class="c">// constant: static + final</span>
+    <span class="k">int</span> x = 50;                            <span class="c">// instance variable</span>
+    <span class="k">static int</span> m = 10;                     <span class="c">// static variable</span>
+
+    <span class="k">void</span> display() {
+        <span class="k">int</span> n = 9;                          <span class="c">// local variable</span>
+        System.out.println("x=" + x + ", m=" + m + ", n=" + n + ", PI_APPROX=" + PI_APPROX);
+    }
+
+    <span class="k">public static void</span> main(String[] args) {
+        VariableScopeDemo obj = <span class="k">new</span> VariableScopeDemo();  <span class="c">// object creation: full detail in Unit II</span>
+        obj.display();
+    }
+}</code></pre>
+<pre class="out">x=50, m=10, n=9, PI_APPROX=3.142</pre>
+
+<p><b>Scope and lifetime of a variable:</b></p>
+<div class="def"><b>Definition:</b> the <mark>scope</mark> of a variable is the block of code in which it is accessible; its <mark>lifetime</mark> is how long it stays in memory. A block begins with <code>{</code> and ends with <code>}</code> — one block is one new scope.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">method display() { }</span><ul>
+<li><span>int n = 9; <small>(scope: whole method)</small></span></li>
+<li><span>for ( ... ) { } <small>(a new, inner block)</small></span><ul>
+<li><span>int i = 0; <small>(scope: this loop only)</small></span></li>
+</ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.35</b> · A variable's scope is the block it is declared in</figcaption>
+<p class="draw">✍ Draw it: root box "method", two children "n" and "loop block"; give the loop block its own child "i".</p></figure>
+<ul>
+<li>A variable is created when its scope is entered and destroyed when its scope is left — a local variable declared inside a method does not hold its value outside that method.</li>
+<li>Instance and static variables live longer: as long as their object (instance) or their class (static) stays in memory.</li>
+</ul>
+
+<div class="mn"><b>Mnemonic</b> <b>B-S-I-L-F-D</b> (Byte, Short, Int, Long, Float, Double) for integral to floating widening order.</div>
+<div class="recall"><b>Quick recall</b> Java has 8 primitive types; widening is automatic, narrowing requires explicit <code>(type)</code> cast. 3 variable categories: local (in a method), instance (per object), static (per class, shared).</div>
+<a class="top" href="#top">↑ top</a></section>

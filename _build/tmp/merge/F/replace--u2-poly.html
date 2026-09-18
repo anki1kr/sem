@@ -1,0 +1,140 @@
+<section class="topic" id="u2-poly">
+<h3>2.11 Polymorphism: overloading and overriding</h3>
+<p class="hook">One word, many forms: "pay" works differently for UPI, card and cash, but you just say pay. <span class="hg">(ek naam, kai roop)</span></p>
+<div class="def"><b>Definition:</b> <mark>Polymorphism</mark> is the ability of one method name (or reference) to take many forms. In Java it is of two kinds: <mark>compile-time</mark> polymorphism, achieved by method overloading, and <mark>run-time</mark> polymorphism, achieved by method overriding with dynamic method dispatch.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Polymorphism</span><ul>
+<li><span>Compile-time<br>(static binding)</span><ul><li><span>Method overloading</span></li></ul></li>
+<li><span>Run-time<br>(dynamic binding)</span><ul><li><span>Method overriding</span></li></ul></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.23</b> · Types of polymorphism in Java</figcaption><p class="draw">✍ Draw it: root Polymorphism, two children (compile-time, run-time), one leaf under each.</p></figure>
+<p><b>(a) Compile-time polymorphism: method overloading</b></p>
+<ul>
+<li><mark>Overloading</mark>: same method name, <b>different parameter list</b> (number, type or order) in the same class.</li>
+<li>The <mark>compiler</mark> picks the version by matching the arguments, so it is decided before the program runs.</li>
+<li><mark>Return type alone</mark> cannot overload: <code>int f()</code> and <code>double f()</code> is an error.</li>
+<li>Java does not allow user-defined operator overloading (only built-in <code>+</code> joins strings).</li>
+</ul>
+<pre class="code" data-file="OverloadDemo.java"><code><span class="k">class</span> Calculator {
+    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b) {              <span class="c">// 2 int parameters</span>
+        <span class="k">return</span> a + b;
+    }
+    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b, <span class="k">int</span> c) {       <span class="c">// different NUMBER of parameters</span>
+        <span class="k">return</span> a + b + c;
+    }
+    <span class="k">double</span> add(<span class="k">double</span> a, <span class="k">double</span> b) {     <span class="c">// different TYPE of parameters</span>
+        <span class="k">return</span> a + b;
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> OverloadDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Calculator c = <span class="k">new</span> Calculator();
+        System.out.println(c.add(2, 3));       <span class="c">// compiler picks add(int,int)</span>
+        System.out.println(c.add(2, 3, 4));    <span class="c">// picks add(int,int,int)</span>
+        System.out.println(c.add(2.5, 1.5));   <span class="c">// picks add(double,double)</span>
+    }
+}</code></pre>
+<pre class="out">5
+9
+4.0</pre>
+<p><b>(b) Run-time polymorphism: method overriding and dynamic method dispatch</b></p>
+<ul>
+<li><mark>Overriding</mark>: child class gives its own body for a method with the <b>same signature</b> as the parent's.</li>
+<li><mark>Dynamic method dispatch</mark>: a parent-type reference can hold a child object (<code>Payment p = new UpiPayment();</code>); the JVM calls the method of the <b>actual object</b> at run time, not of the reference type.</li>
+<li><code>@Override</code> annotation asks the compiler to check that a method really overrides.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">p.pay(200)<small>p is Payment type</small></div><div class="ar">run time</div><div class="n">object is UpiPayment</div><div class="n hi">UpiPayment.pay() runs</div>
+</div></div><figcaption><b>Fig 2.24</b> · Dynamic method dispatch: the object type, not the reference type, decides which method runs</figcaption><p class="draw">✍ Draw it: three boxes in a row with arrows: call, actual object, method that runs.</p></figure>
+<pre class="code" data-file="DispatchDemo.java"><code><span class="k">class</span> Payment {
+    <span class="k">void</span> pay(<span class="k">int</span> amt) { System.out.println("Paying Rs." + amt); }
+}
+
+<span class="k">class</span> UpiPayment <span class="k">extends</span> Payment {
+    @Override
+    <span class="k">void</span> pay(<span class="k">int</span> amt) { System.out.println("Paying Rs." + amt + " by UPI"); }
+}
+
+<span class="k">class</span> CardPayment <span class="k">extends</span> Payment {
+    @Override
+    <span class="k">void</span> pay(<span class="k">int</span> amt) { System.out.println("Paying Rs." + amt + " by card"); }
+}
+
+<span class="k">public</span> <span class="k">class</span> DispatchDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Payment p;                   <span class="c">// parent-type reference</span>
+        p = <span class="k">new</span> UpiPayment();
+        p.pay(200);                  <span class="c">// decided at RUN time: UpiPayment's pay</span>
+        p = <span class="k">new</span> CardPayment();
+        p.pay(500);                  <span class="c">// same call, now CardPayment's pay</span>
+        p = <span class="k">new</span> Payment();
+        p.pay(50);
+    }
+}</code></pre>
+<pre class="out">Paying Rs.200 by UPI
+Paying Rs.500 by card
+Paying Rs.50</pre>
+<p><b>The class notes' own overriding example</b> — a plain override, no multi-class dispatch juggling:</p>
+<pre class="code" data-file="Bike2.java"><code><span class="k">class</span> Vehicle {
+    <span class="k">void</span> run() {
+        System.out.println("Vehicle is running");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> Bike2 <span class="k">extends</span> Vehicle {
+    <span class="k">void</span> run() {                        <span class="c">// same name, same parameters as Vehicle's run()</span>
+        System.out.println("Bike is running safely");
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Bike2 obj = <span class="k">new</span> Bike2();
+        obj.run();                       <span class="c">// only the overridden version executes</span>
+    }
+}</code></pre>
+<pre class="out">Bike is running safely</pre>
+<div class="note"><b>Common mistake:</b> the notes add here, "when you write two or more classes in a single file, the file is named upon the class that contains the main method." The precise rule is about <mark>public</mark>, not about <code>main</code>: if one class in the file is <code>public</code>, the file must be named after THAT class, whether or not it has <code>main</code>; only when <b>no</b> class in the file is public can the file take any name at all (you then simply run whichever class has <code>main</code>). <code>Bike2.java</code> above is named after its public class <code>Bike2</code>, which also happens to hold <code>main</code> — that overlap is what makes the two rules look identical in a single example.</div>
+<p><b>Rules of method overriding</b></p>
+<ul>
+<li>Same <mark>name</mark> and same <mark>parameter list</mark> as the parent method.</li>
+<li><mark>Return type</mark> same, or a subclass of it (covariant return).</li>
+<li>Access cannot be <mark>more restrictive</mark> (a <code>public</code> method cannot become <code>private</code>).</li>
+<li><code>final</code>, <code>static</code> and <code>private</code> methods <mark>cannot be overridden</mark> (a static method with the same signature only hides the parent's).</li>
+<li>Needs inheritance (IS-A); constructors cannot be overridden.</li>
+</ul>
+<div class="note"><b>Common mistake:</b> the notes' rule here is "static or final method cannot be overridden." Add <code>private</code> to that same list. There is also a sharper point hiding inside this rule: if a subclass declares a <code>static</code> method with the exact signature of a <code>static</code> method in its parent, that is <mark>method hiding</mark>, not overriding — Java decides which one runs from the <b>reference type</b> at compile time, unlike genuine overriding, which is decided from the <b>object type</b> at run time. Proof below.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c2">
+<div class="b hi"><b>Overriding (instance methods)</b>Which body runs is decided by the OBJECT type, at run time</div>
+<div class="b"><b>Hiding (static methods)</b>Which body runs is decided by the REFERENCE type, at compile time</div>
+</div></div><figcaption><b>Fig 2.70</b> · Overriding is resolved from the object; hiding is resolved from the reference</figcaption><p class="draw">✍ Draw it: two boxes side by side, left "Overriding: object decides", right "Hiding: reference decides".</p></figure>
+<pre class="code" data-file="HidingDemo.java"><code><span class="k">class</span> Parent2 {
+    <span class="k">static</span> <span class="k">void</span> greet() { System.out.println("Parent2 static greet"); }
+}
+
+<span class="k">class</span> Child2 <span class="k">extends</span> Parent2 {
+    <span class="k">static</span> <span class="k">void</span> greet() { System.out.println("Child2 static greet"); }  <span class="c">// HIDES, does not override</span>
+}
+
+<span class="k">public</span> <span class="k">class</span> HidingDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Parent2 p = <span class="k">new</span> Child2();
+        p.greet();                <span class="c">// resolved by p's REFERENCE type (Parent2), not its object type</span>
+        Child2.greet();
+    }
+}</code></pre>
+<pre class="out">Parent2 static greet
+Child2 static greet</pre>
+<ul>
+<li><code>p</code> is declared <code>Parent2</code> but refers to a <code>Child2</code> object; because <code>greet()</code> is <code>static</code>, Java uses <code>p</code>'s <b>declared</b> type, so <code>Parent2</code>'s <code>greet()</code> runs. Compare this with <code>DispatchDemo</code> above, where the instance method <code>pay()</code> used the object's real type instead of the reference type.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Method overloading</th><th>Method overriding</th></tr>
+<tr><td>Same name, different parameters</td><td>Same name, same parameters</td></tr>
+<tr><td>Usually in the same class</td><td>In parent and child classes</td></tr>
+<tr><td>Compile-time polymorphism</td><td>Run-time polymorphism</td></tr>
+<tr><td>Static (early) binding</td><td>Dynamic (late) binding</td></tr>
+<tr><td>Return type may differ</td><td>Return type same or covariant</td></tr>
+<tr><td>Inheritance not needed</td><td>Inheritance required</td></tr>
+<tr><td>static / private / final methods can be overloaded</td><td>static / private / final methods cannot be overridden</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> overLOADing = LOAD more parameters (different list); overRIDing = RIDE over parent's method (same signature).</div>
+<div class="note"><b>Common mistake:</b> with <code>Payment p = new UpiPayment();</code> you can only call methods that exist in <code>Payment</code>; the child version runs, but child-only methods are not visible through <code>p</code>.</div>
+<div class="recall"><b>Quick recall</b> Overloading = compile time, different parameters; overriding = run time, same signature, parent reference picks child method; a matching <code>static</code> method in the child HIDES the parent's (reference decides), it never overrides it.</div>
+<a class="top" href="#top">↑ top</a></section>

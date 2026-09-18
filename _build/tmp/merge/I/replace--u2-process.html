@@ -1,0 +1,66 @@
+<section class="topic" id="u2-process">
+<h3>2.5 Steps in the Data Science Process</h3>
+<p class="hook">Every data science project follows five steps: Acquire, Prepare, Analyze, Report, Act, and then loops back with new questions. <span class="hg">(lao, saaf karo, samjho, batao, karo)</span></p>
+<div class="def"><b>Definition:</b> The <mark>data science process</mark> is an iterative sequence of five steps: <mark>Acquire</mark> data, <mark>Prepare</mark> it (explore + pre-process), <mark>Analyze</mark> it (build and evaluate models), <mark>Report</mark> the insights, and <mark>Act</mark> on them.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 740 200" width="740">
+<text class="s" x="75" y="42">find, retrieve</text>
+<text class="s" x="220" y="42">explore, clean</text>
+<text class="s" x="365" y="42">model, evaluate</text>
+<text class="s" x="510" y="42">communicate</text>
+<text class="s" x="655" y="42">apply insight</text>
+<rect class="hi" x="20" y="60" width="110" height="44" rx="6"/><text x="75" y="82">Acquire</text>
+<rect x="165" y="60" width="110" height="44" rx="6"/><text x="220" y="82">Prepare</text>
+<rect x="310" y="60" width="110" height="44" rx="6"/><text x="365" y="82">Analyze</text>
+<rect x="455" y="60" width="110" height="44" rx="6"/><text x="510" y="82">Report</text>
+<rect x="600" y="60" width="110" height="44" rx="6"/><text x="655" y="82">Act</text>
+<path class="arr" d="M130 82 H163"/>
+<path class="arr" d="M275 82 H308"/>
+<path class="arr" d="M420 82 H453"/>
+<path class="arr" d="M565 82 H598"/>
+<path class="arr" d="M655 104 V150 H75 V106"/>
+<text class="s" x="365" y="170">iterate with new questions</text>
+</svg></div><figcaption><b>Fig 2.5</b> · Data science process loop (5 steps, iterative)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row with arrows, a return arrow under them from Act back to Acquire; write 2-word hints above.</p></figure>
+<ul>
+<li><mark>1. Acquire</mark>: identify suitable data sets and retrieve / query them. Four main source categories: <mark>traditional databases</mark> (SQL), <mark>text files</mark> (CSV, logs), <mark>remote data</mark> (web services / APIs), <mark>NoSQL storage</mark>. <span class="hg">(data lao)</span></li>
+<li><mark>2. Prepare</mark> has two parts:
+  <ul>
+  <li><mark>Explore</mark>: understand the nature of data, preliminary analysis: summary statistics (mean, median, range), correlations, trends, outliers, plots.</li>
+  <li><mark>Pre-process</mark>: <mark>clean</mark> (missing, invalid, duplicate values, outliers) and <mark>wrangle / munge</mark> (scaling, transformation, feature selection, dimensionality reduction, data manipulation such as merging).</li>
+  </ul></li>
+<li><mark>3. Analyze</mark>: select technique → build model → evaluate. Techniques: classification, regression, clustering, association analysis, graph analytics.</li>
+<li><mark>4. Report</mark>: communicate results with visualisations; state main findings, their value and limits, to non-technical decision makers.</li>
+<li><mark>5. Act</mark>: turn insight into action (deploy model, change business process), monitor results; new questions start the loop again.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Step</th><th>Input</th><th>Output</th></tr>
+<tr><td>Acquire</td><td>Question + data sources</td><td>Raw data set</td></tr>
+<tr><td>Prepare</td><td>Raw data</td><td>Clean, understood data</td></tr>
+<tr><td>Analyze</td><td>Clean data</td><td>Evaluated model / result</td></tr>
+<tr><td>Report</td><td>Model results</td><td>Insights, charts</td></tr>
+<tr><td>Act</td><td>Insights</td><td>Decision, deployment, value</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (IPL team picking bowlers)<div class="step">Acquire: ball-by-ball data of past seasons from files and a stats API.</div><div class="step">Prepare: explore economy rates; remove rain-shortened duplicates, fill missing venue names.</div><div class="step">Analyze: regression to predict runs conceded per over at each venue; evaluate on last season.</div><div class="step">Report: chart of best death-over bowlers by venue for the coach.</div><span class="ans">Act: choose bowlers per ground; check results after matches and refine.</span></div>
+<h4>An alternative framing: the 6-stage cycle (CRISP-DM)</h4>
+<p>Many sources (and a well-known data-mining standard, <mark>CRISP-DM</mark>) draw the same idea as a 6-stage circle instead of 5 boxes in a row, by splitting Prepare and Analyze each into two.</p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">Business / problem understanding</div>
+<div class="n">Data understanding</div>
+<div class="n">Data preparation</div>
+<div class="n">Modeling</div>
+<div class="n">Evaluation</div>
+<div class="n">Deployment</div>
+<div class="n t">Cycle repeats</div>
+</div></div><figcaption><b>Fig 2.34</b> · Data science process as a 6-stage cycle (CRISP-DM style)</figcaption><p class="draw">✍ Draw it: oval, 6 boxes top to bottom with arrows, oval "Cycle repeats"; shade the first box.</p></figure>
+<ul>
+<li><mark>Business / problem understanding</mark> = part of our Acquire: fixing the goal before touching data.</li>
+<li><mark>Data understanding</mark> = the "Explore" half of our Prepare step.</li>
+<li><mark>Data preparation</mark> = the "Pre-process" half of our Prepare step (clean + wrangle).</li>
+<li><mark>Modeling</mark> and <mark>Evaluation</mark> = our Analyze step, split into building and testing.</li>
+<li><mark>Deployment</mark> = our Act step (put the model to work, then monitor it).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"All Players Are Really Active"</b> = Acquire, Prepare, Analyze, Report, Act. Prepare = <b>E</b>xplore + <b>P</b>re-process ("EP").</div>
+<div class="note"><b>Common mistake:</b> treating the steps as one-way. The process is iterative; Report / Act often send you back to Acquire or Prepare. Also, the 5-step (Acquire-Prepare-Analyze-Report-Act) and 6-stage (CRISP-DM) versions are the SAME underlying process at different granularity, not two processes to memorise separately — use whichever the question names.</div>
+<div class="recall"><b>Quick recall</b> A-P-A-R-A; Prepare = explore + pre-process; Analyze = select technique, build model, evaluate. Same idea, 6-stage version: Business understanding → Data understanding → Data preparation → Modeling → Evaluation → Deployment.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

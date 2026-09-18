@@ -1,0 +1,147 @@
+<section class="topic" id="u1-intro">
+<h3>1.1 Introduction to Java, JDK, JRE and JVM</h3>
+<p class="hook">Java was built so code written on a Windows PC runs unchanged on Linux or Mac. <span class="hg">(ek baar likho, har jagah chalao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Java</mark> is a high-level, object-oriented, class-based, platform-independent programming language created by James Gosling at Sun Microsystems in 1995.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi"><b>JDK (Java Development Kit)</b><small>Development tools (javac, jar, jdb) + JRE</small></div>
+<div class="l"><b>JRE (Java Runtime Environment)</b><small>Library classes (rt.jar / java.base) + JVM</small></div>
+<div class="l hi"><b>JVM (Java Virtual Machine)</b><small>Executes bytecode on target CPU & OS</small></div>
+</div></div>
+<figcaption><b>Fig 1.1</b> · Relationship between JDK, JRE, and JVM</figcaption>
+<p class="draw">✍ Draw it: three nested rectangles with JDK on top, JRE in the middle, JVM inside at the bottom.</p></figure>
+<ul>
+<li><mark>JDK</mark> (Java Development Kit): Complete software bundle needed to write and compile Java programs. Contains <code>javac</code> compiler.</li>
+<li><mark>JRE</mark> (Java Runtime Environment): Software bundle required to run compiled Java bytecode. Contains runtime libraries + JVM.</li>
+<li><mark>JVM</mark> (Java Virtual Machine): Abstract software machine that executes bytecode by translating it into CPU-specific machine instructions.</li>
+<li><mark>History</mark>: Developed in 1991 as Oak for interactive television; renamed to Java in 1995; acquired by Oracle Corporation in 2010.</li>
+</ul>
+<p><b>Inside the JDK — the four tools you actually use:</b></p>
+<ul>
+<li><code>javac</code> (Java compiler): translates <code>.java</code> source code into <code>.class</code> bytecode.</li>
+<li><code>java</code> (the launcher, part of the JRE): loads a <code>.class</code> file into the JVM and runs it.</li>
+<li><code>jdb</code> (Java debugger): steps through a running program to help find bugs.</li>
+<li><code>jar</code> (Java Archive tool): packs compiled classes into one <code>.jar</code> file for distribution over a network.</li>
+</ul>
+<div class="note"><b>Common mistake:</b> thinking <code>jdb</code> is what executes a program. Compiling uses <code>javac</code>; running uses <code>java</code>; <code>jdb</code> is only for debugging.</div>
+<div class="tw"><table>
+<tr><th>Feature</th><th>JDK</th><th>JRE</th><th>JVM</th></tr>
+<tr><td>Full form</td><td>Java Development Kit</td><td>Java Runtime Environment</td><td>Java Virtual Machine</td></tr>
+<tr><td>Purpose</td><td>Development & Compilation</td><td>Running applications</td><td>Executing bytecode</td></tr>
+<tr><td>Contains</td><td>JRE + Tools (<code>javac</code>)</td><td>JVM + Core Libraries</td><td>Class Loader + Execution Engine</td></tr>
+<tr><td>Target User</td><td>Java Developers</td><td>End Users / Application Runners</td><td>Internal Engine</td></tr>
+</table></div>
+
+<p><b>Java as an object-oriented language:</b></p>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi"><b>Object-Oriented (e.g. Java)</b><small>code organised as objects: data + behaviour together</small></div>
+<div class="l"><b>Procedural / Structured (e.g. C)</b><small>a collection of functions, top-down design</small></div>
+<div class="l hi"><b>Assembly Language</b><small>mnemonics such as MOV, ADD</small></div>
+<div class="l"><b>Machine Language</b><small>raw 0s and 1s the CPU runs directly</small></div>
+</div></div>
+<figcaption><b>Fig 1.30</b> · Levels of programming languages</figcaption>
+<p class="draw">✍ Draw it: 4 stacked boxes, "Object-Oriented" on top down to "Machine Language (0,1)" at the bottom.</p></figure>
+<ul>
+<li><mark>Low-level language</mark>: closest to hardware; Assembly language programs using mnemonics.</li>
+<li><mark>Middle-level language</mark>: e.g. <code>C</code> — procedure/structure-oriented, top-down approach, a collection of functions.</li>
+<li><mark>High-level language</mark>: e.g. <code>Java</code> — object-oriented, bottom-up approach, a collection of objects.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Procedure-Oriented (e.g. C)</th><th>Object-Oriented (e.g. Java)</th></tr>
+<tr><td>Focuses mainly on <b>process</b></td><td>Focuses mainly on <b>data</b></td></tr>
+<tr><td>Uses a top-down approach</td><td>Uses a bottom-up approach</td></tr>
+<tr><td>Each function is considered a separate module</td><td>Each class is considered a separate module (a class is a collection of methods)</td></tr>
+<tr><td>Does not support real-time applications well</td><td>Suitable for all types of applications</td></tr>
+<tr><td>Difficult to debug and extend an application</td><td>Easy to debug and extend an application</td></tr>
+<tr><td>Does not provide security for data</td><td>Provides security (encapsulation)</td></tr>
+<tr><td>Less reusability</td><td>More reusability (inheritance)</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Pillar</th><th>Meaning</th><th>Example</th></tr>
+<tr><td><mark>Object</mark></td><td>a real-world entity with state (variables) and behaviour (methods)</td><td>a car — state: colour; behaviour: accelerate, brake</td></tr>
+<tr><td><mark>Class</mark></td><td>a blueprint that defines the variables and methods common to all objects of one kind</td><td>class <code>Bicycle</code> for every bicycle object</td></tr>
+<tr><td><mark>Abstraction</mark></td><td>hiding internal details and showing only functionality</td><td>pressing the accelerator without knowing the engine's internal working</td></tr>
+<tr><td><mark>Encapsulation</mark></td><td>binding data and code together into a single unit</td><td>all fields and methods wrapped inside one Java class</td></tr>
+<tr><td><mark>Inheritance</mark></td><td>one class acquires the properties and behaviour of another (parent) class</td><td>MountainBike, RacingBike inherit from class Bicycle</td></tr>
+<tr><td><mark>Polymorphism</mark></td><td>one task performed in different ways</td><td>message "move" — a man walks, a fish swims, a bird flies</td></tr>
+</table></div>
+<p>These six pillars are introduced here because Java <i>is</i> an object-oriented language from day one; each one is covered in full depth in Unit II.</p>
+
+<p><b>Primary Java Features:</b></p>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Simple &amp; OOP</b>Easy syntax, no pointers, pure object model</div>
+<div class="b"><b>Platform Independent</b>WORA: bytecode runs everywhere</div>
+<div class="b hi"><b>Secure &amp; Robust</b>Bytecode verifier &amp; garbage collection</div>
+<div class="b"><b>Architecture Neutral</b>Fixed primitive data type sizes</div>
+<div class="b hi"><b>Multithreaded</b>Built-in thread support for concurrency</div>
+<div class="b"><b>High Performance / JIT</b>Just-In-Time compiler speeds up loop execution</div>
+</div></div>
+<figcaption><b>Fig 1.2</b> · Key architectural features of the Java platform</figcaption>
+<p class="draw">✍ Draw it: a 3x2 grid of feature boxes highlighting simple, platform independent, robust, secure, multithreaded, and JIT compiler.</p></figure>
+<div class="mn"><b>Mnemonic</b> <b>S-P-O-R-T-S-M-D</b>: Simple, Platform-independent, Object-oriented, Robust, Threaded (multithreaded), Secure, Multithreaded, Distributed.</div>
+
+<p><b>All 12 Java buzzwords (features), in full — this is also called "Why Java?" in exams:</b></p>
+<ul>
+<li><mark>Simple</mark>: syntax based on C/C++; removed confusing, rarely-used features such as explicit pointers and operator overloading; no manual memory clean-up is needed (the JVM manages it automatically, see 1.2).</li>
+<li><mark>Object-Oriented</mark>: software is organised as a combination of objects, each holding both data and behaviour.</li>
+<li><mark>Platform independent</mark>: the same bytecode runs on Windows, Linux, macOS — anywhere a JVM exists (see 1.2, WORA).</li>
+<li><mark>Secured</mark>: no explicit pointers, every program runs inside the JVM's sandbox, and Java uses a public-key encryption system for security.</li>
+<li><mark>Robust</mark>: strong memory management, no pointers (avoids memory-corruption bugs), and built-in exception handling with compile-time type checking.</li>
+<li><mark>Architecture neutral</mark>: no implementation-dependent feature sizes — e.g. <code>int</code> is always 4 bytes in Java on every platform (exact <code>int</code> sizes in C vary by compiler/platform; the exam point is that Java's size is fixed everywhere).</li>
+<li><mark>Portable</mark>: the same bytecode file can be carried to any platform; the <code>javac</code> compiler itself is written in ANSI C for a clean portability boundary.</li>
+<li><mark>Dynamic</mark>: more adaptive to an evolving environment than C/C++; carries extensive run-time information to verify and resolve access to objects.</li>
+<li><mark>Interpreted</mark>: bytecode is translated on the fly into native machine instructions and is not stored anywhere — it can be interpreted on any system that provides a JVM.</li>
+<li><mark>High performance</mark>: the JIT (Just-In-Time) compiler translates bytecode directly into native machine code for very high speed.</li>
+<li><mark>Multithreaded</mark>: supports writing programs that do many things at once; each thread is like a separate program executing concurrently, and threads share one common memory area.</li>
+<li><mark>Distributed</mark>: designed for the distributed environment of the internet; Java's Remote Method Invocation (RMI) lets a program call methods on another machine over a network.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Simple</b></div>
+<div class="b"><b>Object-Oriented</b></div>
+<div class="b hi"><b>Platform independent</b></div>
+<div class="b"><b>Secured</b></div>
+<div class="b hi"><b>Robust</b></div>
+<div class="b"><b>Architecture neutral</b></div>
+<div class="b hi"><b>Portable</b></div>
+<div class="b"><b>Dynamic</b></div>
+<div class="b hi"><b>Interpreted</b></div>
+<div class="b"><b>High performance</b></div>
+<div class="b hi"><b>Multithreaded</b></div>
+<div class="b"><b>Distributed</b></div>
+</div></div>
+<figcaption><b>Fig 1.32</b> · All 12 Java buzzwords at a glance</figcaption>
+<p class="draw">✍ Draw it: a 4-column, 3-row grid of 12 small boxes, one buzzword per box.</p></figure>
+<div class="mn"><b>Mnemonic</b> remember all 12 in three groups of four — <b>SOPS</b> (Simple, OOP, Platform-independent, Secured) · <b>RAPD</b> (Robust, Architecture-neutral, Portable, Dynamic) · <b>IHMD</b> (Interpreted, High-performance, Multithreaded, Distributed).</div>
+
+<p><b>What is Java, and where is it used?</b></p>
+<div class="def"><b>Definition:</b> Java is both a <mark>programming language</mark> and a <mark>platform</mark> — a platform is any hardware or software environment in which a program runs; Java supplies its own software platform, the JRE.</div>
+<ul>
+<li><mark>Standalone application</mark>: a desktop/window-based app installed on a machine, e.g. a media player or antivirus — built using AWT and Swing.</li>
+<li><mark>Web application</mark>: runs on the server and creates dynamic pages, e.g. <code>irctc.co.in</code> — built using Servlet, JSP.</li>
+<li><mark>Enterprise application</mark>: distributed applications such as banking systems — built using EJB.</li>
+<li><mark>Mobile application</mark>: apps for phones — built using Android or Java ME.</li>
+</ul>
+<p>Oracle/Sun's own long-standing marketing claim is that Java runs on roughly 3 billion devices worldwide — a promotional figure worth knowing for the exam, not one this course independently verifies.</p>
+
+<p><b>History of Java — how it got its name:</b></p>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Green Team<small>Sun engineers, June 1991</small></div>
+<div class="ar">first called</div>
+<div class="n">"Greentalk"<small>by James Gosling, .gt files</small></div>
+<div class="ar">renamed to</div>
+<div class="n hi">"Oak"<small>already trademarked elsewhere</small></div>
+<div class="ar">renamed in 1995 to</div>
+<div class="n hi">"Java"<small>after Java coffee</small></div>
+</div></div>
+<figcaption><b>Fig 1.31</b> · How Java got its name</figcaption>
+<p class="draw">✍ Draw it: 4 boxes in a row joined by labelled arrows: Green Team &rarr; Greentalk &rarr; Oak &rarr; Java.</p></figure>
+<ul>
+<li>The Java language project was started in <mark>June 1991</mark> by James Gosling, Mike Sheridan and Patrick Naughton — a small team of Sun engineers nicknamed the <mark>"Green Team"</mark> — to write software for digital devices such as set-top boxes and televisions.</li>
+<li>James Gosling first called the language <mark>"Greentalk"</mark>, with the file extension <code>.gt</code>.</li>
+<li>It was then renamed <mark>"Oak"</mark>. Oak is a symbol of strength and the national tree of several countries (the reason given in these notes); a commonly told alternative story is that it was named after an oak tree that stood outside Gosling's office — different sources give different reasons.</li>
+<li>In <mark>1995</mark> the name changed again because "Oak" was already a trademark of Oak Technologies. The team considered "dynamic", "revolutionary", "silk", "jolt", "DNA" before settling on <mark>"Java"</mark> — Gosling said Java was one of the top choices along with Silk.</li>
+<li>Java is also the name of an island in Indonesia famous for its coffee, and "java" is common slang for coffee — which is why the Java logo is a coffee cup.</li>
+<li>Java was originally developed by <mark>James Gosling</mark> at <mark>Sun Microsystems</mark> and released in <mark>1995</mark>; Sun Microsystems was later acquired by <mark>Oracle Corporation in 2010</mark>.</li>
+</ul>
+
+<div class="recall"><b>Quick recall</b> JDK = JRE + Tools; JRE = JVM + Libraries; JVM executes bytecode. Java is platform independent because of bytecode. 12 buzzwords, 6 OOP pillars, born 1991 as "Oak", renamed "Java" in 1995.</div>
+<a class="top" href="#top">↑ top</a></section>

@@ -1,0 +1,51 @@
+<section class="topic" id="u2-storage">
+<h3>2.8 Data Storage</h3>
+<p class="hook">Storage decides where data lives: fast but small memory near the CPU, or slow but huge disks and archives. <span class="hg">(tez aur chhota, ya dheema aur bada)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data storage</mark> in big data management is the choice of devices and systems that hold data so that it can be retrieved efficiently, considering <mark>capacity</mark>, <mark>speed</mark> (memory hierarchy), <mark>cost</mark> and how storage <mark>scales</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">CPU cache<small>fastest, smallest, costliest per GB</small></div>
+<div class="l">Main memory (RAM)<small>fast, volatile</small></div>
+<div class="l">SSD / flash<small>non-volatile, faster than HDD</small></div>
+<div class="l">Hard disk (HDD)<small>large, cheap, slower</small></div>
+<div class="l">Archive: tape / cold cloud<small>slowest, largest, cheapest</small></div>
+</div></div><figcaption><b>Fig 2.13</b> · Storage (memory) hierarchy: speed falls and capacity rises going down</figcaption><p class="draw">✍ Draw it: 5 stacked boxes top to bottom; write "faster" arrow up on the side, "bigger, cheaper" arrow down.</p></figure>
+<ul>
+<li><mark>Memory hierarchy</mark>: moving up = faster access, higher cost per GB, smaller size; moving down = the reverse.</li>
+<li><mark>Capacity</mark>: how much data now and how much after growth (estimate from ingestion rate, 2.7).</li>
+<li><mark>Volatile vs non-volatile</mark>: RAM loses data on power off; SSD, HDD, tape keep it.</li>
+<li><mark>Hot vs cold data</mark>: frequently used data on fast storage / in memory (in-memory systems like Spark cache); old data on cheap archive.</li>
+<li><mark>Scale up vs scale out</mark>: bigger storage in one machine vs more machines (distributed storage like HDFS). Detail in 2.11.</li>
+<li><mark>Storage choices</mark>: relational DB (structured), NoSQL (key-value, document, column, graph), distributed file system (HDFS), cloud object storage, data warehouse vs data lake.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Data warehouse</th><th>Data lake</th></tr>
+<tr><td>Data type</td><td>Structured, cleaned</td><td>Raw: structured, semi-, unstructured</td></tr>
+<tr><td>Schema</td><td>Schema-on-write (fixed before load)</td><td>Schema-on-read (applied when used)</td></tr>
+<tr><td>Users</td><td>Business analysts, reports</td><td>Data scientists, exploration</td></tr>
+<tr><td>Storage cost</td><td>Higher</td><td>Lower (cheap bulk storage)</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Point</th><th>Primary (RAM)</th><th>Secondary (SSD/HDD)</th></tr>
+<tr><td>Speed</td><td>Very fast</td><td>Slower</td></tr>
+<tr><td>Volatility</td><td>Volatile</td><td>Non-volatile</td></tr>
+<tr><td>Cost per GB</td><td>High</td><td>Low</td></tr>
+<tr><td>Capacity</td><td>GBs</td><td>TBs to PBs (with many disks)</td></tr>
+</table></div>
+<h4>Storage Models</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>File-based</b>HDFS: large files split into blocks across many nodes, replicated for fault tolerance</div>
+<div class="b"><b>NoSQL databases</b>flexible schema for semi-/unstructured data: key-value, document, column-family, graph</div>
+<div class="b"><b>Cloud storage</b>managed, elastic services: AWS S3, Azure Data Lake, Google Cloud Storage</div>
+</div></div><figcaption><b>Fig 2.51</b> · Three big-data storage models</figcaption><p class="draw">✍ Draw it: 3 boxes side by side, title + one line in each.</p></figure>
+<ul>
+<li><mark>File-based storage</mark>: HDFS is the backbone of Hadoop storage — large files are split into blocks spread across many nodes, replicated so no data is lost if a node fails.</li>
+<li><mark>NoSQL databases</mark>: built for scale and flexibility with semi-structured / unstructured data. Four types: <mark>key-value</mark> (Redis, DynamoDB), <mark>document</mark> (MongoDB), <mark>column-family</mark> (Cassandra, HBase) and <mark>graph</mark> (Neo4j) — for connected data such as social networks.</li>
+<li><mark>Cloud (object) storage</mark>: managed services that store petabytes with elasticity, paying only for what is used — e.g. AWS S3, Azure Data Lake, Google Cloud Storage.</li>
+<li><mark>Key features to check</mark> in any big data storage system: <mark>scalability</mark> (expands easily), <mark>fault tolerance</mark> (replication so failures don't lose data), <mark>high availability</mark> (data always reachable).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Hierarchy top to bottom <b>"Clever Rats Steal Hot Tea"</b> = Cache, RAM, SSD, HDD, Tape. Storage models = <b>"F-N-C"</b>: File-based, NoSQL, Cloud.</div>
+<div class="note"><b>Common mistake:</b> saying SSD is volatile. SSD is non-volatile; only RAM (and cache) are volatile.</div>
+<div class="note"><b>Common mistake:</b> the notes list only 3 NoSQL types under storage (key-value, column-based, document) — missing the 4th, standard type: <mark>graph databases</mark> (e.g. Neo4j), used for highly connected data such as social graphs or recommendation networks.</div>
+<div class="recall"><b>Quick recall</b> Cache → RAM → SSD → HDD → Tape: speed down, capacity up, cost per GB down; choose by capacity, speed, cost, scale. Storage models: file-based (HDFS), NoSQL (4 types), cloud object storage — checked for scalability, fault tolerance, high availability.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

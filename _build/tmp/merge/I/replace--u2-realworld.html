@@ -1,0 +1,54 @@
+<section class="topic" id="u2-realworld">
+<h3>2.14 Real-world data science example and advanced techniques</h3>
+<p class="hook">Example: a streaming service (like Netflix) deciding which shows to put in front of each user. <span class="hg">(har user ko uski pasand ki film)</span></p>
+<div class="def"><b>Definition:</b> A <mark>recommendation system</mark> is a data science application that predicts which items (movies, products, songs) a user is likely to prefer, using the user's past behaviour and the behaviour of similar users.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Question: what should each user watch next?</div>
+<div class="n">Acquire: viewing history, ratings, searches, device, time</div>
+<div class="n">Prepare: clean logs, remove bots, build user × show matrix</div>
+<div class="n hi">Analyze: collaborative filtering, matrix factorisation, deep learning</div>
+<div class="n">Report: A/B test results, watch-time dashboards</div>
+<div class="n t">Act: personalised home page for every user</div>
+</div></div><figcaption><b>Fig 2.16</b> · A recommendation system walked through the five data science steps</figcaption><p class="draw">✍ Draw it: six boxes top to bottom, ovals at both ends; write the step name first in each box.</p></figure>
+<ul>
+<li><mark>Well-known fact</mark>: Netflix ran the <mark>Netflix Prize</mark> (2006–2009), a public competition with a US$1 million prize for improving its rating-prediction accuracy by 10%; the winning solutions relied heavily on <mark>matrix factorisation</mark> and ensembles of many models.</li>
+<li>Netflix has described on its technology blog that it also <mark>personalises the artwork</mark> (thumbnail) shown for a title for each user.</li>
+<li>Similar systems: Amazon product suggestions, YouTube videos, Spotify playlists, Flipkart "customers also bought".</li>
+</ul>
+<h4>Advanced techniques used</h4>
+<div class="tw"><table><tr><th>Technique</th><th>What it does here</th></tr>
+<tr><td><b>Collaborative filtering</b></td><td>Recommends what <mark>similar users</mark> liked (user-based) or items similar to what you liked (item-based)</td></tr>
+<tr><td><b>Matrix factorisation</b></td><td>Breaks the huge, mostly empty user × item rating matrix into small <mark>hidden taste factors</mark> to predict missing ratings</td></tr>
+<tr><td><b>Content-based filtering</b></td><td>Uses item features (genre, cast, language) to find shows similar to watched ones</td></tr>
+<tr><td><b>Deep learning</b></td><td>Neural networks learn complex patterns from long viewing sequences</td></tr>
+<tr><td><b>NLP</b></td><td>Reads titles, descriptions and reviews; <mark>sentiment analysis</mark> of text</td></tr>
+<tr><td><b>Computer vision</b></td><td>Analyses images to choose attractive thumbnails</td></tr>
+<tr><td><b>Clustering</b></td><td>Groups users with similar tastes into segments</td></tr>
+<tr><td><b>Time-series forecasting</b></td><td>Predicts demand to plan server capacity</td></tr>
+<tr><td><b>A/B testing</b></td><td>Shows two versions to two random user groups and keeps the one with more watch time</td></tr>
+<tr><td><b>Big data processing</b></td><td>Spark / Hadoop jobs process billions of viewing events</td></tr></table></div>
+<div class="ex"><b>Worked example: user-based collaborative filtering</b> (computed in Python) · ratings for 5 shows, 0 = not watched
+<div class="step">A = (5, 4, 0, 1, 5),  B = (4, 5, 0, 1, 4),  C = (1, 0, 5, 4, 1)</div>
+<div class="step">Cosine similarity = (A·B) / (|A| × |B|)</div>
+<div class="step">A·B = 20 + 20 + 0 + 1 + 20 = 61;  |A| = √67 = 8.185;  |B| = √58 = 7.616</div>
+<div class="step">sim(A, B) = 61 / (8.185 × 7.616) = 0.979</div>
+<div class="step">A·C = 5 + 0 + 0 + 4 + 5 = 14;  |C| = √43 = 6.557;  sim(A, C) = 14 / (8.185 × 6.557) = 0.261</div>
+<span class="ans">B is most similar to A (0.979 vs 0.261) ⇒ recommend to A the shows B rated highly that A has not watched</span>
+</div>
+<div class="tw"><table><tr><th>Other real-world uses</th><th>Technique</th></tr>
+<tr><td>UPI / credit card fraud detection</td><td>Classification, anomaly (outlier) detection in real time</td></tr>
+<tr><td>Food delivery time estimate</td><td>Regression on distance, traffic, restaurant prep time</td></tr>
+<tr><td>Crop disease detection from leaf photos</td><td>Deep learning (computer vision)</td></tr>
+<tr><td>Weather and demand forecasting</td><td>Time-series models</td></tr>
+<tr><td>Customer support chatbots</td><td>NLP</td></tr>
+<tr><td>Early disease diagnosis (diabetes, heart disease)</td><td>Classification on medical records + image data</td></tr>
+<tr><td>Self-driving cars, facial recognition</td><td>Deep learning (computer vision / image recognition)</td></tr>
+<tr><td>Real-time trading (statistical arbitrage)</td><td>Pattern / anomaly detection on large-scale market data</td></tr>
+<tr><td>Flight-delay prediction, dynamic pricing (travel)</td><td>Regression / classification on historical + live data</td></tr></table></div>
+<ul>
+<li><mark>Grouped by domain</mark> (an exam-friendly way to organise these): <b>Travel</b> — dynamic pricing, flight-delay prediction; <b>Marketing</b> — cross-sell/upsell, churn prediction, sentiment analysis; <b>Healthcare</b> — disease prediction, medication effectiveness; <b>Sales</b> — discount offers, demand forecasting; <b>Credit &amp; insurance</b> — claims prediction, fraud &amp; risk detection; <b>Automation</b> — self-driving cars, pilotless drones.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"C-M-D-N"</b> core recommender toolkit = <b>C</b>ollaborative filtering, <b>M</b>atrix factorisation, <b>D</b>eep learning, <b>N</b>LP; checked by <b>A/B testing</b>.</div>
+<div class="recall"><b>Quick recall</b> Recommendation system: acquire viewing data → prepare user × item matrix → collaborative filtering / matrix factorisation / deep learning → A/B test → personalised page. Cosine similarity finds similar users.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

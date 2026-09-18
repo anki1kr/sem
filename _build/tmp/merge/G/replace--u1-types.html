@@ -1,0 +1,33 @@
+<section class="topic" id="u1-types">
+<h3>1.3 Types of Big Data</h3>
+<p class="hook">Data comes in three shapes: neat tables, tagged text, and a free-form pile. <span class="hg">(table, tag wala, aur bikhra hua)</span></p>
+<div class="def"><b>Definition:</b> Based on organisation, big data is classified as <mark>structured</mark> (fixed schema, rows and columns), <mark>semi-structured</mark> (self-describing tags or keys but no rigid schema) and <mark>unstructured</mark> (no predefined data model).</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Big data types</span><ul>
+<li><span>Structured</span><ul><li><span>RDBMS tables</span></li><li><span>Spreadsheets</span></li></ul></li>
+<li><span>Semi-structured</span><ul><li><span>JSON / XML</span></li><li><span>Email headers</span></li></ul></li>
+<li><span>Unstructured</span><ul><li><span>Text documents</span></li><li><span>Images, video</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.3</b> · Classification of big data by structure</figcaption><p class="draw">✍ Draw it: root box, three child boxes, two example boxes under each.</p></figure>
+<ul>
+<li><mark>Structured</mark>: predefined schema, stored in rows/columns, easy to query with SQL. Examples: bank account table, student marks sheet, IRCTC booking records.</li>
+<li><mark>Semi-structured</mark>: no fixed table schema, but tags/keys mark the fields, so it is self-describing. Examples: JSON from an API, XML files, email (header fields + free body), web server logs.</li>
+<li><mark>Unstructured</mark>: no data model; needs special processing (text mining, image/speech analysis). Examples: WhatsApp messages, YouTube videos, CCTV footage, PDFs, call recordings.</li>
+<li>Many books note that <mark>unstructured data</mark> forms the largest share of today's data; the exact percentage quoted varies by source.</li>
+<li>Some sources put this as high as <mark>~80%</mark> of an organisation's data being unstructured — a widely repeated estimate useful for a sense of scale, not a number to cite as an exact measurement.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr>
+<tr><td>Schema</td><td>Fixed, before storing</td><td>Flexible, inside the data (tags/keys)</td><td>None</td></tr>
+<tr><td>Storage</td><td>RDBMS, data warehouse</td><td>Document DBs, XML/JSON files</td><td>HDFS, data lakes, object stores</td></tr>
+<tr><td>Querying</td><td>Easy (SQL)</td><td>Moderate (XPath, JSON queries)</td><td>Hard (text/image analytics)</td></tr>
+<tr><td>Scalability</td><td>Harder</td><td>Better</td><td>Very high</td></tr>
+<tr><td>Example</td><td>Employee table</td><td>JSON order record</td><td>Product review video</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> One online order, three types:
+<div class="step">Structured → orders table row: (order_id=501, amount=499, date=2024-05-10)</div>
+<div class="step">Semi-structured → {"order_id": 501, "items": [{"sku": "B12", "qty": 2}]}</div>
+<div class="step">Unstructured → customer's photo of a damaged parcel + review text</div>
+<span class="ans">Same business event, three data types</span></div>
+<div class="mn"><b>Mnemonic</b> <b>T</b>able · <b>T</b>agged · <b>P</b>ile → Structured · Semi-structured · Unstructured.</div>
+<div class="recall"><b>Quick recall</b> Structured = fixed schema (SQL tables); Semi = tags/keys (JSON, XML); Unstructured = no model (text, image, video).</div>
+<a class="top" href="#top">↑ top</a>
+</section>

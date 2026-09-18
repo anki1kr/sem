@@ -1,0 +1,116 @@
+<section class="topic" id="u2-interface">
+<h3>2.16 Interface and multiple inheritance</h3>
+<p class="hook">An interface is a contract, like a phone charging port standard: any company's phone that implements it must provide those pins. <span class="hg">(interface = wada, class ko nibhana padega)</span></p>
+<div class="def"><b>Definition:</b> An <mark>interface</mark> is a reference type declared with the <code>interface</code> keyword that contains abstract methods (and constants) specifying what a class must do. A class uses <code>implements</code> to accept the contract and must provide bodies for all its abstract methods. A class can implement <mark>many interfaces</mark>, which is how Java achieves multiple inheritance.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>class to class</b><code>extends</code>, only one</div>
+<div class="b hi"><b>class to interface</b><code>implements</code>, many allowed</div>
+<div class="b"><b>interface to interface</b><code>extends</code>, many allowed</div>
+</div></div><figcaption><b>Fig 2.34</b> · Which keyword joins which kind of type</figcaption><p class="draw">✍ Draw it: three boxes side by side, write the pair on top and the keyword below.</p></figure>
+<ul>
+<li>Methods are <mark>public abstract</mark> by default; variables are <mark>public static final</mark> (constants).</li>
+<li>No constructors, no object creation: <code>new Camera()</code> is an error.</li>
+<li>Implementing methods must be declared <mark>public</mark> in the class.</li>
+<li>Java 8 added <mark>default methods</mark> (with a body, e.g. <code>volume()</code>) and static methods in interfaces; Java 9 added private methods.</li>
+<li><mark>Multiple inheritance</mark>: <code>class Smartphone implements Camera, MusicPlayer</code> (Fig 2.20). A class can extend one class and implement many interfaces together: <code>class A extends B implements X, Y</code>.</li>
+<li>An interface <code>extends</code> other interfaces, not <code>implements</code> them, and — unlike a class — it may extend <mark>more than one</mark> interface at a time.</li>
+<li>A field inside an interface must be <mark>initialised at the point of declaration</mark>, since it is implicitly <code>final</code> and can never be assigned later: <code>int MAX = 100;</code></li>
+<li>If a class implements an interface but leaves even one abstract method without a body, that class itself must be declared <code>abstract</code> — the same rule that governs abstract classes (2.15).</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Amphibious<br>extends Flyable, Swimmable</span><ul>
+<li><span>Flyable<br>fly()</span></li><li><span>Swimmable<br>swim()</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.70</b> · One interface extending two interfaces at once: Amphibious inherits fly() and swim(), and adds walk() of its own</figcaption><p class="draw">✍ Draw it: shaded root box Amphibious, two child boxes Flyable and Swimmable joined below it.</p></figure>
+<p>Program: multiple inheritance through interfaces, with a default method.</p>
+<pre class="code" data-file="InterfaceDemo.java"><code><span class="k">interface</span> Camera {
+    <span class="k">void</span> click();                        <span class="c">// public abstract by default</span>
+}
+
+<span class="k">interface</span> MusicPlayer {
+    <span class="k">void</span> play();
+    <span class="k">default</span> <span class="k">void</span> volume() {              <span class="c">// Java 8 default method (has a body)</span>
+        System.out.println("Volume set to 50");
+    }
+}
+
+<span class="k">class</span> Smartphone <span class="k">implements</span> Camera, MusicPlayer {   <span class="c">// multiple inheritance</span>
+    <span class="k">public</span> <span class="k">void</span> click() { System.out.println("Photo clicked"); }
+    <span class="k">public</span> <span class="k">void</span> play()  { System.out.println("Song playing"); }
+}
+
+<span class="k">public</span> <span class="k">class</span> InterfaceDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Smartphone s = <span class="k">new</span> Smartphone();
+        s.click();
+        s.play();
+        s.volume();
+        Camera c = s;  c.click();        <span class="c">// interface-type reference</span>
+    }
+}</code></pre>
+<pre class="out">Photo clicked
+Song playing
+Volume set to 50
+Photo clicked</pre>
+<p>Program: an interface can declare <mark>constants</mark> (implicitly <code>public static final</code>), used directly by an implementing class or through the interface name.</p>
+<pre class="code" data-file="InterfaceConstants.java"><code><span class="k">interface</span> Constants {
+    <span class="k">int</span> MAX = 100;                <span class="c">// implicitly public static final; must be initialised</span>
+}
+
+<span class="k">class</span> Config <span class="k">implements</span> Constants {
+    <span class="k">void</span> show() {
+        System.out.println("MAX = " + MAX);   <span class="c">// used directly, like an inherited constant</span>
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> InterfaceConstants {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Config c = <span class="k">new</span> Config();
+        c.show();
+        System.out.println("Direct access: " + Constants.MAX);   <span class="c">// through the interface name</span>
+    }
+}</code></pre>
+<pre class="out">MAX = 100
+Direct access: 100</pre>
+<p>Program: <mark>interface extending interfaces</mark> — <code>Amphibious</code> extends both <code>Flyable</code> and <code>Swimmable</code> (Fig 2.70); a class implementing <code>Amphibious</code> must supply a body for all three abstract methods.</p>
+<pre class="code" data-file="InterfaceExtendsDemo.java"><code><span class="k">interface</span> Flyable {
+    <span class="k">void</span> fly();
+}
+
+<span class="k">interface</span> Swimmable {
+    <span class="k">void</span> swim();
+}
+
+<span class="k">interface</span> Amphibious <span class="k">extends</span> Flyable, Swimmable {   <span class="c">// interface extending TWO interfaces</span>
+    <span class="k">void</span> walk();
+}
+
+<span class="k">class</span> Duck <span class="k">implements</span> Amphibious {                  <span class="c">// must implement all THREE abstract methods</span>
+    <span class="k">public</span> <span class="k">void</span> fly()  { System.out.println("Duck flies"); }
+    <span class="k">public</span> <span class="k">void</span> swim() { System.out.println("Duck swims"); }
+    <span class="k">public</span> <span class="k">void</span> walk() { System.out.println("Duck walks"); }
+}
+
+<span class="k">public</span> <span class="k">class</span> InterfaceExtendsDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Duck d = <span class="k">new</span> Duck();
+        d.fly();
+        d.swim();
+        d.walk();
+    }
+}</code></pre>
+<pre class="out">Duck flies
+Duck swims
+Duck walks</pre>
+<div class="tw"><table>
+<tr><th>Abstract class</th><th>Interface</th></tr>
+<tr><td>Keyword <code>abstract class</code></td><td>Keyword <code>interface</code></td></tr>
+<tr><td>Abstract and concrete methods</td><td>Abstract methods (plus default/static since Java 8)</td></tr>
+<tr><td>Any kind of variables</td><td>Only <code>public static final</code> constants</td></tr>
+<tr><td>Can have constructors</td><td>No constructors</td></tr>
+<tr><td>Child uses <code>extends</code>; only one</td><td>Class uses <code>implements</code>; many</td></tr>
+<tr><td>Members can be private, protected, etc.</td><td>Methods are public by default</td></tr>
+<tr><td>Partial abstraction</td><td>Full abstraction (before Java 8)</td></tr>
+<tr><td>Use for closely related classes (IS-A)</td><td>Use for a capability many classes share (can-do)</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> writing <code>void click()</code> without <code>public</code> in the implementing class. It reduces access from public, so it does not compile.</div>
+<div class="recall"><b>Quick recall</b> interface = contract of public abstract methods + public static final constants (must be initialised); class implements many, so multiple inheritance is possible; an interface itself can extend more than one interface.</div>
+<a class="top" href="#top">↑ top</a></section>

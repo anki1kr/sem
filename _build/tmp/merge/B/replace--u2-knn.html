@@ -1,0 +1,109 @@
+<section class="topic" id="u2-knn">
+<h3>2.2 Nearest-Neighbours (K-Nearest Neighbours, KNN)</h3>
+<p class="hook">"Tell me who your neighbours are, I'll tell you who you are." A new student in a hostel is guessed to like cricket if most of the nearest roommates do. <span class="hg">(jaisa padosi, waisa tum)</span></p>
+<div class="def"><b>Definition:</b> <mark>K-Nearest Neighbours</mark> is a non-parametric, instance-based supervised algorithm that classifies a new point by the <b>majority class of its k closest training points</b> (for regression: the average of their values), closeness measured by a distance such as Euclidean distance.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 490 470" width="490">
+<path class="arr" d="M40 410 H455"/><path class="arr" d="M40 410 V30"/>
+<text class="s" x="464" y="410">x</text><text class="s" x="26" y="34">y</text>
+<circle class="none dash" cx="250" cy="230" r="140"/>
+<circle class="dot" cx="70" cy="230" r="6"/><text x="70" y="212">A</text>
+<circle class="dot" cx="190" cy="290" r="6"/><text x="190" y="272">B</text>
+<circle class="dot" cx="250" cy="350" r="6"/><text class="l" x="264" y="350">C</text>
+<circle cx="310" cy="230" r="6"/><text x="310" y="212">D</text>
+<circle cx="370" cy="110" r="6"/><text x="370" y="92">E</text>
+<circle cx="310" cy="50" r="6"/><text x="310" y="32">F</text>
+<rect class="hi" x="243" y="223" width="14" height="14"/><text x="250" y="256">Q (3,3)</text>
+<circle class="dot" cx="420" cy="300" r="6"/><text class="l" x="432" y="300">Red</text>
+<circle cx="420" cy="325" r="6"/><text class="l" x="432" y="325">Blue</text>
+<rect class="hi" x="414" y="344" width="12" height="12"/><text class="l" x="432" y="350">Query</text>
+<text class="s" x="250" y="444">dashed circle holds the k = 3 nearest</text>
+</svg></div><figcaption><b>Fig 2.3</b> · KNN: query Q and the circle holding its 3 nearest neighbours (D, B, C)</figcaption><p class="draw">✍ Draw it: x-y axes, filled dots (Red), hollow dots (Blue), a square for Q, dashed circle around Q through the 3rd nearest point.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Training data + query point + k</div>
+<div class="n">Compute distance to every training point</div>
+<div class="n">Sort distances in ascending order</div>
+<div class="n">Take the k nearest points</div>
+<div class="n hi">Majority vote of their classes</div>
+<div class="n io">Output predicted class</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.4</b> · KNN algorithm flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 4 process boxes top to bottom, parallelogram, oval.</p></figure>
+<h4>Distance formulas (points p = (x1, y1), q = (x2, y2))</h4>
+<ul>
+<li><mark>Euclidean distance</mark> (straight-line distance): $$d = \sqrt{(x_1 - x_2)^2 + (y_1 - y_2)^2}$$ In $n$ dimensions: $d = \sqrt{\sum (p_i - q_i)^2}$.</li>
+<li><mark>Manhattan distance</mark> $d = |x_1 - x_2| + |y_1 - y_2|$ (city-block distance, like walking along Chandigarh's grid of sectors). <span class="hg">(gali-gali chal ke)</span></li>
+<li><mark>Minkowski</mark> $d = \left(\sum |p_i - q_i|^p\right)^{1/p}$; $p = 1$ gives Manhattan, $p = 2$ gives Euclidean.</li>
+</ul>
+<h4>Key points</h4>
+<ul>
+<li><mark>Choosing k</mark>: small $k$ ($k = 1$) is noisy and overfits; large $k$ smooths too much and underfits. Pick $k$ by trying values on validation data; a common rule of thumb starts near $\sqrt{n}$.</li>
+<li><mark>Odd k</mark> for two classes avoids a tie in voting ($k = 3, 5, 7$).</li>
+<li><mark>Feature scaling</mark> is compulsory: a feature measured in lakhs (salary) swamps one measured in years (age). Use min-max normalisation or standardisation first.</li>
+<li><mark>Lazy learner</mark>: no training phase, it just stores data; all work happens at prediction time, so prediction is slow for big data. <span class="hg">(exam ke din hi padhta hai)</span></li>
+<li><mark>Weighted KNN</mark>: closer neighbours get larger vote weight (e.g. $1/\text{distance}$).</li>
+</ul>
+<div class="ex"><b>Worked example</b> (values computed in Python, 3 decimals)
+<div class="step">Training: A(0,3) Red, B(2,2) Red, C(3,1) Red, D(4,3) Blue, E(5,5) Blue, F(4,6) Blue. Query $Q = (3,3)$, $k = 3$.</div>
+<div class="tw"><table><tr><th>Point</th><th>Class</th><th>Euclidean $= \sqrt{(x-3)^2 + (y-3)^2}$</th><th>Distance</th><th>Manhattan</th><th>Rank</th></tr>
+<tr><td>D(4,3)</td><td>Blue</td><td>$\sqrt{1 + 0} = \sqrt{1}$</td><td>1.000</td><td>1</td><td>1</td></tr>
+<tr><td>B(2,2)</td><td>Red</td><td>$\sqrt{1 + 1} = \sqrt{2}$</td><td>1.414</td><td>2</td><td>2</td></tr>
+<tr><td>C(3,1)</td><td>Red</td><td>$\sqrt{0 + 4} = \sqrt{4}$</td><td>2.000</td><td>2</td><td>3</td></tr>
+<tr><td>E(5,5)</td><td>Blue</td><td>$\sqrt{4 + 4} = \sqrt{8}$</td><td>2.828</td><td>4</td><td>4</td></tr>
+<tr><td>A(0,3)</td><td>Red</td><td>$\sqrt{9 + 0} = \sqrt{9}$</td><td>3.000</td><td>3</td><td>5</td></tr>
+<tr><td>F(4,6)</td><td>Blue</td><td>$\sqrt{1 + 9} = \sqrt{10}$</td><td>3.162</td><td>4</td><td>6</td></tr></table></div>
+<div class="step">$k = 3$ nearest: D (Blue), B (Red), C (Red) → votes Red = 2, Blue = 1.</div>
+<div class="step">Compare $k = 1$: only D → Blue. So the answer depends on k.</div>
+<span class="ans">$k = 3$ → Q is classified Red</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Very simple, no training time</td><td>Slow prediction (distance to every point)</td></tr>
+<tr><td>Works for classification and regression</td><td>Needs feature scaling</td></tr>
+<tr><td>Naturally handles many classes</td><td>Sensitive to noise and irrelevant features</td></tr>
+<tr><td>Non-linear boundaries for free</td><td>Poor in high dimensions (curse of dimensionality); memory heavy</td></tr></table></div>
+<ul><li><mark>Applications</mark>: recommendation ("users similar to you liked"), handwritten digit recognition, simple medical diagnosis from similar patients, filling missing values (KNN imputation).</li></ul>
+<h4>Effect of the value of k</h4>
+<p>The same query can flip class as $k$ changes, which is exactly why $k$ is tuned, not fixed at 1.</p>
+<div class="ex"><b>Worked example</b> (computed in Python, 3 decimals) · A(1,1) Red, B(2,2) Red, C(3,2) Blue, D(4,3) Blue, E(5,4) Blue; query $Q = (3,3)$
+<div class="step">Sorted distances from $Q$: C 1.000 Blue, D 1.000 Blue, B 1.414 Red, E 2.236 Blue, A 2.828 Red</div>
+<div class="step">$k=1$: nearest is C/D → Blue.  $k=3$: C, D, B → Blue 2, Red 1 → Blue.  $k=5$: Blue = C,D,E = 3, Red = A,B = 2 → Blue</div>
+<span class="ans">All three of $k=1,3,5$ agree here (Blue) — on a different dataset a larger $k$ CAN change the answer, so it must be checked, never assumed.</span></div>
+<h4>Minkowski distance — worked example</h4>
+<div class="ex"><b>Worked example</b> (computed in Python, 3 decimals) · $P = (2,3)$, $Q = (5,7)$, $p = 3$
+<div class="step">$$d = \left(|2-5|^3 + |3-7|^3\right)^{1/3} = (3^3+4^3)^{1/3} = (27+64)^{1/3} = 91^{1/3}$$</div>
+<span class="ans">$d \approx 4.498$</span></div>
+<h4>Feature scaling before KNN</h4>
+<p>KNN is purely distance-based, so a feature on a bigger numeric scale (salary in ₹) silently dominates one on a small scale (age in years). <mark>Min-Max normalisation</mark> fixes this: $$x' = \frac{x - x_{min}}{x_{max} - x_{min}}$$</p>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · A(20, 30000) No, B(25, 40000) No, C(30, 50000) Yes, D(35, 60000) Yes; query $Q = (28, 45000)$, $k=1$
+<div class="step">Age: min 20, max 35 → $Q'_{age} = \dfrac{28-20}{35-20} = 0.533$. Salary: min 30000, max 60000 → $Q'_{sal} = \dfrac{45000-30000}{60000-30000} = 0.500$</div>
+<div class="step">Scaled table: A(0, 0), B(0.333, 0.333), C(0.667, 0.667), D(1, 1). Distances from $Q' = (0.533, 0.500)$: A 0.7311, B 0.2603, C 0.2134, D 0.6839</div>
+<span class="ans">Nearest = C → Q is classified <b>Yes</b> (without scaling, the salary column alone would have decided the answer)</span></div>
+<h4>Weighted KNN</h4>
+<p>Weighted KNN gives each neighbour a vote of $$w_i = \frac{1}{d_i}$$ instead of one vote each, so one very close neighbour can outweigh two farther ones.</p>
+<div class="ex"><b>Worked example</b> (computed in Python, 3 decimals) · nearest 3 of some query: A dist 0.5 Red, B dist 1.5 Blue, C dist 2 Blue
+<div class="step">Ordinary majority vote: Blue = 2, Red = 1 → Blue</div>
+<div class="step">Weights $w = 1/d$: $w_A = 1/0.5 = 2$, $w_B = 1/1.5 = 0.667$, $w_C = 1/2 = 0.5$</div>
+<div class="step">Weighted vote: Red $= 2$;  Blue $= 0.667 + 0.5 = 1.167$</div>
+<span class="ans">Weighted KNN → <b>Red</b> — the OPPOSITE of the majority vote, because A is so close it outweighs B and C together</span></div>
+<h4>KNN for regression</h4>
+<p>For a numeric target, KNN averages the neighbours' values instead of voting: plain average $\hat{y} = \dfrac{1}{k}\sum y_i$, or weighted $\hat{y} = \dfrac{\sum w_i y_i}{\sum w_i}$ with $w_i = 1/d_i$.</p>
+<div class="ex"><b>Worked example</b> (computed in Python, 2 decimals) · house size vs price (₹ lakh): A(1000,50) B(1200,60) C(1500,75) D(1800,90) E(2000,100); predict the price at size 1600, $k=3$
+<div class="step">Distances (1D, $|x_1-x_2|$): C 100, D 200, B 400 are the 3 nearest → prices 75, 90, 60</div>
+<div class="step">Plain average: $\hat{y} = \dfrac{75+90+60}{3} = 75$</div>
+<div class="step">Weighted ($w = 1/d$): $w_C = 0.01$, $w_D = 0.005$, $w_B = 0.0025$; $\hat{y} = \dfrac{0.01(75)+0.005(90)+0.0025(60)}{0.01+0.005+0.0025} = \dfrac{1.35}{0.0175}$</div>
+<span class="ans">Plain average $= 75$; weighted average $\approx 77.14$</span></div>
+<h4>Categorical features and tie-breaking</h4>
+<ul>
+<li>When features are categories, not numbers, use a <mark>matching (Hamming) distance</mark>: $d = $ number of mismatched attributes.</li>
+<li><mark>Tie</mark> (equal votes, e.g. $k=4$ giving 2-2): break it by (a) the single closest neighbour's class, (b) switching to an odd $k$, (c) weighted KNN, or (d) a fixed rule decided in advance.</li>
+</ul>
+<div class="ex"><b>Worked example</b> · A(Young,High) No, B(Young,Medium) No, C(Middle,High) Yes, D(Old,High) Yes; query (Middle, High)
+<div class="step">Mismatches: A = 1 (Age differs), B = 2 (both differ), C = 0 (both match), D = 1 (Age differs)</div>
+<span class="ans">Nearest = C (distance 0) → Purchased = <b>Yes</b></span></div>
+<h4>Choosing k, and judging the classifier</h4>
+<p>Try several $k$ on validation data and keep the one with the highest accuracy $\left(\text{Accuracy} = \dfrac{\text{Correct}}{\text{Total}} \times 100\right)$.</p>
+<div class="tw"><table><tr><th>$k$</th><td>1</td><td>3</td><td>5</td><td>7</td><td>9</td></tr><tr><th>Accuracy</th><td>85%</td><td>90%</td><td><b>95%</b></td><td>90%</td><td>80%</td></tr></table></div>
+<p>Highest accuracy is at $k = 5$, so $k = 5$ is chosen — never at $k=1$ by default, and never by a formula alone.</p>
+<div class="mn"><b>Mnemonic</b> <b>D-S-K-V</b>: <b>D</b>istance to all, <b>S</b>ort, pick <b>K</b>, <b>V</b>ote.</div>
+<div class="note"><b>Common mistake:</b> KNN has no "training" of weights. "k" is the number of neighbours, not the number of classes or clusters (that is k-means, an unsupervised method).</div>
+<div class="recall"><b>Quick recall</b> KNN = lazy learner; find k nearest by Euclidean distance, majority vote; odd k, scale features.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

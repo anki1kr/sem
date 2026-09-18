@@ -1,0 +1,69 @@
+<section class="topic" id="u2-apps">
+<h3>2.12 Real Big Data Management Applications</h3>
+<p class="hook">Real companies face all six management concerns at once: an energy utility with smart meters and a game-analytics company with millions of player events. <span class="hg">(asli duniya mein sab ek saath)</span></p>
+<div class="def"><b>Definition:</b> A <mark>big data management application</mark> is a real system in which an organisation ingests, stores, cleans, processes, scales and secures large, fast, varied data to support its operations and decisions.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Smart meters<small>usage readings</small></div><div class="ar">stream</div><div class="n">Ingestion<small>validate, flag errors</small></div><div class="n">Storage<small>distributed, time-stamped</small></div><div class="n">Analytics<small>demand, outages</small></div><div class="n hi">Actions<small>billing, load planning</small></div>
+</div></div><figcaption><b>Fig 2.18</b> · Energy utility (smart meter) data management pipeline</figcaption><p class="draw">✍ Draw it: 5 boxes in a row: Meters → Ingestion → Storage → Analytics → Actions; label first arrow "stream".</p></figure>
+<ul>
+<li><mark>Case studies used in the UCSD course</mark>: energy sector (<mark>ConEd</mark>, a New York utility), gaming industry (<mark>Apmetrix</mark>, game analytics), and flight data (<mark>FlightStats</mark>).</li>
+<li><mark>Energy utility</mark>:
+  <ul>
+  <li>Ingestion: continuous readings from a very large number of smart meters and grid sensors (high velocity).</li>
+  <li>Storage: time-series style data that keeps growing, so scale-out storage.</li>
+  <li>Quality: missing or faulty meter readings must be detected and estimated for correct bills.</li>
+  <li>Operations: aggregation of usage by area and time to forecast demand and detect outages.</li>
+  <li>Security/privacy: household usage reveals personal routines, so access control and encryption are needed.</li>
+  </ul></li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Players<small>phones, consoles</small></div><div class="ar">events</div><div class="n">Stream ingestion<small>clicks, purchases</small></div><div class="n">Scalable store<small>NoSQL / cluster</small></div><div class="n">Game analytics<small>retention, revenue</small></div><div class="n hi">Game changes<small>offers, balancing</small></div>
+</div></div><figcaption><b>Fig 2.19</b> · Gaming analytics data management pipeline</figcaption><p class="draw">✍ Draw it: 5 boxes in a row: Players → Stream ingestion → Store → Analytics → Game changes; label first arrow "events".</p></figure>
+<ul>
+<li><mark>Gaming analytics</mark>:
+  <ul>
+  <li>Ingestion: every player action (level start, purchase, quit) is an event from many devices and platforms (variety + velocity).</li>
+  <li>Scalability: player numbers spike at launch or weekends, so storage and processing must scale out elastically.</li>
+  <li>Operations: filter and aggregate events to measure retention, session length, in-game purchases.</li>
+  <li>Action: change difficulty, personalise offers, fix levels where players quit.</li>
+  <li>Security: player accounts and payment data must be protected.</li>
+  </ul></li>
+<li><mark>Flight data</mark>: flight status data from many airlines and airports must be integrated in near real time, cleaned of conflicting reports, and served quickly to apps and travellers.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Concern</th><th>Energy utility</th><th>Gaming analytics</th></tr>
+<tr><td>Ingestion</td><td>Meter readings at fixed intervals</td><td>Bursty player events</td></tr>
+<tr><td>Storage</td><td>Time-stamped, long history</td><td>Event logs, NoSQL</td></tr>
+<tr><td>Quality</td><td>Missing / faulty readings</td><td>Duplicate or out-of-order events</td></tr>
+<tr><td>Operations</td><td>Aggregate usage by area / hour</td><td>Aggregate by player / level</td></tr>
+<tr><td>Scalability</td><td>Grows with number of meters</td><td>Spikes at launches</td></tr>
+<tr><td>Security</td><td>Household privacy</td><td>Accounts and payments</td></tr>
+</table></div>
+<h4>Real-World Big Data Applications by Sector</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Healthcare</b>patient data analysis, outbreak prediction, AI medical imaging</div>
+<div class="b"><b>Finance</b>fraud detection, algorithmic trading, credit scoring</div>
+<div class="b"><b>Retail / e-commerce</b>recommendations, customer behaviour, supply-chain optimisation</div>
+<div class="b"><b>Social media</b>sentiment analysis, trend detection, targeted ads</div>
+</div></div><figcaption><b>Fig 2.56</b> · Real big data applications across four sectors</figcaption><p class="draw">✍ Draw it: 4 boxes in a row, sector name + 3 short examples in each.</p></figure>
+<ul>
+<li><mark>Healthcare</mark>: patient-data analysis for better diagnosis, predictive analytics for disease outbreaks, AI-based medical image analysis.</li>
+<li><mark>Finance</mark>: fraud detection in transactions, algorithmic trading, risk management and credit scoring.</li>
+<li><mark>E-commerce and retail</mark>: recommendation systems, predicting customer behaviour for marketing, inventory and supply-chain optimisation.</li>
+<li><mark>Social media</mark>: sentiment analysis of posts, trend detection (viral content, hashtags), targeted advertising from user activity.</li>
+<li><mark>Smart cities and IoT</mark>: traffic-flow monitoring, energy-consumption management, predictive maintenance of public infrastructure.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Everyday use case</th><th>How big data helps</th><th>Example</th></tr>
+<tr><td>Shopping / advertising</td><td>Track spending and search behaviour, then recommend and target ads to the right person</td><td>Amazon, Flipkart recommendations; ads retargeted after a search</td></tr>
+<tr><td>Smart traffic</td><td>Combine road cameras and cab GPS data to suggest jam-free, faster routes</td><td>Ola / Uber trip data</td></tr>
+<tr><td>Secure air travel</td><td>Sensor data (speed, temperature, moisture) predicts maintenance needs early</td><td>Aircraft engine / propeller sensors</td></tr>
+<tr><td>Autonomous vehicles</td><td>Camera + sensor data judges distance, speed and steering in real time</td><td>Self-driving car obstacle avoidance</td></tr>
+<tr><td>Virtual assistants</td><td>Location, time and question context are combined to answer naturally</td><td>Siri, Google Assistant, Amazon Alexa</td></tr>
+<tr><td>Education</td><td>Search / watch-interest data used to target the right course ad to the right learner</td><td>Course ads shown after a tutorial search</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Course cases <b>"Energy, Games, Flights"</b> = ConEd, Apmetrix, FlightStats ("Electric Game Flight"). Sectors <b>"H-F-E-S-S"</b>: Healthcare, Finance, E-commerce, Social media, Smart cities.</div>
+<div class="note"><b>Common mistake:</b> describing an application only by its analysis. For this topic, map the example to all six concerns (ingestion to security).</div>
+<div class="recall"><b>Quick recall</b> Energy (smart meters) and gaming (player events) pipelines: sources → ingestion → storage → analytics → action, with quality, scale and security at each stage. Sector tour: healthcare, finance, retail/supply-chain, social media, smart cities/IoT all run the same six concerns under different names.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

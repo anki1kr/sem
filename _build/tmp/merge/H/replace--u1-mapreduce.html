@@ -1,0 +1,60 @@
+<section class="topic" id="u1-mapreduce">
+<h3>1.10 MapReduce</h3>
+<p class="hook">MapReduce breaks one big job into many small parallel jobs (Map), then combines their answers (Reduce). <span class="hg">(kaam baanto, phir jodo)</span></p>
+<div class="def"><b>Definition:</b> <mark>MapReduce</mark> is a programming model and processing engine for parallel, distributed batch processing of large data sets, in which a <b>map</b> function converts input records into intermediate key–value pairs and a <b>reduce</b> function aggregates all values that share the same key.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Input file in HDFS</div>
+<div class="n">Input splits<small>one map task per split</small></div>
+<div class="n hi">Map<small>record → (key, value)</small></div>
+<div class="n hi">Shuffle and sort<small>group values by key</small></div>
+<div class="n hi">Reduce<small>(key, [values]) → result</small></div>
+<div class="n t">Output files in HDFS</div>
+</div></div><figcaption><b>Fig 1.14</b> · Phases of a MapReduce job</figcaption><p class="draw">✍ Draw it: six boxes top to bottom with arrows; ovals for first and last.</p></figure>
+<ul>
+<li><mark>Input split</mark>: logical chunk of input (usually one HDFS block); a <b>RecordReader</b> turns it into (key, value) records, e.g. (byte offset, line). Its job is purely to hand the Map function well-formed records — the key here is positional information, the value is the actual data.</li>
+<li><mark>Map phase</mark>: user's map function runs on each record in parallel on many nodes, producing intermediate (key, value) pairs. Map output is written to the node's <b>local disk</b>, not to HDFS. A map function may emit zero, one or many pairs per input record.</li>
+<li><mark>Combiner</mark> (optional): a "mini-reducer" on the map side that pre-aggregates to cut network transfer.</li>
+<li><mark>Partitioner</mark>: decides which reducer gets each key (default: hash of key mod number of reducers), commonly written as <code>partition = key.hashCode() % numReduceTasks</code>.</li>
+<li><mark>Shuffle and sort</mark>: framework transfers map outputs to reducers and sorts/groups them so each key arrives with a list of all its values. Shuffling can start as soon as some map tasks finish — it does not wait for every mapper to complete, which is part of why the pipeline overlaps rather than running fully sequentially.</li>
+<li><mark>Reduce phase</mark>: user's reduce function processes (key, list of values) and writes the final output to HDFS.</li>
+<li><mark>OutputFormat</mark>: once the reducer is done, a <b>RecordWriter</b> writes each final (key, value) pair to the output file, one record per line, key and value separated by whitespace.</li>
+<li>Formally: <code>map: (k1, v1) → list(k2, v2)</code>, <code>reduce: (k2, list(v2)) → list(k3, v3)</code>.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 300" width="760">
+<text class="b" x="95" y="30">Split</text><text class="b" x="275" y="30">Map</text><text class="b" x="460" y="30">Shuffle and sort</text><text class="b" x="670" y="30">Reduce</text>
+<rect x="20" y="55" width="150" height="64" rx="6"/><text x="95" y="87">deer bear river</text>
+<rect x="20" y="135" width="150" height="64" rx="6"/><text x="95" y="167">car car river</text>
+<rect x="20" y="215" width="150" height="64" rx="6"/><text x="95" y="247">deer car bear</text>
+<rect x="220" y="55" width="110" height="64" rx="6"/><text x="275" y="71">(deer,1)</text><text x="275" y="87">(bear,1)</text><text x="275" y="103">(river,1)</text>
+<rect x="220" y="135" width="110" height="64" rx="6"/><text x="275" y="151">(car,1)</text><text x="275" y="167">(car,1)</text><text x="275" y="183">(river,1)</text>
+<rect x="220" y="215" width="110" height="64" rx="6"/><text x="275" y="231">(deer,1)</text><text x="275" y="247">(car,1)</text><text x="275" y="263">(bear,1)</text>
+<rect class="hi" x="380" y="55" width="160" height="224" rx="6"/><text x="460" y="107">bear → [1,1]</text><text x="460" y="147">car → [1,1,1]</text><text x="460" y="187">deer → [1,1]</text><text x="460" y="227">river → [1,1]</text>
+<rect x="600" y="55" width="140" height="224" rx="6"/><text x="670" y="107">(bear, 2)</text><text x="670" y="147">(car, 3)</text><text x="670" y="187">(deer, 2)</text><text x="670" y="227">(river, 2)</text>
+<path class="arr" d="M170 87 H220"/><path class="arr" d="M170 167 H220"/><path class="arr" d="M170 247 H220"/>
+<path class="arr" d="M330 87 H380"/><path class="arr" d="M330 167 H380"/><path class="arr" d="M330 247 H380"/>
+<path class="arr" d="M540 167 H600"/>
+</svg></div><figcaption><b>Fig 1.15</b> · Word count with MapReduce</figcaption><p class="draw">✍ Draw it: four columns (Split, Map, Shuffle and sort, Reduce); 3 small boxes in the first two, one tall box in the last two, arrows left to right.</p></figure>
+<div class="ex"><b>Example</b> Word count for the three lines "deer bear river", "car car river", "deer car bear":
+<div class="step">Map emits (word, 1) for every word → 9 pairs in total</div>
+<div class="step">Shuffle/sort groups: bear→[1,1], car→[1,1,1], deer→[1,1], river→[1,1]</div>
+<div class="step">Reduce sums each list: bear = 1+1 = 2, car = 1+1+1 = 3, deer = 2, river = 2</div>
+<span class="ans">(bear,2) (car,3) (deer,2) (river,2)</span></div>
+<pre class="code"><code><span class="c">// pseudocode</span>
+map(key = offset, value = line):
+    for each word w in line:
+        emit(w, 1)
+
+reduce(key = word, values = [1, 1, ...]):
+    emit(word, sum(values))</code></pre>
+<div class="tw"><table>
+<tr><th>Point</th><th>Mapper</th><th>Reducer</th></tr>
+<tr><td>Input</td><td>(k1, v1) records from a split</td><td>(k2, list of v2) after shuffle</td></tr>
+<tr><td>Job</td><td>Filter / transform / emit pairs</td><td>Aggregate / summarise per key</td></tr>
+<tr><td>Parallelism</td><td>One task per input split</td><td>Number set by the job</td></tr>
+<tr><td>Output goes to</td><td>Local disk of the node</td><td>HDFS</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>S-M-S-R</b> = "<b>S</b>ab <b>M</b>ilke <b>S</b>ort <b>R</b>ukho": Split, Map, Shuffle/Sort, Reduce.</div>
+<div class="note"><b>Common mistake:</b> Sorting is not written by the programmer; the framework does shuffle and sort between Map and Reduce.</div>
+<div class="recall"><b>Quick recall</b> Map → (key, value); shuffle/sort groups by key; Reduce aggregates; map output on local disk, reduce output on HDFS; word count is the classic example.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

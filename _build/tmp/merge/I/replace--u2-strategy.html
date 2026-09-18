@@ -1,0 +1,91 @@
+<section class="topic" id="u2-strategy">
+<h3>2.2 Building a Big Data Strategy</h3>
+<p class="hook">A strategy is the plan that says why the organisation uses big data, who does it and how it spreads through the company. <span class="hg">(pehle goal, phir team, phir tools)</span></p>
+<div class="def"><b>Definition:</b> A <mark>big data strategy</mark> is an organisation's plan for using big data and analytics to meet clearly defined business objectives, covering the team, leadership buy-in, data sharing and policies, and an analytics-driven culture. The first step is always the <mark>business objective</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">Set business objectives</div>
+<div class="n">Build diverse team</div>
+<div class="n">Get organisational buy-in</div>
+<div class="n">Build in-house expertise</div>
+<div class="n">Try small, then deploy</div>
+<div class="n">Share data + define policies</div>
+<div class="n">Analytics-driven culture</div>
+<div class="n t">Review and adapt</div>
+</div></div><figcaption><b>Fig 2.2</b> · Steps in building a big data strategy (iterative)</figcaption><p class="draw">✍ Draw it: oval, 7 boxes top to bottom with arrows, oval "Review and adapt"; shade the first box.</p></figure>
+<ul>
+<li><mark>Business objectives</mark>: short-term and long-term goals, decided with all stakeholders and communicated to everyone. <span class="hg">(kya paana hai, pehle likho)</span></li>
+<li><mark>Diverse team</mark>: domain experts + statisticians / ML people + data engineers + programmers; no single "unicorn" knows all.</li>
+<li><mark>Organisational buy-in</mark>: commitment and sponsorship from top leadership; without it projects die.</li>
+<li><mark>In-house expertise</mark>: constant training on new tools; an internal "idea lab" to try things.</li>
+<li><mark>Start small</mark>: pilot analytics on a small scale, prove value, then deploy widely.</li>
+<li><mark>Share data, remove silos</mark>: departments should not hide data from each other.</li>
+<li><mark>Policies</mark>: rules for privacy, data quality, security, ownership and legal regulation.</li>
+<li><mark>Culture</mark>: decisions based on data, not gut feeling; strategy is revised as business grows.</li>
+</ul>
+<div class="ex"><b>Example</b><div class="step">Objective: an online grocery app wants to cut vegetable wastage.</div><div class="step">Team: supply-chain expert + data analyst + data engineer; CEO sponsors it.</div><div class="step">Pilot: demand forecasting in one city's warehouses first.</div><div class="step">Share: sales, stock and weather data joined; policy: customer data anonymised.</div><span class="ans">If pilot reduces wastage, roll out to all cities and make forecasting part of daily planning.</span></div>
+<h4>Before building a strategy: four things to settle first</h4>
+<ul>
+<li><mark>Clear objectives</mark>: a general understanding of what the project must achieve and which problem it solves.</li>
+<li><mark>Budget</mark>: a realistic estimate that also leaves room for contingencies.</li>
+<li><mark>Time frame</mark>: planned around resource availability and task dependencies; keep it flexible and avoid parallel changes.</li>
+<li><mark>Existing documentation</mark>: gathering what is already known about the current data and systems speeds up the start of the project.</li>
+</ul>
+<h4>Key components of a big data strategy (the document's own 5 parts — different from the 5 P's of data science in 2.4)</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c5">
+<div class="b hi"><b>Business goals</b>objectives the data must serve</div>
+<div class="b"><b>Prioritisation</b>rank use cases by ROI</div>
+<div class="b"><b>Governance policy</b>ownership, quality rules, access</div>
+<div class="b"><b>Privacy &amp; security</b>compliance + encryption + audits</div>
+<div class="b"><b>Data architecture</b>lake / warehouse / hybrid design</div>
+</div></div><figcaption><b>Fig 2.30</b> · Five components of a big data strategy document</figcaption><p class="draw">✍ Draw it: 5 small boxes side by side, title + 3-word meaning in each; shade Business goals.</p></figure>
+<ul>
+<li><mark>Business goals and objectives</mark>: specific, measurable targets (cut cost, raise satisfaction, find new revenue) that guide every later decision.</li>
+<li><mark>Prioritisation of use cases</mark>: a strategy can cover many use cases (predictive maintenance, sales forecasting, segmentation); tackle the ones with quick wins or the most pressing need first.</li>
+<li><mark>Data governance policy</mark>: who owns the data, what quality it must meet, and the rules for access and sharing — this is what stops data silos.</li>
+<li><mark>Data privacy and security needs</mark>: legal compliance (e.g. India's Digital Personal Data Protection Act, or GDPR/HIPAA abroad) is only the starting point; a full plan adds encryption, technical audits and an incident-response plan.</li>
+<li><mark>Data architecture</mark>: the choice between a data lake, a data warehouse or a hybrid, plus how data flows and scales.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"Big Plates Get Pretty Aloo"</b> = Business goals, Prioritisation, Governance, Privacy &amp; security, Architecture.</div>
+<h4>A detailed 7-step roadmap (as named in the class notes)</h4>
+<p>Fig 2.2 above gives the general idea; the notes also name a more detailed, numbered 7-step roadmap for building the strategy document itself.</p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">1. Understand business objectives</div>
+<div class="n">2. Initial assessment and scoping</div>
+<div class="n">3. Connect strategy to business goals</div>
+<div class="n">4. Identify big data sources</div>
+<div class="n">5. Create a data strategy roadmap</div>
+<div class="n">6. Set up monitoring and iteration</div>
+<div class="n">7. Plan intelligent, data-driven decisions</div>
+<div class="n t">Review and adapt</div>
+</div></div><figcaption><b>Fig 2.31</b> · The class notes' 7-step roadmap to build a big data strategy</figcaption><p class="draw">✍ Draw it: oval, 7 numbered boxes top to bottom with arrows, oval "Review and adapt"; shade step 1.</p></figure>
+<ul>
+<li><mark>1. Understand business objectives</mark>: SWOT analysis, market needs, KPIs, short/long-term goals, stakeholder alignment, risk assessment.</li>
+<li><mark>2. Initial assessment and scoping</mark>: study the current data landscape and tools, fix the project's scope, review compliance needs, set milestones.</li>
+<li><mark>3. Connect the data strategy with the business strategy</mark>: align data metrics with business KPIs so every department stays in agreement.</li>
+<li><mark>4. Identify big data sources</mark>: list internal and external sources and web/app analytics, and decide real-time vs batch.</li>
+<li><mark>5. Create a data strategy roadmap</mark>: a guiding document (executive summary, situational analysis, strategic objectives, tactical plans, implementation timeline, monitoring/evaluation, next steps) usually spanning 1-5 years.</li>
+<li><mark>6. Set up monitoring and iteration</mark>: define analytical objectives, build analytical pipelines, add quality checks, plan regular review.</li>
+<li><mark>7. Plan intelligent, data-driven decisions</mark>: define a decision framework, use predictive analytics, choose visualisation tools, automate decisions.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"Odd Aunts Cook Idli, Relish Mango Dosa"</b> = Objectives, Assessment, Connect, Identify (sources), Roadmap, Monitor, Decide.</div>
+<h4>Factors affecting how long it takes</h4>
+<ul>
+<li><mark>Team size</mark></li>
+<li><mark>Volume and complexity of data</mark></li>
+<li><mark>Potential data issues and technical debt</mark></li>
+<li><mark>Infrastructure specificities</mark></li>
+<li><mark>Regulatory / compliance requirements</mark></li>
+<li><mark>Typical duration</mark>: the source notes report that such a project "may take 3-6 months or more" when run by specialised scientists and engineers — this is the case study's own estimate, not a universal rule.</li>
+</ul>
+<h4>Real-world proof: a real-estate case study</h4>
+<div class="ex"><b>Case study (as reported in the source notes)</b><div class="step">Challenge: predict which homeowners are about to sell their house, before the property is even listed.</div><div class="step">Data: the company tracked over 1,400 property and demographic attributes across a dataset of more than 60 million records.</div><div class="step">Solution: raw data re-uploaded to Amazon S3 storage, then transformed and processed with AWS Glue.</div><span class="ans">Reported result: the model could predict at least about 70% of the homeowners who were going to sell — the case study describes this as well above the industry average.</span></div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Property + demographic data<small>1400+ attributes</small></div><div class="n">Amazon S3<small>storage</small></div><div class="n">AWS Glue<small>transform</small></div><div class="n">Prediction model</div><div class="n hi">Likely-sellers list</div>
+</div></div><figcaption><b>Fig 2.32</b> · Real-estate case study pipeline (as reported in the source notes)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row joined by arrows, last box (Likely-sellers list) shaded.</p></figure>
+<div class="mn"><b>Mnemonic</b> <b>"Only Tall Boys Enjoy Tasty Samosa Cutlets"</b> = Objectives, Team, Buy-in, Expertise, Try small, Share + policies, Culture.</div>
+<div class="note"><b>Common mistake:</b> starting with "buy Hadoop" (technology first). Strategy is business-first; tools come after the objective.</div>
+<div class="recall"><b>Quick recall</b> Objectives → Team → Buy-in → Expertise → Try small → Share/Policies → Culture, and keep revising. Strategy's 5 components: goals, prioritisation, governance, privacy/security, architecture.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

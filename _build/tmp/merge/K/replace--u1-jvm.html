@@ -1,0 +1,58 @@
+<section class="topic" id="u1-jvm">
+<h3>1.2 Java Virtual Machine (JVM) Architecture &amp; Execution Pipeline</h3>
+<p class="hook">Bytecode is the universal language that lets Java code travel across any operating system without re-compilation. <span class="hg">(bytecode sabhi OS ki aam bhasha hai)</span></p>
+<div class="def"><b>Definition:</b> The <mark>JVM</mark> (Java Virtual Machine) is a runtime engine that loads intermediate <mark>bytecode</mark> (<code>.class</code> file) produced by <code>javac</code>, verifies it, and converts it into machine code for execution.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Hello.java<small>Source code</small></div>
+<div class="ar">javac</div>
+<div class="n hi">Hello.class<small>Bytecode</small></div>
+<div class="ar">JVM</div>
+<div class="n">Machine Code<small>CPU execution</small></div>
+</div></div>
+<figcaption><b>Fig 1.3</b> · Java compilation and execution pipeline</figcaption>
+<p class="draw">✍ Draw it: horizontal chain from .java file box through javac arrow to .class bytecode box through JVM arrow to machine code box.</p></figure>
+<ul>
+<li><mark>Bytecode</mark>: Platform-independent intermediate code representation stored in <code>.class</code> files after compilation.</li>
+<li><mark>WORA</mark> (Write Once, Run Anywhere): Java code compiled on one OS can run on any OS having a compatible JVM.</li>
+<li><mark>Class Loader Subsystem</mark>: Performs three steps: <b>Loading</b> (loads <code>.class</code> file), <b>Linking</b> (Verification, Preparation, Resolution), and <b>Initialization</b> (executes static initializers).</li>
+<li><mark>Runtime Data Areas</mark>:
+  <ul>
+  <li><b>Method Area</b>: Stores class structure, field/method data, and static variables.</li>
+  <li><b>Heap</b>: Stores all created objects and instance variables. Managed by the <mark>garbage</mark> collector.</li>
+  <li><b>Java Stack</b>: Stores stack frames for active methods, local variables, and partial results.</li>
+  <li><b>PC Register</b>: Holds the address of the current JVM instruction being executed.</li>
+  <li><b>Native Method Stack</b>: Contains state for native (C/C++) methods.</li>
+  </ul>
+</li>
+<li><mark>Execution Engine</mark>:
+  <ul>
+  <li><b>Interpreter</b>: Reads and executes bytecode instructions one by one.</li>
+  <li><b>JIT Compiler</b> (Just-In-Time): Compiles frequently executed bytecode chunks (hotspots) directly into native CPU code to boost performance.</li>
+  <li><b>Garbage Collector</b>: Automatically deallocates unreferenced heap memory.</li>
+  </ul>
+</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi"><b>Class Loader Subsystem</b><small>Load &rarr; Link (Verify, Prepare, Resolve) &rarr; Initialize</small></div>
+<div class="row">
+<div class="l"><b>Method Area</b><small>Class structures</small></div>
+<div class="l hi"><b>Heap Area</b><small>Objects &amp; GC</small></div>
+<div class="l"><b>Stack Area</b><small>Frames &amp; locals</small></div>
+</div>
+<div class="row">
+<div class="l"><b>PC Register</b><small>Next instruction</small></div>
+<div class="l"><b>Native Stack</b><small>C/C++ frames</small></div>
+</div>
+<div class="l hi"><b>Execution Engine</b><small>Interpreter + JIT Compiler + Garbage Collector</small></div>
+</div></div>
+<figcaption><b>Fig 1.4</b> · JVM Internal Architecture Subsystems</figcaption>
+<p class="draw">✍ Draw it: stack diagram showing Class Loader at top, 5 Runtime Data Areas in middle rows, and Execution Engine at bottom.</p></figure>
+<p><b>Compile-time vs run-time, in one line each:</b></p>
+<div class="tw"><table>
+<tr><th>Stage</th><th>What happens</th></tr>
+<tr><td>Compile-time (<code>javac</code>)</td><td>The <code>.java</code> source file is checked for syntax errors and translated into platform-independent bytecode (<code>.class</code>).</td></tr>
+<tr><td>Run-time (<code>java</code> / JVM)</td><td>The class loader loads the bytecode, verifies it, and the execution engine converts it into native machine instructions to run.</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> Thinking bytecode is CPU machine code. Bytecode is instructions for the JVM; the JVM translates it into CPU instructions.</div>
+<div class="recall"><b>Quick recall</b> JVM architecture = Class loader subsystem + Runtime memory areas (Heap, Stack, Method area) + Execution Engine (Interpreter + JIT + GC).</div>
+<a class="top" href="#top">↑ top</a></section>

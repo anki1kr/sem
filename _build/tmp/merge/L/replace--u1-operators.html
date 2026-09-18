@@ -1,0 +1,47 @@
+<section class="topic" id="u1-operators">
+<h3>1.5 Java Operators and Precedence</h3>
+<p class="hook">Operators are symbols that direct the JVM to perform specific mathematical, logical, or bitwise computations. <span class="hg">(operator calculation karvata hai)</span></p>
+<div class="def"><b>Definition:</b> An <mark>operator</mark> is a special symbol that operates on one, two, or three operands to perform calculations and produce a result value.</div>
+
+<div class="tw"><table>
+<tr><th>Operator Category</th><th>Symbols</th><th>Description &amp; Behavior</th></tr>
+<tr><td>Arithmetic</td><td><code>+</code>, <code>-</code>, <code>*</code>, <code>/</code>, <code>%</code></td><td>Addition, subtraction, multiplication, division, modulus (remainder).</td></tr>
+<tr><td>Unary / Increment</td><td><code>++</code>, <code>--</code>, <code>+</code>, <code>-</code>, <code>!</code>, <code>~</code></td><td>Pre-increment (<code>++x</code>: increment first), Post-increment (<code>x++</code>: use then increment).</td></tr>
+<tr><td>Relational</td><td><code>==</code>, <code>!=</code>, <code>&gt;</code>, <code>&lt;</code>, <code>&gt;=</code>, <code>&lt;=</code></td><td>Compares two operands; returns boolean result.</td></tr>
+<tr><td>Logical</td><td><code>&amp;&amp;</code>, <code>||</code>, <code>!</code></td><td>Short-circuit AND (<code>&amp;&amp;</code>), short-circuit OR (<code>||</code>), logical NOT.</td></tr>
+<tr><td>Bitwise &amp; Shift</td><td><code>&amp;</code>, <code>|</code>, <code>^</code>, <code>~</code>, <code>&lt;&lt;</code>, <code>&gt;&gt;</code>, <code>&gt;&gt;&gt;</code></td><td>AND, OR, XOR, NOT, left-shift, signed right-shift, unsigned right-shift.</td></tr>
+<tr><td>Assignment</td><td><code>=</code>, <code>+=</code>, <code>-=</code>, <code>*=</code>, <code>/=</code>, <code>%=</code></td><td>Assigns value to variable; compound assignment performs op then assigns.</td></tr>
+<tr><td>Cast</td><td><code>(type)</code></td><td>Explicitly converts (type-casts) a value from one data type to another, e.g. <code>(int) 9.8</code> gives <code>9</code>.</td></tr>
+<tr><td>Ternary</td><td><code>condition ? val1 : val2</code></td><td>Shorthand <code>if-else</code> operator evaluating to <code>val1</code> if true, <code>val2</code> if false.</td></tr>
+<tr><td>Type comparison</td><td><code>instanceof</code></td><td>Checks if an object is an instance of a specified class/interface.</td></tr>
+</table></div>
+
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>1. Unary &amp; Parentheses</b><code>()  ++  --  !  ~</code> (Right to Left)</div>
+<div class="b"><b>2. Multiplicative</b><code>*  /  %</code> (Left to Right)</div>
+<div class="b hi"><b>3. Additive</b><code>+  -</code> (Left to Right)</div>
+<div class="b"><b>4. Shift &amp; Relational</b><code>&lt;&lt; &gt;&gt; &lt; &gt; &lt;= &gt;=</code> (Left to Right)</div>
+<div class="b hi"><b>5. Equality &amp; Bitwise</b><code>== != &amp; ^ |</code> (Left to Right)</div>
+<div class="b"><b>6. Logical &amp; Ternary &amp; Assign</b><code>&amp;&amp; || ?: = +=</code> (Right/Left)</div>
+</div></div>
+<figcaption><b>Fig 1.14</b> · Operator Precedence Hierarchy from highest to lowest</figcaption>
+<p class="draw">✍ Draw it: 6-tier box stack showing precedence from top (parentheses/unary) to bottom (assignment).</p></figure>
+
+<p>Program: Demonstrating unary increment, bitwise AND, and ternary operator.</p>
+<pre class="code" data-file="OperatorDemo.java"><code><span class="k">public class</span> OperatorDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> a = 10, b = 3;
+        <span class="k">int</span> pre = ++a;             <span class="c">// Pre-increment: a becomes 11, pre=11</span>
+        <span class="k">int</span> post = b++;            <span class="c">// Post-increment: post=3, b becomes 4</span>
+        <span class="k">int</span> bit = 5 &amp; 3;           <span class="c">// Bitwise AND: 101 & 011 = 001 (1)</span>
+        <span class="k">int</span> max = (a &gt; b) ? a : b;  <span class="c">// Ternary operator</span>
+        System.out.println("pre=" + pre + ", post=" + post + ", bit=" + bit + ", max=" + max);
+    }
+}</code></pre>
+<pre class="out">pre=11, post=3, bit=1, max=11</pre>
+
+<p>The <mark>cast operator</mark> <code>(type)</code> is listed by many textbooks as its own operator category, distinct from arithmetic/relational/logical operators &mdash; it is the operator form of type casting. See the Data Types topic for the full widening/narrowing rules and hierarchy diagram.</p>
+
+<div class="note"><b>Common mistake:</b> Confusing <code>&amp;&amp;</code> (short-circuit logical AND) with <code>&amp;</code> (bitwise AND). <code>&amp;&amp;</code> stops evaluating if the first condition is false.</div>
+<div class="recall"><b>Quick recall</b> Pre-increment (<code>++i</code>) increments before value use; post-increment (<code>i++</code>) uses current value first. Ternary format: <code>cond ? trueVal : falseVal</code>.</div>
+<a class="top" href="#top">↑ top</a></section>

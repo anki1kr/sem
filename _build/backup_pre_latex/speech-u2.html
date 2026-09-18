@@ -1,0 +1,435 @@
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Linear Prediction of Speech and Speech Quantization</h2>
+<p class="unit-sub">Linear predictive analysis, normal equations, Levinson-Durbin recursion, short-term and long-term models, scalar quantization, companding, adaptive/differential quantizers, and vector quantization.</p>
+
+<section class="topic" id="u2-lp">
+<h3>2.1 Basic Concepts of Linear Prediction &amp; Normal Equations</h3>
+<p class="hook">Linear prediction estimates the current speech sample as a weighted linear combination of past speech samples. <span class="hg">(purane samples se naya sample predict karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear prediction</mark> (LP) models the current speech sample s[n] as a linear combination of p previous samples: ŝ[n] = ∑_i=1^p a_i s[n-i]. The <mark>prediction error</mark> is e[n] = s[n] - ŝ[n] = s[n] - ∑_i=1^p a_i s[n-i].</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 180" width="580">
+<rect x="20" y="55" width="70" height="40" rx="6"/><text x="55" y="75">s[n]</text>
+<path class="arr" d="M90 75 H140"/>
+<circle cx="155" cy="75" r="15"/><text x="155" y="75">+</text>
+<path class="arr" d="M170 75 H220"/>
+<text class="b" x="245" y="75">e[n]</text>
+<path class="arr" d="M115 75 V130 H170"/>
+<rect class="hi" x="170" y="110" width="130" height="40" rx="6"/><text x="235" y="130">Predictor P(z)</text>
+<path class="arr" d="M300 130 H340 V75 H170"/>
+<text class="s" x="320" y="118">s_hat[n]</text>
+</svg></div>
+<figcaption><b>Fig 2.1</b> · Linear Prediction Error Filter Block Diagram</figcaption>
+<p class="draw">✍ Draw it: input s[n] going to summer, feedback loop to Predictor P(z) box producing s_hat[n], error e[n] output.</p></figure>
+
+<ul>
+<li><mark>Why Speech is Predictable</mark>: Vocal tract inertia creates strong correlation between adjacent samples, and glottal quasi-periodicity creates inter-pitch correlation.</li>
+<li><mark>Derivation of Normal Equations</mark>: Minimizing the Mean Squared Prediction Error E = ∑e^2[n] = ∑( s[n] - ∑_i=1^p a_i s[n-i] )^2 with respect to predictor coefficients a_k ((∂E)/(∂a_k) = 0) yields the <b>Yule-Walker / Autocorrelation Normal Equations</b>:
+  ∑_i=1^p a_i R[|k-i|] = R[k] for k = 1, 2, …, p
+</li>
+<li><mark>Matrix Form (p=2)</mark>:
+  [ R[0] R[1]; R[1] R[0] ] [ a_1; a_2 ] = [ R[1]; R[2] ]
+</li>
+</ul>
+
+<div class="ex"><b>Worked Example: Order-2 Linear Prediction Normal Equations Solving</b>
+<div class="step">Given autocorrelation values: R[0] = 5.0, R[1] = 3.0, R[2] = 1.0.</div>
+<div class="step">Set up matrix equation:
+[ 5.0 3.0; 3.0 5.0 ] [ a_1; a_2 ] = [ 3.0; 1.0 ]
+</div>
+<div class="step">Determinant Δ = (5.0)(5.0) - (3.0)(3.0) = 25 - 9 = 16.0.</div>
+<div class="step">a_1 = (3.0(5.0) - 1.0(3.0))/(16.0) = (15 - 3)/(16) = (12)/(16) = 0.75</div>
+<div class="step">a_2 = (5.0(1.0) - 3.0(3.0))/(16.0) = (5 - 9)/(16) = (-4)/(16) = -0.25</div>
+<div class="step">Minimum residual error energy E_2 = R[0] - a_1 R[1] - a_2 R[2] = 5.0 - (0.75)(3.0) - (-0.25)(1.0) = 5.0 - 2.25 + 0.25 = 3.0.</div>
+<span class="ans">Predictor Coefficients: a1 = 0.75, a2 = -0.25; Residual Energy E2 = 3.0</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> LP predicts current sample s[n] from p past samples; normal equations ∑a_i R[|k-i|] = R[k] minimize mean squared error.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-nonstat">
+<h3>2.2 LP Analysis of Non-Stationary Signals &amp; Prediction Gain</h3>
+<p class="hook">Speech is a non-stationary signal, so LP analysis is performed on short quasi-stationary frames of 20 to 30 milliseconds. <span class="hg">(20-30 ms ke chhote frames me analysis hota hai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear prediction analysis</mark> treats non-stationary speech as quasi-stationary by segmenting it into short overlapping frames (20 ms - 30 ms) multiplied by a smooth window function (such as a Hamming window).</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 610 160" width="610">
+<rect x="20" y="45" width="100" height="40" rx="6"/><text x="70" y="65">Speech s[n]</text>
+<path class="arr" d="M120 65 H150"/>
+<rect x="150" y="45" width="120" height="40" rx="6"/><text x="210" y="65">Framing (20ms)</text>
+<path class="arr" d="M270 65 H300"/>
+<rect class="hi" x="300" y="45" width="110" height="40" rx="6"/><text x="355" y="65">Hamming W[n]</text>
+<path class="arr" d="M410 65 H440"/>
+<rect x="440" y="45" width="150" height="40" rx="6"/><text x="515" y="65">Autocorrelation</text>
+</svg></div>
+<figcaption><b>Fig 2.2</b> · Frame-by-frame LP analysis processing of non-stationary speech</figcaption>
+<p class="draw">✍ Draw it: chain from Speech s[n] to Framing box to Hamming Window box to Autocorrelation box.</p></figure>
+
+<ul>
+<li><mark>Autocorrelation Method vs Covariance Method</mark>:
+  <ul>
+  <li><b>Autocorrelation Method</b>: Windows the speech frame so it vanishes outside bounds. Guarantees a stable filter (|k_i| &lt; 1).</li>
+  <li><b>Covariance Method</b>: Does not window signal outside frame; requires no zero-padding, but filter stability is not guaranteed.</li>
+  </ul>
+</li>
+<li><mark>Prediction Gain</mark> (PG): Quantitative measure of LP compression efficiency defined as the ratio of speech variance to prediction error variance:
+  PG = 10 log_10 ( (σ_s^2)/(σ_e^2) ) = 10 log_10 ( (R[0])/(E_p) ) dB
+</li>
+</ul>
+
+<div class="ex"><b>Worked Example: Prediction Gain Calculation</b>
+<div class="step">From previous order-2 example: Signal variance R[0] = 5.0, Prediction error energy E_2 = 3.0.</div>
+<div class="step">PG = 10 log_10 ( (5.0)/(3.0) ) = 10 log_10(1.6667) = 10 × (0.22185) = 2.2185 dB.</div>
+<span class="ans">Prediction Gain PG = 2.218 dB</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> Speech is non-stationary &rarr; analyze in 20-30 ms frames with Hamming windows. Prediction gain PG = 10 log_10(σ_s^2/σ_e^2) dB.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-levinson">
+<h3>2.3 Levinson-Durbin Algorithm &amp; Reflection Coefficients</h3>
+<p class="hook">The Levinson-Durbin algorithm solves normal equations recursively in O(p²) time while generating reflection coefficients. <span class="hg">(O(p^2) me fast solve aur stability test)</span></p>
+<div class="def"><b>Definition:</b> The <mark>Levinson-Durbin algorithm</mark> is an efficient recursive algorithm that solves the Yule-Walker matrix equations in O(p^2) operations, computing predictor coefficients a_i alongside intermediate <mark>reflection coefficients</mark> k_i.</div>
+
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initialize E0 = R[0], i = 1</div>
+<div class="n hi">Compute reflection coefficient: ki = (R[i] - sum a_j R[i-j]) / E_{i-1}</div>
+<div class="n">Update predictor coefficients: a_i^(i) = ki, a_j^(i) = a_j^(i-1) - ki * a_{i-j}^(i-1)</div>
+<div class="n">Update residual energy: E_i = (1 - ki^2) * E_{i-1}</div>
+<div class="n d">i == p ?</div>
+<div class="n t">Stop (Output a_i and k_i)</div>
+</div></div>
+<figcaption><b>Fig 2.3</b> · Flowchart of the Levinson-Durbin Recursive Algorithm</figcaption>
+<p class="draw">✍ Draw it: vertical recursion flow initializing E0, computing ki, updating predictor coefficients and Ei, with a loop decision diamond i==p.</p></figure>
+
+<ul>
+<li><mark>Reflection Coefficients</mark> (k_i): Intermediate parameters generated during Levinson-Durbin recursion.</li>
+<li><mark>Stability Condition</mark>: An all-pole filter is strictly stable if and only if all reflection coefficients satisfy |k_i| &lt; 1 for i = 1 …p.</li>
+<li><mark>Computational Complexity</mark>: Reduces matrix inversion complexity from O(p^3) to O(p^2).</li>
+</ul>
+
+<div class="ex"><b>Worked Example: Levinson-Durbin Recursion Step-by-Step</b>
+<div class="step">Given R[0] = 5.0, R[1] = 3.0, R[2] = 1.0. Solve for order p=2.</div>
+<div class="step"><b>Initialization:</b> E_0 = R[0] = 5.0.</div>
+<div class="step"><b>Iteration 1 (i=1):</b></div>
+<div class="step">k_1 = (R[1])/(E_0) = (3.0)/(5.0) = 0.6 (Since |0.6| &lt; 1, stable)</div>
+<div class="step">a_1^(1) = k_1 = 0.6</div>
+<div class="step">E_1 = (1 - k_1^2) E_0 = (1 - 0.36) × 5.0 = 0.64 × 5.0 = 3.2</div>
+<div class="step"><b>Iteration 2 (i=2):</b></div>
+<div class="step">k_2 = (R[2] - a_1^(1) R[1])/(E_1) = (1.0 - (0.6)(3.0))/(3.2) = (1.0 - 1.8)/(3.2) = (-0.8)/(3.2) = -0.25 (Since |-0.25| &lt; 1, stable)</div>
+<div class="step">a_2^(2) = k_2 = -0.25</div>
+<div class="step">a_1^(2) = a_1^(1) - k_2 a_1^(1) = 0.6 - (-0.25)(0.6) = 0.6 + 0.15 = 0.75</div>
+<div class="step">E_2 = (1 - k_2^2) E_1 = (1 - (-0.25)^2) × 3.2 = (1 - 0.0625) × 3.2 = 0.9375 × 3.2 = 3.0</div>
+<span class="ans">Reflection coeffs: k1 = 0.6, k2 = -0.25; Predictor coeffs: a1 = 0.75, a2 = -0.25 (Matches direct matrix solve)</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> Levinson-Durbin solves normal equations in O(p^2) time; filter is stable if all reflection coefficients |k_i| &lt; 1.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-models">
+<h3>2.4 Short-Term vs Long-Term LP Models &amp; Moving Average Prediction</h3>
+<p class="hook">Short-term prediction removes vocal tract spectral envelope correlation, while long-term prediction removes pitch periodicity correlation. <span class="hg">(short-term formant nikalta hai, long-term pitch)</span></p>
+<div class="def"><b>Definition:</b> A complete speech prediction system uses a cascade of a <mark>short-term predictor</mark> (order p ≈10 modeling vocal tract formants) and a <mark>long-term predictor</mark> (pitch predictor modeling pitch period T).</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 160" width="560">
+<rect x="20" y="55" width="80" height="40" rx="6"/><text x="60" y="75">Speech s[n]</text>
+<path class="arr" d="M100 75 H140"/>
+<rect class="hi" x="140" y="50" width="120" height="50" rx="6"/><text x="200" y="70">Short-Term Filter</text><text class="s" x="200" y="88">A(z), order~10</text>
+<path class="arr" d="M260 75 H300"/>
+<rect class="hi" x="300" y="50" width="120" height="50" rx="6"/><text x="360" y="70">Long-Term Filter</text><text class="s" x="360" y="88">P(z), pitch period T</text>
+<path class="arr" d="M420 75 H470"/>
+<text class="b" x="500" y="75">e[n] (Residual)</text>
+</svg></div>
+<figcaption><b>Fig 2.4</b> · Cascaded Short-Term and Long-Term Prediction Error Filter system</figcaption>
+<p class="draw">✍ Draw it: horizontal cascade from Speech input through Short-Term Filter A(z) to Long-Term Filter P(z) to residual output e[n].</p></figure>
+
+<div class="tw"><table>
+<tr><th>Model Type</th><th>Predictor Target</th><th>Model Order / Parameters</th><th>Correlations Removed</th></tr>
+<tr><td><b>Short-Term LP</b></td><td>Vocal tract spectral envelope (formants)</td><td>Order p ≈10 – 12</td><td>Short-lag adjacent sample correlation</td></tr>
+<tr><td><b>Long-Term LP</b></td><td>Vocal cord vibration periodicity (pitch)</td><td>Pitch lag T + gain b (1 – 3 taps)</td><td>Long-lag pitch period correlation</td></tr>
+<tr><td><b>Moving Average (MA)</b></td><td>Predicts from past prediction errors e[n-k]</td><td>FIR all-zero predictor B(z)</td><td>Noise-like error correlations</td></tr>
+</table></div>
+
+<div class="recall"><b>Quick recall</b> Short-term LP (p ≈10) models vocal tract envelope; Long-term LP models pitch period T; MA models error sequence.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-scalar">
+<h3>2.5 Scalar Quantization (Uniform, Optimum Lloyd-Max, Logarithmic Companding)</h3>
+<p class="hook">Quantization maps continuous amplitude values into discrete levels, introducing irreversible quantization noise. <span class="hg">(continuous amplitude ko fixed levels me convert karna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Scalar quantization</mark> maps a continuous amplitude scalar sample x to a discrete reconstruction level y_k = Q(x) selected from a set of decision boundaries x_k.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<line class="acc" x1="40" y1="140" x2="480" y2="140"/>
+<line class="acc" x1="40" y1="20" x2="40" y2="160"/>
+<polyline class="none" points="40,140 100,140 100,110 180,110 180,80 260,80 260,50 340,50 340,20 420,20" stroke-width="2"/>
+<text class="s" x="490" y="140">Input x</text>
+<text class="s" x="40" y="10">Output Q(x)</text>
+</svg></div>
+<figcaption><b>Fig 2.5</b> · Uniform Quantizer Staircase Input-Output Characteristic</figcaption>
+<p class="draw">✍ Draw it: x-y axes with a stepped staircase curve jumping at decision boundaries x_k up to output levels y_k.</p></figure>
+
+<ul>
+<li><mark>Uniform Quantizer</mark>: Equal step size Δ = (x_max - x_min)/(L).
+  <ul>
+  <li><b>Mid-tread</b>: Origin 0 is a reconstruction level.</li>
+  <li><b>Mid-rise</b>: Origin 0 is a decision boundary.</li>
+  <li><b>SQNR Formula</b> (for N-bit quantizer with full-scale sinusoid):
+    SQNR ≈6.02 N + 1.76 dB
+    <i>Rule of thumb: Each additional bit adds ≈6 dB of SQNR.</i>
+  </li>
+  </ul>
+</li>
+<li><mark>Optimum Lloyd-Max Quantizer</mark>: Non-uniform quantizer that minimizes Mean Squared Error (MSE) for a known PDF:
+  <ul>
+  <li><b>Boundary Condition</b>: Decision boundary x_k = (y_k + y_k+1)/(2) (midpoint of adjacent levels).</li>
+  <li><b>Reconstruction Condition</b>: y_k = (∫_x_k-1^x_k x p(x) dx)/(∫_x_k-1^x_k p(x) dx) (centroid of PDF interval).</li>
+  </ul>
+</li>
+<li><mark>Logarithmic Quantizer (Companding)</mark>: Compresses dynamic range before uniform quantization and expands at receiver:
+  <ul>
+  <li><b>μ-law (North America/Japan)</b>: y = sgn(x) (ln(1 + μ|x|))/(ln(1 + μ)) with μ= 255.</li>
+  <li><b>A-law (Europe/International)</b>: Uses A = 87.6.</li>
+  </ul>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 120" width="540">
+<rect x="20" y="40" width="110" height="40" rx="6"/><text x="75" y="60">Compressor log</text>
+<path class="arr" d="M130 60 H180"/>
+<rect class="hi" x="180" y="40" width="130" height="40" rx="6"/><text x="245" y="60">Uniform Quantizer</text>
+<path class="arr" d="M310 60 H360"/>
+<rect x="360" y="40" width="110" height="40" rx="6"/><text x="415" y="60">Expander exp</text>
+</svg></div>
+<figcaption><b>Fig 2.6</b> · Logarithmic Companding Architecture (Compressor &rarr; Uniform Quantizer &rarr; Expander)</figcaption>
+<p class="draw">✍ Draw it: 3-step chain from Compressor box to Uniform Quantizer box to Expander box.</p></figure>
+
+<div class="ex"><b>Worked Example: Uniform Quantizer SQNR and Companding Calculation</b>
+<div class="step">1. 3-Bit Uniform Quantizer: N = 3 bits (L = 2^3 = 8 levels).</div>
+<div class="step">SQNR ≈6.02(3) + 1.76 = 18.06 + 1.76 = 19.82 dB.</div>
+<div class="step">2. Logarithmic μ-law compression for x = 0.5 (μ= 255):</div>
+<div class="step">y = (ln(1 + 255 × 0.5))/(ln(1 + 255)) = (ln(128.5))/(ln(256)) = (4.8559)/(5.5452) = 0.8757.</div>
+<span class="ans">SQNR (3-bit) = 19.82 dB; Compressed mu-law value y = 0.8757</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> Uniform SQNR ≈6.02 N + 1.76 dB; Lloyd-Max places boundaries midway and levels at centroids; μ-law (μ=255) compresses weak signals.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-adaptive">
+<h3>2.6 Adaptive and Differential Quantizers (AQF, AQB, DPCM, ADPCM)</h3>
+<p class="hook">Adaptive quantizers adjust step sizes dynamically, while differential quantizers quantize the difference between actual and predicted samples. <span class="hg">(step size change karo aur difference ko quantize karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Adaptive quantization</mark> adapts quantizer step size Δ[n] to local signal variance, while <mark>differential quantization</mark> (DPCM) quantizes difference samples d[n] = s[n] - ŝ[n] to exploit sample correlation.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 680 160" width="680">
+<text class="b" x="150" y="20">Forward Adaptive (AQF)</text>
+<rect x="20" y="45" width="100" height="40" rx="6"/><text x="70" y="65">Frame Energy</text>
+<path class="arr" d="M120 65 H150"/>
+<rect class="hi" x="150" y="45" width="130" height="40" rx="6"/><text x="215" y="65">Transmit Delta</text>
+
+<text class="b" x="500" y="20">Backward Adaptive (AQB)</text>
+<rect x="340" y="45" width="160" height="40" rx="6"/><text x="420" y="65">Past Quant Output</text>
+<path class="arr" d="M500 65 H530"/>
+<rect class="hi" x="530" y="45" width="130" height="40" rx="6"/><text x="595" y="65">Estimate Delta</text>
+</svg></div>
+<figcaption><b>Fig 2.7</b> · Forward Adaptive (AQF) vs Backward Adaptive (AQB) Quantization</figcaption>
+<p class="draw">✍ Draw it: left block for AQF transmitting explicit step size Delta, right block for AQB estimating Delta from past output.</p></figure>
+
+<ul>
+<li><mark>Adaptive Quantization</mark>:
+  <ul>
+  <li><b>Forward AQF</b>: Step size calculated from input speech frame; transmitted as side information.</li>
+  <li><b>Backward AQB</b>: Step size estimated from past quantized output; no side information needed.</li>
+  </ul>
+</li>
+<li><mark>Differential PCM (DPCM)</mark>: Encoder quantizes difference d[n] = s[n] - ŝ[n]. Predictor lives in feedback loop using reconstructed samples s̃[n] so encoder and decoder stay synchronized.</li>
+<li><mark>ADPCM</mark> (Adaptive DPCM): Combines adaptive quantization step size with an adaptive predictor (e.g., ITU G.726 @ 32 kbps).</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 180" width="580">
+<rect x="20" y="55" width="60" height="40" rx="6"/><text x="50" y="75">s[n]</text>
+<path class="arr" d="M80 75 H130"/>
+<circle cx="145" cy="75" r="15"/><text x="145" y="75">+</text>
+<path class="arr" d="M160 75 H210"/>
+<rect class="hi" x="210" y="55" width="80" height="40" rx="6"/><text x="250" y="75">Quantizer</text>
+<path class="arr" d="M290 75 H360"/>
+<text class="b" x="380" y="75">I[n]</text>
+<path class="arr" d="M320 75 V130 H290"/>
+<rect x="170" y="110" width="120" height="40" rx="6"/><text x="230" y="130">Predictor</text>
+<path class="arr" d="M170 130 H145 V90"/>
+</svg></div>
+<figcaption><b>Fig 2.8</b> · DPCM Encoder Block Diagram with Predictor in Feedback Loop</figcaption>
+<p class="draw">✍ Draw it: input summer computing error, Quantizer block, feedback loop from output to Predictor box back to summer.</p></figure>
+
+<div class="recall"><b>Quick recall</b> AQF transmits explicit step size; AQB estimates it from past quantized output. DPCM quantizes difference d[n] = s[n] - ŝ[n]; ADPCM adds adaptive prediction.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-vq">
+<h3>2.7 Vector Quantization (Distortion Measures, LBG Algorithm, Codebook Types)</h3>
+<p class="hook">Vector quantization groups vectors of samples and matches them to the nearest codeword in a stored codebook. <span class="hg">(poore vector ko codebook ke codeword se match karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Vector quantization</mark> (VQ) blocks k consecutive samples into a k-dimensional vector 𝐱 and maps it to the closest codevector 𝐲_i in a codebook C = {𝐲_1, …, 𝐲_N}, transmitting only the codebook index i.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<rect x="20" y="60" width="90" height="40" rx="6"/><text x="65" y="80">Vector x</text>
+<path class="arr" d="M110 80 H160"/>
+<rect class="hi" x="160" y="55" width="110" height="50" rx="6"/><text x="215" y="73">VQ Encoder</text><text class="s" x="215" y="91">Codebook Search</text>
+<path class="arr" d="M270 80 H340"/>
+<text class="b" x="375" y="80">Index i</text>
+<path class="arr" d="M400 80 H440"/>
+<rect class="hi" x="440" y="55" width="90" height="50" rx="6"/><text x="485" y="73">VQ Decoder</text><text class="s" x="485" y="91">Lookup y_i</text>
+</svg></div>
+<figcaption><b>Fig 2.9</b> · Vector Quantization Encoder Codebook Search and Decoder Lookup</figcaption>
+<p class="draw">✍ Draw it: input Vector x to VQ Encoder (Search), transmitting Index i to VQ Decoder (Lookup y_i).</p></figure>
+
+<ul>
+<li><mark>Distortion Measures</mark>:
+  <ul>
+  <li><b>Squared Euclidean Distance (MSE)</b>: d(𝐱, 𝐲) = 𝐱 - 𝐲^2 = ∑_j=1^k (x_j - y_j)^2.</li>
+  <li><b>Weighted Euclidean Distance</b>: d_W(𝐱, 𝐲) = (𝐱 - 𝐲)^T 𝐖 (𝐱 - 𝐲).</li>
+  <li><b>Itakura-Saito Distance</b>: Measures spectral distortion between LPC spectral envelopes P(ω) and P̂(ω).</li>
+  </ul>
+</li>
+<li><mark>LBG Algorithm</mark> (Linde-Buzo-Gray / Generalized Lloyd Algorithm):
+  <ol>
+  <li>Start with initial codebook (or split overall centroid).</li>
+  <li><b>Partitioning</b>: Assign training vectors to nearest codevector using distortion measure (Voronoi region partition).</li>
+  <li><b>Update</b>: Recompute each codevector as the centroid of assigned vectors.</li>
+  <li><b>Check Convergence</b>: If fractional distortion reduction (D_m-1 - D_m)/(D_m) &lt; ϵ, stop; else repeat.</li>
+  </ol>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initial Codebook C_0</div>
+<div class="n">Partition training vectors into Voronoi regions R_i</div>
+<div class="n hi">Update codevectors: y_i = centroid of region R_i</div>
+<div class="n">Compute total average distortion D</div>
+<div class="n d">(D_prev - D) / D &lt; threshold ?</div>
+<div class="n t">Stop (Final Codebook)</div>
+</div></div>
+<figcaption><b>Fig 2.10</b> · Flowchart of the LBG (Generalized Lloyd) Codebook Design Algorithm</figcaption>
+<p class="draw">✍ Draw it: vertical flow from Initial Codebook to Partitioning to Centroid Update to Distortion Check decision diamond.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Codebook Architecture</th><th>Search Complexity</th><th>Memory Requirement</th><th>Primary Advantage</th></tr>
+<tr><td><b>Full-Search (Unstructured)</b></td><td>O(N) (High)</td><td>O(N ·k)</td><td>Lowest distortion, optimal codebook</td></tr>
+<tr><td><b>Tree-Structured VQ (TSVQ)</b></td><td>O(log_2 N) (Very Low)</td><td>O(2 N ·k)</td><td>Fast binary tree search</td></tr>
+<tr><td><b>Multistage VQ (MSVQ)</b></td><td>O(M ·N^1/M)</td><td>Low</td><td>Low complexity for large codebooks</td></tr>
+<tr><td><b>Split VQ</b></td><td>Low (splits vector)</td><td>Very Low</td><td>Common for LPC parameter quantization</td></tr>
+</table></div>
+
+<div class="ex"><b>Worked Example: Tiny LBG 2D Codebook Centroid Update</b>
+<div class="step">Given 4 2D points: P_1(1,2), P_2(2,4), P_3(7,8), P_4(9,10).</div>
+<div class="step">Initial overall centroid: C = ((1+2+7+9)/(4), (2+4+8+10)/(4)) = (4.75, 6.0).</div>
+<div class="step">Split into 2 initial codevectors: C_1 = (4, 5) and C_2 = (5, 7).</div>
+<div class="step">Partitioning by nearest Euclidean distance:</div>
+<div class="step">P_1(1,2) and P_2(2,4) are closer to C_1(4,5) &rarr; Region R_1.</div>
+<div class="step">P_3(7,8) and P_4(9,10) are closer to C_2(5,7) &rarr; Region R_2.</div>
+<div class="step">Updated Centroids:</div>
+<div class="step">C_1^* = ((1+2)/(2), (2+4)/(2)) = (1.5, 3.0)</div>
+<div class="step">C_2^* = ((7+9)/(2), (8+10)/(2)) = (8.0, 9.0)</div>
+<span class="ans">Updated LBG Centroids: C1* = (1.5, 3.0), C2* = (8.0, 9.0)</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> VQ quantizes sample vectors directly; LBG algorithm designs codebooks via Voronoi partitioning and centroid updating.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-short">
+<h3>2.8 Short answers (1.5 marks)</h3>
+<dl class="sa">
+<dt>1. Define Linear Prediction in speech processing.</dt><dd>Estimation technique that predicts current speech sample s[n] as a weighted sum of p past samples: ŝ[n] = ∑a_i s[n-i].</dd>
+
+<dt>2. What are the Yule-Walker normal equations?</dt><dd>Set of matrix equations ∑a_i R[|k-i|] = R[k] derived by minimizing mean squared prediction error.</dd>
+
+<dt>3. Why is speech analyzed in short frames?</dt><dd>Because speech is non-stationary over long durations but quasi-stationary over short 20-30 ms windows.</dd>
+
+<dt>4. Define Prediction Gain (PG).</dt><dd>Ratio of speech signal variance to prediction error variance: PG = 10 log_10(σ_s^2 / σ_e^2) dB.</dd>
+
+<dt>5. State the computational complexity of the Levinson-Durbin algorithm.</dt><dd>Solves normal equations recursively in O(p^2) operations compared to O(p^3) for direct matrix inversion.</dd>
+
+<dt>6. What condition on reflection coefficients (k_i) guarantees filter stability?</dt><dd>The all-pole synthesis filter is stable if and only if |k_i| &lt; 1 for all i = 1 …p.</dd>
+
+<dt>7. Differentiate short-term and long-term linear prediction.</dt><dd>Short-term LP (p ≈10) models vocal tract formants; long-term LP models pitch periodicity T.</dd>
+
+<dt>8. What is Moving Average (MA) prediction?</dt><dd>Predicts current sample from past prediction errors rather than past speech samples.</dd>
+
+<dt>9. State the SQNR formula for an N-bit uniform quantizer.</dt><dd>SQNR ≈6.02 N + 1.76 dB for a full-scale sinusoidal signal.</dd>
+
+<dt>10. State the two Lloyd-Max optimum quantization conditions.</dt><dd>(1) Decision boundary is midpoint of adjacent levels x_k = (y_k + y_k+1)/2; (2) Level y_k is the centroid of the interval PDF.</dd>
+
+<dt>11. What is logarithmic companding?</dt><dd>Non-uniform quantization technique passing signal through a logarithmic compressor (μ-law / A-law) before uniform quantization.</dd>
+
+<dt>12. Differentiate forward (AQF) and backward (AQB) adaptive quantization.</dt><dd>AQF calculates step size from input frame and transmits it; AQB estimates step size from past quantized output.</dd>
+
+<dt>13. Explain the basic principle of Differential PCM (DPCM).</dt><dd>Quantizes the difference d[n] = s[n] - ŝ[n] between current sample and predicted sample.</dd>
+
+<dt>14. What is Vector Quantization (VQ)?</dt><dd>Quantization technique mapping a k-dimensional vector of samples to the nearest codevector codeword in a codebook.</dd>
+
+<dt>15. What is the LBG algorithm?</dt><dd>Iterative codebook design algorithm (Generalized Lloyd) alternating between Voronoi partitioning and centroid updating.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-long">
+<h3>2.9 Long-answer frames (15 marks)</h3>
+
+<h4>Q1. Explain Linear Prediction concepts, Yule-Walker normal equations, and solve an order-2 prediction example.</h4>
+<ol>
+<li>Define Linear Prediction, prediction error e[n] = s[n] - ∑a_i s[n-i], and draw Error Filter Fig 2.1.</li>
+<li>Derive Normal Equations by setting (∂E)/(∂a_k) = 0 to get ∑a_i R[|k-i|] = R[k].</li>
+<li>Formulate matrix representation for p=2.</li>
+<li>Provide complete worked numerical solution for R[0]=5.0, R[1]=3.0, R[2]=1.0 obtaining a_1=0.75, a_2=-0.25, E_2=3.0.</li>
+<li>Explain Prediction Gain PG = 10 log_10(σ_s^2 / σ_e^2) dB and compute PG = 2.218 dB.</li>
+<li>Conclusion: LP models vocal tract acoustic properties with minimal filter coefficients.</li>
+</ol>
+
+<h4>Q2. Detail the Levinson-Durbin algorithm, reflection coefficients, and filter stability with a step-by-step example.</h4>
+<ol>
+<li>Define Levinson-Durbin algorithm purpose (O(p^2) recursive solution to normal equations).</li>
+<li>List recursion formulas: E_0=R[0], k_i, a_j^(i), and E_i = (1-k_i^2)E_i-1.</li>
+<li>Draw Levinson-Durbin algorithm flowchart Fig 2.3.</li>
+<li>Explain Reflection Coefficients k_i and the stability criterion |k_i| &lt; 1.</li>
+<li>Provide full step-by-step worked example for order p=2 showing k_1=0.6, E_1=3.2, k_2=-0.25, a_1=0.75, a_2=-0.25, E_2=3.0.</li>
+<li>Compare direct matrix inversion O(p^3) vs Levinson-Durbin recursion O(p^2).</li>
+<li>Conclusion: Levinson-Durbin algorithm is essential for fast, stable LPC parameter computation.</li>
+</ol>
+
+<h4>Q3. Compare Short-Term vs Long-Term LP models, and detail moving average prediction.</h4>
+<ol>
+<li>Explain Short-Term LP (p ≈10): vocal tract formants and short-lag correlation removal.</li>
+<li>Explain Long-Term LP: vocal cord pitch periodicity T and long-lag pitch correlation removal.</li>
+<li>Draw cascaded Short-Term and Long-Term Prediction Error Filter system (Fig 2.4).</li>
+<li>Define Moving Average (MA) prediction y[n] = x[n] + ∑b_k e[n-k] (all-zero predictor).</li>
+<li>Present comprehensive comparison table: Short-Term vs Long-Term vs Moving Average.</li>
+<li>Conclusion: Joint short-term and long-term prediction achieves maximum residual error energy reduction.</li>
+</ol>
+
+<h4>Q4. Explain Scalar Quantization: Uniform, Optimum Lloyd-Max, and Logarithmic Companding.</h4>
+<ol>
+<li>Define Scalar Quantization, decision boundaries x_k, and reconstruction levels y_k.</li>
+<li>Explain Uniform Quantizer (step size Δ), mid-tread vs mid-rise, and draw staircase curve Fig 2.5.</li>
+<li>Derive SQNR ≈6.02 N + 1.76 dB formula and show worked calculation for 3-bit quantizer.</li>
+<li>Explain Optimum Lloyd-Max Quantizer conditions (midpoint boundaries, centroid levels).</li>
+<li>Explain Logarithmic Companding (μ-law / A-law) with Compressor &rarr; Quantizer &rarr; Expander Fig 2.6.</li>
+<li>Provide worked companding calculation for μ=255 and x=0.5.</li>
+<li>Conclusion: Companding provides uniform SQNR across wide dynamic speech range.</li>
+</ol>
+
+<h4>Q5. Discuss Adaptive Quantization (AQF/AQB) and Differential Quantizers (DPCM/ADPCM).</h4>
+<ol>
+<li>Define Adaptive Quantization and dynamic step size adaptation.</li>
+<li>Differentiate Forward Adaptive (AQF) vs Backward Adaptive (AQB) with block diagram Fig 2.7.</li>
+<li>Explain Differential PCM (DPCM) principle: quantizing difference signal d[n] = s[n] - ŝ[n].</li>
+<li>Draw DPCM Encoder block diagram (Fig 2.8) emphasizing feedback predictor synchronization.</li>
+<li>Explain ADPCM (Adaptive DPCM, G.726 @ 32 kbps) combining adaptive step size and adaptive predictor.</li>
+<li>Table comparing PCM vs DPCM vs ADPCM across bit-rates and performance.</li>
+<li>Conclusion: Differential quantization removes inter-sample redundancy to cut bit-rates in half.</li>
+</ol>
+
+<h4>Q6. Explain Vector Quantization (VQ), distortion measures, LBG codebook design, and codebook types.</h4>
+<ol>
+<li>Define Vector Quantization (VQ) and draw Encoder/Decoder architecture Fig 2.9.</li>
+<li>Detail Distortion Measures: Squared Euclidean MSE, Weighted Euclidean, and Itakura-Saito.</li>
+<li>Explain LBG (Generalized Lloyd) Algorithm 4 steps (Initialization, Partitioning, Centroid update, Convergence).</li>
+<li>Draw LBG Algorithm flowchart Fig 2.10.</li>
+<li>Provide worked numerical example for tiny 2D LBG centroid split and update step-by-step.</li>
+<li>Present Codebook Types Table (Full-Search, Tree-Structured TSVQ, Multistage MSVQ, Split VQ).</li>
+<li>Conclusion: VQ achieves high compression efficiency close to rate-distortion theoretical limits.</li>
+</ol>
+<a class="top" href="#top">↑ top</a></section>
+</section>

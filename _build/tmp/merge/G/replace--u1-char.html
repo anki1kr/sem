@@ -1,0 +1,39 @@
+<section class="topic" id="u1-char">
+<h3>1.2 Characteristics of Big Data (the Vs)</h3>
+<p class="hook">Big data is described by its "Vs": started as 3 Vs, most textbooks now teach 5 Vs.</p>
+<div class="def"><b>Definition:</b> The <mark>characteristics of big data</mark> are the properties that distinguish it from traditional data, commonly summarised as the 5 Vs: Volume, Velocity, Variety, Veracity and Value.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 320" width="760">
+<line x1="380" y1="170" x2="380" y2="45"/><line x1="380" y1="170" x2="564" y2="131"/><line x1="380" y1="170" x2="494" y2="271"/><line x1="380" y1="170" x2="266" y2="271"/><line x1="380" y1="170" x2="196" y2="131"/>
+<ellipse class="hi" cx="380" cy="170" rx="72" ry="32"/><text class="b" x="380" y="170">Big Data</text>
+<rect x="315" y="21" width="130" height="48" rx="6"/><text x="380" y="37">Volume</text><text class="s" x="380" y="56">size</text>
+<rect x="499" y="107" width="130" height="48" rx="6"/><text x="564" y="123">Velocity</text><text class="s" x="564" y="142">speed</text>
+<rect x="429" y="247" width="130" height="48" rx="6"/><text x="494" y="263">Variety</text><text class="s" x="494" y="282">formats</text>
+<rect x="201" y="247" width="130" height="48" rx="6"/><text x="266" y="263">Veracity</text><text class="s" x="266" y="282">trust / quality</text>
+<rect x="131" y="107" width="130" height="48" rx="6"/><text x="196" y="123">Value</text><text class="s" x="196" y="142">usefulness</text>
+</svg></div><figcaption><b>Fig 1.2</b> · The 5 Vs of big data</figcaption><p class="draw">✍ Draw it: an oval "Big Data" in the centre, five boxes around it like a star, one V in each.</p></figure>
+<ul>
+<li><mark>Volume</mark>: the sheer amount of data, measured in terabytes (TB), petabytes (PB), exabytes (EB). Example: years of transaction records of a bank. <span class="hg">(kitna zyada)</span></li>
+<li><mark>Velocity</mark>: the speed at which data is generated and must be processed, from batch (daily) to near real-time (every second). Example: UPI payments being checked for fraud as they happen. <span class="hg">(kitni tezi se)</span></li>
+<li><mark>Variety</mark>: different forms of data: structured tables, semi-structured JSON/XML, unstructured text, images, audio, video. <span class="hg">(kitne prakar ka)</span></li>
+<li><mark>Veracity</mark>: trustworthiness and quality: noise, missing values, duplicates, fake reviews, sensor errors. <span class="hg">(kitna sach)</span></li>
+<li><mark>Value</mark>: the business or social benefit extracted; data that gives no insight is only a storage cost. <span class="hg">(kitne kaam ka)</span></li>
+<li>Value is often judged by whether a big-data initiative shows a positive <mark>Return on Investment (ROI)</mark> — insight that does not improve decisions or revenue does not justify the storage/processing cost.</li>
+<li><b>Extensions</b> some books add: <mark>Variability</mark> (meaning or flow rate of data changes over time, e.g. seasonal sale spikes, a word changing sense) and <mark>Visualization</mark> (presenting huge data so humans can understand it). Some texts also list Validity or Volatility.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>V</th><th>Question it answers</th><th>Everyday example</th></tr>
+<tr><td>Volume</td><td>How much?</td><td>Photos stored by a social media app</td></tr>
+<tr><td>Velocity</td><td>How fast?</td><td>Live cricket-score and click streams</td></tr>
+<tr><td>Variety</td><td>What kinds?</td><td>Order table + review text + product images</td></tr>
+<tr><td>Veracity</td><td>Can we trust it?</td><td>GPS points that jump due to weak signal</td></tr>
+<tr><td>Value</td><td>Is it worth it?</td><td>Recommendations that increase sales</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> Veracity problem in a small data table:
+<div class="step">One row shows age = −5 and a blank city field</div>
+<div class="step">A negative age is impossible, and the missing city cannot be used for location analysis</div>
+<span class="ans">Low veracity → conclusions drawn from this row cannot be trusted until the data is cleaned</span></div>
+<div class="mn"><b>Mnemonic</b> In order: <b>S</b>ize (Volume) · <b>S</b>peed (Velocity) · <b>S</b>orts (Variety) · <b>S</b>ach (Veracity) · <b>S</b>ona (Value). Five S words → five Vs in the same order.</div>
+<div class="note"><b>Common mistake:</b> Veracity is about <i>accuracy/quality</i>, not size; Variability is about <i>change over time</i>, not about many formats (that is Variety).</div>
+<div class="recall"><b>Quick recall</b> 3 Vs (Laney) → 5 Vs: Volume, Velocity, Variety, Veracity, Value; + Variability, Visualization.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

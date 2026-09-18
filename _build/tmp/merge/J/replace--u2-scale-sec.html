@@ -1,0 +1,72 @@
+<section class="topic" id="u2-scale-sec">
+<h3>2.11 Data Scalability and Security</h3>
+<p class="hook">Scalability means the system keeps working as data grows; security means only the right people see and change it. <span class="hg">(badhe to sambhale, aur chori na ho)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data scalability</mark> is the ability of a data system to handle growing data volume and workload by adding resources, either by <mark>scaling up</mark> (a more powerful machine) or <mark>scaling out</mark> (more machines). <mark>Data security</mark> is protecting data from unauthorised access, change or loss through <mark>access control</mark>, <mark>encryption</mark>, <mark>secure transmission</mark> and <mark>privacy</mark> measures.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 250" width="700">
+<text class="b" x="165" y="30">Scale up (vertical)</text>
+<rect x="30" y="110" width="70" height="50" rx="6"/><text x="65" y="135">Server</text>
+<path class="arr" d="M100 135 H146"/>
+<rect class="hi" x="150" y="70" width="150" height="130" rx="6"/><text x="225" y="125">Bigger server</text><text class="s" x="225" y="150">more CPU, RAM, disk</text>
+<text class="s" x="165" y="228">limit: one machine's maximum</text>
+<text class="b" x="525" y="30">Scale out (horizontal)</text>
+<rect x="370" y="110" width="70" height="50" rx="6"/><text x="405" y="135">Node</text>
+<path class="arr" d="M440 135 H486"/>
+<rect class="hi" x="495" y="75" width="80" height="50" rx="6"/><text x="535" y="100">Node 1</text>
+<rect class="hi" x="590" y="75" width="80" height="50" rx="6"/><text x="630" y="100">Node 2</text>
+<rect class="hi" x="495" y="145" width="80" height="50" rx="6"/><text x="535" y="170">Node 3</text>
+<rect class="hi" x="590" y="145" width="80" height="50" rx="6"/><text x="630" y="170">Node 4</text>
+<text class="s" x="582" y="228">add more commodity nodes</text>
+</svg></div><figcaption><b>Fig 2.16</b> · Scale up vs scale out</figcaption><p class="draw">✍ Draw it: left, small box → big box; right, small box → 2×2 grid of small boxes; label each side.</p></figure>
+<ul>
+<li><mark>Scale up (vertical)</mark>: add CPU / RAM / disk to one server. Simple, no code change, but costly and has a hardware ceiling and a single point of failure.</li>
+<li><mark>Scale out (horizontal)</mark>: add more ordinary machines to a cluster (Hadoop, NoSQL). Near-unlimited growth, cheaper hardware, but needs distributed software. <span class="hg">(ek bada nahi, kai chhote)</span></li>
+<li><mark>Partitioning (sharding)</mark>: split data into parts stored on different nodes so work runs in parallel (HDFS blocks; shards by user_id).</li>
+<li><mark>Replication</mark>: keep copies of each part on several nodes for fault tolerance and faster reads (HDFS default replication factor = 3).</li>
+<li><mark>Elasticity</mark>: in the cloud, add or remove nodes as load changes.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Scale up</th><th>Scale out</th></tr>
+<tr><td>How</td><td>Stronger single machine</td><td>More machines</td></tr>
+<tr><td>Cost</td><td>Expensive high-end hardware</td><td>Cheap commodity hardware</td></tr>
+<tr><td>Limit</td><td>Hardware ceiling</td><td>Practically very high</td></tr>
+<tr><td>Failure</td><td>Single point of failure</td><td>Tolerant (replicas)</td></tr>
+<tr><td>Software</td><td>Unchanged</td><td>Must be distributed</td></tr>
+<tr><td>Example</td><td>Upgrade DB server RAM</td><td>Hadoop / Cassandra cluster</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (partitioning + replication in HDFS)<div class="step">File = 1 TB = 1024 × 1024 MB = 1,048,576 MB; block size = 128 MB</div><div class="step">Blocks = 1,048,576 / 128 = 8192 blocks (partitions)</div><div class="step">Replication factor 3 → block copies = 8192 × 3 = 24,576</div><span class="ans">8192 blocks, 24,576 stored copies, 3 TB of raw disk used for 1 TB of data.</span></div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">Access control<small>authentication + authorisation (who can do what)</small></div>
+<div class="l">Encryption at rest<small>stored data unreadable without key</small></div>
+<div class="l">Secure transmission<small>encryption in transit (TLS / HTTPS)</small></div>
+<div class="l">Privacy protection<small>anonymise, mask personal data</small></div>
+<div class="l">Auditing and monitoring<small>logs of who accessed what</small></div>
+</div></div><figcaption><b>Fig 2.17</b> · Security layers around big data</figcaption><p class="draw">✍ Draw it: 5 stacked boxes, each with one-line meaning; shade Access control.</p></figure>
+<ul>
+<li><mark>Access control</mark>: authentication (prove identity: password, OTP) + authorisation (roles/permissions: analyst can read, not delete).</li>
+<li><mark>Encryption</mark>: convert data to ciphertext so a stolen disk or file is useless without the key; costs extra CPU time for encrypt/decrypt, which matters at big data scale.</li>
+<li><mark>Secure transmission</mark>: data moving between nodes or to users must travel encrypted (TLS), since big data systems send data across networks constantly.</li>
+<li><mark>Privacy</mark>: personal data (Aadhaar, health records) must be anonymised or masked and used only with consent / as law allows.</li>
+<li><mark>More nodes, more risk</mark>: scale out spreads data over many machines, so every node and link must be secured.</li>
+</ul>
+<h4>Scalability: Key Aspects and Enabling Technologies</h4>
+<ul>
+<li><mark>Key aspects</mark>: handling <mark>volume</mark> (ever-growing datasets), <mark>performance</mark> (stay fast and reliable as load rises), <mark>flexibility</mark> (adapt to new data types and demands over time).</li>
+<li><mark>Enabling technologies</mark>: <mark>cloud computing</mark> (e.g. AWS S3 for elastic storage), <mark>distributed computing</mark> (Hadoop, Spark processing data in parallel across servers), <mark>flexible storage</mark> (mixing relational + NoSQL + object storage for different needs), and <mark>virtualisation / containerisation</mark> (using physical hardware resources more effectively).</li>
+</ul>
+<h4>Security: the CIA Triad and Data Loss Prevention</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Confidentiality</b>only authorised people can access it</div>
+<div class="b"><b>Integrity</b>no unauthorised change or tampering</div>
+<div class="b"><b>Availability</b>accessible whenever it is needed</div>
+</div></div><figcaption><b>Fig 2.55</b> · CIA triad: the three goals of data security</figcaption><p class="draw">✍ Draw it: 3 boxes in a row, one-word title + short meaning in each.</p></figure>
+<ul>
+<li><mark>CIA triad</mark>: every security control ultimately protects <mark>Confidentiality</mark>, <mark>Integrity</mark> and <mark>Availability</mark> together — the standard three goals of data security.</li>
+<li><mark>Data Loss Prevention (DLP)</mark>: systems and policies that stop sensitive data from leaving the organisation's control (e.g. blocking an unauthorised copy or upload of a customer file) — a control alongside access control, encryption and auditing.</li>
+<li><mark>Scalability vs security trade-off</mark>: encryption and access checks add processing overhead, so both must be designed in from the start, tracked with continuous monitoring, and built with adaptable, modular architectures rather than bolted on afterwards.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Scalability <b>"UP-OUT-PR"</b>: scale UP, scale OUT, Partition, Replicate. Security <b>"AESPA"</b>: Access control, Encryption, Secure transmission, Privacy, Auditing.</div>
+<div class="mn"><b>Mnemonic</b> Security goals = <b>"CIA"</b>: Confidentiality, Integrity, Availability — DLP is an extra control on top of AESPA that stops sensitive data leaving the organisation.</div>
+<div class="note"><b>Common mistake:</b> thinking replication is only for backup. It also allows reads from several nodes, improving speed and availability.</div>
+<div class="recall"><b>Quick recall</b> Scale up = bigger box, scale out = more boxes (+ partition, replicate); key aspects = volume, performance, flexibility. Security = CIA triad (confidentiality, integrity, availability) delivered by access control, encryption (rest + transit), privacy, auditing and DLP.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

@@ -1,0 +1,124 @@
+<section class="topic" id="u2-methods">
+<h3>2.56 Methods and method overloading</h3>
+<p class="hook">A method is a labelled job a class knows how to do; call it by name and it does that job, as many times as you like. <span class="hg">(kaam ka naam do, jab chaho bulao)</span></p>
+<div class="def"><b>Definition:</b> A <mark>method</mark> is a named block of statements, grouped together to perform one task, declared inside a class. <mark>Method overloading</mark> is having two or more methods in the same class with the <b>same name</b> but a <b>different parameter list</b> (number, type or order of parameters).</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">modifiers<small>public, static ...</small></div><div class="n">return type<small>void or a type</small></div><div class="n hi">name(parameters)</div><div class="n">{ body }</div>
+</div></div><figcaption><b>Fig 2.33</b> · Anatomy of a method declaration</figcaption><p class="draw">✍ Draw it: four boxes in a row — modifiers, return type, name(parameters), body — joined by arrows.</p></figure>
+<ul>
+<li><mark>modifiers</mark> (optional): access level (<code>public</code>, <code>private</code>, ...) plus keywords like <code>static</code>.</li>
+<li><mark>return type</mark>: <code>void</code> if the method returns nothing, otherwise the type of value it sends back with <code>return</code>.</li>
+<li><mark>method name</mark>: a valid identifier, by convention starting with a lower-case letter.</li>
+<li><mark>parameter list</mark>: the values the caller passes in, listed in parentheses after the name; can be empty.</li>
+<li><mark>method body</mark>: the statements between <code>{ }</code> that do the work.</li>
+<li>Java has no free-standing functions: every method is declared <mark>inside some class</mark>.</li>
+<li>Two kinds by how they are called: an <mark>instance method</mark> needs an object (<code>obj.method()</code>) and may use instance variables; a <mark>class (static) method</mark> is called on the class itself (<code>ClassName.method()</code>) and cannot use instance variables unless it creates an object first.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c2">
+<div class="b hi"><b>Instance method</b>Called through an object: <code>obj.method()</code>. Can read/change instance variables directly.</div>
+<div class="b"><b>Class (static) method</b>Called through the class: <code>ClassName.method()</code>. No instance variables without an object.</div>
+</div></div><figcaption><b>Fig 2.34</b> · Instance method vs class (static) method: who you call it through</figcaption><p class="draw">✍ Draw it: two side-by-side boxes, left "Instance method: obj.method()", right "Class method: ClassName.method()".</p></figure>
+<div class="tw"><table>
+<tr><th>Method with a return type</th><th>void method</th></tr>
+<tr><td>Ends with <code>return value;</code></td><td>No <code>return value;</code> needed (a bare <code>return;</code> is allowed to exit early)</td></tr>
+<tr><td>Call site can use the result: <code>int m = maxFunction(a, b);</code></td><td>Call site just calls it: <code>grade(marks);</code></td></tr>
+<tr><td>Example below: <code>maxFunction</code></td><td>Example below: <code>grade</code></td></tr>
+</table></div>
+<p>Class-notes example — a method that <b>returns a value</b>, called without an object because it is <code>static</code>:</p>
+<pre class="code" data-file="MaxNumber.java"><code><span class="k">public</span> <span class="k">class</span> MaxNumber {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        <span class="k">int</span> a = 56, b = 51;                    <span class="c">// hard-coded (notes read these from the keyboard)</span>
+        <span class="k">int</span> maxc = maxFunction(a, b);         <span class="c">// static method called directly: no object needed</span>
+        System.out.println("Maximum Number is = " + maxc);
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">int</span> maxFunction(<span class="k">int</span> n1, <span class="k">int</span> n2) {
+        <span class="k">int</span> max;
+        <span class="k">if</span> (n1 > n2)
+            max = n1;
+        <span class="k">else</span>
+            max = n2;
+        <span class="k">return</span> max;
+    }
+}</code></pre>
+<pre class="out">Maximum Number is = 56</pre>
+<div class="note"><b>Common mistake:</b> the notebook calls <code>MaxFunction(a, b)</code> but defines <code>maxFunction</code> — Java is case-sensitive, so the two names are different methods and <code>javac</code> reports "cannot find symbol: method MaxFunction(int,int)". The notebook's method body also mixes two different variable names, <code>man</code> and <code>max</code>, assigning one and returning the other, which separately fails as "cannot find symbol: variable max". Fixed above: the call matches <code>maxFunction</code> exactly, and only <code>max</code> is used throughout.</div>
+<p>Class-notes example — a <code>void</code> method, also called without an object:</p>
+<pre class="code" data-file="Grade.java"><code><span class="k">public</span> <span class="k">class</span> Grade {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        <span class="k">int</span> marks = 92;              <span class="c">// hard-coded (notes read this from the keyboard)</span>
+        grade(marks);
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> grade(<span class="k">int</span> m) {   <span class="c">// void: nothing is returned</span>
+        <span class="k">if</span> (m >= 90)
+            System.out.println("Grade A");
+        <span class="k">else</span> <span class="k">if</span> (m >= 70)
+            System.out.println("Grade B");
+        <span class="k">else</span> <span class="k">if</span> (m >= 50)
+            System.out.println("Grade C");
+        <span class="k">else</span>
+            System.out.println("Grade D");
+    }
+}</code></pre>
+<pre class="out">Grade A</pre>
+<p>Class-notes example — calling an <b>instance</b> method, which needs an object:</p>
+<pre class="code" data-file="Calc.java"><code><span class="k">public</span> <span class="k">class</span> Calc {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Calc obj = <span class="k">new</span> Calc();          <span class="c">// object creation for class Calc</span>
+        <span class="k">int</span> x = 20, y = 5;             <span class="c">// hard-coded (notes read these from the keyboard)</span>
+        obj.sum(x, y);                  <span class="c">// instance method: needs the object "obj"</span>
+        obj.sub(x, y);
+    }
+    <span class="k">void</span> sum(<span class="k">int</span> a, <span class="k">int</span> b) {
+        System.out.println("Sum is : " + (a + b));
+    }
+    <span class="k">void</span> sub(<span class="k">int</span> a, <span class="k">int</span> b) {
+        System.out.println("Sub is : " + (a - b));
+    }
+}</code></pre>
+<pre class="out">Sum is : 25
+Sub is : 15</pre>
+<p><b>(b) Method overloading</b>: a class can have several methods with the same name, as long as their parameter lists differ. The compiler matches each call to the correct one by counting and typing the arguments, before the program ever runs. This is <b>different from method overriding</b> (same name, <b>same</b> parameter list, in a parent/child pair, resolved while the program runs) — see 2.10 Polymorphism.</p>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">sum() overloaded</span><ul>
+<li><span>By changing TYPE</span><ul><li><span>sum(int,int)</span></li><li><span>sum(float,float)</span></li></ul></li>
+<li><span>By changing COUNT</span><ul><li><span>sum(int,int)</span></li><li><span>sum(int,int,int)</span></li></ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 2.35</b> · Two ways to overload sum(): change the type of the parameters, or change how many there are</figcaption><p class="draw">✍ Draw it: root "sum() overloaded", two branches "By changing TYPE" and "By changing COUNT", two leaves under each.</p></figure>
+<ul>
+<li><mark>Overloading by changing the data type</mark> of the arguments: <code>sum(int, int)</code> and <code>sum(float, float)</code>.</li>
+<li><mark>Overloading by changing the number</mark> of arguments: <code>sum(int, int)</code> and <code>sum(int, int, int)</code>.</li>
+<li>Java matches the <b>name first</b>, then the <b>number and type</b> of arguments, to pick the right overload.</li>
+<li><mark>Return type alone</mark> cannot overload a method: <code>int f()</code> and <code>double f()</code> together are a compile error.</li>
+</ul>
+<pre class="code" data-file="Calculate.java"><code><span class="k">public</span> <span class="k">class</span> Calculate {
+    <span class="k">void</span> sum(<span class="k">int</span> a, <span class="k">int</span> b) {              <span class="c">// version 1: two ints</span>
+        System.out.println("sum is : " + (a + b));
+    }
+    <span class="k">void</span> sum(<span class="k">float</span> a, <span class="k">float</span> b) {          <span class="c">// version 2: two floats (overloaded by TYPE)</span>
+        System.out.println("sum is : " + (a + b));
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Calculate cal = <span class="k">new</span> Calculate();
+        cal.sum(8, 5);           <span class="c">// sum(int, int) is called</span>
+        cal.sum(4.6f, 3.8f);     <span class="c">// sum(float, float) is called</span>
+    }
+}</code></pre>
+<pre class="out">sum is : 13
+sum is : 8.4</pre>
+<pre class="code" data-file="Calsum.java"><code><span class="k">public</span> <span class="k">class</span> Calsum {
+    <span class="k">void</span> sum(<span class="k">int</span> a, <span class="k">int</span> b) {                <span class="c">// version 1: 2 parameters</span>
+        System.out.println(a + b);
+    }
+    <span class="k">void</span> sum(<span class="k">int</span> a, <span class="k">int</span> b, <span class="k">int</span> c) {         <span class="c">// version 2: 3 parameters (overloaded by COUNT)</span>
+        System.out.println(a + b + c);
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Calsum obj = <span class="k">new</span> Calsum();
+        obj.sum(10, 10, 10);     <span class="c">// sum() with 3 parameters</span>
+        obj.sum(20, 20);         <span class="c">// sum() with 2 parameters</span>
+    }
+}</code></pre>
+<pre class="out">30
+40</pre>
+<div class="mn"><b>Mnemonic</b> overload by <b>T-C</b>: Type of arguments, Count of arguments (name and return type never decide it).</div>
+<div class="recall"><b>Quick recall</b> Method = modifiers + return type + name(parameters) + body; instance method needs an object, static method does not. Overloading = same name, different parameter list, matched by the compiler; different from overriding (2.10).</div>
+<a class="top" href="#top">↑ top</a></section>

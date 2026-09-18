@@ -1,0 +1,147 @@
+<section class="topic" id="u2-access">
+<h3>2.9 Access modifiers (member access rules)</h3>
+<p class="hook">Four lock levels on a member: only me, only my colony, my family anywhere, or everyone. <span class="hg">(kitna khula rakhna hai, modifier decide karta hai)</span></p>
+<div class="def"><b>Definition:</b> An <mark>access modifier</mark> fixes the accessibility (scope) of a class, field, method or constructor. Java has four: <mark>private</mark>, <mark>default</mark> (no keyword written), <mark>protected</mark> and <mark>public</mark>, from most to least restrictive.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 320" width="620">
+<rect x="20" y="20" width="580" height="280" rx="10"/>
+<text x="310" y="38">public: everywhere</text>
+<rect x="55" y="55" width="510" height="210" rx="10"/>
+<text x="310" y="73">protected: package + subclass elsewhere</text>
+<rect x="90" y="90" width="440" height="140" rx="10"/>
+<text x="310" y="108">default: same package only</text>
+<rect class="hi" x="125" y="125" width="370" height="70" rx="8"/>
+<text x="310" y="164">private: same class only</text>
+</svg></div><figcaption><b>Fig 2.50</b> · Access modifiers, narrowest to widest: private inside default inside protected inside public</figcaption><p class="draw">✍ Draw it: four nested rectangles, each ~35px bigger on every side; label each in the gap above the next one; shade the innermost.</p></figure>
+<ul>
+<li><mark>private</mark>: usable only inside the <b>same class</b>. Used to hide data (encapsulation).</li>
+<li><mark>default</mark> (write nothing): usable anywhere in the <b>same package</b>, but not outside it, not even by a subclass in another package.</li>
+<li><mark>protected</mark>: usable in the same package, and in a <b>subclass in a different package</b>, but only through inheritance.</li>
+<li><mark>public</mark>: usable <b>everywhere</b>, the widest scope.</li>
+<li><code>private</code> and <code>protected</code> can be applied to a data member, method or constructor. They <b>cannot be applied to a top-level class</b>; a top-level class is only default or public.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Modifier</th><th>Within class</th><th>Within package</th><th>Outside package, by subclass</th><th>Outside package</th></tr>
+<tr><td>private</td><td>Y</td><td>N</td><td>N</td><td>N</td></tr>
+<tr><td>default</td><td>Y</td><td>Y</td><td>N</td><td>N</td></tr>
+<tr><td>protected</td><td>Y</td><td>Y</td><td>Y</td><td>N</td></tr>
+<tr><td>public</td><td>Y</td><td>Y</td><td>Y</td><td>Y</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> widening scope <b>C-P-S-E</b>: Class only (private) &rarr; Package (default) &rarr; Subclass elsewhere too (protected) &rarr; Everyone (public).</div>
+
+<p><b>(a) private</b> is not accessible outside its own class, not even from code that holds an object of it:</p>
+<pre class="code"><code><span class="k">class</span> A {
+    <span class="k">private</span> <span class="k">int</span> data = 40;
+
+    <span class="k">private</span> <span class="k">void</span> msg() {
+        System.out.println("Hello Java");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> Simple {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        A obj = <span class="k">new</span> A();
+        System.out.println(obj.data);
+        obj.msg();
+    }
+}</code></pre>
+<p><b>Compile error (real javac message):</b></p>
+<pre class="out">Simple.java:12: error: data has private access in A
+        System.out.println(obj.data);
+                              ^
+Simple.java:13: error: msg() has private access in A
+        obj.msg();
+           ^
+2 errors</pre>
+<div class="note"><b>Common mistake:</b> the notes write this line as <code>System.out.println(" obj.data);</code>; a stray quote before <code>obj</code> leaves the string unterminated, so javac stops at "unclosed string literal" and never even reaches the private-access lesson. Removing the extra quote (<code>System.out.println(obj.data);</code>, as above) gives the two real private-access errors that this example is actually meant to teach.</div>
+
+<p><b>(b) default</b>: two classes with no <code>package</code> line sit in the same (unnamed) package, so default access already works between them:</p>
+<pre class="code" data-file="DefaultDemo.java"><code><span class="k">class</span> Adef {
+    <span class="k">void</span> msg() {
+        System.out.println("Hello");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> DefaultDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String args[]) {
+        Adef obj = <span class="k">new</span> Adef();
+        obj.msg();
+    }
+}</code></pre>
+<pre class="out">Hello</pre>
+<p>Move <code>Adef</code> into its own package and reach it from a different package, and default access fails even with an import:</p>
+<p>Save <code>Adef.java</code> inside a folder named <code>pack1</code>:</p>
+<pre class="code"><code><span class="k">package</span> pack1;
+<span class="k">class</span> Adef {
+    <span class="k">void</span> msg() {
+        System.out.println("Hello");
+    }
+}</code></pre>
+<p>Save <code>Bdef.java</code> inside a folder named <code>pack2</code>:</p>
+<pre class="code"><code><span class="k">package</span> pack2;
+<span class="k">import</span> pack1.Adef;
+<span class="k">class</span> Bdef {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String args[]) {
+        Adef obj = <span class="k">new</span> Adef();
+        obj.msg();
+    }
+}</code></pre>
+<p><b>Compile error (real javac message)</b> for <code>javac -d . pack1\Adef.java</code> then <code>javac -d . pack2\Bdef.java</code>:</p>
+<pre class="out">pack2\Bdef.java:2: error: Adef is not public in pack1; cannot be accessed from outside package
+import pack1.Adef;
+            ^
+pack2\Bdef.java:5: error: Adef is not public in pack1; cannot be accessed from outside package
+        Adef obj = new Adef();
+        ^
+pack2\Bdef.java:5: error: Adef is not public in pack1; cannot be accessed from outside package
+        Adef obj = new Adef();
+                       ^
+3 errors</pre>
+<div class="note"><b>Common mistake:</b> the notes write the import as <code>import pack.*;</code> while the package actually declared is <code>pack1</code>; that typo alone gives "package pack does not exist". Fixing the package name is not enough to make it work: <code>Adef</code> is default-access, so it stays invisible outside <code>pack1</code> no matter how it is imported. The real, intended error is the "not public in pack1" message above.</div>
+
+<p><b>(c) protected</b> is not usable from an unrelated class in another package, but is usable from a <b>subclass</b> in another package:</p>
+<p>Save <code>ProtectA.java</code> inside a folder named <code>pack</code>:</p>
+<pre class="code"><code><span class="k">package</span> pack;
+<span class="k">public</span> <span class="k">class</span> ProtectA {
+    <span class="k">protected</span> <span class="k">void</span> msg() {
+        System.out.println("Hello");
+    }
+}</code></pre>
+<p>Save <code>ProtectB.java</code> inside a folder named <code>mypack</code>:</p>
+<pre class="code"><code><span class="k">package</span> mypack;
+<span class="k">import</span> pack.*;
+<span class="k">class</span> ProtectB <span class="k">extends</span> ProtectA {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String args[]) {
+        ProtectB obj = <span class="k">new</span> ProtectB();
+        obj.msg();
+    }
+}</code></pre>
+<pre class="out">javac -d . pack\ProtectA.java
+javac -d . mypack\ProtectB.java
+java mypack.ProtectB
+
+Hello</pre>
+
+<p><b>(d) public</b> is the widest scope: usable from any package with a plain import:</p>
+<p>Save <code>X.java</code> inside a folder named <code>pack</code>:</p>
+<pre class="code"><code><span class="k">package</span> pack;
+<span class="k">public</span> <span class="k">class</span> X {
+    <span class="k">public</span> <span class="k">void</span> msg() {
+        System.out.println("Hello");
+    }
+}</code></pre>
+<p>Save <code>Y.java</code> inside a folder named <code>mypack</code>:</p>
+<pre class="code"><code><span class="k">package</span> mypack;
+<span class="k">import</span> pack.X;
+<span class="k">class</span> Y {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String args[]) {
+        X obj = <span class="k">new</span> X();
+        obj.msg();
+    }
+}</code></pre>
+<pre class="out">javac -d . pack\X.java
+javac -d . mypack\Y.java
+java mypack.Y
+
+Hello</pre>
+<div class="recall"><b>Quick recall</b> private &lt; default &lt; protected &lt; public, in scope; only default/public may sit on a top-level class; protected reaches another package only through a subclass.</div>
+<a class="top" href="#top">↑ top</a></section>

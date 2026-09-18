@@ -1,0 +1,72 @@
+<section class="topic" id="u2-abstract">
+<h3>2.12 Abstract class and abstract methods</h3>
+<p class="hook">"Every shape has an area" is true, but you cannot compute the area of just "a shape"; each real shape must say how. <span class="hg">(adhoora class, bacche poora karein)</span></p>
+<div class="def"><b>Definition:</b> An <mark>abstract class</mark> is a class declared with the <code>abstract</code> keyword that cannot be instantiated and may contain abstract methods. An <mark>abstract method</mark> is a method declared without a body (<code>abstract double area();</code>) that every concrete subclass must override.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">abstract Figure<br>abstract area()</span><ul>
+<li><span>Rect<br>area() = l * b</span></li><li><span>Round<br>area() = 3.14 * r * r</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.25</b> · Abstract class declares area(); each subclass supplies the body</figcaption><p class="draw">✍ Draw it: shaded root box with "abstract", two child boxes each with its own formula.</p></figure>
+<ul>
+<li><mark>Abstraction</mark> (the general idea) means hiding implementation detail and showing only functionality — sending an SMS or paying by UPI, you just type and send; the delivery mechanics stay hidden. <span class="hg">(andar kya ho raha hai, dekhne ki zarurat nahi)</span> An <mark>abstract class</mark> is one of Java's two tools for achieving it (the other is the interface, next topic).</li>
+<li><mark>Cannot create an object</mark>: <code>new Figure()</code> is a compile error, but a reference <code>Figure f = new Rect(4, 5);</code> is allowed.</li>
+<li>Can have <mark>both</mark> abstract and concrete methods, fields, a constructor, and even a <code>main()</code> method. <span class="hg">(kuch ready, kuch baaki)</span></li>
+<li>If a class has even <mark>one abstract method</mark>, the class must be declared abstract.</li>
+<li>A subclass must override <mark>all</mark> abstract methods, or itself be declared abstract.</li>
+<li>An abstract class with <mark>zero abstract methods</mark> is legal too (unusual, but the compiler does not complain) — though the whole point of declaring one is usually to hold at least one abstract method.</li>
+<li>Gives <mark>partial abstraction</mark> (0 to 100 percent) and a common base for run-time polymorphism.</li>
+<li><code>abstract</code> cannot combine with <code>final</code>, <code>static</code> or <code>private</code> on a method.</li>
+</ul>
+<pre class="code" data-file="AbstractDemo.java"><code><span class="k">abstract</span> <span class="k">class</span> Figure {
+    String name;
+    Figure(String n) { name = n; }       <span class="c">// abstract class CAN have a constructor</span>
+    <span class="k">abstract</span> <span class="k">double</span> area();              <span class="c">// no body: child must override it</span>
+    <span class="k">void</span> print() { System.out.println(name + " area = " + area()); }  <span class="c">// concrete</span>
+}
+<span class="k">class</span> Rect <span class="k">extends</span> Figure {
+    <span class="k">double</span> l, b;
+    Rect(<span class="k">double</span> l, <span class="k">double</span> b) { <span class="k">super</span>("Rectangle"); <span class="k">this</span>.l = l; <span class="k">this</span>.b = b; }
+    <span class="k">double</span> area() { <span class="k">return</span> l * b; }
+}
+<span class="k">class</span> Round <span class="k">extends</span> Figure {
+    <span class="k">double</span> r;
+    Round(<span class="k">double</span> r) { <span class="k">super</span>("Circle"); <span class="k">this</span>.r = r; }
+    <span class="k">double</span> area() { <span class="k">return</span> 3.14 * r * r; }
+}
+
+<span class="k">public</span> <span class="k">class</span> AbstractDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        <span class="c">// Figure f = new Figure("x");   error: Figure is abstract</span>
+        Figure f1 = <span class="k">new</span> Rect(4, 5);   f1.print();
+        Figure f2 = <span class="k">new</span> Round(2);     f2.print();
+    }
+}</code></pre>
+<pre class="out">Rectangle area = 20.0
+Circle area = 12.56</pre>
+<p><b>A second example from the notes</b> — an abstract class mixing one abstract method with an ordinary (parameterised) method:</p>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">abstract Animal<br>abstract sound()<br>eat(String food) — concrete</span><ul>
+<li><span>Lion<br>sound() = "Roar!"</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.73</b> · Animal fixes eat(String) for every subclass but leaves sound() for each one to define</figcaption><p class="draw">✍ Draw it: shaded root box "abstract Animal" listing both methods, one child box Lion.</p></figure>
+<pre class="code" data-file="Lion.java"><code><span class="k">abstract</span> <span class="k">class</span> Animal {
+    <span class="k">abstract</span> <span class="k">void</span> sound();                 <span class="c">// abstract method: no body</span>
+    <span class="k">void</span> eat(String food) {                <span class="c">// concrete (normal) method, takes a parameter</span>
+        System.out.println("this animal likes " + food);
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> Lion <span class="k">extends</span> Animal {
+    <span class="k">void</span> sound() {
+        System.out.println("Lions Roar! Roar!");
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Lion l = <span class="k">new</span> Lion();
+        l.sound();               <span class="c">// Lion's own body</span>
+        l.eat("flesh");           <span class="c">// inherited concrete method</span>
+    }
+}</code></pre>
+<pre class="out">Lions Roar! Roar!
+this animal likes flesh</pre>
+<ul>
+<li><code>Animal</code> is abstract only because of <code>sound()</code>; <code>eat(String food)</code> already has a full body and is inherited by <code>Lion</code> unchanged, exactly like a normal parent-child method.</li>
+<li><code>Lion</code> becomes a normal, instantiable class the moment it supplies a body for the one abstract method it inherited.</li>
+</ul>
+<div class="recall"><b>Quick recall</b> abstract class: no objects, may mix abstract (bodyless) + normal methods, fields, constructors, even main(); child must override every abstract method to become instantiable; abstraction is the general idea, abstract class is one Java tool for it.</div>
+<a class="top" href="#top">↑ top</a></section>

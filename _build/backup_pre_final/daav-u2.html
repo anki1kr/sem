@@ -1,0 +1,806 @@
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Big Data Modeling and Management</h2>
+<p class="unit-sub">How data science turns big data into value (strategy, 5 P's, process steps) and how big data is managed: ingestion, storage, quality, operations, scalability, security and real applications.</p>
+
+<!-- ============ 2.1 ============ -->
+<section class="topic" id="u2-important">
+<h3>Important questions (Unit II)</h3>
+<ol>
+<li>What is Data Science? Its components and the 5 P's → <a href="#u2-value">2.1</a>, <a href="#u2-components">2.3</a>, <a href="#u2-5p">2.4</a></li>
+<li>Complete data science process with an example → <a href="#u2-process">2.5</a></li>
+<li>Big data modeling and management: ingestion, storage, security, scalability → <a href="#u2-mgmt">2.6</a>, <a href="#u2-ingestion">2.7</a>, <a href="#u2-storage">2.8</a>, <a href="#u2-scale-sec">2.11</a></li>
+<li>Case study: Big Data Management Plan for customer data → <a href="#u2-case">2.13</a></li>
+<li>Real-world data science example and advanced techniques → <a href="#u2-realworld">2.14</a></li>
+</ol>
+</section>
+<section class="topic" id="u2-value">
+<h3>2.1 Data Science: Getting Value out of Big Data</h3>
+<p class="hook">Big data by itself is just a heap of bytes; value comes only when analysis gives an insight and someone acts on it. <span class="hg">(data se insight, insight se action, action se value)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data science</mark> is the process of using data (often big data from many sources) with statistics, computing and domain knowledge to produce <mark>insights</mark> that lead to informed <mark>actions</mark>, and therefore to business or scientific <mark>value</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Big data<small>many sources</small></div><div class="n">Analysis<small>data science</small></div><div class="n">Insight</div><div class="n">Action</div><div class="n hi">Value</div>
+</div></div><figcaption><b>Fig 2.1</b> · Value chain: data becomes value only through insight and action</figcaption><p class="draw">✍ Draw it: 5 boxes in a row joined by arrows, last box (Value) shaded.</p></figure>
+<ul>
+<li><mark>Value is the goal</mark>: of the V's of big data, "value" is the reason we collect the other V's at all. <span class="hg">(faayda nahi to data bekaar)</span></li>
+<li><mark>Integration creates value</mark>: combining diverse data (sales + weather + social media) reveals patterns no single source shows.</li>
+<li><mark>Insight</mark> = a new, useful understanding (e.g. "customers in rain order more hot food").</li>
+<li><mark>Action</mark> = a decision taken on the insight (e.g. push soup offers on rainy evenings).</li>
+<li><mark>Common value areas</mark>: personalised recommendations, sentiment analysis, fraud detection, predictive maintenance, better operations and planning.</li>
+<li><mark>Data science is a team activity</mark>: it needs domain experts, analysts and engineers together, guided by a clear question.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Data</th><th>Information / Insight</th></tr>
+<tr><td>Raw facts, unprocessed</td><td>Processed, meaningful result</td></tr>
+<tr><td>No decision possible directly</td><td>Supports a decision</td></tr>
+<tr><td>Example: 10 lakh UPI transactions</td><td>Example: "these 40 accounts look fraudulent"</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Data: card transactions (amount, place, time) from a bank.</div><div class="step">Analysis: model learns each customer's normal spending pattern.</div><div class="step">Insight: a Rs 90,000 purchase in another country 10 minutes after a Delhi purchase is unusual.</div><div class="step">Action: block card and send OTP / call to customer.</div><span class="ans">Value = fraud loss prevented + customer trust.</span></div>
+<h4>Why data science creates value</h4>
+<ul>
+<li><mark>Better decisions</mark>: analysing data lets a business understand trends and pick choices that cut risk and raise profit.</li>
+<li><mark>Efficiency</mark>: shows exactly where time and resources are being wasted.</li>
+<li><mark>Personalisation</mark>: builds customised recommendations and offers, which raises customer satisfaction. <span class="hg">(sabko apni pasand ki cheez)</span></li>
+<li><mark>Prediction</mark>: forecasts demand, trend and other business factors ahead of time.</li>
+<li><mark>Innovation</mark>: new products and ideas often come from an insight found inside data.</li>
+<li><mark>Benefits society</mark>: helps public services (healthcare, education, transport) allocate resources more effectively.</li>
+</ul>
+<div class="ex"><b>Everyday examples of the same value chain</b><div class="step">Social media: apps analyse your likes, comments and watch time to recommend Reels / videos matching your interest.</div><div class="step">Healthcare: analysing a patient's medical records and lifestyle habits can flag early risk of diabetes or heart disease, so doctors act sooner.</div><div class="step">E-commerce: sites analyse browsing and purchase history to recommend products, and study past sales + seasonal patterns to forecast demand.</div><span class="ans">Every case is still Data → Analysis → Insight → Action → Value (Fig 2.1) — only the domain changes.</span></div>
+<div class="mn"><b>Mnemonic</b> <b>D-A-I-A-V</b>: "Data Analysis Is Actually Valuable" = Data → Analysis → Insight → Action → Value.</div>
+<div class="note"><b>Common mistake:</b> writing "more data = more value". Value comes from insight + action, not from size alone.</div>
+<div class="recall"><b>Quick recall</b> Data → Analysis → Insight → Action → Value; integrating diverse sources is where big data gives new value.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.2 ============ -->
+<section class="topic" id="u2-strategy">
+<h3>2.2 Building a Big Data Strategy</h3>
+<p class="hook">A strategy is the plan that says why the organisation uses big data, who does it and how it spreads through the company. <span class="hg">(pehle goal, phir team, phir tools)</span></p>
+<div class="def"><b>Definition:</b> A <mark>big data strategy</mark> is an organisation's plan for using big data and analytics to meet clearly defined business objectives, covering the team, leadership buy-in, data sharing and policies, and an analytics-driven culture. The first step is always the <mark>business objective</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">Set business objectives</div>
+<div class="n">Build diverse team</div>
+<div class="n">Get organisational buy-in</div>
+<div class="n">Build in-house expertise</div>
+<div class="n">Try small, then deploy</div>
+<div class="n">Share data + define policies</div>
+<div class="n">Analytics-driven culture</div>
+<div class="n t">Review and adapt</div>
+</div></div><figcaption><b>Fig 2.2</b> · Steps in building a big data strategy (iterative)</figcaption><p class="draw">✍ Draw it: oval, 7 boxes top to bottom with arrows, oval "Review and adapt"; shade the first box.</p></figure>
+<ul>
+<li><mark>Business objectives</mark>: short-term and long-term goals, decided with all stakeholders and communicated to everyone. <span class="hg">(kya paana hai, pehle likho)</span></li>
+<li><mark>Diverse team</mark>: domain experts + statisticians / ML people + data engineers + programmers; no single "unicorn" knows all.</li>
+<li><mark>Organisational buy-in</mark>: commitment and sponsorship from top leadership; without it projects die.</li>
+<li><mark>In-house expertise</mark>: constant training on new tools; an internal "idea lab" to try things.</li>
+<li><mark>Start small</mark>: pilot analytics on a small scale, prove value, then deploy widely.</li>
+<li><mark>Share data, remove silos</mark>: departments should not hide data from each other.</li>
+<li><mark>Policies</mark>: rules for privacy, data quality, security, ownership and legal regulation.</li>
+<li><mark>Culture</mark>: decisions based on data, not gut feeling; strategy is revised as business grows.</li>
+</ul>
+<div class="ex"><b>Example</b><div class="step">Objective: an online grocery app wants to cut vegetable wastage.</div><div class="step">Team: supply-chain expert + data analyst + data engineer; CEO sponsors it.</div><div class="step">Pilot: demand forecasting in one city's warehouses first.</div><div class="step">Share: sales, stock and weather data joined; policy: customer data anonymised.</div><span class="ans">If pilot reduces wastage, roll out to all cities and make forecasting part of daily planning.</span></div>
+<h4>Before building a strategy: four things to settle first</h4>
+<ul>
+<li><mark>Clear objectives</mark>: a general understanding of what the project must achieve and which problem it solves.</li>
+<li><mark>Budget</mark>: a realistic estimate that also leaves room for contingencies.</li>
+<li><mark>Time frame</mark>: planned around resource availability and task dependencies; keep it flexible and avoid parallel changes.</li>
+<li><mark>Existing documentation</mark>: gathering what is already known about the current data and systems speeds up the start of the project.</li>
+</ul>
+<h4>Key components of a big data strategy (the document's own 5 parts — different from the 5 P's of data science in 2.4)</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c5">
+<div class="b hi"><b>Business goals</b>objectives the data must serve</div>
+<div class="b"><b>Prioritisation</b>rank use cases by ROI</div>
+<div class="b"><b>Governance policy</b>ownership, quality rules, access</div>
+<div class="b"><b>Privacy &amp; security</b>compliance + encryption + audits</div>
+<div class="b"><b>Data architecture</b>lake / warehouse / hybrid design</div>
+</div></div><figcaption><b>Fig 2.3</b> · Five components of a big data strategy document</figcaption><p class="draw">✍ Draw it: 5 small boxes side by side, title + 3-word meaning in each; shade Business goals.</p></figure>
+<ul>
+<li><mark>Business goals and objectives</mark>: specific, measurable targets (cut cost, raise satisfaction, find new revenue) that guide every later decision.</li>
+<li><mark>Prioritisation of use cases</mark>: a strategy can cover many use cases (predictive maintenance, sales forecasting, segmentation); tackle the ones with quick wins or the most pressing need first.</li>
+<li><mark>Data governance policy</mark>: who owns the data, what quality it must meet, and the rules for access and sharing — this is what stops data silos.</li>
+<li><mark>Data privacy and security needs</mark>: legal compliance (e.g. India's Digital Personal Data Protection Act, or GDPR/HIPAA abroad) is only the starting point; a full plan adds encryption, technical audits and an incident-response plan.</li>
+<li><mark>Data architecture</mark>: the choice between a data lake, a data warehouse or a hybrid, plus how data flows and scales.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"Big Plates Get Pretty Aloo"</b> = Business goals, Prioritisation, Governance, Privacy &amp; security, Architecture.</div>
+<h4>A detailed 7-step roadmap (as named in the class notes)</h4>
+<p>Fig 2.2 above gives the general idea; the notes also name a more detailed, numbered 7-step roadmap for building the strategy document itself.</p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">1. Understand business objectives</div>
+<div class="n">2. Initial assessment and scoping</div>
+<div class="n">3. Connect strategy to business goals</div>
+<div class="n">4. Identify big data sources</div>
+<div class="n">5. Create a data strategy roadmap</div>
+<div class="n">6. Set up monitoring and iteration</div>
+<div class="n">7. Plan intelligent, data-driven decisions</div>
+<div class="n t">Review and adapt</div>
+</div></div><figcaption><b>Fig 2.4</b> · The class notes' 7-step roadmap to build a big data strategy</figcaption><p class="draw">✍ Draw it: oval, 7 numbered boxes top to bottom with arrows, oval "Review and adapt"; shade step 1.</p></figure>
+<ul>
+<li><mark>1. Understand business objectives</mark>: SWOT analysis, market needs, KPIs, short/long-term goals, stakeholder alignment, risk assessment.</li>
+<li><mark>2. Initial assessment and scoping</mark>: study the current data landscape and tools, fix the project's scope, review compliance needs, set milestones.</li>
+<li><mark>3. Connect the data strategy with the business strategy</mark>: align data metrics with business KPIs so every department stays in agreement.</li>
+<li><mark>4. Identify big data sources</mark>: list internal and external sources and web/app analytics, and decide real-time vs batch.</li>
+<li><mark>5. Create a data strategy roadmap</mark>: a guiding document (executive summary, situational analysis, strategic objectives, tactical plans, implementation timeline, monitoring/evaluation, next steps) usually spanning 1-5 years.</li>
+<li><mark>6. Set up monitoring and iteration</mark>: define analytical objectives, build analytical pipelines, add quality checks, plan regular review.</li>
+<li><mark>7. Plan intelligent, data-driven decisions</mark>: define a decision framework, use predictive analytics, choose visualisation tools, automate decisions.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"Odd Aunts Cook Idli, Relish Mango Dosa"</b> = Objectives, Assessment, Connect, Identify (sources), Roadmap, Monitor, Decide.</div>
+<h4>Factors affecting how long it takes</h4>
+<ul>
+<li><mark>Team size</mark></li>
+<li><mark>Volume and complexity of data</mark></li>
+<li><mark>Potential data issues and technical debt</mark></li>
+<li><mark>Infrastructure specificities</mark></li>
+<li><mark>Regulatory / compliance requirements</mark></li>
+<li><mark>Typical duration</mark>: the source notes report that such a project "may take 3-6 months or more" when run by specialised scientists and engineers — this is the case study's own estimate, not a universal rule.</li>
+</ul>
+<h4>Real-world proof: a real-estate case study</h4>
+<div class="ex"><b>Case study (as reported in the source notes)</b><div class="step">Challenge: predict which homeowners are about to sell their house, before the property is even listed.</div><div class="step">Data: the company tracked over 1,400 property and demographic attributes across a dataset of more than 60 million records.</div><div class="step">Solution: raw data re-uploaded to Amazon S3 storage, then transformed and processed with AWS Glue.</div><span class="ans">Reported result: the model could predict at least about 70% of the homeowners who were going to sell — the case study describes this as well above the industry average.</span></div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Property + demographic data<small>1400+ attributes</small></div><div class="n">Amazon S3<small>storage</small></div><div class="n">AWS Glue<small>transform</small></div><div class="n">Prediction model</div><div class="n hi">Likely-sellers list</div>
+</div></div><figcaption><b>Fig 2.5</b> · Real-estate case study pipeline (as reported in the source notes)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row joined by arrows, last box (Likely-sellers list) shaded.</p></figure>
+<div class="mn"><b>Mnemonic</b> <b>"Only Tall Boys Enjoy Tasty Samosa Cutlets"</b> = Objectives, Team, Buy-in, Expertise, Try small, Share + policies, Culture.</div>
+<div class="note"><b>Common mistake:</b> starting with "buy Hadoop" (technology first). Strategy is business-first; tools come after the objective.</div>
+<div class="recall"><b>Quick recall</b> Objectives → Team → Buy-in → Expertise → Try small → Share/Policies → Culture, and keep revising. Strategy's 5 components: goals, prioritisation, governance, privacy/security, architecture.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.3 ============ -->
+<section class="topic" id="u2-components">
+<h3>2.3 Five Components of Data Science</h3>
+<p class="hook">Big data science happens only when five things come together: a purpose, people, a process, platforms and programmability. <span class="hg">(paanch cheezein milein tabhi data science hota hai)</span></p>
+<div class="def"><b>Definition:</b> The <mark>five components of data science</mark> are the essential ingredients of any data science activity: <mark>Purpose</mark>, <mark>People</mark>, <mark>Process</mark>, <mark>Platforms</mark> and <mark>Programmability</mark>. In the UC San Diego "Introduction to Big Data" framing these are called the <b>five P's</b> (details in 2.4).</div>
+<figure class="fig"><div class="canvas"><div class="boxes c5">
+<div class="b hi"><b>Purpose</b>the question / challenge</div>
+<div class="b"><b>People</b>the team with skills</div>
+<div class="b"><b>Process</b>steps from data to action</div>
+<div class="b"><b>Platforms</b>hardware + software systems</div>
+<div class="b"><b>Programmability</b>languages and tools</div>
+</div></div><figcaption><b>Fig 2.6</b> · Five components of data science as five cards</figcaption><p class="draw">✍ Draw it: 5 small boxes side by side, title + 3-word meaning in each; shade Purpose.</p></figure>
+<ul>
+<li><mark>Why "components"</mark>: remove any one and the activity fails (no purpose = aimless; no people = no one to interpret; no platform = cannot store / compute).</li>
+<li><mark>Purpose drives the rest</mark>: the purpose comes from the big data strategy (2.2).</li>
+<li><mark>People + Process</mark> = the human and method side; <mark>Platforms + Programmability</mark> = the technology side.</li>
+<li><mark>Product</mark>: the course slides also add a sixth P, the <mark>product</mark> (the result: report, model, app) that the five P's produce.</li>
+<li><mark>Skill view</mark>: some books instead list skill components: domain knowledge, mathematics / statistics, computer science / programming, machine learning, and communication / visualisation.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Framing</th><th>Five components</th></tr>
+<tr><td>Coursera / UCSD (Altintas)</td><td>Purpose, People, Process, Platforms, Programmability</td></tr>
+<tr><td>Skill-based (many textbooks)</td><td>Domain knowledge, Statistics / maths, Programming, Machine learning, Communication</td></tr>
+<tr><td>Process-based (some class notes)</td><td>Data collection, Data cleaning, EDA &amp; visualisation, Data modeling, Model evaluation &amp; deployment</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Purpose: predict which students may drop out of an online course.</div><div class="step">People: teacher (domain), analyst, data engineer.</div><div class="step">Process: acquire LMS logs → prepare → analyse → report → act.</div><div class="step">Platforms: cloud storage + Spark cluster. Programmability: Python, SQL.</div><span class="ans">Product: an early-warning dashboard for teachers.</span></div>
+<h4>The process-based framing, in full</h4>
+<p>Some sources answer "list the five components of data science" with the data science PROCESS itself (2.5) relabelled as five components — worth knowing as an alternate correct answer, not instead of the 5 P's.</p>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Data collection</div><div class="n">Data cleaning</div><div class="n">EDA &amp; visualisation</div><div class="n">Data modeling</div><div class="n hi">Evaluation &amp; deployment</div>
+</div></div><figcaption><b>Fig 2.7</b> · Five components of data science, process-based framing</figcaption><p class="draw">✍ Draw it: 5 boxes in a row joined by arrows, last box shaded.</p></figure>
+<ul>
+<li><mark>Data collection</mark>: gathering raw data from databases, web scraping, APIs, questionnaires or real-time sensors; it can be structured, semi-structured or unstructured.</li>
+<li><mark>Data cleaning</mark> (data wrangling): correcting or removing inaccurate records, handling missing values, removing duplicates, standardising formats.</li>
+<li><mark>EDA and visualisation</mark>: summarising the data (mean, median, mode) and charting it to find patterns.</li>
+<li><mark>Data modeling</mark>: building statistical / machine-learning models (supervised, unsupervised, deep learning) to predict or classify.</li>
+<li><mark>Model evaluation and deployment</mark>: testing performance, then putting the model into production and monitoring it.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>5 P</b> = <b>P</b>urpose <b>P</b>eople <b>P</b>rocess <b>P</b>latforms <b>P</b>rogrammability ("Pehle Purpose, Phir People, Process, Platform, Programming").</div>
+<div class="note"><b>Common mistake:</b> textbooks frame "five components" differently. Write the 5 P's, then add one line naming the skill-based version for full marks.</div>
+<div class="recall"><b>Quick recall</b> Five components = 5 P's: Purpose, People, Process, Platforms, Programmability (+ Product as output).</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.4 ============ -->
+<section class="topic" id="u2-5p">
+<h3>2.4 Five P's of Data Science</h3>
+<p class="hook">The 5 P's answer: why (Purpose), who (People), how (Process), on what (Platforms) and with what code (Programmability). <span class="hg">(kyun, kaun, kaise, kis par, kis se)</span></p>
+<div class="def"><b>Definition:</b> The <mark>five P's of data science</mark> are <mark>Purpose, People, Process, Platforms and Programmability</mark>: the interdependent parts that together turn big data into a data product and value.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 400" width="600">
+<line x1="300" y1="151" x2="300" y2="85"/>
+<line x1="361" y1="195" x2="428" y2="175"/>
+<line x1="338" y1="267" x2="379" y2="320"/>
+<line x1="262" y1="267" x2="221" y2="320"/>
+<line x1="239" y1="195" x2="172" y2="175"/>
+<circle class="hi" cx="300" cy="215" r="64"/><text class="b" x="300" y="206">Data</text><text class="b" x="300" y="226">Science</text>
+<ellipse cx="300" cy="55" rx="70" ry="26"/><text x="300" y="55">Purpose</text>
+<ellipse cx="457" cy="166" rx="70" ry="26"/><text x="457" y="166">People</text>
+<ellipse cx="397" cy="344" rx="70" ry="26"/><text x="397" y="344">Process</text>
+<ellipse cx="203" cy="344" rx="70" ry="26"/><text x="203" y="344">Platforms</text>
+<ellipse cx="143" cy="166" rx="80" ry="26"/><text x="143" y="166">Programmability</text>
+</svg></div><figcaption><b>Fig 2.8</b> · 5P wheel: five P's around data science</figcaption><p class="draw">✍ Draw it: centre circle "Data Science", 5 ellipses around it like a star, one spoke line to each.</p></figure>
+<ul>
+<li><mark>Purpose</mark>: the challenge or set of challenges defined by the big data strategy; a scientific hypothesis or a business metric to improve. <span class="hg">(sawaal kya hai)</span></li>
+<li><mark>People</mark>: data scientists, domain experts, engineers, managers; data science is teamwork because it needs varied expertise.</li>
+<li><mark>Process</mark>: the organised steps: acquire, prepare, analyse, report, act (2.5). Also covers how the team works and reviews.</li>
+<li><mark>Platforms</mark>: the computing and storage systems: Hadoop / HDFS, Spark, NoSQL databases, cloud, clusters. <span class="hg">(kis machine / system par)</span></li>
+<li><mark>Programmability</mark>: the ability to program the analysis: languages (Python, R, SQL, Java), MapReduce jobs, scripts and workflow tools that make steps repeatable and scalable.</li>
+<li><mark>Interdependence</mark>: purpose chooses people; process decides which platform; platform decides which programming tools.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>P</th><th>Question it answers</th><th>Example (food-delivery app)</th></tr>
+<tr><td>Purpose</td><td>Why?</td><td>Predict delivery time accurately</td></tr>
+<tr><td>People</td><td>Who?</td><td>Operations expert, ML engineer, data engineer</td></tr>
+<tr><td>Process</td><td>How (steps)?</td><td>Acquire GPS + order data → prepare → model → report → act</td></tr>
+<tr><td>Platforms</td><td>On what systems?</td><td>Cloud storage, Spark cluster, streaming system</td></tr>
+<tr><td>Programmability</td><td>With what code/tools?</td><td>Python, SQL, scheduled workflows</td></tr>
+</table></div>
+<p><mark>Three kinds of elements</mark>: the 5 P's mix a business element (<mark>Purpose</mark>), a human element (<mark>People</mark>), and technological elements (<mark>Platforms</mark> + <mark>Programmability</mark>) — with <mark>Process</mark> as the repeatable workflow that bridges all three.</p>
+<div class="ex"><b>Worked example: a retail company predicting customer churn</b><div class="step">Purpose: identify and predict which customers are most likely to churn (stop buying) in the next three months.</div><div class="step">People: data scientists (analysis + models), a domain expert from marketing (business context), data engineers (pipelines), and a business stakeholder (defines the problem, uses the result).</div><div class="step">Process: acquire customer data → clean it → EDA to find correlations → build a churn-prediction model → deploy it to a dashboard for the marketing team.</div><div class="step">Platforms: a cloud platform (e.g. AWS / Azure / GCP) to store data, plus a big-data framework (e.g. Spark / Hadoop) to process it at scale.</div><span class="ans">Programmability: Python with a machine-learning library (e.g. scikit-learn) scripts, automates and makes the churn model reproducible.</span></div>
+<div class="mn"><b>Mnemonic</b> <b>"Pooja's People Prefer Paneer Pakoda"</b> = Purpose, People, Process, Platforms, Programmability (same order as the wheel, clockwise from top).</div>
+<div class="note"><b>Common mistake:</b> writing "Product" or "Price" (marketing 4P) in place of Programmability. Product is the output of the 5 P's, not one of the five.</div>
+<div class="recall"><b>Quick recall</b> Why-Purpose, Who-People, How-Process, On what-Platforms, With what code-Programmability.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.5 ============ -->
+<section class="topic" id="u2-process">
+<h3>2.5 Steps in the Data Science Process</h3>
+<p class="hook">Every data science project follows five steps: Acquire, Prepare, Analyze, Report, Act, and then loops back with new questions. <span class="hg">(lao, saaf karo, samjho, batao, karo)</span></p>
+<div class="def"><b>Definition:</b> The <mark>data science process</mark> is an iterative sequence of five steps: <mark>Acquire</mark> data, <mark>Prepare</mark> it (explore + pre-process), <mark>Analyze</mark> it (build and evaluate models), <mark>Report</mark> the insights, and <mark>Act</mark> on them.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 740 200" width="740">
+<text class="s" x="75" y="42">find, retrieve</text>
+<text class="s" x="220" y="42">explore, clean</text>
+<text class="s" x="365" y="42">model, evaluate</text>
+<text class="s" x="510" y="42">communicate</text>
+<text class="s" x="655" y="42">apply insight</text>
+<rect class="hi" x="20" y="60" width="110" height="44" rx="6"/><text x="75" y="82">Acquire</text>
+<rect x="165" y="60" width="110" height="44" rx="6"/><text x="220" y="82">Prepare</text>
+<rect x="310" y="60" width="110" height="44" rx="6"/><text x="365" y="82">Analyze</text>
+<rect x="455" y="60" width="110" height="44" rx="6"/><text x="510" y="82">Report</text>
+<rect x="600" y="60" width="110" height="44" rx="6"/><text x="655" y="82">Act</text>
+<path class="arr" d="M130 82 H163"/>
+<path class="arr" d="M275 82 H308"/>
+<path class="arr" d="M420 82 H453"/>
+<path class="arr" d="M565 82 H598"/>
+<path class="arr" d="M655 104 V150 H75 V106"/>
+<text class="s" x="365" y="170">iterate with new questions</text>
+</svg></div><figcaption><b>Fig 2.9</b> · Data science process loop (5 steps, iterative)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row with arrows, a return arrow under them from Act back to Acquire; write 2-word hints above.</p></figure>
+<ul>
+<li><mark>1. Acquire</mark>: identify suitable data sets and retrieve / query them. Four main source categories: <mark>traditional databases</mark> (SQL), <mark>text files</mark> (CSV, logs), <mark>remote data</mark> (web services / APIs), <mark>NoSQL storage</mark>. <span class="hg">(data lao)</span></li>
+<li><mark>2. Prepare</mark> has two parts:
+  <ul>
+  <li><mark>Explore</mark>: understand the nature of data, preliminary analysis: summary statistics (mean, median, range), correlations, trends, outliers, plots.</li>
+  <li><mark>Pre-process</mark>: <mark>clean</mark> (missing, invalid, duplicate values, outliers) and <mark>wrangle / munge</mark> (scaling, transformation, feature selection, dimensionality reduction, data manipulation such as merging).</li>
+  </ul></li>
+<li><mark>3. Analyze</mark>: select technique → build model → evaluate. Techniques: classification, regression, clustering, association analysis, graph analytics.</li>
+<li><mark>4. Report</mark>: communicate results with visualisations; state main findings, their value and limits, to non-technical decision makers.</li>
+<li><mark>5. Act</mark>: turn insight into action (deploy model, change business process), monitor results; new questions start the loop again.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Step</th><th>Input</th><th>Output</th></tr>
+<tr><td>Acquire</td><td>Question + data sources</td><td>Raw data set</td></tr>
+<tr><td>Prepare</td><td>Raw data</td><td>Clean, understood data</td></tr>
+<tr><td>Analyze</td><td>Clean data</td><td>Evaluated model / result</td></tr>
+<tr><td>Report</td><td>Model results</td><td>Insights, charts</td></tr>
+<tr><td>Act</td><td>Insights</td><td>Decision, deployment, value</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (IPL team picking bowlers)<div class="step">Acquire: ball-by-ball data of past seasons from files and a stats API.</div><div class="step">Prepare: explore economy rates; remove rain-shortened duplicates, fill missing venue names.</div><div class="step">Analyze: regression to predict runs conceded per over at each venue; evaluate on last season.</div><div class="step">Report: chart of best death-over bowlers by venue for the coach.</div><span class="ans">Act: choose bowlers per ground; check results after matches and refine.</span></div>
+<h4>An alternative framing: the 6-stage cycle (CRISP-DM)</h4>
+<p>Many sources (and a well-known data-mining standard, <mark>CRISP-DM</mark>) draw the same idea as a 6-stage circle instead of 5 boxes in a row, by splitting Prepare and Analyze each into two.</p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n hi">Business / problem understanding</div>
+<div class="n">Data understanding</div>
+<div class="n">Data preparation</div>
+<div class="n">Modeling</div>
+<div class="n">Evaluation</div>
+<div class="n">Deployment</div>
+<div class="n t">Cycle repeats</div>
+</div></div><figcaption><b>Fig 2.10</b> · Data science process as a 6-stage cycle (CRISP-DM style)</figcaption><p class="draw">✍ Draw it: oval, 6 boxes top to bottom with arrows, oval "Cycle repeats"; shade the first box.</p></figure>
+<ul>
+<li><mark>Business / problem understanding</mark> = part of our Acquire: fixing the goal before touching data.</li>
+<li><mark>Data understanding</mark> = the "Explore" half of our Prepare step.</li>
+<li><mark>Data preparation</mark> = the "Pre-process" half of our Prepare step (clean + wrangle).</li>
+<li><mark>Modeling</mark> and <mark>Evaluation</mark> = our Analyze step, split into building and testing.</li>
+<li><mark>Deployment</mark> = our Act step (put the model to work, then monitor it).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"All Players Are Really Active"</b> = Acquire, Prepare, Analyze, Report, Act. Prepare = <b>E</b>xplore + <b>P</b>re-process ("EP").</div>
+<div class="note"><b>Common mistake:</b> treating the steps as one-way. The process is iterative; Report / Act often send you back to Acquire or Prepare. Also, the 5-step (Acquire-Prepare-Analyze-Report-Act) and 6-stage (CRISP-DM) versions are the SAME underlying process at different granularity, not two processes to memorise separately — use whichever the question names.</div>
+<div class="recall"><b>Quick recall</b> A-P-A-R-A; Prepare = explore + pre-process; Analyze = select technique, build model, evaluate. Same idea, 6-stage version: Business understanding → Data understanding → Data preparation → Modeling → Evaluation → Deployment.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.6 ============ -->
+<section class="topic" id="u2-mgmt">
+<h3>2.6 Big Data Modeling and Management: Overview</h3>
+<p class="hook">Before analysis, big data must be brought in, stored, kept clean, operated on, scaled and protected. <span class="hg">(data ko sambhalna hi management hai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Big data management</mark> is the set of activities and systems for ingesting, storing, ensuring quality of, operating on, scaling and securing very large and varied data so it stays usable. A <mark>data model</mark> describes the data by three parts: <mark>structure</mark>, <mark>operations</mark> and <mark>constraints</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Big data management</span><ul>
+<li><span>Ingestion</span></li><li><span>Storage</span></li><li><span>Quality</span></li><li><span>Operations</span></li><li><span>Scalability</span></li><li><span>Security</span></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.11</b> · Six concerns of big data management</figcaption><p class="draw">✍ Draw it: one root box, 6 child boxes in a row joined by tree lines.</p></figure>
+<ul>
+<li><mark>Data model: structure</mark>: how data is organised (table rows/columns, JSON document, graph nodes/edges).</li>
+<li><mark>Data model: operations</mark>: what you can do with it (select, join, aggregate).</li>
+<li><mark>Data model: constraints</mark>: rules data must obey (age ≥ 0, roll number unique).</li>
+<li><mark>Management questions</mark>: how does data get in (ingestion), where does it live (storage), is it correct (quality), how do we use it (operations), how does it grow (scalability), who may see it (security).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"I Saw Queen Oprah Speak Secretly"</b> = Ingestion, Storage, Quality, Operations, Scalability, Security. Data model = <b>SOC</b>: Structure, Operations, Constraints.</div>
+<div class="recall"><b>Quick recall</b> Six concerns I-S-Q-O-S-S; data model = structure + operations + constraints.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.7 ============ -->
+<section class="topic" id="u2-ingestion">
+<h3>2.7 Data Ingestion</h3>
+<p class="hook">Ingestion is the front door: getting data from its sources into your data system, ideally automatically. <span class="hg">(data ko system ke andar laana)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data ingestion</mark> is the process of getting data from its sources into the data system being built or used (for storage and processing), either in <mark>batches</mark> or as a continuous <mark>stream</mark>, according to an <mark>ingestion policy</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Sources<small>DB, files, sensors, APIs</small></div><div class="ar">collect</div><div class="n">Ingestion layer<small>batch / stream</small></div><div class="ar">validate</div><div class="n">Staging<small>clean, convert</small></div><div class="ar">load</div><div class="n hi">Storage</div>
+</div></div><figcaption><b>Fig 2.12</b> · Data ingestion pipeline</figcaption><p class="draw">✍ Draw it: 4 boxes left to right, label arrows collect, validate, load; shade Storage.</p></figure>
+<ul>
+<li><mark>Batch ingestion</mark>: data collected and loaded at intervals (e.g. nightly load of the day's sales). <span class="hg">(ikattha karke ek saath)</span></li>
+<li><mark>Streaming (real-time) ingestion</mark>: each record flows in as it is produced (sensor readings, tweets, clicks). <span class="hg">(lagatar behta hua)</span></li>
+<li><mark>Automation</mark>: at big data scale, ingestion must be automated, not manual uploads.</li>
+<li><mark>Infrastructure questions</mark> to ask before designing ingestion:
+  <ul>
+  <li>How many data sources are there, and will the number grow?</li>
+  <li>How large is each data item, and at what rate does data arrive?</li>
+  <li>What to do with bad data (reject, repair, or flag and keep)?</li>
+  <li>What to do when data arrives too fast / too much, or too little?</li>
+  </ul></li>
+<li><mark>Ingestion policy / error policy</mark>: e.g. hospital medical records are never discarded; errors are flagged but data retained. For a high-volume social-media stream, bad records may simply be dropped.</li>
+<li><mark>Typical tools</mark>: Apache Kafka / Flume (streams, logs), Sqoop (relational DB to Hadoop).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Batch ingestion</th><th>Streaming ingestion</th></tr>
+<tr><td>Timing</td><td>Periodic (hourly, daily)</td><td>Continuous, as generated</td></tr>
+<tr><td>Latency</td><td>High (wait for next batch)</td><td>Low (seconds or less)</td></tr>
+<tr><td>Data size per load</td><td>Large chunks</td><td>Small records, many per second</td></tr>
+<tr><td>Use case</td><td>Payroll, monthly reports</td><td>Fraud alerts, live traffic</td></tr>
+<tr><td>Example tools</td><td>Sqoop, scheduled ETL jobs</td><td>Kafka, Flume</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (ingestion rate of smart meters)<div class="step">10,00,000 meters, 1 reading every 15 min → readings/day per meter = 24 × 60 / 15 = 96</div><div class="step">Total readings/day = 10,00,000 × 96 = 9,60,00,000 (96 million)</div><div class="step">Size at 200 bytes each = 96,000,000 × 200 = 19,200,000,000 B = 19.2 GB/day (1 GB = 10<sup>9</sup> B)</div><div class="step">Rate = 96,000,000 / 86,400 s = 1111.1 readings per second (1 decimal)</div><span class="ans">≈ 1111 readings/s and 19.2 GB/day, so a streaming ingestion system is needed.</span></div>
+<div class="mn"><b>Mnemonic</b> Ingestion questions <b>"S-S-R-B-T"</b>: Sources (how many, growing?), Size, Rate, Bad data, Too much / too little.</div>
+<div class="note"><b>Common mistake:</b> confusing ingestion with storage. Ingestion moves data in; storage is where it rests.</div>
+<div class="recall"><b>Quick recall</b> Ingestion = bringing data in; batch vs stream; plan sources, size, rate, and an error policy.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.8 ============ -->
+<section class="topic" id="u2-storage">
+<h3>2.8 Data Storage</h3>
+<p class="hook">Storage decides where data lives: fast but small memory near the CPU, or slow but huge disks and archives. <span class="hg">(tez aur chhota, ya dheema aur bada)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data storage</mark> in big data management is the choice of devices and systems that hold data so that it can be retrieved efficiently, considering <mark>capacity</mark>, <mark>speed</mark> (memory hierarchy), <mark>cost</mark> and how storage <mark>scales</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">CPU cache<small>fastest, smallest, costliest per GB</small></div>
+<div class="l">Main memory (RAM)<small>fast, volatile</small></div>
+<div class="l">SSD / flash<small>non-volatile, faster than HDD</small></div>
+<div class="l">Hard disk (HDD)<small>large, cheap, slower</small></div>
+<div class="l">Archive: tape / cold cloud<small>slowest, largest, cheapest</small></div>
+</div></div><figcaption><b>Fig 2.13</b> · Storage (memory) hierarchy: speed falls and capacity rises going down</figcaption><p class="draw">✍ Draw it: 5 stacked boxes top to bottom; write "faster" arrow up on the side, "bigger, cheaper" arrow down.</p></figure>
+<ul>
+<li><mark>Memory hierarchy</mark>: moving up = faster access, higher cost per GB, smaller size; moving down = the reverse.</li>
+<li><mark>Capacity</mark>: how much data now and how much after growth (estimate from ingestion rate, 2.7).</li>
+<li><mark>Volatile vs non-volatile</mark>: RAM loses data on power off; SSD, HDD, tape keep it.</li>
+<li><mark>Hot vs cold data</mark>: frequently used data on fast storage / in memory (in-memory systems like Spark cache); old data on cheap archive.</li>
+<li><mark>Scale up vs scale out</mark>: bigger storage in one machine vs more machines (distributed storage like HDFS). Detail in 2.11.</li>
+<li><mark>Storage choices</mark>: relational DB (structured), NoSQL (key-value, document, column, graph), distributed file system (HDFS), cloud object storage, data warehouse vs data lake.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Data warehouse</th><th>Data lake</th></tr>
+<tr><td>Data type</td><td>Structured, cleaned</td><td>Raw: structured, semi-, unstructured</td></tr>
+<tr><td>Schema</td><td>Schema-on-write (fixed before load)</td><td>Schema-on-read (applied when used)</td></tr>
+<tr><td>Users</td><td>Business analysts, reports</td><td>Data scientists, exploration</td></tr>
+<tr><td>Storage cost</td><td>Higher</td><td>Lower (cheap bulk storage)</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Point</th><th>Primary (RAM)</th><th>Secondary (SSD/HDD)</th></tr>
+<tr><td>Speed</td><td>Very fast</td><td>Slower</td></tr>
+<tr><td>Volatility</td><td>Volatile</td><td>Non-volatile</td></tr>
+<tr><td>Cost per GB</td><td>High</td><td>Low</td></tr>
+<tr><td>Capacity</td><td>GBs</td><td>TBs to PBs (with many disks)</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Hierarchy top to bottom <b>"Clever Rats Steal Hot Tea"</b> = Cache, RAM, SSD, HDD, Tape.</div>
+<div class="note"><b>Common mistake:</b> saying SSD is volatile. SSD is non-volatile; only RAM (and cache) are volatile.</div>
+<div class="recall"><b>Quick recall</b> Cache → RAM → SSD → HDD → Tape: speed down, capacity up, cost per GB down; choose by capacity, speed, cost, scale.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.9 ============ -->
+<section class="topic" id="u2-quality">
+<h3>2.9 Data Quality</h3>
+<p class="hook">Garbage in, garbage out: a perfect model on dirty data still gives wrong answers. <span class="hg">(ganda data, galat faisla)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data quality</mark> is the degree to which data is accurate, complete, consistent, valid and timely for its intended use. <mark>Data cleaning</mark> is the process of detecting and fixing or removing dirty data (missing, invalid, duplicate, inconsistent values and outliers).</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n io">Raw data</div>
+<div class="n">Profile / explore</div>
+<div class="n">Detect issues<small>missing, invalid, duplicate</small></div>
+<div class="n">Fix: remove, estimate, merge</div>
+<div class="n">Validate against rules</div>
+<div class="n io">Clean data</div>
+</div></div><figcaption><b>Fig 2.14</b> · Data quality / cleaning flow</figcaption><p class="draw">✍ Draw it: parallelogram "Raw data", 4 process boxes downward, parallelogram "Clean data".</p></figure>
+<ul>
+<li><mark>Why quality matters</mark>: better decisions and analytics, regulatory compliance (finance, health), avoids cost of wrong actions, builds trust in reports.</li>
+<li><mark>Big data makes it harder</mark>: many sources, fast arrival and variety mean more inconsistency (veracity problem).</li>
+<li><mark>Dirty data issues</mark>:
+  <ul>
+  <li><mark>Missing values</mark>: empty field (no phone number).</li>
+  <li><mark>Invalid values</mark>: impossible data (age = 250).</li>
+  <li><mark>Duplicate records</mark>: same customer entered twice.</li>
+  <li><mark>Inconsistent values</mark>: "Delhi", "New Delhi", "DEL"; different units (°C vs °F).</li>
+  <li><mark>Outliers / noise</mark>: extreme values far from the rest.</li>
+  </ul></li>
+<li><mark>Ways to address</mark>: remove records with missing values, generate best estimates (mean / median) for invalid or missing values, merge duplicate records, remove outliers, standardise formats and units.</li>
+<li><mark>Dimensions</mark>: accuracy, completeness, consistency, validity, timeliness, uniqueness.</li>
+</ul>
+<div class="ex"><b>Example</b> (body temperature readings, °C)<div class="step">R1 = 36.6, R2 = 37.2, R3 = missing, R4 = 98.4, R5 = 36.9, R6 = duplicate of R2</div><div class="step">R4 = 98.4 is invalid in °C (entered in °F) → remove (or convert); R6 → merge with R2</div><div class="step">Valid values = 36.6, 37.2, 36.9 → mean = (36.6 + 37.2 + 36.9) / 3 = 110.7 / 3 = 36.9</div><div class="step">Missing R3 ← estimate with mean 36.9 (1 decimal)</div><span class="ans">Clean set: R1 36.6, R2 37.2, R3 36.9 (estimated), R5 36.9</span></div>
+<div class="mn"><b>Mnemonic</b> Dirty data <b>"MIDIO"</b> = Missing, Invalid, Duplicate, Inconsistent, Outliers.</div>
+<div class="note"><b>Common mistake:</b> always deleting outliers. Some outliers are real events (a genuine fraud); check before removing.</div>
+<div class="recall"><b>Quick recall</b> Quality = accurate, complete, consistent, valid, timely; clean MIDIO by remove / estimate / merge / standardise.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.10 ============ -->
+<section class="topic" id="u2-operations">
+<h3>2.10 Data Operations</h3>
+<p class="hook">Operations are the actions you perform on data: on one item (crop one photo) or on a whole collection (filter, join, count). <span class="hg">(data par kaam: ek par ya poore samooh par)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data operations</mark> are the procedures a data model allows for retrieving and manipulating data. They act either on a <mark>single data item</mark> or on a <mark>collection</mark> of items (selection/filtering, projection, join, union, aggregation, sorting), and at big data scale they are run in parallel.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Data operations</span><ul>
+<li><span>On single item</span><ul><li><span>Read / update</span></li><li><span>Transform (crop image)</span></li></ul></li>
+<li><span>On collection</span><ul><li><span>Selection / filter</span></li><li><span>Projection</span></li><li><span>Join / union</span></li><li><span>Aggregation</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.15</b> · Classification of data operations</figcaption><p class="draw">✍ Draw it: root box, 2 children (single item, collection), leaves under each (2 and 4).</p></figure>
+<ul>
+<li><mark>Single-item operations</mark>: work on one record / object: look up a record, update a field, resize or crop one image.</li>
+<li><mark>Selection (filtering / subsetting)</mark>: keep only items that satisfy a condition (orders with amount ≥ 200). <span class="hg">(shart par chhaanto)</span></li>
+<li><mark>Projection (substructure extraction)</mark>: keep only some attributes (just name and city columns).</li>
+<li><mark>Join</mark>: combine two collections on a common key (orders + customers on customer_id).</li>
+<li><mark>Union</mark>: merge two collections of the same structure (Jan sales ∪ Feb sales).</li>
+<li><mark>Aggregation</mark>: compute summary values over groups: count, sum, average, min, max.</li>
+<li><mark>Sorting / ranking</mark>: order results (top 10 products).</li>
+<li><mark>Big data aspect</mark>: collection operations are split over many machines (e.g. MapReduce: map filters/transforms, reduce aggregates).</li>
+</ul>
+<div class="ex"><b>Example</b> (orders collection: city, amount in Rs)<div class="step">Data: (Delhi,250), (Pune,400), (Delhi,150), (Pune,100), (Delhi,300)</div><div class="step">Selection amount ≥ 200 → (Delhi,250), (Pune,400), (Delhi,300)</div><div class="step">Aggregation SUM by city on all orders → Delhi = 250+150+300 = 700; Pune = 400+100 = 500</div><div class="step">COUNT by city → Delhi 3, Pune 2; AVG → Delhi 700/3 = 233.33, Pune 500/2 = 250.00 (2 decimals)</div><span class="ans">Selection gives 3 orders; totals Delhi 700, Pune 500; averages 233.33 and 250.00.</span></div>
+<div class="tw"><table>
+<tr><th>Selection</th><th>Projection</th></tr>
+<tr><td>Chooses rows (items)</td><td>Chooses columns (attributes)</td></tr>
+<tr><td>Based on a condition</td><td>Based on attribute list</td></tr>
+<tr><td>Reduces number of records</td><td>Reduces width of each record</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Collection operations <b>"SPJUA"</b>: "Sab Pizza Jaldi Uthao Abhi" = Selection, Projection, Join, Union, Aggregation.</div>
+<div class="note"><b>Common mistake:</b> mixing selection with projection: selection picks rows, projection picks columns.</div>
+<div class="recall"><b>Quick recall</b> Single item vs collection; collection ops = select, project, join, union, aggregate (run in parallel for big data).</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.11 ============ -->
+<section class="topic" id="u2-scale-sec">
+<h3>2.11 Data Scalability and Security</h3>
+<p class="hook">Scalability means the system keeps working as data grows; security means only the right people see and change it. <span class="hg">(badhe to sambhale, aur chori na ho)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data scalability</mark> is the ability of a data system to handle growing data volume and workload by adding resources, either by <mark>scaling up</mark> (a more powerful machine) or <mark>scaling out</mark> (more machines). <mark>Data security</mark> is protecting data from unauthorised access, change or loss through <mark>access control</mark>, <mark>encryption</mark>, <mark>secure transmission</mark> and <mark>privacy</mark> measures.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 250" width="700">
+<text class="b" x="165" y="30">Scale up (vertical)</text>
+<rect x="30" y="110" width="70" height="50" rx="6"/><text x="65" y="135">Server</text>
+<path class="arr" d="M100 135 H146"/>
+<rect class="hi" x="150" y="70" width="150" height="130" rx="6"/><text x="225" y="125">Bigger server</text><text class="s" x="225" y="150">more CPU, RAM, disk</text>
+<text class="s" x="165" y="228">limit: one machine's maximum</text>
+<text class="b" x="525" y="30">Scale out (horizontal)</text>
+<rect x="370" y="110" width="70" height="50" rx="6"/><text x="405" y="135">Node</text>
+<path class="arr" d="M440 135 H486"/>
+<rect class="hi" x="495" y="75" width="80" height="50" rx="6"/><text x="535" y="100">Node 1</text>
+<rect class="hi" x="590" y="75" width="80" height="50" rx="6"/><text x="630" y="100">Node 2</text>
+<rect class="hi" x="495" y="145" width="80" height="50" rx="6"/><text x="535" y="170">Node 3</text>
+<rect class="hi" x="590" y="145" width="80" height="50" rx="6"/><text x="630" y="170">Node 4</text>
+<text class="s" x="582" y="228">add more commodity nodes</text>
+</svg></div><figcaption><b>Fig 2.16</b> · Scale up vs scale out</figcaption><p class="draw">✍ Draw it: left, small box → big box; right, small box → 2×2 grid of small boxes; label each side.</p></figure>
+<ul>
+<li><mark>Scale up (vertical)</mark>: add CPU / RAM / disk to one server. Simple, no code change, but costly and has a hardware ceiling and a single point of failure.</li>
+<li><mark>Scale out (horizontal)</mark>: add more ordinary machines to a cluster (Hadoop, NoSQL). Near-unlimited growth, cheaper hardware, but needs distributed software. <span class="hg">(ek bada nahi, kai chhote)</span></li>
+<li><mark>Partitioning (sharding)</mark>: split data into parts stored on different nodes so work runs in parallel (HDFS blocks; shards by user_id).</li>
+<li><mark>Replication</mark>: keep copies of each part on several nodes for fault tolerance and faster reads (HDFS default replication factor = 3).</li>
+<li><mark>Elasticity</mark>: in the cloud, add or remove nodes as load changes.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Scale up</th><th>Scale out</th></tr>
+<tr><td>How</td><td>Stronger single machine</td><td>More machines</td></tr>
+<tr><td>Cost</td><td>Expensive high-end hardware</td><td>Cheap commodity hardware</td></tr>
+<tr><td>Limit</td><td>Hardware ceiling</td><td>Practically very high</td></tr>
+<tr><td>Failure</td><td>Single point of failure</td><td>Tolerant (replicas)</td></tr>
+<tr><td>Software</td><td>Unchanged</td><td>Must be distributed</td></tr>
+<tr><td>Example</td><td>Upgrade DB server RAM</td><td>Hadoop / Cassandra cluster</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (partitioning + replication in HDFS)<div class="step">File = 1 TB = 1024 × 1024 MB = 1,048,576 MB; block size = 128 MB</div><div class="step">Blocks = 1,048,576 / 128 = 8192 blocks (partitions)</div><div class="step">Replication factor 3 → block copies = 8192 × 3 = 24,576</div><span class="ans">8192 blocks, 24,576 stored copies, 3 TB of raw disk used for 1 TB of data.</span></div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">Access control<small>authentication + authorisation (who can do what)</small></div>
+<div class="l">Encryption at rest<small>stored data unreadable without key</small></div>
+<div class="l">Secure transmission<small>encryption in transit (TLS / HTTPS)</small></div>
+<div class="l">Privacy protection<small>anonymise, mask personal data</small></div>
+<div class="l">Auditing and monitoring<small>logs of who accessed what</small></div>
+</div></div><figcaption><b>Fig 2.17</b> · Security layers around big data</figcaption><p class="draw">✍ Draw it: 5 stacked boxes, each with one-line meaning; shade Access control.</p></figure>
+<ul>
+<li><mark>Access control</mark>: authentication (prove identity: password, OTP) + authorisation (roles/permissions: analyst can read, not delete).</li>
+<li><mark>Encryption</mark>: convert data to ciphertext so a stolen disk or file is useless without the key; costs extra CPU time for encrypt/decrypt, which matters at big data scale.</li>
+<li><mark>Secure transmission</mark>: data moving between nodes or to users must travel encrypted (TLS), since big data systems send data across networks constantly.</li>
+<li><mark>Privacy</mark>: personal data (Aadhaar, health records) must be anonymised or masked and used only with consent / as law allows.</li>
+<li><mark>More nodes, more risk</mark>: scale out spreads data over many machines, so every node and link must be secured.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Scalability <b>"UP-OUT-PR"</b>: scale UP, scale OUT, Partition, Replicate. Security <b>"AESPA"</b>: Access control, Encryption, Secure transmission, Privacy, Auditing.</div>
+<div class="note"><b>Common mistake:</b> thinking replication is only for backup. It also allows reads from several nodes, improving speed and availability.</div>
+<div class="recall"><b>Quick recall</b> Scale up = bigger box, scale out = more boxes (+ partition, replicate). Security = access control, encryption (rest + transit), privacy, audit.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.12 ============ -->
+<section class="topic" id="u2-apps">
+<h3>2.12 Real Big Data Management Applications</h3>
+<p class="hook">Real companies face all six management concerns at once: an energy utility with smart meters and a game-analytics company with millions of player events. <span class="hg">(asli duniya mein sab ek saath)</span></p>
+<div class="def"><b>Definition:</b> A <mark>big data management application</mark> is a real system in which an organisation ingests, stores, cleans, processes, scales and secures large, fast, varied data to support its operations and decisions.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Smart meters<small>usage readings</small></div><div class="ar">stream</div><div class="n">Ingestion<small>validate, flag errors</small></div><div class="n">Storage<small>distributed, time-stamped</small></div><div class="n">Analytics<small>demand, outages</small></div><div class="n hi">Actions<small>billing, load planning</small></div>
+</div></div><figcaption><b>Fig 2.18</b> · Energy utility (smart meter) data management pipeline</figcaption><p class="draw">✍ Draw it: 5 boxes in a row: Meters → Ingestion → Storage → Analytics → Actions; label first arrow "stream".</p></figure>
+<ul>
+<li><mark>Case studies used in the UCSD course</mark>: energy sector (<mark>ConEd</mark>, a New York utility), gaming industry (<mark>Apmetrix</mark>, game analytics), and flight data (<mark>FlightStats</mark>).</li>
+<li><mark>Energy utility</mark>:
+  <ul>
+  <li>Ingestion: continuous readings from a very large number of smart meters and grid sensors (high velocity).</li>
+  <li>Storage: time-series style data that keeps growing, so scale-out storage.</li>
+  <li>Quality: missing or faulty meter readings must be detected and estimated for correct bills.</li>
+  <li>Operations: aggregation of usage by area and time to forecast demand and detect outages.</li>
+  <li>Security/privacy: household usage reveals personal routines, so access control and encryption are needed.</li>
+  </ul></li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Players<small>phones, consoles</small></div><div class="ar">events</div><div class="n">Stream ingestion<small>clicks, purchases</small></div><div class="n">Scalable store<small>NoSQL / cluster</small></div><div class="n">Game analytics<small>retention, revenue</small></div><div class="n hi">Game changes<small>offers, balancing</small></div>
+</div></div><figcaption><b>Fig 2.19</b> · Gaming analytics data management pipeline</figcaption><p class="draw">✍ Draw it: 5 boxes in a row: Players → Stream ingestion → Store → Analytics → Game changes; label first arrow "events".</p></figure>
+<ul>
+<li><mark>Gaming analytics</mark>:
+  <ul>
+  <li>Ingestion: every player action (level start, purchase, quit) is an event from many devices and platforms (variety + velocity).</li>
+  <li>Scalability: player numbers spike at launch or weekends, so storage and processing must scale out elastically.</li>
+  <li>Operations: filter and aggregate events to measure retention, session length, in-game purchases.</li>
+  <li>Action: change difficulty, personalise offers, fix levels where players quit.</li>
+  <li>Security: player accounts and payment data must be protected.</li>
+  </ul></li>
+<li><mark>Flight data</mark>: flight status data from many airlines and airports must be integrated in near real time, cleaned of conflicting reports, and served quickly to apps and travellers.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Concern</th><th>Energy utility</th><th>Gaming analytics</th></tr>
+<tr><td>Ingestion</td><td>Meter readings at fixed intervals</td><td>Bursty player events</td></tr>
+<tr><td>Storage</td><td>Time-stamped, long history</td><td>Event logs, NoSQL</td></tr>
+<tr><td>Quality</td><td>Missing / faulty readings</td><td>Duplicate or out-of-order events</td></tr>
+<tr><td>Operations</td><td>Aggregate usage by area / hour</td><td>Aggregate by player / level</td></tr>
+<tr><td>Scalability</td><td>Grows with number of meters</td><td>Spikes at launches</td></tr>
+<tr><td>Security</td><td>Household privacy</td><td>Accounts and payments</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Course cases <b>"Energy, Games, Flights"</b> = ConEd, Apmetrix, FlightStats ("Electric Game Flight").</div>
+<div class="note"><b>Common mistake:</b> describing an application only by its analysis. For this topic, map the example to all six concerns (ingestion to security).</div>
+<div class="recall"><b>Quick recall</b> Energy (smart meters) and gaming (player events) pipelines: sources → ingestion → storage → analytics → action, with quality, scale and security at each stage.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ short ============ -->
+<!-- ============ 2.13 CASE STUDY ============ -->
+<section class="topic" id="u2-case">
+<h3>2.13 Case study: Big Data Management Plan for customer data</h3>
+<p class="hook">Question: a company collects customer information from its website, mobile app and social media. Design a big data management plan covering ingestion, storage, data quality, operations, scalability and security. <span class="hg">(teen jagah se customer data, ek saaf plan)</span></p>
+<div class="def"><b>Big Data Management Plan:</b> A documented design that states, for one organisation's data, <mark>how data enters</mark> (ingestion), <mark>where it is kept</mark> (storage), <mark>how it is kept correct</mark> (quality), <mark>what is done with it</mark> (operations), <mark>how the system grows</mark> (scalability) and <mark>how it is protected</mark> (security).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 760 330" width="760">
+<rect x="20" y="30" width="130" height="44" rx="6"/><text x="85" y="52">Website</text>
+<rect x="20" y="110" width="130" height="44" rx="6"/><text x="85" y="132">Mobile app</text>
+<rect x="20" y="190" width="130" height="44" rx="6"/><text x="85" y="212">Social media</text>
+<rect class="hi" x="200" y="95" width="130" height="74" rx="6"/><text x="265" y="122">1. Ingestion</text><text class="s" x="265" y="146">stream + batch</text>
+<path class="arr" d="M150 52 L198 115"/><path class="arr" d="M150 132 H198"/><path class="arr" d="M150 212 L198 150"/>
+<rect x="380" y="95" width="130" height="74" rx="6"/><text x="445" y="122">2. Storage</text><text class="s" x="445" y="146">data lake + NoSQL</text>
+<path class="arr" d="M330 132 H378"/>
+<rect x="560" y="95" width="180" height="74" rx="6"/><text x="650" y="122">3. Data quality</text><text class="s" x="650" y="146">clean, dedupe, validate</text>
+<path class="arr" d="M510 132 H558"/>
+<rect class="hi" x="560" y="215" width="180" height="74" rx="6"/><text x="650" y="242">4. Operations</text><text class="s" x="650" y="266">360° customer view</text>
+<path class="arr" d="M650 169 V213"/>
+<rect x="330" y="215" width="180" height="74" rx="6"/><text x="420" y="242">Reports, offers</text><text class="s" x="420" y="266">dashboards, ML models</text>
+<path class="arr" d="M560 252 H512"/>
+<rect class="none dash" x="185" y="10" width="570" height="300" rx="10"/>
+<text class="s l" x="200" y="302">5. Scalability + 6. Security wrap every stage</text>
+</svg></div><figcaption><b>Fig 2.20</b> · Big data management plan for customer data from website, app and social media</figcaption><p class="draw">✍ Draw it: three source boxes on the left into Ingestion → Storage → Quality, then down to Operations → Reports; draw one dashed border around the pipeline and write "Scalability + Security" on it.</p></figure>
+<h4>Assumptions (state these in the exam)</h4>
+<ul>
+<li>About <mark>5 million events per day</mark> (page views, clicks, app events, orders, social posts), average <mark>2 KB</mark> each.</li>
+<li>Data mix: <mark>structured</mark> (orders, profiles), <mark>semi-structured</mark> (JSON app events, clickstream logs), <mark>unstructured</mark> (social media posts, reviews, images).</li>
+<li>Goal: a single <mark>360° customer view</mark> for personalised offers, churn prediction and customer support.</li>
+</ul>
+<div class="ex"><b>Sizing</b> (computed in Python; decimal units, 1 GB = 10⁶ KB)
+<div class="step">Per day: 5,000,000 × 2 KB = 10,000,000 KB = 10 GB/day</div>
+<div class="step">Per year: 10 GB × 365 = 3,650 GB ≈ 3.65 TB</div>
+<div class="step">With HDFS replication factor 3: 3.65 TB × 3 ≈ 10.95 TB of disk per year</div>
+<div class="step">Average rate: 5,000,000 / 86,400 s ≈ 58 events/s; assumed sale-day peak of 5× ≈ 290 events/s</div>
+<span class="ans">≈ 10 GB/day, ≈ 11 TB/year of raw disk ⇒ needs a distributed, scale-out design</span>
+</div>
+<h4>The plan, dimension by dimension</h4>
+<div class="tw"><table><tr><th>Dimension</th><th>Plan</th><th>Example tools</th></tr>
+<tr><td><b>1. Ingestion</b></td><td>Real-time <mark>streaming</mark> for clicks and app events; <mark>batch</mark> (nightly) for order database and social media exports. Validate format at entry; keep a copy of raw data. Handle peaks with a message queue (buffer).</td><td>Kafka / Flume (streams), Sqoop (from RDBMS), social media APIs</td></tr>
+<tr><td><b>2. Storage</b></td><td><mark>Data lake</mark> (HDFS / cloud object storage) holds raw data of all types. <mark>NoSQL document store</mark> for customer profiles (flexible fields); <mark>column-family store</mark> for high-volume event history; <mark>data warehouse</mark> for clean, structured reporting data. Hot data on fast disks, old data archived.</td><td>HDFS, MongoDB, Cassandra / HBase, Hive</td></tr>
+<tr><td><b>3. Data quality</b></td><td>Remove <mark>duplicates</mark> (same customer from web, app and social), <mark>validate</mark> email and phone formats, standardise dates, city names and currency, fill or flag <mark>missing values</mark>, detect <mark>outliers</mark> (e.g. order value of ₹99 lakh). Link one customer across channels by email or phone (entity resolution).</td><td>Spark jobs, validation rules, data profiling</td></tr>
+<tr><td><b>4. Operations</b></td><td><mark>Filter</mark> (active customers), <mark>join</mark> (profile + orders + events), <mark>aggregate</mark> (spend per month, visits per week), <mark>sort / top-N</mark> (best customers), sentiment analysis of social posts, build the 360° view and feed ML models.</td><td>Spark, Hive SQL, MapReduce</td></tr>
+<tr><td><b>5. Scalability</b></td><td><mark>Scale out</mark> by adding commodity nodes; <mark>partition / shard</mark> data by date and customer id; <mark>replicate</mark> (factor 3) for fault tolerance; auto-scale compute on sale days.</td><td>Hadoop / YARN cluster, cloud auto-scaling</td></tr>
+<tr><td><b>6. Security</b></td><td><mark>Encryption</mark> at rest and in transit (TLS); <mark>authentication</mark> (Kerberos) and <mark>role-based access control</mark> (analyst sees masked data); <mark>masking / anonymisation</mark> of personal data; audit logs; customer consent and data retention rules as required by India's Digital Personal Data Protection Act, 2023.</td><td>Kerberos, Apache Ranger, TLS, encryption keys</td></tr></table></div>
+<ul>
+<li><mark>Outcome</mark>: personalised offers, churn alerts, faster customer support, and marketing measured by real behaviour.</li>
+<li><mark>Why not a single RDBMS</mark>: variety (JSON, text, images), volume (TBs per year) and velocity (hundreds of events per second at peak) exceed one relational server.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"I Saw Queen Operate Scaled Security"</b> = Ingestion, Storage, Quality, Operations, Scalability, Security.</div>
+<div class="recall"><b>Quick recall</b> Sources → ingest (stream + batch) → lake + NoSQL → clean and dedupe → join and aggregate into a 360° view → reports and ML; scale out with partitions and replication; secure with encryption, RBAC, masking, audit.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.14 REAL-WORLD DATA SCIENCE ============ -->
+<section class="topic" id="u2-realworld">
+<h3>2.14 Real-world data science example and advanced techniques</h3>
+<p class="hook">Example: a streaming service (like Netflix) deciding which shows to put in front of each user. <span class="hg">(har user ko uski pasand ki film)</span></p>
+<div class="def"><b>Definition:</b> A <mark>recommendation system</mark> is a data science application that predicts which items (movies, products, songs) a user is likely to prefer, using the user's past behaviour and the behaviour of similar users.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Question: what should each user watch next?</div>
+<div class="n">Acquire: viewing history, ratings, searches, device, time</div>
+<div class="n">Prepare: clean logs, remove bots, build user × show matrix</div>
+<div class="n hi">Analyze: collaborative filtering, matrix factorisation, deep learning</div>
+<div class="n">Report: A/B test results, watch-time dashboards</div>
+<div class="n t">Act: personalised home page for every user</div>
+</div></div><figcaption><b>Fig 2.21</b> · A recommendation system walked through the five data science steps</figcaption><p class="draw">✍ Draw it: six boxes top to bottom, ovals at both ends; write the step name first in each box.</p></figure>
+<ul>
+<li><mark>Well-known fact</mark>: Netflix ran the <mark>Netflix Prize</mark> (2006–2009), a public competition with a US$1 million prize for improving its rating-prediction accuracy by 10%; the winning solutions relied heavily on <mark>matrix factorisation</mark> and ensembles of many models.</li>
+<li>Netflix has described on its technology blog that it also <mark>personalises the artwork</mark> (thumbnail) shown for a title for each user.</li>
+<li>Similar systems: Amazon product suggestions, YouTube videos, Spotify playlists, Flipkart "customers also bought".</li>
+</ul>
+<h4>Advanced techniques used</h4>
+<div class="tw"><table><tr><th>Technique</th><th>What it does here</th></tr>
+<tr><td><b>Collaborative filtering</b></td><td>Recommends what <mark>similar users</mark> liked (user-based) or items similar to what you liked (item-based)</td></tr>
+<tr><td><b>Matrix factorisation</b></td><td>Breaks the huge, mostly empty user × item rating matrix into small <mark>hidden taste factors</mark> to predict missing ratings</td></tr>
+<tr><td><b>Content-based filtering</b></td><td>Uses item features (genre, cast, language) to find shows similar to watched ones</td></tr>
+<tr><td><b>Deep learning</b></td><td>Neural networks learn complex patterns from long viewing sequences</td></tr>
+<tr><td><b>NLP</b></td><td>Reads titles, descriptions and reviews; <mark>sentiment analysis</mark> of text</td></tr>
+<tr><td><b>Computer vision</b></td><td>Analyses images to choose attractive thumbnails</td></tr>
+<tr><td><b>Clustering</b></td><td>Groups users with similar tastes into segments</td></tr>
+<tr><td><b>Time-series forecasting</b></td><td>Predicts demand to plan server capacity</td></tr>
+<tr><td><b>A/B testing</b></td><td>Shows two versions to two random user groups and keeps the one with more watch time</td></tr>
+<tr><td><b>Big data processing</b></td><td>Spark / Hadoop jobs process billions of viewing events</td></tr></table></div>
+<div class="ex"><b>Worked example: user-based collaborative filtering</b> (computed in Python) · ratings for 5 shows, 0 = not watched
+<div class="step">A = (5, 4, 0, 1, 5),  B = (4, 5, 0, 1, 4),  C = (1, 0, 5, 4, 1)</div>
+<div class="step">Cosine similarity = (A·B) / (|A| × |B|)</div>
+<div class="step">A·B = 20 + 20 + 0 + 1 + 20 = 61;  |A| = √67 = 8.185;  |B| = √58 = 7.616</div>
+<div class="step">sim(A, B) = 61 / (8.185 × 7.616) = 0.979</div>
+<div class="step">A·C = 5 + 0 + 0 + 4 + 5 = 14;  |C| = √43 = 6.557;  sim(A, C) = 14 / (8.185 × 6.557) = 0.261</div>
+<span class="ans">B is most similar to A (0.979 vs 0.261) ⇒ recommend to A the shows B rated highly that A has not watched</span>
+</div>
+<div class="tw"><table><tr><th>Other real-world uses</th><th>Technique</th></tr>
+<tr><td>UPI / credit card fraud detection</td><td>Classification, anomaly (outlier) detection in real time</td></tr>
+<tr><td>Food delivery time estimate</td><td>Regression on distance, traffic, restaurant prep time</td></tr>
+<tr><td>Crop disease detection from leaf photos</td><td>Deep learning (computer vision)</td></tr>
+<tr><td>Weather and demand forecasting</td><td>Time-series models</td></tr>
+<tr><td>Customer support chatbots</td><td>NLP</td></tr>
+<tr><td>Early disease diagnosis (diabetes, heart disease)</td><td>Classification on medical records + image data</td></tr>
+<tr><td>Self-driving cars, facial recognition</td><td>Deep learning (computer vision / image recognition)</td></tr>
+<tr><td>Real-time trading (statistical arbitrage)</td><td>Pattern / anomaly detection on large-scale market data</td></tr>
+<tr><td>Flight-delay prediction, dynamic pricing (travel)</td><td>Regression / classification on historical + live data</td></tr></table></div>
+<ul>
+<li><mark>Grouped by domain</mark> (an exam-friendly way to organise these): <b>Travel</b> — dynamic pricing, flight-delay prediction; <b>Marketing</b> — cross-sell/upsell, churn prediction, sentiment analysis; <b>Healthcare</b> — disease prediction, medication effectiveness; <b>Sales</b> — discount offers, demand forecasting; <b>Credit &amp; insurance</b> — claims prediction, fraud &amp; risk detection; <b>Automation</b> — self-driving cars, pilotless drones.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> <b>"C-M-D-N"</b> core recommender toolkit = <b>C</b>ollaborative filtering, <b>M</b>atrix factorisation, <b>D</b>eep learning, <b>N</b>LP; checked by <b>A/B testing</b>.</div>
+<div class="recall"><b>Quick recall</b> Recommendation system: acquire viewing data → prepare user × item matrix → collaborative filtering / matrix factorisation / deep learning → A/B test → personalised page. Cosine similarity finds similar users.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<section class="topic" id="u2-short">
+<h3>2.15 Short answers (1.5 marks)</h3>
+<dl class="sa">
+<dt>Q1. Define data science.</dt><dd>Using data with statistics, computing and domain knowledge to produce insights that lead to actions and value. Chain: data → analysis → insight → action → value.</dd>
+<dt>Q2. How is value obtained from big data?</dt><dd>By integrating diverse data, analysing it to get insight, and acting on that insight (e.g. fraud detection, recommendations). Size alone gives no value.</dd>
+<dt>Q3. What is the first step of a big data strategy?</dt><dd>Defining business objectives (short and long term) with stakeholders; then team, buy-in, expertise, pilot, data sharing with policies, and analytics culture.</dd>
+<dt>Q4. List the five P's of data science.</dt><dd>Purpose, People, Process, Platforms, Programmability. They are also called the five components of data science.</dd>
+<dt>Q5. What is "Programmability" in the 5 P's?</dt><dd>The ability to program the analysis with languages and tools (Python, R, SQL, MapReduce, workflows) so steps are repeatable and scalable.</dd>
+<dt>Q6. List the steps of the data science process.</dt><dd>Acquire, Prepare (explore + pre-process), Analyze, Report, Act. The process is iterative.</dd>
+<dt>Q7. What happens in the Prepare step?</dt><dd>Explore: understand the nature of data by preliminary analysis (statistics, plots). Pre-process: clean dirty data and wrangle it (scaling, transformation, feature selection).</dd>
+<dt>Q8. What are the steps in Analyze?</dt><dd>Select technique (classification, regression, clustering etc.), build model, evaluate model.</dd>
+<dt>Q9. Define data ingestion.</dt><dd>Getting data from its sources into the data system for storage and processing, in batches or as a stream, under an ingestion policy.</dd>
+<dt>Q10. Differentiate batch and streaming ingestion.</dt><dd>Batch loads large chunks periodically with high latency (nightly sales). Streaming loads records continuously with low latency (sensor data, fraud alerts).</dd>
+<dt>Q11. What is the memory hierarchy?</dt><dd>Ordering of storage by speed and cost: cache → RAM → SSD → HDD → tape. Going down: slower, larger, cheaper per GB.</dd>
+<dt>Q12. Name four dirty-data issues.</dt><dd>Missing values, invalid values, duplicate records, inconsistent values (also outliers).</dd>
+<dt>Q13. Differentiate selection and projection.</dt><dd>Selection picks rows that satisfy a condition; projection picks chosen columns (attributes) of each row.</dd>
+<dt>Q14. What is aggregation?</dt><dd>A collection operation computing summary values (sum, count, average, min, max) over groups, e.g. total sales per city.</dd>
+<dt>Q15. Differentiate scale up and scale out.</dt><dd>Scale up: a more powerful single machine (hardware ceiling). Scale out: add more commodity machines to a cluster (partitioning + replication).</dd>
+<dt>Q16. List data security measures.</dt><dd>Access control (authentication, authorisation), encryption at rest, secure transmission (TLS), privacy (anonymisation, masking), auditing.</dd>
+<dt>Q17. What are the three components of a data model?</dt><dd>Structure (organisation of data), operations (what can be done), constraints (rules data must obey).</dd>
+<dt>Q18. What is a big data management plan?</dt><dd>A design stating how data is ingested, stored, kept at good quality, processed (operations), scaled and secured for an organisation's data.</dd>
+<dt>Q19. Why is a data lake used for customer data from web, app and social media?</dt><dd>It stores raw data of every type (structured, JSON, text, images) cheaply at scale, with schema applied only when data is read.</dd>
+<dt>Q20. What is collaborative filtering?</dt><dd>A recommendation technique that suggests items liked by users with similar behaviour, measured with a similarity such as cosine similarity.</dd>
+<dt>Q21. What is A/B testing?</dt><dd>Showing two versions to two random groups of users and keeping the version that performs better on a chosen metric.</dd>
+<dt>Q22. What should be settled before building a big data strategy?</dt><dd>Clear objectives, an approximate budget (with room for contingencies), a realistic time frame, and documentation of the existing data/systems.</dd>
+<dt>Q23. List the five components of a big data strategy document.</dt><dd>Business goals &amp; objectives, prioritisation of use cases, data governance policy, data privacy &amp; security needs, data architecture. (Different from the 5 P's of data science.)</dd>
+<dt>Q24. Name any three factors that affect how long a big data strategy takes.</dt><dd>Team size, volume/complexity of data, and regulatory/compliance requirements (also: technical debt, infrastructure specifics).</dd>
+<dt>Q25. Give an alternate "five components of data science" answer built from the process.</dt><dd>Data collection, data cleaning, EDA &amp; visualisation, data modeling, model evaluation &amp; deployment — the data science process (2.5) relabelled as components.</dd>
+<dt>Q26. What is CRISP-DM?</dt><dd>A widely used 6-stage cyclic data-mining process: business understanding, data understanding, data preparation, modeling, evaluation, deployment — the same idea as the 5-step Acquire-Prepare-Analyze-Report-Act process at finer granularity.</dd>
+<dt>Q27. What did the real-estate case study predict, and with which tools?</dt><dd>Which homeowners were about to sell their house, using Amazon S3 for storage and AWS Glue for data processing; the case study reports about 70% prediction accuracy.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ long ============ -->
+<section class="topic" id="u2-long">
+<h3>2.16 Long-answer frames (15 marks)</h3>
+<h4>Q1. What is data science? How do we get value out of big data? Explain the steps of building a big data strategy.</h4>
+<ol>
+<li>Define data science; value chain data → analysis → insight → action → value; draw <b>Fig 2.1</b>.</li>
+<li>Sources of value: integration of diverse data; recommendations, fraud detection, predictive maintenance.</li>
+<li>Define big data strategy; business-first, not technology-first.</li>
+<li>Explain steps: objectives, diverse team, buy-in, in-house expertise, try small, share data + policies, culture; draw <b>Fig 2.2</b>.</li>
+<li>Example: grocery app wastage pilot (2.2).</li>
+<li>Conclusion: strategy is iterative and revised as the business grows.</li>
+</ol>
+<h4>Q2. Explain the five components / five P's of data science with a diagram.</h4>
+<ol>
+<li>Define the five components = 5 P's (Purpose, People, Process, Platforms, Programmability).</li>
+<li>Draw the 5P wheel <b>Fig 2.8</b>.</li>
+<li>Explain each P with meaning and example (question each P answers).</li>
+<li>Interdependence of the P's; Product as the output.</li>
+<li>Table: food-delivery example across the 5 P's.</li>
+<li>Note: skill-based framing (domain, statistics, programming, ML, communication).</li>
+<li>Conclusion: all five must be present for successful data science.</li>
+</ol>
+<h4>Q3. Explain the steps in the data science process with a neat diagram.</h4>
+<ol>
+<li>Introduction: process is iterative, 5 steps.</li>
+<li>Draw <b>Fig 2.9</b> (Acquire → Prepare → Analyze → Report → Act, loop back).</li>
+<li>Acquire: identify and retrieve; four source categories.</li>
+<li>Prepare: explore (summary stats, plots) + pre-process (cleaning, wrangling).</li>
+<li>Analyze: select technique, build model, evaluate; list techniques.</li>
+<li>Report and Act: communicate with visuals; implement and monitor.</li>
+<li>Example: IPL bowler selection; input/output table.</li>
+<li>Conclusion: iteration improves results.</li>
+</ol>
+<h4>Q4. What is big data management? Explain data ingestion and data storage.</h4>
+<ol>
+<li>Define big data management; six concerns; data model (structure, operations, constraints); draw <b>Fig 2.11</b>.</li>
+<li>Define ingestion; draw pipeline <b>Fig 2.12</b>; batch vs streaming table.</li>
+<li>Infrastructure questions: sources, size, rate, bad data, too much / too little; error policy example (hospital records).</li>
+<li>Worked example: smart meter ingestion rate (1111.1 readings/s, 19.2 GB/day).</li>
+<li>Storage: memory hierarchy <b>Fig 2.13</b>; capacity, volatile vs non-volatile, hot vs cold data.</li>
+<li>Storage choices: RDBMS, NoSQL, HDFS, cloud; warehouse vs lake table.</li>
+<li>Conclusion: ingestion rate decides storage capacity and design.</li>
+</ol>
+<h4>Q5. Explain data quality and data operations in big data management.</h4>
+<ol>
+<li>Define data quality and its dimensions; why it matters.</li>
+<li>Dirty data issues (MIDIO) with examples.</li>
+<li>Cleaning flow <b>Fig 2.14</b>; remove, estimate, merge, standardise.</li>
+<li>Worked example: temperature readings cleaned, mean 36.9.</li>
+<li>Define data operations; classification tree <b>Fig 2.15</b>.</li>
+<li>Explain selection, projection, join, union, aggregation; selection vs projection table.</li>
+<li>Worked example: orders by city (totals 700 and 500).</li>
+<li>Conclusion: clean data + parallel operations give reliable, fast analytics.</li>
+</ol>
+<h4>Q6. Discuss data scalability and security in big data systems.</h4>
+<ol>
+<li>Define scalability; draw <b>Fig 2.16</b> scale up vs scale out.</li>
+<li>Comparison table (cost, limit, failure, software).</li>
+<li>Partitioning and replication; worked example 1 TB → 8192 blocks, 24,576 copies.</li>
+<li>Define security; draw security layers <b>Fig 2.17</b>.</li>
+<li>Explain access control, encryption at rest, secure transmission, privacy, auditing.</li>
+<li>Challenge: scale out spreads data over more nodes, more attack surface; encryption cost.</li>
+<li>Conclusion: design for growth and protection together.</li>
+</ol>
+<h4>Q7. Describe a real big data management application (energy / gaming) with its architecture.</h4>
+<ol>
+<li>Introduction: course case studies ConEd (energy), Apmetrix (gaming), FlightStats (flights).</li>
+<li>Draw energy pipeline <b>Fig 2.18</b>; map ingestion, storage, quality, operations, scalability, security.</li>
+<li>Draw gaming pipeline <b>Fig 2.19</b>; map the same six concerns.</li>
+<li>Comparison table energy vs gaming.</li>
+<li>Brief flight-data example: integration of many sources in near real time.</li>
+<li>Conclusion: the six management concerns appear in every real system.</li>
+</ol>
+<h4>Q8. A company collects customer information from websites, applications and social media. Design a Big Data Management Plan.</h4>
+<ol>
+<li>State assumptions: sources, data types, about 5 million events/day at 2 KB (10 GB/day, about 11 TB/year with replication 3).</li>
+<li>Draw Fig 2.20 (sources → ingestion → storage → quality → operations → reports, wrapped by scalability and security).</li>
+<li>Ingestion: streaming for clicks and app events, batch for orders and social exports, buffer with a message queue.</li>
+<li>Storage: data lake for raw data, NoSQL for profiles and events, warehouse for reports.</li>
+<li>Data quality: dedupe across channels, validate, standardise, missing values, outliers, entity resolution.</li>
+<li>Operations: filter, join, aggregate, top-N, sentiment analysis, 360° customer view.</li>
+<li>Scalability: scale out, partitioning, replication, auto-scaling on sale days.</li>
+<li>Security: encryption, Kerberos + role-based access, masking, audit, consent and retention (DPDP Act, 2023). Conclude with the business outcome.</li>
+</ol>
+<h4>Q9. Describe a real-world example where data science is used and explain the advanced techniques involved.</h4>
+<ol>
+<li>Pick recommendation systems (streaming service); define them.</li>
+<li>Walk through the 5 steps, draw Fig 2.16.</li>
+<li>Netflix Prize fact (2006–2009, US$1 million, matrix factorisation).</li>
+<li>Techniques table: collaborative filtering, matrix factorisation, content-based, deep learning, NLP, computer vision, clustering, forecasting, A/B testing, Spark.</li>
+<li>Numerical: cosine similarity sim(A, B) = 0.979, sim(A, C) = 0.261 ⇒ recommend from B.</li>
+<li>Other uses: fraud detection, delivery-time prediction, crop disease detection; conclusion.</li>
+</ol>
+<a class="top" href="#top">↑ top</a>
+</section>
+</section>

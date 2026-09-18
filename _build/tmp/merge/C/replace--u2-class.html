@@ -1,0 +1,113 @@
+<section class="topic" id="u2-class">
+<h3>2.1 Classes and objects</h3>
+<p class="hook">A class is the plan of a house; an object is the actual house built from that plan. <span class="hg">(class = naksha, object = asli ghar)</span></p>
+<div class="def"><b>Definition:</b> A <mark>class</mark> is a user-defined blueprint that groups data (fields) and behaviour (methods) under one name. An <mark>object</mark> is an instance of a class: a real entity created in memory with the <code>new</code> keyword, having its own state (field values) and sharing the class's behaviour.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">class Student<br>(roll, name, show())</span><ul>
+<li><span>Object s1<br>1, Aman</span></li><li><span>Object s2<br>2, Riya</span></li><li><span>Object s3<br>3, Kabir</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.1</b> · One class (blueprint) gives many objects, each with its own data</figcaption><p class="draw">✍ Draw it: one box on top for the class, three boxes below joined to it, write values inside each.</p></figure>
+<ul>
+<li><mark>Members</mark> of a class: <b>fields</b> (variables that store state) and <b>methods</b> (functions that act on the state). Constructors and blocks also live inside a class.</li>
+<li><mark>State + behaviour + identity</mark>: every object has field values (state), methods (behaviour) and its own memory location (identity).</li>
+<li>A class takes <mark>no memory for fields</mark> until an object is created; each object gets its own copy of instance variables.</li>
+<li><mark>new</mark> does three things: allocates memory on the heap, runs the constructor, returns the reference. <span class="hg">(new = memory + constructor + address)</span></li>
+<li>The <mark>dot operator</mark> (<code>s1.name</code>, <code>s1.show()</code>) reaches a member through a reference.</li>
+<li>A class body can hold six kinds of members: <mark>data members, methods, constructors, blocks, nested classes and interfaces</mark>. General shape: <code>class ClassName { // fields  // methods }</code>; an object is then declared as <code>ClassName obj = new ClassName();</code>.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 220" width="560">
+<text class="b" x="110" y="32">Stack (references)</text>
+<text class="b" x="420" y="32">Heap (objects)</text>
+<rect x="20" y="50" width="180" height="150" rx="6"/>
+<rect x="300" y="50" width="240" height="150" rx="6"/>
+<rect class="hi" x="40" y="70" width="140" height="40" rx="4"/><text x="110" y="90">s1</text>
+<rect class="hi" x="40" y="140" width="140" height="40" rx="4"/><text x="110" y="160">s2</text>
+<rect x="320" y="65" width="200" height="50" rx="4"/><text x="420" y="90">roll=1, name=Aman</text>
+<rect x="320" y="135" width="200" height="50" rx="4"/><text x="420" y="160">roll=2, name=Riya</text>
+<path class="arr" d="M180 90 H320"/>
+<path class="arr" d="M180 160 H320"/>
+</svg></div><figcaption><b>Fig 2.2</b> · The reference variable lives on the stack; the object it points to lives on the heap</figcaption><p class="draw">✍ Draw it: two tall boxes (Stack, Heap), small boxes s1, s2 in Stack, object boxes in Heap, arrows left to right.</p></figure>
+<ul>
+<li><code>Student s1;</code> only makes a <mark>reference</mark> (value <code>null</code>). <code>s1 = new Student();</code> makes the <mark>object</mark>.</li>
+<li><code>Student s3 = s1;</code> copies the reference, <mark>not the object</mark>: both names now point to one object (see output line 3 below).</li>
+<li>Unreferenced objects are later removed by the <mark>garbage collector</mark>; Java has no <code>delete</code>.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Class</th><th>Object</th></tr>
+<tr><td>Blueprint / template</td><td>Instance of the blueprint</td></tr>
+<tr><td>Logical entity, declared once</td><td>Physical entity, created many times</td></tr>
+<tr><td>No heap memory for fields</td><td>Gets heap memory when created</td></tr>
+<tr><td>Declared with <code>class</code> keyword</td><td>Created with <code>new</code> keyword</td></tr>
+<tr><td>Example: <code>Student</code></td><td>Example: <code>s1</code>, <code>s2</code></td></tr>
+</table></div>
+<p><b>Access modifiers</b> decide who can use a member:</p>
+<div class="tw"><table>
+<tr><th>Modifier</th><th>Visible in</th><th>Typical use</th></tr>
+<tr><td><code>private</code></td><td>Same class only</td><td>Hide data (encapsulation)</td></tr>
+<tr><td>default (no keyword)</td><td>Same package only</td><td>Package helpers</td></tr>
+<tr><td><code>protected</code></td><td>Same package + subclasses in other packages</td><td>Members meant for children</td></tr>
+<tr><td><code>public</code></td><td>Everywhere</td><td>Methods others must call</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>Pri-De-Pro-Pub</b>: Private, Default, Protected, Public, from most closed to most open.</div>
+<p>Program: class, objects and a shared reference.</p>
+<pre class="code" data-file="StudentDemo.java"><code><span class="k">class</span> Student {
+    <span class="k">int</span> roll;          <span class="c">// instance variable</span>
+    String name;
+
+    <span class="k">void</span> show() {      <span class="c">// method</span>
+        System.out.println(roll + " : " + name);
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> StudentDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Student s1 = <span class="k">new</span> Student();   <span class="c">// object created on heap</span>
+        s1.roll = 1;
+        s1.name = "Aman";
+        Student s2 = <span class="k">new</span> Student();
+        s2.roll = 2;
+        s2.name = "Riya";
+        s1.show();
+        s2.show();
+        Student s3 = s1;              <span class="c">// s3 refers to the SAME object</span>
+        s3.name = "Aman Kumar";
+        s1.show();
+    }
+}</code></pre>
+<pre class="out">1 : Aman
+2 : Riya
+1 : Aman Kumar</pre>
+<div class="note"><b>Common mistake:</b> <code>Student s3 = s1;</code> does NOT make a copy. Changing <code>s3.name</code> also changes what <code>s1</code> shows, because there is only one object.</div>
+<p><b>Instance variables vs local variables</b>: a field declared inside the class body (outside every method) is an <mark>instance variable</mark> — it gets memory only when an object is created with <code>new</code>, and every object carries its own copy. A variable declared inside a method is a <mark>local variable</mark> — it gets memory only while that method is running and disappears when the method returns; unlike an instance variable it has <b>no default value</b>, so it must be assigned before it is read.</p>
+<figure class="fig"><div class="canvas"><div class="boxes c2">
+<div class="b hi"><b>Instance variable</b>Declared in the class, outside any method. Memory allocated when the object is created. Gets a default value (0/null/false). Lives as long as the object.</div>
+<div class="b"><b>Local variable</b>Declared inside a method/constructor/block. Memory allocated only while that method runs. No default value — must be initialised. Dies when the method ends.</div>
+</div></div><figcaption><b>Fig 2.30</b> · Instance variable vs local variable: different memory, different lifetime</figcaption><p class="draw">✍ Draw it: two side-by-side boxes titled Instance variable and Local variable, one line of facts under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Instance variable</th><th>Local variable</th></tr>
+<tr><td>Declared inside the class, outside methods</td><td>Declared inside a method, constructor or block</td></tr>
+<tr><td>Memory allocated when the object is created</td><td>Memory allocated when the method is called</td></tr>
+<tr><td>Gets a default value automatically</td><td>No default value; must be assigned before use</td></tr>
+<tr><td>Lives as long as the object lives</td><td>Exists only while the method is executing</td></tr>
+<tr><td>Example: <code>id</code>, <code>name</code> below</td><td>Example: <code>age</code>, <code>branch</code> below</td></tr>
+</table></div>
+<pre class="code" data-file="StudentInstanceDemo.java"><code><span class="k">class</span> StudentRecord {
+    <span class="k">int</span> id = 521;              <span class="c">// instance variable: memory made when new runs</span>
+    String name = "Madhu";       <span class="c">// instance variable</span>
+}
+
+<span class="k">public</span> <span class="k">class</span> StudentInstanceDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        StudentRecord s1 = <span class="k">new</span> StudentRecord();
+        System.out.println("Your R.No is: " + s1.id);
+        System.out.println("Your name is: " + s1.name);
+        <span class="k">int</span> age = 30;              <span class="c">// local variable: exists only inside main</span>
+        String branch = "CSE";        <span class="c">// local variable</span>
+        System.out.println("Your age is: " + age);
+        System.out.println("Your branch is: " + branch);
+    }
+}</code></pre>
+<pre class="out">Your R.No is: 521
+Your name is: Madhu
+Your age is: 30
+Your branch is: CSE</pre>
+<div class="recall"><b>Quick recall</b> Class = blueprint, object = instance made by <code>new</code>; reference on stack, object on heap. Instance variable = field, memory at object creation; local variable = inside a method, memory at call, no default value.</div>
+<a class="top" href="#top">↑ top</a></section>

@@ -1,0 +1,62 @@
+<section class="topic" id="u1-nosqltypes">
+<h3>1.14 Types of NoSQL databases</h3>
+<p class="hook">Four families: a dictionary, a folder of JSON files, a wide sparse table, and a network of dots and lines.</p>
+<div class="def"><b>Definition:</b> NoSQL databases are classified by data model into four types: <mark>key-value</mark> stores, <mark>document</mark> stores, <mark>column-family</mark> (wide-column) stores and <mark>graph</mark> databases.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">NoSQL databases</span><ul>
+<li><span>Key-value</span><ul><li><span>Redis, DynamoDB</span></li></ul></li>
+<li><span>Document</span><ul><li><span>MongoDB, CouchDB</span></li></ul></li>
+<li><span>Column-family</span><ul><li><span>Cassandra, HBase</span></li></ul></li>
+<li><span>Graph</span><ul><li><span>Neo4j</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.21</b> · Four types of NoSQL databases with examples</figcaption><p class="draw">✍ Draw it: root box, four type boxes, one example box under each.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 400 260" width="400">
+<rect class="none dash" x="20" y="12" width="170" height="233" rx="8"/><text class="b" x="105" y="30">Key-Value</text>
+<text class="s" x="60" y="50">key</text><text class="s" x="137" y="50">value</text>
+<rect x="30" y="60" width="60" height="30"/><text x="60" y="75">u101</text><rect x="90" y="60" width="90" height="30"/><text x="135" y="75">blob</text>
+<rect x="30" y="90" width="60" height="30"/><text x="60" y="105">u102</text><rect x="90" y="90" width="90" height="30"/><text x="135" y="105">blob</text>
+<rect x="30" y="120" width="60" height="30"/><text x="60" y="135">s77</text><rect x="90" y="120" width="90" height="30"/><text x="135" y="135">blob</text>
+<text class="s" x="105" y="205">get(key) → value</text><text class="s" x="105" y="228">Redis, DynamoDB</text>
+<rect class="none dash" x="210" y="12" width="170" height="233" rx="8"/><text class="b" x="295" y="30">Document</text>
+<rect x="220" y="45" width="150" height="135" rx="6"/>
+<text class="l" x="230" y="65">{</text><text class="l" x="242" y="88">id: 101,</text><text class="l" x="242" y="111">name: "Asha",</text><text class="l" x="242" y="134">orders: [ ]</text><text class="l" x="230" y="157">}</text>
+<text class="s" x="295" y="205">JSON / BSON documents</text><text class="s" x="295" y="228">MongoDB, CouchDB</text>
+</svg></div><figcaption><b>Fig 1.22</b> · Key-value store and document store</figcaption><p class="draw">✍ Draw it: left panel a two-column key | value table; right panel a box with a small JSON object in braces.</p></figure>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 400 260" width="400">
+<rect class="none dash" x="20" y="12" width="170" height="233" rx="8"/><text class="b" x="105" y="30">Column-family</text>
+<rect class="hi" x="30" y="45" width="150" height="30" rx="4"/><text x="105" y="60">Row key: u101</text>
+<rect x="30" y="85" width="150" height="44" rx="4"/><text x="105" y="99">profile</text><text class="s" x="105" y="118">name | city</text>
+<rect x="30" y="137" width="150" height="44" rx="4"/><text x="105" y="151">orders</text><text class="s" x="105" y="170">o1 | o2 | o3</text>
+<text class="s" x="105" y="205">row → family → column</text><text class="s" x="105" y="228">Cassandra, HBase</text>
+<rect class="none dash" x="210" y="12" width="170" height="233" rx="8"/><text class="b" x="295" y="30">Graph</text>
+<line x1="250" y1="80" x2="340" y2="80"/><line x1="250" y1="80" x2="295" y2="160"/><line x1="340" y1="80" x2="295" y2="160"/>
+<circle cx="250" cy="80" r="26"/><text x="250" y="80">Asha</text>
+<circle cx="340" cy="80" r="26"/><text x="340" y="80">Ravi</text>
+<circle class="hi" cx="295" cy="160" r="26"/><text x="295" y="160">Book</text>
+<text class="s" x="295" y="68">FRIEND</text><text class="s" x="295" y="112">LIKES</text>
+<text class="s" x="295" y="205">nodes + edges</text><text class="s" x="295" y="228">Neo4j</text>
+</svg></div><figcaption><b>Fig 1.23</b> · Column-family store and graph database</figcaption><p class="draw">✍ Draw it: left panel a row-key strip with two column-family boxes under it; right panel three circles joined by labelled lines.</p></figure>
+<ul>
+<li><mark>Key-value store</mark>: simplest; a giant hash table mapping a unique key to a value the database does not look inside. Very fast get/put by key. Uses: session data, shopping carts, caching, user preferences, leaderboards. Examples: Redis, Memcached, Riak, Amazon DynamoDB.</li>
+<li><mark>Document store</mark>: value is a self-describing document (JSON, BSON, XML); the database understands its fields, so you can query and index inside it. Uses: product catalogues, content management, user profiles. Examples: MongoDB, CouchDB, Cloudant.</li>
+<li><mark>Column-family (wide-column) store</mark>: rows identified by a row key, columns grouped into column families; rows can have different columns (sparse). Good for very large, write-heavy data. Uses: time-series, event logging, messaging, IoT data. Examples: Apache Cassandra, Apache HBase (both inspired by Google Bigtable).</li>
+<li><mark>Graph database</mark>: stores entities as nodes and relationships as edges, both with properties; traversing relationships is fast. Uses: social networks, recommendation, fraud rings, route finding. Examples: Neo4j, Amazon Neptune, ArangoDB.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Key-value</th><th>Document</th><th>Column-family</th><th>Graph</th></tr>
+<tr><td>Unit stored</td><td>Key → opaque value</td><td>Key → JSON/BSON document</td><td>Row key → column families → columns</td><td>Nodes and edges</td></tr>
+<tr><td>Query by content</td><td>No (key only)</td><td>Yes (fields, indexes)</td><td>By row key, column family / column</td><td>Traversals (e.g. Cypher)</td></tr>
+<tr><td>Strength</td><td>Speed, simplicity</td><td>Flexible rich records</td><td>Huge scale, fast writes</td><td>Relationships</td></tr>
+<tr><td>Typical use</td><td>Cache, sessions, cart, leaderboards</td><td>Catalogue, CMS</td><td>Logs, time-series, IoT</td><td>Social network, recommendations</td></tr>
+<tr><td>Examples</td><td>Redis, Memcached, DynamoDB</td><td>MongoDB, CouchDB</td><td>Cassandra, HBase</td><td>Neo4j, ArangoDB</td></tr>
+</table></div>
+<pre class="code"><code><span class="c">// Same customer in a document store (MongoDB-style JSON)</span>
+{
+  "_id": 101,
+  "name": "Asha",
+  "city": "Pune",
+  "orders": [ { "orderId": 9001, "total": 499 } ]
+}</code></pre>
+<div class="mn"><b>Mnemonic</b> <b>K-D-C-G</b> = "<b>K</b>uch <b>D</b>in <b>C</b>halo <b>G</b>oa": Key-value, Document, Column-family, Graph.</div>
+<div class="note"><b>Common mistake:</b> A column-family store is not a relational table stored column-wise; each row can have its own set of columns, grouped into families.</div>
+<div class="recall"><b>Quick recall</b> Key-value (Redis) · Document (MongoDB) · Column-family (Cassandra, HBase) · Graph (Neo4j).</div>
+<a class="top" href="#top">↑ top</a>
+</section>

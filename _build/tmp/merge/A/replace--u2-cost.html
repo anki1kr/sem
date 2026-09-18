@@ -1,0 +1,92 @@
+<section class="topic" id="u2-cost">
+<h3>2.9 Hypothesis function and Cost function (with derivation)</h3>
+<p class="hook">The hypothesis is the model's guess; the cost function is one number that says how wrong all the guesses are together. Training = pushing that number down. <span class="hg">(guess kitna galat hai, uska ek score)</span></p>
+<div class="def"><b>Definition (Hypothesis function):</b> The <mark>hypothesis function</mark> $h(x)$ is the function a learning algorithm uses to map an input $x$ to a predicted output. For linear regression: $$h(x) = \beta_0 + \beta_1 x$$ For logistic regression: $$h(x) = \sigma(\beta_0 + \beta_1 x) = \frac{1}{1 + e^{-(\beta_0 + \beta_1 x)}}$$ The set of all possible $h$ is the <mark>hypothesis space</mark>.</div>
+<div class="def"><b>Definition (Cost function):</b> A <mark>cost function</mark> $J(\beta_0, \beta_1)$ measures the average error of the hypothesis over all $m$ training examples. Learning means finding the parameters $\beta_0, \beta_1$ that <mark>minimise $J(\beta_0, \beta_1)$</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Training data (x, y)</div>
+<div class="n">Hypothesis h(x) = β₀ + β₁x</div>
+<div class="n hi">Cost J(β₀, β₁) = (1/2m) Σ (h(x) − y)²</div>
+<div class="n">Gradient: ∂J/∂β₀, ∂J/∂β₁</div>
+<div class="n">Update β := β − α · gradient</div>
+<div class="n d">J stops decreasing?</div>
+<div class="n t">Final β₀, β₁ = trained model</div>
+</div></div><figcaption><b>Fig 2.18</b> · How hypothesis, cost function and gradient descent fit together</figcaption><p class="draw">✍ Draw it: 7 boxes top to bottom; oval, 4 rectangles, a diamond "converged?", oval. Write the J formula inside the highlighted box.</p></figure>
+<h4>Cost function for linear regression (Mean Squared Error form)</h4>
+<ul>
+<li><mark>Error of one example</mark>: $h(x_i) - y_i = \hat{y}_i - y_i$ (predicted minus actual).</li>
+<li><mark>Cost</mark>: $$J(\beta_0,\beta_1) = \frac{1}{2m}\sum_{i=1}^{m} \big(h(x_i) - y_i\big)^2$$</li>
+<li><mark>Why square?</mark> Positive and negative errors cannot cancel, big errors are punished more, and the result is a smooth bowl that is easy to differentiate. <span class="hg">(minus-plus cancel na ho)</span></li>
+<li><mark>Why $1/2$?</mark> Only for convenience: the 2 from differentiating the square cancels it. The minimum is at the same $\beta_0, \beta_1$ either way.</li>
+<li>$J(\beta_0, \beta_1)$ for linear regression is <mark>convex</mark> (one bowl, one minimum), so gradient descent cannot get stuck in a wrong valley.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 300" width="600">
+<path class="arr" d="M70 250 H575"/><path class="arr" d="M70 250 V20"/>
+<text class="s" x="560" y="270">β₁</text><text class="s l" x="78" y="22">J(β₁)</text>
+<path class="acc" d="M70.0 40.0 L82.0 59.6 L94.0 78.2 L106.0 95.8 L118.0 112.4 L130.0 128.0 L142.0 142.6 L154.0 156.2 L166.0 168.8 L178.0 180.4 L190.0 190.9 L202.0 200.5 L214.0 209.0 L226.0 216.6 L238.0 223.1 L250.0 228.6 L262.0 233.2 L274.0 236.7 L286.0 239.2 L298.0 240.7 L310.0 241.2 L322.0 240.7 L334.0 239.2 L346.0 236.7 L358.0 233.2 L370.0 228.6 L382.0 223.1 L394.0 216.6 L406.0 209.0 L418.0 200.5 L430.0 190.9 L442.0 180.4 L454.0 168.8 L466.0 156.2 L478.0 142.6 L490.0 128.0 L502.0 112.4 L514.0 95.8 L526.0 78.2 L538.0 59.6 L550.0 40.0"/>
+<circle class="dot" cx="502" cy="112.4" r="5"/><circle class="dot" cx="406" cy="209" r="5"/><circle class="dot" cx="358" cy="233.2" r="5"/>
+<circle class="hi" cx="310" cy="241.2" r="6"/>
+<path class="arr dash" d="M496 118 L412 203"/><path class="arr dash" d="M400 213 L364 229"/><path class="arr dash" d="M352 236 L318 240"/>
+<text class="s l" x="512" y="120">start: J = 3.76</text>
+<text class="s" x="310" y="268">minimum β₁ = 0.6, J = 0.24</text>
+<text class="s l" x="150" y="60">each dashed arrow = one gradient-descent step</text>
+</svg></div><figcaption><b>Fig 2.19</b> · J(β₁) is a bowl; gradient descent walks downhill to the minimum (β₀ fixed at 2.2, data of the worked example)</figcaption><p class="draw">✍ Draw it: axes, a U-shaped curve, 3-4 dots sliding down one side to the bottom, label the bottom "minimum".</p></figure>
+<h4>Derivation: minimising J (least-squares formulas)</h4>
+<div class="ex"><b>Derivation</b>
+<div class="step">Step 1. $$J(\beta_0,\beta_1) = \frac{1}{2m}\sum (\beta_0 + \beta_1 x_i - y_i)^2$$</div>
+<div class="step">Step 2. Partial derivative w.r.t. $\beta_0$ (chain rule, the 2 cancels the $1/2$):</div>
+<div class="step">$$\frac{\partial J}{\partial \beta_0} = \frac{1}{m}\sum (\beta_0 + \beta_1 x_i - y_i)$$</div>
+<div class="step">Step 3. Partial derivative w.r.t. $\beta_1$ (inner derivative is $x_i$):</div>
+<div class="step">$$\frac{\partial J}{\partial \beta_1} = \frac{1}{m}\sum (\beta_0 + \beta_1 x_i - y_i) \cdot x_i$$</div>
+<div class="step">Step 4. At the minimum both are 0. From $\dfrac{\partial J}{\partial \beta_0} = 0$: $\sum y_i = m\beta_0 + \beta_1 \sum x_i$  ⇒  $$\beta_0 = \bar{y} - \beta_1 \bar{x}$$</div>
+<div class="step">Step 5. From $\dfrac{\partial J}{\partial \beta_1} = 0$: $\sum x_i y_i = \beta_0 \sum x_i + \beta_1 \sum x_i^2$</div>
+<div class="step">Step 6. Substitute $\beta_0 = \bar{y} - \beta_1 \bar{x}$ and simplify:</div>
+<div class="step">$$\beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}$$</div>
+<span class="ans">$$\beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}, \qquad \beta_0 = \bar{y} - \beta_1 \bar{x}$$</span>
+</div>
+<p>These are exactly the formulas used for $\beta_1$ and $\beta_0$ in section 2.5, so the least-squares line is the line with the <mark>lowest possible cost</mark>.</p>
+<h4>Gradient descent (when there is no closed form, or too many features)</h4>
+<ul>
+<li><mark>Update rule</mark> (repeat until convergence, update both together): $$\beta_0 := \beta_0 - \alpha \cdot \frac{1}{m}\sum (h(x_i) - y_i)$$ $$\beta_1 := \beta_1 - \alpha \cdot \frac{1}{m}\sum (h(x_i) - y_i) \cdot x_i$$</li>
+<li><mark>$\alpha$ (learning rate)</mark>: too small = very slow; too large = jumps over the minimum and can diverge.</li>
+<li><mark>Convergence</mark>: stop when the cost barely decreases any further, the gradient is close to 0, or a fixed number of iterations is reached — practically "close enough" to the minimum, not necessarily the exact minimum.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python) · data $x = [1, 2, 3, 4, 5]$, $y = [2, 4, 5, 4, 5]$, $m = 5$
+<div class="step">Cost at $\beta_0 = 0$, $\beta_1 = 0$: predictions all 0, squared errors $4 + 16 + 25 + 16 + 25 = 86$</div>
+<div class="step">$J(0, 0) = \dfrac{86}{2 \times 5} = 8.6$</div>
+<div class="step">Cost at the least-squares line $\beta_0 = 2.2$, $\beta_1 = 0.6$: $SSE = 2.40$ (from 2.5), $J = \dfrac{2.40}{10} = 0.24$</div>
+<div class="step">One gradient step from $(0, 0)$ with $\alpha = 0.05$:</div>
+<div class="step">errors $h - y = [-2, -4, -5, -4, -5]$; $\sum = -20 \Rightarrow \dfrac{\partial J}{\partial \beta_0} = \dfrac{-20}{5} = -4.0$</div>
+<div class="step">$\sum (h - y) \cdot x = -2 - 8 - 15 - 16 - 25 = -66 \Rightarrow \dfrac{\partial J}{\partial \beta_1} = \dfrac{-66}{5} = -13.2$</div>
+<div class="step">$\beta_0 = 0 - 0.05 \times (-4.0) = 0.2$;  $\beta_1 = 0 - 0.05 \times (-13.2) = 0.66$</div>
+<div class="step">New cost $J(0.2, 0.66) = 1.8998$ (down from 8.6)</div>
+<span class="ans">$J(0,0) = 8.6$ → one step → $J = 1.90$; minimum $J = 0.24$ at $\beta_0 = 2.2$, $\beta_1 = 0.6$</span>
+</div>
+<h4>Cost function for logistic regression (log loss)</h4>
+<ul>
+<li>$$J(\beta_0,\beta_1) = -\frac{1}{m}\sum \left[y_i \log h(x_i) + (1-y_i)\log\big(1-h(x_i)\big)\right]$$</li>
+<li><mark>Why not MSE?</mark> Squaring the error of a sigmoid gives a <mark>non-convex</mark> cost with many local minima; log loss is convex.</li>
+<li><mark>Intuition</mark>: $y = 1$ and $h$ near 1 ⇒ cost near 0; $y = 1$ and $h$ near 0 ⇒ $-\log h$ is huge. Confident wrong answers are punished hardest. <span class="hg">(pakka galat = sabse bada penalty)</span></li>
+<li>Its gradient has the same shape as linear regression: $\dfrac{\partial J}{\partial \beta_j} = \dfrac{1}{m}\sum (h(x_i) - y_i)\, x_{ij}$; only $h$ is different.</li>
+<li>Minimising $J$ here is the same problem as <mark>Maximum Likelihood Estimation</mark>: log loss is the negative log-likelihood, so the $\beta$ that minimises $J$ is exactly the $\beta$ that makes the observed training labels most probable.</li>
+<li>e.g. one example, actual $y=1$, predicted $p=0.8$: $L=-\log(0.8)\approx0.223$ (natural log; small because the model was confident AND correct).</li>
+</ul>
+<div class="ex"><b>Worked example</b> (logistic regression, one gradient-descent step; computed in Python, 3 decimals) · $x=2$, actual $y=1$, current $\beta_1=0.5$, $\beta_0=-0.2$, learning rate $\alpha=0.1$
+<div class="step">$z = \beta_0+\beta_1 x = -0.2 + 0.5(2) = 0.8$</div>
+<div class="step">$p = \sigma(0.8) = \dfrac{1}{1+e^{-0.8}} \approx 0.690$</div>
+<div class="step">Error $= p - y = 0.690 - 1 = -0.310$</div>
+<div class="step">$\dfrac{\partial J}{\partial \beta_1} = (p-y)x = (-0.310)(2) = -0.620$;  $\dfrac{\partial J}{\partial \beta_0} = (p-y) = -0.310$</div>
+<div class="step">$\beta_1 := 0.5 - 0.1(-0.620) = 0.562$;  $\beta_0 := -0.2 - 0.1(-0.310) = -0.169$</div>
+<span class="ans">After one step: $\beta_1 = 0.562$, $\beta_0 = -0.169$ (both moved to reduce the error)</span></div>
+<div class="tw"><table><tr><th>Point</th><th>Hypothesis function</th><th>Cost function</th></tr>
+<tr><td>What it is</td><td>The model's prediction rule</td><td>A score of how wrong the predictions are</td></tr>
+<tr><td>Input</td><td>One example x</td><td>All $m$ examples and the parameters $\beta_0, \beta_1$</td></tr>
+<tr><td>Output</td><td>Predicted $y$ ($\hat{y}$)</td><td>One non-negative number $J$</td></tr>
+<tr><td>Linear regression</td><td>$\beta_0 + \beta_1 x$</td><td>$\frac{1}{2m}\sum (h - y)^2$</td></tr>
+<tr><td>Logistic regression</td><td>$\sigma(\beta_0 + \beta_1 x)$</td><td>Log loss (cross-entropy)</td></tr>
+<tr><td>Goal</td><td>Fit the data</td><td>Be minimised</td></tr></table></div>
+<div class="mn"><b>Mnemonic</b> <b>H-C-G</b> = <b>H</b>ypothesis guesses, <b>C</b>ost grades, <b>G</b>radient corrects.</div>
+<div class="note"><b>Common mistake:</b> writing the cost without squaring ($\sum (h - y)$), which can be 0 even for a bad line because errors cancel.</div>
+<div class="recall"><b>Quick recall</b> $h(x) = \beta_0 + \beta_1 x$; $J = \frac{1}{2m}\sum (h - y)^2$; set $\frac{\partial J}{\partial \beta_0} = \frac{\partial J}{\partial \beta_1} = 0 \Rightarrow \beta_1 = \frac{\sum (x_i-\bar{x})(y_i-\bar{y})}{\sum (x_i-\bar{x})^2}$, $\beta_0 = \bar{y} - \beta_1 \bar{x}$. Logistic uses log loss (= negative log-likelihood); stop at convergence.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

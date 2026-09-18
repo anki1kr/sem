@@ -1,0 +1,977 @@
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Linear Prediction of Speech and Speech Quantization</h2>
+<p class="unit-sub">Linear predictive analysis, normal equations, Levinson-Durbin recursion, short-term and long-term models, scalar quantization, companding, adaptive/differential quantizers, and vector quantization.</p>
+
+<section class="topic" id="u2-lp">
+<h3>2.1 Basic Concepts of Linear Prediction &amp; Normal Equations</h3>
+<p class="hook">Linear prediction estimates the current speech sample as a weighted linear combination of past speech samples. <span class="hg">(purane samples se naya sample predict karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear prediction</mark> (LP) models the current speech sample $x[n]$ as a linear combination of $p$ previous samples:
+$$\hat{x}[n] = \sum_{k=1}^{p} a_k\,x[n-k]$$
+The <mark>prediction error</mark> is
+$$e[n] = x[n] - \hat{x}[n] = x[n] - \sum_{k=1}^{p} a_k\,x[n-k]$$</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 180" width="580">
+<rect x="20" y="55" width="70" height="40" rx="6"/><text x="55" y="75">x[n]</text>
+<path class="arr" d="M90 75 H140"/>
+<circle cx="155" cy="75" r="15"/><text x="155" y="75">+</text>
+<path class="arr" d="M170 75 H220"/>
+<text class="b" x="245" y="75">e[n]</text>
+<path class="arr" d="M115 75 V130 H170"/>
+<rect class="hi" x="170" y="110" width="130" height="40" rx="6"/><text x="235" y="130">Predictor P(z)</text>
+<path class="arr" d="M300 130 H340 V75 H170"/>
+<text class="s" x="320" y="118">x̂[n]</text>
+</svg></div>
+<figcaption><b>Fig 2.1</b> · Linear Prediction Error Filter Block Diagram</figcaption>
+<p class="draw">✍ Draw it: input x[n] going to summer, feedback loop to Predictor P(z) box producing x̂[n], error e[n] output.</p></figure>
+
+<ul>
+<li><mark>Linear prediction kya hai</mark>: a signal processing technique that estimates the current (or a future) sample as a linear combination of past samples. Speech, audio and biomedical signals have correlated consecutive samples, so past values carry information about the next one. <span class="hg">(past samples dekhkar present sample ka approximate value nikalna)</span></li>
+<li><mark>Core idea (expanded form)</mark>:
+  $$\hat{x}[n] = a_1x[n-1] + a_2x[n-2] + \dots + a_px[n-p]$$
+  where $x[n]$ = actual (current) sample, $\hat{x}[n]$ = predicted (estimated) sample, $x[n-1], x[n-2], \dots, x[n-p]$ = the $p$ previous samples, $a_1, a_2, \dots, a_p$ = prediction coefficients, $p$ = prediction order. <span class="hg">(past samples × coefficients = predicted sample)</span></li>
+<li><mark>Prediction order $p$</mark>: tells how many previous samples are used. Example: $p = 3$ gives $\hat{x}[n] = a_1x[n-1] + a_2x[n-2] + a_3x[n-3]$. <span class="hg">(p matlab past samples ki quantity)</span></li>
+<li><mark>Prediction error / residual</mark>: the difference between the actual and the predicted value, $e[n] = x[n] - \hat{x}[n]$. <span class="hg">(jo mila minus jo socha = error)</span></li>
+<li><mark>Good predictor</mark>: if $\hat{x}[n] \approx x[n]$ then $e[n] \approx 0$. Good predictor = small error; its residual is close to white noise.</li>
+<li><mark>Why Speech is Predictable</mark>: Vocal tract inertia creates strong correlation between adjacent samples, and glottal quasi-periodicity creates inter-pitch correlation.</li>
+<li><mark>Derivation of Normal Equations</mark>: Choose $a_1, \dots, a_p$ so that the Mean Squared Prediction Error is minimum:
+  $$E = \frac{1}{N}\sum_{n}\Big(x[n] - \sum_{k=1}^{p} a_k\,x[n-k]\Big)^2$$
+  Setting $\partial E / \partial a_i = 0$ for each coefficient yields the <b>Yule-Walker / Autocorrelation Normal Equations</b>:
+  $$\sum_{k=1}^{p} a_k\,R(i-k) = R(i), \quad i = 1, \dots, p$$
+  where $R(i)$ is the autocorrelation function of $x[n]$ over a frame of $N$ samples:
+  $$R(i) = \frac{1}{N}\sum_{n=0}^{N-1-i} x[n]\,x[n+i]$$
+  and $R(-i) = R(i)$, so $R(i-k) = R(|i-k|)$.
+</li>
+<li><mark>Matrix Form ($p=2$)</mark>:
+  $$\begin{bmatrix} R(0) &amp; R(1) \\ R(1) &amp; R(0) \end{bmatrix} \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} = \begin{bmatrix} R(1) \\ R(2) \end{bmatrix}$$
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 740 240" width="740">
+<text class="s" x="260" y="20">past samples × coefficients</text>
+<rect x="35" y="44" width="130" height="40" rx="6"/><text x="100" y="64">x[n−1] = 10</text>
+<rect x="195" y="44" width="130" height="40" rx="6"/><text x="260" y="64">x[n−2] = 12</text>
+<rect x="355" y="44" width="130" height="40" rx="6"/><text x="420" y="64">x[n−3] = 14</text>
+<path class="arr" d="M100 84 V116"/><path class="arr" d="M260 84 V116"/><path class="arr" d="M420 84 V116"/>
+<circle class="hi" cx="100" cy="144" r="26"/><text x="100" y="144">×0.5</text>
+<circle class="hi" cx="260" cy="144" r="26"/><text x="260" y="144">×0.3</text>
+<circle class="hi" cx="420" cy="144" r="26"/><text x="420" y="144">×0.2</text>
+<path class="arr" d="M100 170 V205 H526"/>
+<path d="M260 170 V205"/><path d="M420 170 V205"/>
+<text class="s l" x="108" y="188">5</text><text class="s l" x="268" y="188">3.6</text><text class="s l" x="428" y="188">2.8</text>
+<circle cx="550" cy="205" r="22"/><text x="550" y="205">Σ</text>
+<path class="arr" d="M572 205 H600"/>
+<text class="b l" x="606" y="205">x̂[n] = 11.4</text>
+</svg></div>
+<figcaption><b>Fig 2.11</b> · Order-3 linear predictor: each past sample is weighted by its coefficient and the products are added</figcaption>
+<p class="draw">✍ Draw it: 3 boxes for x[n−1], x[n−2], x[n−3]; arrow down from each into a multiplier circle (a₁, a₂, a₃); join all into one Σ circle whose output is x̂[n].</p></figure>
+
+<div class="ex"><b>Worked Example: One Prediction with $p = 3$ (class notes)</b>
+<div class="step">Given past samples $x[n-1] = 10$, $x[n-2] = 12$, $x[n-3] = 14$ and coefficients $a_1 = 0.5$, $a_2 = 0.3$, $a_3 = 0.2$.</div>
+<div class="step">$\hat{x}[n] = a_1x[n-1] + a_2x[n-2] + a_3x[n-3] = 0.5(10) + 0.3(12) + 0.2(14)$</div>
+<div class="step">$\hat{x}[n] = 5 + 3.6 + 2.8 = 11.4$</div>
+<div class="step">Residual example: if the actual sample is $x[n] = 20$ and the prediction is $\hat{x}[n] = 18$, then $e[n] = x[n] - \hat{x}[n] = 20 - 18 = 2$.</div>
+<span class="ans">$\hat{x}[n] = 11.4$; residual example $e[n] = 2$</span>
+</div>
+
+<div class="ex"><b>Worked Example: Order-2 Linear Prediction Normal Equations Solving</b>
+<div class="step">Given autocorrelation values: $R(0) = 5.0$, $R(1) = 3.0$, $R(2) = 1.0$.</div>
+<div class="step">Set up matrix equation:
+$$\begin{bmatrix} 5.0 &amp; 3.0 \\ 3.0 &amp; 5.0 \end{bmatrix} \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} = \begin{bmatrix} 3.0 \\ 1.0 \end{bmatrix}$$
+</div>
+<div class="step">Determinant $\Delta = (5.0)(5.0) - (3.0)(3.0) = 25 - 9 = 16.0$.</div>
+<div class="step">$a_1 = \dfrac{3.0(5.0) - 1.0(3.0)}{16.0} = \dfrac{15 - 3}{16} = \dfrac{12}{16} = 0.75$</div>
+<div class="step">$a_2 = \dfrac{5.0(1.0) - 3.0(3.0)}{16.0} = \dfrac{5 - 9}{16} = \dfrac{-4}{16} = -0.25$</div>
+<div class="step">Minimum residual error energy $E_2 = R(0) - a_1 R(1) - a_2 R(2) = 5.0 - (0.75)(3.0) - (-0.25)(1.0) = 5.0 - 2.25 + 0.25 = 3.0$.</div>
+<span class="ans">Predictor Coefficients: $a_1 = 0.75$, $a_2 = -0.25$; Residual Energy $E_2 = 3.0$</span>
+</div>
+
+<div class="tw"><table>
+<tr><th>Method</th><th>Key points</th><th>Pros / Cons</th></tr>
+<tr><td><b>Autocorrelation method</b></td><td>Windowed frame; assumes a (quasi-)stationary signal; equations solved by Levinson-Durbin</td><td>+ Stable predictor<br>+ Efficient<br>− Windowing needed</td></tr>
+<tr><td><b>Covariance method</b></td><td>No windowing; error minimised only over the frame samples; can be more accurate (equations solved e.g. by Cholesky decomposition)</td><td>+ High accuracy<br>− Stability not guaranteed</td></tr>
+<tr><td><b>Levinson-Durbin recursion</b></td><td>$O(p^2)$ algorithm; solves Yule-Walker recursively; also gives reflection (PARCOR) coefficients</td><td>+ Efficient<br>+ Useful by-products</td></tr>
+</table></div>
+<p>Levinson-Durbin is the fast <b>solver</b> for the autocorrelation method's equations, not a third way of setting them up.</p>
+
+<div class="tw"><table>
+<tr><th>Key related concept</th><th>Meaning</th></tr>
+<tr><td><b>Prediction order ($p$)</b></td><td>Number of past samples used; higher order captures more structure but risks overfitting (modelling noise)</td></tr>
+<tr><td><b>Residual / error signal</b></td><td>What is left after removing the predictable structure; ideally close to white noise</td></tr>
+<tr><td><b>All-pole model</b></td><td>Linear prediction = output of an all-pole (IIR) filter driven by the residual</td></tr>
+<tr><td><b>LPC (Linear Predictive Coding)</b></td><td>Using the LP coefficients to model and code speech</td></tr>
+<tr><td><b>Stability</b></td><td>All poles inside the unit circle for stable reconstruction</td></tr>
+<tr><td><b>Adaptive prediction</b></td><td>Coefficients updated over time (LMS = least mean squares, RLS = recursive least squares) for non-stationary signals</td></tr>
+</table></div>
+
+<ul>
+<li><mark>Why it is useful</mark>:
+  <ol>
+  <li><b>Compression</b>: encode the small residual instead of the full signal (speech codecs, ADPCM, lossless audio such as FLAC).</li>
+  <li><b>Signal modeling</b>: a few coefficients represent the signal compactly (formants in speech); the same all-pole model is used to synthesise speech from an excitation.</li>
+  <li><b>Spectral estimation</b>: LPC coefficients give the frequency response of the all-pole model.</li>
+  <li><b>Noise reduction / forecasting</b>: predict future samples of time-series data.</li>
+  </ol>
+</li>
+</ul>
+
+<div class="mn"><b>Mnemonic</b> "Linear Prediction = Past se Future ka Andaza". Remember the chain: Past samples → Prediction; Actual − Predicted = Error; Minimize MSE → Find coefficients; Yule-Walker + Levinson-Durbin.</div>
+
+<div class="note"><b>Common mistake:</b> the error is actual minus predicted, $e[n] = x[n] - \hat{x}[n]$, not the reverse. The predictor sum starts at $k = 1$: only past samples are used, because $x[n]$ itself is what we are predicting.</div>
+
+<div class="recall"><b>Quick recall</b> LP predicts current sample $x[n]$ from $p$ past samples; minimising $E$ gives the Yule-Walker equations $\sum a_k R(i-k) = R(i)$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-nonstat">
+<h3>2.2 LP Analysis of Non-Stationary Signals &amp; Prediction Gain</h3>
+<p class="hook">Speech is a non-stationary signal, so LP analysis is performed on short quasi-stationary frames of 20 to 30 milliseconds. <span class="hg">(20-30 ms ke chhote frames me analysis hota hai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear prediction analysis</mark> treats non-stationary speech as quasi-stationary by segmenting it into short overlapping frames (20 ms - 30 ms) multiplied by a smooth window function (such as a Hamming window).</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 610 160" width="610">
+<rect x="20" y="45" width="100" height="40" rx="6"/><text x="70" y="65">Speech x[n]</text>
+<path class="arr" d="M120 65 H150"/>
+<rect x="150" y="45" width="120" height="40" rx="6"/><text x="210" y="65">Framing (20ms)</text>
+<path class="arr" d="M270 65 H300"/>
+<rect class="hi" x="300" y="45" width="110" height="40" rx="6"/><text x="355" y="65">Hamming w[n]</text>
+<path class="arr" d="M410 65 H440"/>
+<rect x="440" y="45" width="150" height="40" rx="6"/><text x="515" y="65">Autocorrelation</text>
+</svg></div>
+<figcaption><b>Fig 2.2</b> · Frame-by-frame LP analysis processing of non-stationary speech</figcaption>
+<p class="draw">✍ Draw it: chain from Speech x[n] to Framing box to Hamming Window box to Autocorrelation box.</p></figure>
+
+<ul>
+<li><mark>Non-stationarity problem</mark>: standard LP theory assumes a stationary signal, i.e. its statistics (autocorrelation, spectral envelope) do not change over time. Real speech is non-stationary: the vocal-tract shape, pitch and energy change continuously as a person talks, so one set of $a_k$ cannot fit a whole utterance.</li>
+<li><mark>Solution: short-time (frame-based) analysis</mark>: speech changes slowly compared with the sampling rate, so it is treated as quasi-stationary over short intervals (typically 20-30 ms). Steps:
+  <ol>
+  <li><b>Segment</b> the signal into frames (often 50% overlap).</li>
+  <li><b>Window</b> each frame (Hamming / Hanning) to reduce edge discontinuities and spectral leakage.</li>
+  <li><b>Analyze</b> each frame independently and compute fresh LP coefficients $a_k(m)$.</li>
+  </ol>
+</li>
+<li><mark>Frame equation</mark>:
+  $$x_m[n] = x[n]\,w[n - mL]$$
+  where $w[n]$ = window, $m$ = frame index, $L$ = frame shift (hop size). Example: a 20 ms frame at 8 kHz has 160 samples; 50% overlap gives $L = 80$ samples.</li>
+<li><mark>Result</mark>: time-varying LP coefficients $a_k(m)$, i.e. a new all-pole model per frame, which tracks the changing vocal tract / spectral envelope over time.</li>
+<li><mark>Autocorrelation Method vs Covariance Method</mark>:
+  <ul>
+  <li><b>Autocorrelation Method</b>: Windows the speech frame so it vanishes outside bounds. Guarantees a stable filter ($|k_m| \lt 1$).</li>
+  <li><b>Covariance Method</b>: Does not window signal outside frame; requires no zero-padding, but filter stability is not guaranteed.</li>
+  </ul>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n io">Speech signal $x[n]$</div>
+<div class="n">Framing<small>20-30 ms, 50% overlap</small></div>
+<div class="n">Windowing<small>Hamming / Hanning</small></div>
+<div class="n">LP analysis per frame</div>
+<div class="n hi">Time-varying $a_k(m)$</div>
+<div class="n">Prediction error $e[n]$</div>
+<div class="n t">Prediction gain $G_p$</div>
+</div></div>
+<figcaption><b>Fig 2.12</b> · Short-time (frame-based) LP analysis flow, from framing to prediction gain</figcaption>
+<p class="draw">✍ Draw it: 7 boxes top to bottom joined by arrows: Speech → Framing → Windowing → LP analysis → time-varying coefficients → error e[n] → gain.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Point</th><th>Stationary LP</th><th>Non-stationary (short-time) LP</th></tr>
+<tr><td><b>Prediction coefficients</b></td><td>One set of $a_k$ for the whole signal</td><td>New $a_k(m)$ per frame</td></tr>
+<tr><td><b>Autocorrelation</b></td><td>Global (entire signal)</td><td>Local (windowed frame)</td></tr>
+<tr><td><b>Fit for speech</b></td><td>Poor fit</td><td>Standard approach for speech / audio</td></tr>
+</table></div>
+
+<ul>
+<li><mark>Prediction Gain</mark> (PG): Quantitative measure of LP compression efficiency defined as the ratio of speech variance to prediction error variance:
+  $$G_p = 10\log_{10}\left(\frac{\sigma_x^2}{\sigma_e^2}\right) = 10\log_{10}\frac{R(0)}{E_p} \ \text{dB}$$
+  where $\sigma_x^2$ = variance (power) of the original signal $x[n]$ and $\sigma_e^2$ = variance (power) of the residual $e[n] = x[n] - \hat{x}[n]$. It tells how much the predictor reduces the signal's energy, i.e. how much redundancy it removes.
+</li>
+<li><mark>Interpretation</mark>: <b>large</b> $G_p$ → predictor removes most of the redundancy, residual is small and close to white noise → effective model. <b>Small</b> $G_p$ → poor prediction, more residual energy (less compression / poor modelling), e.g. rapid signal changes or an unsuitable order.</li>
+<li><mark>Voiced vs unvoiced frames</mark>: voiced frames (vowels: periodic, strong formants) give a <b>higher</b> gain; unvoiced frames (fricatives: noise-like) give a <b>lower</b> gain.</li>
+<li><mark>Segmental prediction gain (SPG)</mark>: in non-stationary signals $G_p$ varies from frame to frame, so the per-frame dB values are averaged over $M$ frames:
+  $$SPG = \frac{1}{M}\sum_{m=1}^{M} G_p(m)$$</li>
+<li><mark>Relation to prediction order</mark>: increasing $p$ generally increases the gain (more detail captured), but after a point the gain saturates (extra coefficients only model noise / quantization). Typical order for speech: $p \approx 10$–$16$ for 8-16 kHz sampling, roughly 2 coefficients per formant plus a few extra.</li>
+<li><mark>Quality metric</mark>: per-frame gain is monitored to detect frames where the model fits poorly (e.g. onset / transient frames or transmission errors), which may need special handling (smaller frames, transition frames or different quantization). Practical use: speech / audio coding (CELP, ADPCM, FLAC), adaptive LP code design, speech enhancement and analysis.</li>
+</ul>
+
+<div class="ex"><b>Worked Example: Prediction Gain Calculation</b>
+<div class="step">From previous order-2 example: Signal variance $R(0) = 5.0$, Prediction error energy $E_2 = 3.0$.</div>
+<div class="step">$G_p = 10\log_{10}\dfrac{5.0}{3.0} = 10\log_{10}(1.6667) = 10 \times 0.22185 = 2.2185$ dB.</div>
+<span class="ans">Prediction Gain $G_p = 2.218$ dB</span>
+</div>
+
+<div class="ex"><b>Worked Example: Prediction Gain from Powers (class notes)</b>
+<div class="step">Given $\sigma_x^2 = 100$ and $\sigma_e^2 = 10$.</div>
+<div class="step">$G_p = 10\log_{10}\left(\dfrac{100}{10}\right) = 10\log_{10}(10) = 10 \times 1 = 10$ dB</div>
+<span class="ans">$G_p = 10$ dB</span>
+</div>
+
+<div class="ex"><b>Worked Example: Frame A, voiced-like (smooth, correlated samples), $p = 1$</b>
+<div class="step">$x_A = [2, 4, 6, 5, 3, 1, -1, -2]$ (8 samples). As in the class notes, $R(0)$ and $R(1)$ are written as plain sums here; the $\frac{1}{N}$ cancels in $a_1 = R(1)/R(0)$ (with it they would be $12$ and $10.125$).</div>
+<div class="step">$R(0) = \sum x^2[n] = 96$ (sum of squares), $R(1) = \sum x[n]\,x[n-1] = 81$ (products of adjacent samples)</div>
+<div class="step">$a_1 = \dfrac{R(1)}{R(0)} = \dfrac{81}{96} = 0.844$ (exact value $0.84375$)</div>
+<div class="step">Signal power: $\sigma_x^2 = \dfrac{96}{8} = 12$</div>
+<div class="step">Residual $e[n] = x[n] - a_1x[n-1]$ for $n = 1, \dots, 7$ (exact $a_1$, rounded to 2 decimals): $2.31, 2.63, -0.06, -1.22, -1.53, -1.84, -1.16$</div>
+<div class="step">$e^2[n] \approx 5.35, 6.89, 0.00, 1.49, 2.34, 3.40, 1.34$, so $\sum e^2[n] = 20.81$</div>
+<div class="step">Residual power = average squared error over the 7 residual samples: $\sigma_e^2 = \dfrac{20.81}{7} = 2.97$</div>
+<div class="step">$G_p = 10\log_{10}\left(\dfrac{12}{2.97}\right) = 10\log_{10}(4.04) = 6.06$ dB</div>
+<span class="ans">Frame A: $a_1 = 0.844$, $\sigma_x^2 = 12$, $\sigma_e^2 = 2.97$, $G_p = 6.06$ dB (high gain: predictable)</span>
+</div>
+
+<div class="note"><b>Common mistake:</b> $\sigma_e^2$ is the average squared error, $\sigma_e^2 = 20.81/7 = 2.97$. It is not $12 \times 2.97 / 8 = 4.455$ (the class notes write this). With $4.455$ the gain would be $10\log_{10}(12/4.455) = 10\log_{10}(2.69) = 4.30$ dB, which does not match the $6.06$ dB they state.</div>
+
+<div class="ex"><b>Worked Example: Frame B, unvoiced-like (noisy, weakly correlated), $p = 1$</b>
+<div class="step">$x_B = [-2, -1, 1, -2, 3, 1, 2, -1]$ (8 samples; the sign jumps around like noise).</div>
+<div class="step">$R(0) = \sum x^2[n] = 25$, $R(1) = \sum x[n]\,x[n-1] = -4$, so $|R(1)/R(0)| = 0.16$ (weak correlation)</div>
+<div class="step">$a_1 = \dfrac{-4}{25} = -0.16$; signal power $\sigma_x^2 = \dfrac{25}{8} = 3.125$</div>
+<div class="step">Residual $e[n] = x[n] + 0.16\,x[n-1]$ for $n = 1, \dots, 7$: $-1.32, 0.84, -1.84, 2.68, 1.48, 2.16, -0.68$; $\sum e^2[n] = 20.334$</div>
+<div class="step">$\sigma_e^2 = \dfrac{20.334}{7} = 2.905$</div>
+<div class="step">$G_p = 10\log_{10}\left(\dfrac{3.125}{2.905}\right) = 10\log_{10}(1.076) = 0.32$ dB</div>
+<div class="step">Segmental gain over the two frames: $SPG = \dfrac{6.06 + 0.32}{2} = 3.19$ dB</div>
+<span class="ans">Frame B: $G_p = 0.32$ dB (low: noisy, less predictable) vs Frame A: $6.06$ dB; $SPG = 3.19$ dB</span>
+</div>
+<p>Key takeaway: more correlation = higher $G_p$ = better compression. (Frame B here replaces the class-notes Frame B, whose $R(0)$ and $\sigma_x^2$ do not match its listed samples.)</p>
+
+<div class="mn"><b>Mnemonic</b> "Frame-Window-Analyze-Track" (for non-stationary LP: frame it, window it, analyze each frame, track $a_k(m)$). "Original / Error → Gain" (for prediction gain: original power over error power). "Past ke sahare, future ka estimate."</div>
+
+<div class="recall"><b>Quick recall</b> Speech is non-stationary &rarr; analyze in 20-30 ms frames with Hamming windows, $x_m[n] = x[n]\,w[n-mL]$. Prediction gain $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB; SPG = average of the frame gains; large $G_p$ = good, small $G_p$ = poor.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-levinson">
+<h3>2.3 Levinson-Durbin Algorithm &amp; Reflection Coefficients</h3>
+<p class="hook">The Levinson-Durbin algorithm solves normal equations recursively in $O(p^2)$ time while generating reflection coefficients. <span class="hg">(O(p^2) me fast solve aur stability test)</span></p>
+<div class="def"><b>Definition:</b> The <mark>Levinson-Durbin algorithm</mark> is an efficient recursive algorithm that solves the Yule-Walker matrix equations in $O(p^2)$ operations, computing predictor coefficients $a_k$ alongside intermediate <mark>reflection coefficients</mark> $k_m$. It uses the symmetric (Toeplitz) structure of the autocorrelation matrix instead of inverting it.</div>
+
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initialize $E_0 = R(0)$, $m = 1$</div>
+<div class="n hi">Compute reflection coefficient: $k_m = \dfrac{R(m) - \sum_{j=1}^{m-1} a_j^{(m-1)} R(m-j)}{E_{m-1}}$</div>
+<div class="n">Update predictor coefficients: $a_m^{(m)} = k_m$, $a_j^{(m)} = a_j^{(m-1)} - k_m\, a_{m-j}^{(m-1)}$</div>
+<div class="n">Update residual energy: $E_m = (1 - k_m^2)\,E_{m-1}$</div>
+<div class="n d">$m = p$ ?</div>
+<div class="n t">Stop (Output $a_k = a_k^{(p)}$ and $k_m$)</div>
+</div></div>
+<figcaption><b>Fig 2.3</b> · Flowchart of the Levinson-Durbin Recursive Algorithm</figcaption>
+<p class="draw">✍ Draw it: vertical recursion flow initializing E0, computing km, updating predictor coefficients and Em, with a loop decision diamond m == p.</p></figure>
+
+<ul>
+<li><mark>Problem it solves</mark>: given $R(0), R(1), \dots, R(p)$ of a frame, find $a_1, \dots, a_p$ such that
+  $$\sum_{k=1}^{p} a_k\,R(i-k) = R(i), \quad i = 1, \dots, p$$
+  without inverting a matrix. The coefficients are built order by order ($m = 1, 2, \dots, p$).</li>
+<li><mark>Toeplitz matrix</mark>: the Yule-Walker (autocorrelation) matrix is symmetric and every diagonal holds one constant value ($R(0)$ on the main diagonal, $R(1)$ on the next, and so on). Levinson-Durbin exploits this symmetry.</li>
+<li><mark>Recursion formulas</mark> (index $m$ = current order):
+  $$E_0 = R(0)$$
+  For $m = 1, 2, \dots, p$:
+  $$k_m = \frac{R(m) - \sum_{j=1}^{m-1} a_j^{(m-1)}\,R(m-j)}{E_{m-1}}$$
+  $$a_m^{(m)} = k_m, \qquad a_j^{(m)} = a_j^{(m-1)} - k_m\,a_{m-j}^{(m-1)} \quad (1 \le j \le m-1)$$
+  $$E_m = (1 - k_m^2)\,E_{m-1}$$
+  Final coefficients: $a_k = a_k^{(p)}$.
+  <br>Easy reading: new $a_j$ = old $a_j$ − $k_m$ × old $a_{m-j}$ (the mirror coefficient).</li>
+<li><mark>Reflection Coefficients</mark> ($k_m$): Intermediate parameters generated during Levinson-Durbin recursion (also called PARCOR, partial correlation, coefficients).</li>
+<li><mark>Stability Condition</mark>: An all-pole filter is strictly stable if and only if all reflection coefficients satisfy $|k_m| \lt 1$ for $m = 1, \dots, p$.</li>
+<li><mark>Computational Complexity</mark>: Reduces matrix inversion complexity from $O(p^3)$ to $O(p^2)$. Space complexity is $O(p)$ (only the coefficients and a few intermediate values are stored).</li>
+<li><mark>Advantages</mark>: fast and efficient; gives prediction coefficients, reflection coefficients and error at every order; exploits the symmetry of the autocorrelation matrix; widely used in speech coding, LPC and spectral analysis.</li>
+</ul>
+
+<div class="tw"><table>
+<tr><th>Symbol</th><th>Meaning</th></tr>
+<tr><td>$R(i)$</td><td>Autocorrelation function of $x[n]$</td></tr>
+<tr><td>$p$</td><td>Prediction order</td></tr>
+<tr><td>$a_k$</td><td>Final prediction coefficients ($k = 1, \dots, p$)</td></tr>
+<tr><td>$a_j^{(m)}$</td><td>Coefficient $j$ of the order-$m$ predictor</td></tr>
+<tr><td>$k_m$</td><td>Reflection coefficient at order $m$</td></tr>
+<tr><td>$E_m$</td><td>Prediction error at order $m$; $E_0 = R(0)$ is the initial error</td></tr>
+</table></div>
+
+<ol>
+<li><b>Input</b>: $R(0), R(1), \dots, R(p)$ and prediction order $p$.</li>
+<li><b>Initialize</b>: $E_0 = R(0)$, $a_k^{(0)} = 0$.</li>
+<li><b>For $m = 1$ to $p$</b>: (a) compute $k_m$ using $R(m)$, $a_j^{(m-1)}$, $E_{m-1}$; (b) update $a_j^{(m)}$ for $j = 1, \dots, m-1$; (c) set $a_m^{(m)} = k_m$; (d) update $E_m = (1 - k_m^2)\,E_{m-1}$.</li>
+<li><b>Output</b>: $a_k^{(p)}$ ($k = 1, \dots, p$), reflection coefficients $k_1, \dots, k_p$ and error $E_p$.</li>
+</ol>
+
+<div class="tw"><table>
+<tr><th>Key by-product</th><th>Meaning</th></tr>
+<tr><td><b>Reflection coefficients $k_m$</b></td><td>Related to the reflection at each section boundary of the acoustic-tube model of the vocal tract; always $|k_m| \lt 1$ for a stable filter</td></tr>
+<tr><td><b>Error energy $E_m$</b></td><td>Never increases as the order grows ($E_m \le E_{m-1}$); shows how much each extra coefficient improves the fit</td></tr>
+<tr><td><b>Stability guarantee</b></td><td>If $|k_m| \lt 1$ for all $m$, the all-pole filter is stable (poles inside the unit circle), a major advantage over general matrix solving</td></tr>
+</table></div>
+
+<div class="ex"><b>Worked Example: Levinson-Durbin Recursion Step-by-Step</b>
+<div class="step">Given $R(0) = 5.0$, $R(1) = 3.0$, $R(2) = 1.0$. Solve for order $p=2$.</div>
+<div class="step"><b>Initialization:</b> $E_0 = R(0) = 5.0$.</div>
+<div class="step"><b>Iteration 1 ($m=1$):</b></div>
+<div class="step">$k_1 = \dfrac{R(1)}{E_0} = \dfrac{3.0}{5.0} = 0.6$ (Since $|0.6| \lt 1$, stable)</div>
+<div class="step">$a_1^{(1)} = k_1 = 0.6$</div>
+<div class="step">$E_1 = (1 - k_1^2)\,E_0 = (1 - 0.36) \times 5.0 = 0.64 \times 5.0 = 3.2$</div>
+<div class="step"><b>Iteration 2 ($m=2$):</b></div>
+<div class="step">$k_2 = \dfrac{R(2) - a_1^{(1)} R(1)}{E_1} = \dfrac{1.0 - (0.6)(3.0)}{3.2} = \dfrac{1.0 - 1.8}{3.2} = \dfrac{-0.8}{3.2} = -0.25$ (Since $|-0.25| \lt 1$, stable)</div>
+<div class="step">$a_2^{(2)} = k_2 = -0.25$</div>
+<div class="step">$a_1^{(2)} = a_1^{(1)} - k_2\, a_1^{(1)} = 0.6 - (-0.25)(0.6) = 0.6 + 0.15 = 0.75$ (here $m = 2$, $j = 1$, so the mirror coefficient $a_{m-j}^{(1)} = a_1^{(1)}$)</div>
+<div class="step">$E_2 = (1 - k_2^2)\,E_1 = (1 - (-0.25)^2) \times 3.2 = (1 - 0.0625) \times 3.2 = 0.9375 \times 3.2 = 3.0$</div>
+<span class="ans">Reflection coeffs: $k_1 = 0.6$, $k_2 = -0.25$; Predictor coeffs: $a_1 = a_1^{(2)} = 0.75$, $a_2 = a_2^{(2)} = -0.25$ (Matches direct matrix solve)</span>
+</div>
+
+<div class="ex"><b>Worked Example: $R(0) = 10$, $R(1) = 6$, $R(2) = 4$, order $p = 2$ (class notes)</b>
+<div class="step"><b>Step 1 ($m = 1$):</b> $E_0 = R(0) = 10$; $k_1 = \dfrac{R(1)}{R(0)} = \dfrac{6}{10} = 0.6$; $a_1^{(1)} = k_1 = 0.6$</div>
+<div class="step">$E_1 = (1 - k_1^2)\,E_0 = (1 - 0.36) \times 10 = 6.4$</div>
+<div class="step"><b>Step 2 ($m = 2$):</b> $k_2 = \dfrac{R(2) - a_1^{(1)}R(1)}{E_1} = \dfrac{4 - 0.6 \times 6}{6.4} = \dfrac{0.4}{6.4} = 0.0625$</div>
+<div class="step">$a_1^{(2)} = a_1^{(1)} - k_2\,a_1^{(1)} = 0.6 - 0.0625 \times 0.6 = 0.6 - 0.0375 = 0.5625$; $a_2^{(2)} = k_2 = 0.0625$</div>
+<div class="step">$E_2 = (1 - k_2^2)\,E_1 = (1 - 0.00390625) \times 6.4 = 6.375$</div>
+<div class="step">Check: $E_2 = R(0) - a_1R(1) - a_2R(2) = 10 - 3.375 - 0.25 = 6.375$. (The class notes print $E_2 \approx 6.374$; the exact value is $6.375$.)</div>
+<span class="ans">$a_1 = 0.5625$, $a_2 = 0.0625$, $E_2 = 6.375$ (a direct $2 \times 2$ solve gives the same $a_1$, $a_2$)</span>
+</div>
+
+<div class="ex"><b>Worked Example: Frame A, $R(0) = 96$, $R(1) = 81$, $R(2) = 50$, order $p = 2$ (class notes)</b>
+<div class="step">These are the lag-0, lag-1 and lag-2 sums of Frame A in 2.2, $x_A = [2, 4, 6, 5, 3, 1, -1, -2]$.</div>
+<div class="step"><b>Order 1:</b> $k_1 = \dfrac{R(1)}{R(0)} = \dfrac{81}{96} = 0.84375 \approx 0.8438$; $a_1^{(1)} = k_1$</div>
+<div class="step">$E_1 = (1 - 0.84375^2) \times 96 = 0.288086 \times 96 = 27.656$</div>
+<div class="step"><b>Order 2:</b> $k_2 = \dfrac{R(2) - a_1^{(1)}R(1)}{E_1} = \dfrac{50 - 0.84375 \times 81}{27.656} = \dfrac{-18.34375}{27.656} = -0.66328 \approx -0.6633$</div>
+<div class="step">$a_1^{(2)} = a_1^{(1)} - k_2\,a_1^{(1)} = 0.84375 + 0.66328 \times 0.84375 = 0.84375 + 0.55964 = 1.4034$; $a_2^{(2)} = k_2 = -0.6633$</div>
+<div class="step">$E_2 = (1 - k_2^2)\,E_1 = (1 - 0.43994) \times 27.656 = 0.56006 \times 27.656 = 15.489$</div>
+<div class="step">Order-2 predictor: $\hat{x}[n] = 1.4034\,x[n-1] - 0.6633\,x[n-2]$. The error energy drops from $27.656$ (order 1) to $15.489$ (order 2): the second tap improves the fit.</div>
+<div class="step">The class notes show $0.844$, $27.62$, $-0.665$, $1.405$ and $15.41$ because they rounded $k_1$ to $0.844$ first; that small rounding error carries into every later step.</div>
+<span class="ans">$k_1 = 0.8438$, $E_1 = 27.656$, $k_2 = -0.6633$, $a_1 = 1.4034$, $a_2 = -0.6633$, $E_2 = 15.489$</span>
+</div>
+<p>Key takeaway: higher order gives lower error energy (better fit), but too high an order can overfit (model noise).</p>
+
+<div class="mn"><b>Mnemonic</b> "R → E → K → a → E": $R(0 \dots p)$ → Error start $E_0$ → reflection coefficient $k_m$ → coefficients $a_j^{(m)}$ → Error update $E_m$. Also: Recursion = Fast + Efficient + Stable (if proper order is used).</div>
+
+<div class="note"><b>Common mistake:</b> sign convention. Some books (and the typed notes' Levinson-Durbin page) write the model as $x[n] = -a_1x[n-1] - \dots - a_px[n-p] + v[n]$, i.e. $A(z) = 1 + \sum a_k z^{-k}$, so their $a_k$ have the opposite sign. These notes use the class-notes form $\hat{x}[n] = +\sum a_k x[n-k]$; do not mix the two in one answer.</div>
+
+<div class="recall"><b>Quick recall</b> Levinson-Durbin solves normal equations in $O(p^2)$ time; input $R(0 \dots p)$, output $a_k$ and $E_p$; key formulas $k_m$, $a_j^{(m)}$, $E_m = (1-k_m^2)E_{m-1}$; filter is stable if all reflection coefficients $|k_m| \lt 1$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-models">
+<h3>2.4 Short-Term Linear Prediction (LPC) &amp; Short-Term vs Long-Term Models</h3>
+<p class="hook">Short-term prediction removes vocal tract spectral envelope correlation, while long-term prediction removes pitch periodicity correlation. <span class="hg">(short-term formant nikalta hai, long-term pitch)</span></p>
+<div class="def"><b>Definition:</b> A complete speech prediction system uses a cascade of a <mark>short-term predictor</mark> (order $p \approx 10$ modeling vocal tract formants) and a <mark>long-term predictor</mark> (pitch predictor modeling pitch period $T$).</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 160" width="700">
+<rect x="20" y="55" width="100" height="40" rx="6"/><text x="70" y="75">Speech x[n]</text>
+<path class="arr" d="M120 75 H150"/>
+<rect class="hi" x="150" y="47" width="150" height="56" rx="6"/><text x="225" y="67">Short-Term Filter</text><text class="s" x="225" y="87">A(z), order~10</text>
+<path class="arr" d="M300 75 H360"/>
+<text class="b" x="330" y="61">e[n]</text>
+<rect class="hi" x="360" y="47" width="150" height="56" rx="6"/><text x="435" y="67">Long-Term Filter</text><text class="s" x="435" y="87">P(z), pitch period T</text>
+<path class="arr" d="M510 75 H548"/>
+<text class="b l" x="554" y="75">r[n] (Residual)</text>
+</svg></div>
+<figcaption><b>Fig 2.4</b> · Cascaded Short-Term and Long-Term Prediction Error Filter system</figcaption>
+<p class="draw">✍ Draw it: horizontal cascade from Speech input x[n] through Short-Term Filter A(z), giving e[n], then Long-Term Filter P(z), giving the final residual r[n].</p></figure>
+
+<ul>
+<li><mark>Meaning of short-term LP</mark>: the current sample is predicted from a few previous (nearby) samples. It works because the speech signal changes smoothly over a short time. <span class="hg">(nearby samples se predict kiya ja sakta hai)</span></li>
+<li><mark>Basic mechanism</mark>: $\hat{x}[n] = \sum_{k=1}^{p} a_k\,x[n-k]$, where $x[n]$ = current sample, $x[n-k]$ = previous samples, $a_k$ = LPC (prediction) coefficients, $p$ = order (typically 10-16).</li>
+<li><mark>LPC coefficients</mark>: $a_k$ represent the spectral (formant) characteristics; they act like a filter that models the shape of the vocal tract.</li>
+<li><mark>Physical meaning</mark>: short-term LP models the vocal-tract resonances (formants = resonant frequencies, the unique character of a sound). The vocal-tract filter is approximated by an <b>all-pole</b> model: only poles, no zeros.
+  $$H(z) = \frac{G}{A(z)}, \qquad A(z) = 1 - \sum_{k=1}^{p} a_k z^{-k}$$</li>
+<li><mark>Residual</mark>: $e[n] = x[n] - \hat{x}[n]$ captures the remaining part that could not be predicted (the excitation).</li>
+<li><mark>Why re-analysed per frame</mark>: speech changes with time (different sounds, syllables, pauses), so one set of coefficients cannot be used for the whole signal.</li>
+<li><mark>Short frames, overlap, windowing</mark>: frame length 20-30 ms ($\approx$ 160-240 samples at 8 kHz); frames overlap (e.g. a 10 ms shift gives $L = 80$ samples at 8 kHz); a Hamming / Hanning window reduces edge discontinuities; separate LPC coefficients $a_k(m)$ are calculated for every frame, which gives smooth transitions and better spectral analysis.</li>
+<li><mark>How the coefficients are found</mark>: minimise the MSE using the Yule-Walker equations $\sum_{k=1}^{p} a_k R(i-k) = R(i)$ with $R(i) = \frac{1}{N}\sum_{n=0}^{N-1-i} x[n]\,x[n+i]$.</li>
+</ul>
+
+<div class="tw"><table>
+<tr><th>Model Type</th><th>Predictor Target</th><th>Model Order / Parameters</th><th>Correlations Removed</th></tr>
+<tr><td><b>Short-Term LP</b></td><td>Vocal tract spectral envelope (formants)</td><td>Order $p \approx 10$ – 12</td><td>Short-lag adjacent sample correlation</td></tr>
+<tr><td><b>Long-Term LP</b></td><td>Vocal cord vibration periodicity (pitch)</td><td>Pitch lag $T$ + gain $\beta$ (1 – 3 taps)</td><td>Long-lag pitch period correlation</td></tr>
+<tr><td><b>Moving Average (MA)</b></td><td>Predicts from past prediction errors $e[n-k]$</td><td>FIR all-zero predictor $B(z)$</td><td>Noise-like error correlations</td></tr>
+</table></div>
+
+<div class="tw"><table>
+<tr><th>Quick compare</th><th>LPC (short-term)</th><th>LTP (long-term)</th></tr>
+<tr><td><b>Uses</b></td><td>Near samples $x[n-1], \dots, x[n-p]$</td><td>Far sample one pitch period back, $e[n-T]$</td></tr>
+<tr><td><b>Captures</b></td><td>Formants (vocal tract)</td><td>Pitch (periodicity)</td></tr>
+<tr><td><b>Parameters</b></td><td>$a_1, \dots, a_p$ with $p \approx 10$–$16$</td><td>Lag $T$ and gain $\beta$ (1-3 taps)</td></tr>
+<tr><td><b>Error filter</b></td><td>$A(z) = 1 - \sum_{k=1}^{p} a_k z^{-k}$</td><td>$P(z) = 1 - \beta z^{-T}$</td></tr>
+<tr><td><b>Works on</b></td><td>Speech $x[n]$</td><td>LPC residual $e[n]$</td></tr>
+</table></div>
+
+<div class="mn"><b>Mnemonic</b> "LPC = Local Prediction for Vocal-tract / Current samples". LPC = near-sample (formants); LTP = far-sample (pitch). Frame → Window → LPC (20-30 ms).</div>
+
+<div class="note"><b>Common mistake:</b> some web notes describe "long-term prediction" as forecasting far ahead in time (minutes to years, e.g. stock prices or climate). In speech processing, long-term means a long <b>lag</b>: predicting from one pitch period back ($T$ samples). Use the speech meaning in this paper.</div>
+
+<div class="recall"><b>Quick recall</b> Short-term LP ($p \approx 10$) models vocal tract envelope; Long-term LP models pitch period $T$; MA models error sequence. LPC works on 20-30 ms windowed frames and is an all-pole model.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-ltp">
+<h3>2.5 Long-Term Prediction (LTP): Pitch Lag, Gain &amp; 3-Tap LTP</h3>
+<p class="hook">Long-term prediction removes the pitch repetition that short-term LPC leaves behind in voiced speech. <span class="hg">(LPC formant hataata hai, LTP pitch ki repetition hataata hai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Long-term prediction</mark> (LTP) predicts the short-term residual $e[n]$ from the residual one pitch period earlier:
+$$e[n] \approx \beta\, e[n-T]$$
+where $T$ = pitch period (lag) in samples and $\beta$ = long-term prediction coefficient.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 190" width="640">
+<text class="b" x="40" y="70">x[n]</text>
+<path class="arr" d="M62 70 H110"/>
+<rect class="hi" x="110" y="42" width="150" height="56" rx="6"/><text x="185" y="62">Short-term LPC</text><text class="s" x="185" y="82">removes formants</text>
+<path class="arr" d="M260 70 H350"/>
+<text class="b" x="305" y="54">e[n]</text>
+<rect class="hi" x="350" y="42" width="150" height="56" rx="6"/><text x="425" y="62">Long-term LTP</text><text class="s" x="425" y="82">removes pitch</text>
+<path class="arr" d="M500 70 H560"/>
+<text class="b" x="590" y="70">r[n]</text>
+<text class="s" x="185" y="128">Gp,short = 10 log(σx²/σe²)</text>
+<text class="s" x="425" y="128">Gp,long = 10 log(σe²/σr²)</text>
+<text class="b" x="320" y="165">Total gain = Gp,short + Gp,long (dB)</text>
+</svg></div>
+<figcaption><b>Fig 2.13</b> · Short-term + long-term prediction cascade: LPC removes formants, LTP removes pitch, and the two gains add</figcaption>
+<p class="draw">✍ Draw it: x[n] → box "LPC" → e[n] → box "LTP" → r[n]; write "formants" under LPC, "pitch" under LTP, and the two gain formulas below.</p></figure>
+
+<ul>
+<li><mark>Purpose</mark>: short-term LPC ($p \approx 10$–$16$) models the vocal tract / formant structure using a few samples, but it does <b>not</b> capture the pitch periodicity of voiced speech. LTP uses past samples from a longer time back (one pitch period) to predict the current sample.</li>
+<li><mark>Model</mark>: instead of predicting $x[n]$ directly, LTP predicts the residual $e[n]$ from its delayed (pitch-period) version. The final long-term residual is
+  $$r[n] = e[n] - \beta\, e[n-T]$$
+  and the LTP error filter in $z$-form is
+  $$P(z) = 1 - \beta z^{-T}$$</li>
+<li><mark>Pitch lag range</mark>: pitch periods are about 2.5-20 ms ($F_0$ about 50-400 Hz), so at 8 kHz the lag $T$ is about 20-160 samples.</li>
+<li><mark>Key points</mark>: $r[n]$ is much flatter and lower in energy than $e[n]$, since both formant (vocal tract) and pitch structure are removed; this helps better modelling and coding of voiced speech.</li>
+<li><mark>Estimating $T$ and $\beta$</mark>: both are found by minimising the sum of squared error over a search range of candidate lags:
+  $$\beta(T) = \frac{\sum_n e[n]\,e[n-T]}{\sum_n e^2[n-T]}, \qquad E(T) = \sum_n r^2[n]$$
+  <ol>
+  <li>Choose the possible values (search range) of $T$.</li>
+  <li>For each $T$, calculate $\beta(T)$.</li>
+  <li>Compute the residual $r[n] = e[n] - \beta\, e[n-T]$.</li>
+  <li>Calculate the error energy $E(T) = \sum r^2[n]$.</li>
+  <li>Select the $T$ for which $E(T)$ is minimum: this is the pitch lag, and its $\beta(T)$ is the coefficient.</li>
+  </ol>
+</li>
+<li><mark>Higher-order (3-tap) LTP</mark>: single-tap LTP uses only one delayed sample and may be inaccurate when the pitch period is not a whole number of samples. So three nearby samples ($T-1$, $T$, $T+1$) are used:
+  $$\hat{e}[n] = \beta_{-1}\, e[n-T-1] + \beta_0\, e[n-T] + \beta_1\, e[n-T+1]$$
+  Benefit: works better even when the pitch period is not exact.</li>
+<li><mark>Prediction gain in two stages</mark>:
+  $$G_{p,\text{short}} = 10\log_{10}\frac{\sigma_x^2}{\sigma_e^2}, \qquad G_{p,\text{long}} = 10\log_{10}\frac{\sigma_e^2}{\sigma_r^2}$$
+  $$G_{p,\text{total}} = G_{p,\text{short}} + G_{p,\text{long}} \ \text{dB}$$
+  where $\sigma_x^2$ = original signal power, $\sigma_e^2$ = power after LPC (residual), $\sigma_r^2$ = power after LTP (final residual).</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 690 240" width="690">
+<text class="s" x="280" y="20">residual samples around one pitch period back</text>
+<rect x="45" y="44" width="130" height="40" rx="6"/><text x="110" y="64">e[n−T−1]</text>
+<rect x="215" y="44" width="130" height="40" rx="6"/><text x="280" y="64">e[n−T]</text>
+<rect x="385" y="44" width="130" height="40" rx="6"/><text x="450" y="64">e[n−T+1]</text>
+<path class="arr" d="M110 84 V116"/><path class="arr" d="M280 84 V116"/><path class="arr" d="M450 84 V116"/>
+<circle class="hi" cx="110" cy="144" r="26"/><text x="110" y="144">×β₋₁</text>
+<circle class="hi" cx="280" cy="144" r="26"/><text x="280" y="144">×β₀</text>
+<circle class="hi" cx="450" cy="144" r="26"/><text x="450" y="144">×β₁</text>
+<path class="arr" d="M110 170 V205 H536"/>
+<path d="M280 170 V205"/><path d="M450 170 V205"/>
+<circle cx="560" cy="205" r="22"/><text x="560" y="205">Σ</text>
+<path class="arr" d="M582 205 H624"/>
+<text class="b" x="650" y="205">ê[n]</text>
+</svg></div>
+<figcaption><b>Fig 2.14</b> · 3-tap long-term predictor: three neighbouring delayed residual samples, each with its own β, are added</figcaption>
+<p class="draw">✍ Draw it: 3 boxes e[n−T−1], e[n−T], e[n−T+1]; arrow down from each into β₋₁, β₀, β₁; join all into one Σ whose output is ê[n].</p></figure>
+
+<div class="ex"><b>Worked Example: Choosing the Pitch Lag $T$ and Coefficient $\beta$ (toy frame)</b>
+<div class="step">LPC residual (toy numbers; the pattern repeats every 4 samples): $e[n] = [1.0, -0.6, 0.3, -0.2, 0.9, -0.5, 0.3, -0.1, 0.8, -0.5, 0.2, -0.2]$ for $n = 0, \dots, 11$. Candidate lags $T = 3, 4, 5$; every sum runs over $n = 5, \dots, 11$. (A real 8 kHz frame would search $T$ over about 20-160 samples.)</div>
+<div class="tw"><table>
+<tr><th>$T$</th><th>$\sum e[n]\,e[n-T]$</th><th>$\sum e^2[n-T]$</th><th>$\beta(T)$</th><th>$E(T) = \sum r^2[n]$</th></tr>
+<tr><td>3</td><td>$-1.03$</td><td>$1.93$</td><td>$-0.534$</td><td>$0.770$</td></tr>
+<tr><td>4</td><td>$1.46$</td><td>$1.65$</td><td>$0.885$</td><td>$0.028$</td></tr>
+<tr><td>5</td><td>$-1.48$</td><td>$2.64$</td><td>$-0.561$</td><td>$0.490$</td></tr>
+</table></div>
+<div class="step">Minimum error is at $T = 4$: $\beta(4) = \dfrac{1.46}{1.65} = 0.885$, $E(4) = 0.028$.</div>
+<div class="step">Energy of $e[n]$ on the same samples: $\sum e^2[n] = 1.32$, so the long-term gain is $10\log_{10}\left(\dfrac{1.32}{0.028}\right) \approx 16.7$ dB (large because the toy frame is almost perfectly periodic).</div>
+<span class="ans">Pitch lag $T = 4$, $\beta = 0.885$</span>
+</div>
+
+<div class="ex"><b>Worked Example: Two-Stage Prediction Gain</b>
+<div class="step">Given $\sigma_x^2 = 100$ (speech), $\sigma_e^2 = 10$ (after LPC), $\sigma_r^2 = 5$ (after LTP).</div>
+<div class="step">$G_{p,\text{short}} = 10\log_{10}\dfrac{100}{10} = 10$ dB</div>
+<div class="step">$G_{p,\text{long}} = 10\log_{10}\dfrac{10}{5} = 10\log_{10}(2) = 3.01$ dB</div>
+<div class="step">Total $= 10 + 3.01 = 13.01$ dB, the same as $10\log_{10}\dfrac{100}{5} = 13.01$ dB.</div>
+<span class="ans">$G_{p,\text{total}} = 13.01$ dB</span>
+</div>
+
+<div class="mn"><b>Mnemonic</b> "LPC = Formants, LTP = Pitch". Shortcut for estimation: "T → β → Error" (minimum error = best T).</div>
+
+<div class="note"><b>Common mistake:</b> (1) The class notes give the lag range as 20-200 ms or 160-1600 samples; that is too large (1600 samples at 8 kHz is 200 ms, a pitch of only 5 Hz). Use about 20-160 samples (2.5-20 ms). (2) LTP works on the LPC residual, so LPC comes first: $x[n] \to \text{LPC} \to e[n] \to \text{LTP} \to r[n]$. LPC is not "applied again on $r[n]$".</div>
+
+<div class="recall"><b>Quick recall</b> LTP: $e[n] \approx \beta e[n-T]$, $r[n] = e[n] - \beta e[n-T]$; pick the $T$ with minimum $E(T)$; 3-tap LTP handles a non-integer pitch period; total gain = short-term gain + long-term gain (dB).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-ma">
+<h3>2.6 Moving Average (MA) Prediction Models: AR vs MA vs ARMA</h3>
+<p class="hook">An MA model builds each sample only from present and past inputs, with no feedback, so it can create dips (zeros) but not sharp peaks. <span class="hg">(MA = past inputs ka mixture, koi feedback nahi)</span></p>
+<div class="def"><b>Definition:</b> A <mark>moving average (MA) model</mark> of order $q$ forms the signal as a weighted sum of the current and $q$ past input (excitation) samples:
+$$x[n] = \sum_{k=0}^{q} b_k\, u[n-k]$$
+In <mark>MA prediction</mark> the unknown past inputs are replaced by the past prediction errors:
+$$\hat{x}[n] = \sum_{k=1}^{q} b_k\, e[n-k]$$</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 740 215" width="740">
+<text class="b" x="180" y="24">AR(1): feedback (IIR)</text>
+<text x="32" y="70">u[n]</text>
+<path class="arr" d="M52 70 H117"/>
+<path class="arr" d="M152 70 H290"/>
+<text x="318" y="70">x[n]</text>
+<path class="arr" d="M235 70 V118"/>
+<circle class="dot" cx="235" cy="70" r="4"/>
+<rect x="205" y="120" width="60" height="36" rx="6"/><text x="235" y="138">z⁻¹</text>
+<path class="arr" d="M205 138 H167"/>
+<rect class="hi" x="105" y="120" width="60" height="36" rx="6"/><text x="135" y="138">×a₁</text>
+<path class="arr" d="M135 120 V89"/>
+<circle cx="135" cy="70" r="17"/><text x="135" y="70">+</text>
+<text class="s" x="180" y="190">x[n] = a₁x[n−1] + u[n]</text>
+<line class="dash" x1="370" y1="40" x2="370" y2="195"/>
+<text class="b" x="560" y="24">MA(1): feed-forward (FIR)</text>
+<text x="410" y="70">u[n]</text>
+<path class="arr" d="M430 70 H556"/>
+<path class="arr" d="M475 70 V118"/>
+<circle class="dot" cx="475" cy="70" r="4"/>
+<rect x="445" y="120" width="60" height="36" rx="6"/><text x="475" y="138">z⁻¹</text>
+<path class="arr" d="M505 138 H543"/>
+<rect class="hi" x="545" y="120" width="60" height="36" rx="6"/><text x="575" y="138">×b₁</text>
+<path class="arr" d="M575 120 V89"/>
+<circle cx="575" cy="70" r="17"/><text x="575" y="70">+</text>
+<path class="arr" d="M592 70 H670"/>
+<text x="698" y="70">x[n]</text>
+<text class="s" x="560" y="190">x[n] = u[n] + b₁u[n−1]</text>
+</svg></div>
+<figcaption><b>Fig 2.15</b> · AR(1) uses the delayed OUTPUT (feedback loop), MA(1) uses the delayed INPUT (no feedback)</figcaption>
+<p class="draw">✍ Draw it: two small diagrams. AR: adder, output tapped back through z⁻¹ and a₁ into the adder. MA: input tapped before the adder through z⁻¹ and b₁ into the adder.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Model</th><th>Predicts from</th><th>Filter type</th></tr>
+<tr><td><b>AR</b> (autoregressive)</td><td>Past output samples $x[n-k]$ (short-term LPC)</td><td>All-pole</td></tr>
+<tr><td><b>MA</b> (moving average)</td><td>Past input / excitation samples $u[n-k]$ (in prediction: past errors $e[n-k]$)</td><td>All-zero</td></tr>
+<tr><td><b>ARMA</b></td><td>Both (past output + input)</td><td>Pole-zero</td></tr>
+</table></div>
+
+<ul>
+<li><mark>Context</mark>: the short-term LPC studied so far is an AR model ($p$ past samples). MA uses past prediction errors instead of past output samples; ARMA is the combination of both.</li>
+<li><mark>MA model terms</mark>: $u[n]$ = input / excitation sequence (white noise, etc.), $b_k$ = MA coefficients ($k = 0, 1, \dots, q$), $q$ = order of MA (number of past inputs used).</li>
+<li><mark>No feedback &amp; FIR</mark>: only past input samples are used, so the model is <b>non-recursive</b>. Its impulse response is finite, i.e. FIR (Finite Impulse Response):
+  $$h[n] = b_n \ \text{for}\ n = 0, 1, \dots, q, \qquad h[n] = 0 \ \text{after that}$$
+  Length of the impulse response $= q + 1$ nonzero terms. <span class="hg">(FIR = finite length)</span></li>
+<li><mark>AR(1) model</mark>: $x[n] = a_1 x[n-1] + u[n]$ with $u[n]$ = white noise; impulse response $h[n] = a_1^{\,n}$ for $n \ge 0$, infinite and decaying if $|a_1| \lt 1$.</li>
+<li><mark>MA(1) model</mark>: $x[n] = u[n] + b_1 u[n-1]$; impulse response $h[n] = \{1, b_1, 0, 0, \dots\}$, finite (stops after $n = 1$).</li>
+</ul>
+
+<div class="tw"><table>
+<tr><th>Property</th><th>AR (all-pole, short-term LPC)</th><th>MA (all-zero)</th></tr>
+<tr><td><b>Impulse response</b></td><td>Infinite (IIR), decays</td><td>Finite (FIR), $q+1$ terms</td></tr>
+<tr><td><b>Stability</b></td><td>Needs poles inside the unit circle</td><td>Always stable (no feedback)</td></tr>
+<tr><td><b>Spectral shape it models well</b></td><td>Sharp resonant peaks (formants)</td><td>Broad dips / notches (anti-resonances, nasal sounds)</td></tr>
+<tr><td><b>Solving for coefficients</b></td><td>Linear equations (Yule-Walker), straightforward</td><td>Nonlinear in general, harder to solve directly</td></tr>
+<tr><td><b>Order needed for sharp peaks</b></td><td>Low</td><td>Very high</td></tr>
+</table></div>
+
+<ul>
+<li><mark>Why AR is preferred for speech</mark>:
+  <ul>
+  <li>Vocal-tract resonances (formants) are sharp spectral peaks, and AR (poles) captures peaks efficiently.</li>
+  <li>All-pole model = few coefficients, less computation, linear Yule-Walker equations.</li>
+  <li>An MA model would need a very high order to produce the same sharp peaks.</li>
+  <li>So AR is used alone, or together with MA as a combined ARMA model.</li>
+  </ul>
+</li>
+<li><mark>Where MA structure actually shows up</mark>:
+  <ul>
+  <li><b>Nasal sounds</b> (/m/, /n/): coupling of the nasal cavity adds anti-resonances (zeros); a pure AR model cannot represent them well and needs extra poles.</li>
+  <li><b>ARMA models</b>: AR part = peaks, MA part = zeros.</li>
+  <li><b>In coding</b>: MA-type (FIR) filters appear, e.g. the pre-emphasis filter $1 - \alpha z^{-1}$ (its inverse, de-emphasis, is all-pole).</li>
+  </ul>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 730 210" width="730">
+<text class="b" x="185" y="22">AR(1): h[n] = 0.8ⁿ, never ends</text>
+<line x1="40" y1="150" x2="330" y2="150"/>
+<line x1="60" y1="150" x2="60" y2="50"/><circle class="dot" cx="60" cy="50" r="4"/>
+<line x1="96" y1="150" x2="96" y2="70"/><circle class="dot" cx="96" cy="70" r="4"/>
+<line x1="132" y1="150" x2="132" y2="86"/><circle class="dot" cx="132" cy="86" r="4"/>
+<line x1="168" y1="150" x2="168" y2="98.8"/><circle class="dot" cx="168" cy="98.8" r="4"/>
+<line x1="204" y1="150" x2="204" y2="109"/><circle class="dot" cx="204" cy="109" r="4"/>
+<line x1="240" y1="150" x2="240" y2="117.2"/><circle class="dot" cx="240" cy="117.2" r="4"/>
+<line x1="276" y1="150" x2="276" y2="123.8"/><circle class="dot" cx="276" cy="123.8" r="4"/>
+<line x1="312" y1="150" x2="312" y2="129"/><circle class="dot" cx="312" cy="129" r="4"/>
+<text class="s" x="60" y="38">1</text><text class="s" x="96" y="58">0.8</text><text class="s" x="132" y="74">0.64</text><text class="s" x="168" y="87">0.51</text>
+<text class="s" x="60" y="168">0</text><text class="s" x="96" y="168">1</text><text class="s" x="132" y="168">2</text><text class="s" x="168" y="168">3</text><text class="s" x="204" y="168">4</text><text class="s" x="240" y="168">5</text><text class="s" x="276" y="168">6</text><text class="s" x="312" y="168">7</text>
+<text class="s" x="185" y="190">infinite, decays (IIR)</text>
+<text class="b" x="545" y="22">MA(1): h[n] = 1, 0.8, 0, 0 … ends</text>
+<line x1="400" y1="150" x2="690" y2="150"/>
+<line x1="420" y1="150" x2="420" y2="50"/><circle class="dot" cx="420" cy="50" r="4"/>
+<line x1="456" y1="150" x2="456" y2="70"/><circle class="dot" cx="456" cy="70" r="4"/>
+<circle class="dot" cx="492" cy="150" r="4"/><circle class="dot" cx="528" cy="150" r="4"/><circle class="dot" cx="564" cy="150" r="4"/><circle class="dot" cx="600" cy="150" r="4"/><circle class="dot" cx="636" cy="150" r="4"/><circle class="dot" cx="672" cy="150" r="4"/>
+<text class="s" x="420" y="38">1</text><text class="s" x="456" y="58">0.8</text>
+<text class="s" x="420" y="168">0</text><text class="s" x="456" y="168">1</text><text class="s" x="492" y="168">2</text><text class="s" x="528" y="168">3</text><text class="s" x="564" y="168">4</text><text class="s" x="600" y="168">5</text><text class="s" x="636" y="168">6</text><text class="s" x="672" y="168">7</text>
+<text class="s" x="545" y="190">finite: q + 1 = 2 terms (FIR)</text>
+</svg></div>
+<figcaption><b>Fig 2.16</b> · Impulse responses when both coefficients are 0.8: AR(1) decays forever, MA(1) stops after two samples</figcaption>
+<p class="draw">✍ Draw it: two stem plots over eight samples on a time axis. Left: stems 1, 0.8, 0.64 … shrinking but never zero. Right: stems 1 and 0.8, then dots on the axis.</p></figure>
+
+<div class="ex"><b>Worked Example: AR(1) vs MA(1) Numerical Contrast ($a_1 = b_1 = 0.8$)</b>
+<div class="step">AR(1): $x[n] = 0.8\,x[n-1] + u[n]$, so $h[n] = 0.8^n$: $h[0] = 1$, $h[1] = 0.8$, $h[2] = 0.64$, $h[3] = 0.512$, $h[4] = 0.4096$, … never exactly zero (decays geometrically).</div>
+<div class="step">MA(1): $x[n] = u[n] + 0.8\,u[n-1]$, so $h[0] = 1$, $h[1] = 0.8$, $h[2] = h[3] = \dots = 0$ (length $q + 1 = 2$).</div>
+<div class="step">Stability: AR(1) is stable only because $|a_1| = 0.8 \lt 1$ (pole at $z = 0.8$ inside the unit circle). MA(1) is stable for any $b_1$; even $b_1 = 5$ gives just $\{1, 5, 0, 0, \dots\}$.</div>
+<div class="step">For any $b_1$ the MA(1) response has only two taps, so it never produces a sharp spectral peak: the "ringing" is small.</div>
+<span class="ans">AR(1): $h[n] = 0.8^n$ (infinite, decaying) vs MA(1): $h[n] = \{1, 0.8, 0, 0, \dots\}$ (finite)</span>
+</div>
+
+<div class="mn"><b>Mnemonic</b> AR = <b>A</b>pna past <b>R</b>esult (past output samples); MA = past input <b>M</b>ixture (past excitation samples); ARMA = dono (past output + input). Also: AR = Peaks (poles), MA = Zeros (notches), ARMA = Both.</div>
+
+<div class="note"><b>Common mistake:</b> (1) The AR(1) impulse response is $h[n] = a_1^{\,n}$ for $n \ge 0$; writing $h[n] = a_1^n\,h[n]$ is a slip. (2) MA prediction uses past errors $e[n-k]$ (inputs), not past samples $x[n-k]$; past samples would make it AR. (3) Pre-emphasis $1 - \alpha z^{-1}$ is FIR, but de-emphasis is all-pole, so it is not an FIR (MA) filter.</div>
+
+<div class="recall"><b>Quick recall</b> AR: past outputs, poles, IIR, peaks (formants), needs a stability check. MA: past inputs / errors, zeros, FIR with $h[n] = b_n$ ($q+1$ terms), always stable. ARMA: both, more flexible, needs a stability check.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-scalar">
+<h3>2.7 Scalar Quantization (Uniform, Optimum Lloyd-Max, Logarithmic Companding)</h3>
+<p class="hook">Quantization maps continuous amplitude values into discrete levels, introducing irreversible quantization noise. <span class="hg">(continuous amplitude ko fixed levels me convert karna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Scalar quantization</mark> maps a continuous amplitude scalar sample $x$ to a discrete reconstruction level $y_k = Q(x)$ selected from a set of decision boundaries $d_k$.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<line class="acc" x1="40" y1="140" x2="480" y2="140"/>
+<line class="acc" x1="40" y1="20" x2="40" y2="160"/>
+<polyline class="none" points="40,140 100,140 100,110 180,110 180,80 260,80 260,50 340,50 340,20 420,20" stroke-width="2"/>
+<text class="s" x="490" y="140">Input x</text>
+<text class="s" x="40" y="14">Output Q(x)</text>
+</svg></div>
+<figcaption><b>Fig 2.5</b> · Uniform Quantizer Staircase Input-Output Characteristic</figcaption>
+<p class="draw">✍ Draw it: x-y axes with a stepped staircase curve jumping at decision boundaries d_k up to output levels y_k.</p></figure>
+
+<ul>
+<li><mark>Uniform Quantizer</mark>: Equal step size
+  $$\Delta = \frac{x_{max} - x_{min}}{L}$$
+  <ul>
+  <li><b>Mid-tread</b>: Origin 0 is a reconstruction level.</li>
+  <li><b>Mid-rise</b>: Origin 0 is a decision boundary.</li>
+  <li><b>SQNR Formula</b> (for $B$-bit quantizer with full-scale sinusoid):
+    $$SQNR \approx 6.02B + 1.76 \ \text{dB}$$
+    <i>Rule of thumb: Each additional bit adds $\approx 6$ dB of SQNR.</i>
+  </li>
+  </ul>
+</li>
+<li><mark>Optimum Lloyd-Max Quantizer</mark>: Non-uniform quantizer that minimizes Mean Squared Error (MSE) for a known PDF:
+  <ul>
+  <li><b>Boundary Condition</b>: Decision boundary (midpoint of adjacent levels):
+    $$d_k = \frac{y_k + y_{k+1}}{2}$$</li>
+  <li><b>Reconstruction Condition</b>: $y_k$ = centroid of its region (PDF interval):
+    $$y_k = \frac{\int_{d_{k-1}}^{d_k} x\, p(x)\, dx}{\int_{d_{k-1}}^{d_k} p(x)\, dx}$$</li>
+  </ul>
+</li>
+<li><mark>Logarithmic Quantizer (Companding)</mark>: Compresses dynamic range before uniform quantization and expands at receiver:
+  <ul>
+  <li><b>μ-law (North America/Japan)</b>: with $\mu = 255$,
+    $$C(x) = \frac{\ln(1+\mu|x|)}{\ln(1+\mu)}\,\text{sgn}(x)$$</li>
+  <li><b>A-law (Europe/International)</b>: Uses $A = 87.6$.</li>
+  </ul>
+</li>
+<li><mark>Role in speech coding</mark>: quantization sets the bit rate needed to store or send speech. Fewer bits give a lower rate but more distortion (bit rate vs quality trade-off); in LPC coders it is the LP coefficients and the residual that get quantized.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 120" width="540">
+<rect x="20" y="40" width="110" height="40" rx="6"/><text x="75" y="60">Compressor log</text>
+<path class="arr" d="M130 60 H180"/>
+<rect class="hi" x="180" y="40" width="130" height="40" rx="6"/><text x="245" y="60">Uniform Quantizer</text>
+<path class="arr" d="M310 60 H360"/>
+<rect x="360" y="40" width="110" height="40" rx="6"/><text x="415" y="60">Expander exp</text>
+</svg></div>
+<figcaption><b>Fig 2.6</b> · Logarithmic Companding Architecture (Compressor &rarr; Uniform Quantizer &rarr; Expander)</figcaption>
+<p class="draw">✍ Draw it: 3-step chain from Compressor box to Uniform Quantizer box to Expander box.</p></figure>
+
+<div class="ex"><b>Worked Example: Uniform Quantizer SQNR and Companding Calculation</b>
+<div class="step">1. 3-Bit Uniform Quantizer: $B = 3$ bits ($L = 2^3 = 8$ levels).</div>
+<div class="step">$SQNR \approx 6.02(3) + 1.76 = 18.06 + 1.76 = 19.82$ dB.</div>
+<div class="step">2. Logarithmic μ-law compression for $x = 0.5$ ($\mu = 255$):</div>
+<div class="step">$C(0.5) = \dfrac{\ln(1 + 255 \times 0.5)}{\ln(1 + 255)} = \dfrac{\ln(128.5)}{\ln(256)} = \dfrac{4.8559}{5.5452} = 0.8757$.</div>
+<span class="ans">$SQNR = 19.82$ dB (3-bit); Compressed mu-law value $C(0.5) = 0.8757$</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> Uniform $SQNR \approx 6.02B + 1.76$ dB; Lloyd-Max places boundaries midway and levels at centroids; μ-law ($\mu = 255$) compresses weak signals.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-adaptive">
+<h3>2.8 Adaptive and Differential Quantizers (AQF, AQB, DPCM, ADPCM)</h3>
+<p class="hook">Adaptive quantizers adjust step sizes dynamically, while differential quantizers quantize the difference between actual and predicted samples. <span class="hg">(step size change karo aur difference ko quantize karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Adaptive quantization</mark> adapts quantizer step size $\Delta[n]$ to local signal variance, while <mark>differential quantization</mark> (DPCM) quantizes difference samples $e[n] = x[n] - \hat{x}[n]$ to exploit sample correlation.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 680 160" width="680">
+<text class="b" x="150" y="20">Forward Adaptive (AQF)</text>
+<rect x="20" y="45" width="100" height="40" rx="6"/><text x="70" y="65">Frame Energy</text>
+<path class="arr" d="M120 65 H150"/>
+<rect class="hi" x="150" y="45" width="130" height="40" rx="6"/><text x="215" y="65">Transmit Delta</text>
+
+<text class="b" x="500" y="20">Backward Adaptive (AQB)</text>
+<rect x="340" y="45" width="160" height="40" rx="6"/><text x="420" y="65">Past Quant Output</text>
+<path class="arr" d="M500 65 H530"/>
+<rect class="hi" x="530" y="45" width="130" height="40" rx="6"/><text x="595" y="65">Estimate Delta</text>
+</svg></div>
+<figcaption><b>Fig 2.7</b> · Forward Adaptive (AQF) vs Backward Adaptive (AQB) Quantization</figcaption>
+<p class="draw">✍ Draw it: left block for AQF transmitting explicit step size Delta, right block for AQB estimating Delta from past output.</p></figure>
+
+<ul>
+<li><mark>Adaptive Quantization</mark>:
+  <ul>
+  <li><b>Forward AQF</b>: Step size calculated from input speech frame; transmitted as side information.</li>
+  <li><b>Backward AQB</b>: Step size estimated from past quantized output; no side information needed.</li>
+  </ul>
+</li>
+<li><mark>Differential PCM (DPCM)</mark>: Encoder quantizes the difference
+  $$e[n] = x[n] - \hat{x}[n]$$
+  Predictor lives in feedback loop using reconstructed samples $\tilde{x}[n]$ so encoder and decoder stay synchronized:
+  $$\tilde{x}[n] = \hat{x}[n] + \hat{e}[n]$$
+  where $\hat{e}[n]$ is the quantized difference.</li>
+<li><mark>ADPCM</mark> (Adaptive DPCM): Combines adaptive quantization step size with an adaptive predictor (e.g., ITU G.726 @ 32 kbps).</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 180" width="580">
+<rect x="20" y="55" width="60" height="40" rx="6"/><text x="50" y="75">x[n]</text>
+<path class="arr" d="M80 75 H130"/>
+<circle cx="145" cy="75" r="15"/><text x="145" y="75">+</text>
+<path class="arr" d="M160 75 H210"/>
+<rect class="hi" x="210" y="55" width="80" height="40" rx="6"/><text x="250" y="75">Quantizer</text>
+<path class="arr" d="M290 75 H360"/>
+<text class="b" x="380" y="75">I[n]</text>
+<path class="arr" d="M320 75 V130 H290"/>
+<rect x="170" y="110" width="120" height="40" rx="6"/><text x="230" y="130">Predictor</text>
+<path class="arr" d="M170 130 H145 V90"/>
+</svg></div>
+<figcaption><b>Fig 2.8</b> · DPCM Encoder Block Diagram with Predictor in Feedback Loop</figcaption>
+<p class="draw">✍ Draw it: input summer computing error, Quantizer block, feedback loop from output to Predictor box back to summer.</p></figure>
+
+<div class="recall"><b>Quick recall</b> AQF transmits explicit step size; AQB estimates it from past quantized output. DPCM quantizes difference $e[n] = x[n] - \hat{x}[n]$ and rebuilds $\tilde{x}[n] = \hat{x}[n] + \hat{e}[n]$; ADPCM adds adaptive prediction.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-vq">
+<h3>2.9 Vector Quantization (Distortion Measures, LBG Algorithm, Codebook Types)</h3>
+<p class="hook">Vector quantization groups vectors of samples and matches them to the nearest codeword in a stored codebook. <span class="hg">(poore vector ko codebook ke codeword se match karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Vector quantization</mark> (VQ) blocks $k$ consecutive samples into a $k$-dimensional vector $\mathbf{x}$ and maps it to the closest codevector $\mathbf{y}_i$ in a codebook $C = \{\mathbf{y}_1, \dots, \mathbf{y}_N\}$, transmitting only the codebook index $i$.</div>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<rect x="20" y="60" width="90" height="40" rx="6"/><text x="65" y="80">Vector x</text>
+<path class="arr" d="M110 80 H160"/>
+<rect class="hi" x="160" y="55" width="110" height="50" rx="6"/><text x="215" y="73">VQ Encoder</text><text class="s" x="215" y="91">Codebook Search</text>
+<path class="arr" d="M270 80 H340"/>
+<text class="b" x="375" y="80">Index i</text>
+<path class="arr" d="M400 80 H440"/>
+<rect class="hi" x="440" y="55" width="90" height="50" rx="6"/><text x="485" y="73">VQ Decoder</text><text class="s" x="485" y="91">Lookup y_i</text>
+</svg></div>
+<figcaption><b>Fig 2.9</b> · Vector Quantization Encoder Codebook Search and Decoder Lookup</figcaption>
+<p class="draw">✍ Draw it: input Vector x to VQ Encoder (Search), transmitting Index i to VQ Decoder (Lookup y_i).</p></figure>
+
+<ul>
+<li><mark>Distortion Measures</mark>:
+  <ul>
+  <li><b>Squared Euclidean Distance (MSE)</b>:
+    $$d(\mathbf{x}, \mathbf{y}) = \lVert \mathbf{x} - \mathbf{y} \rVert^2 = \sum (x_i - y_i)^2$$</li>
+  <li><b>Weighted Euclidean Distance</b>:
+    $$d = (\mathbf{x} - \mathbf{y})^T \mathbf{W} (\mathbf{x} - \mathbf{y})$$</li>
+  <li><b>Itakura-Saito Distance</b>: Measures spectral distortion between LPC spectral envelopes $P(\omega)$ and $\hat{P}(\omega)$.</li>
+  </ul>
+</li>
+<li><mark>LBG Algorithm</mark> (Linde-Buzo-Gray / Generalized Lloyd Algorithm):
+  <ol>
+  <li>Start with initial codebook (or split overall centroid).</li>
+  <li><b>Partitioning</b>: Assign training vectors to nearest codevector using distortion measure (Voronoi region partition).</li>
+  <li><b>Update</b>: Recompute each codevector as the centroid of assigned vectors.</li>
+  <li><b>Check Convergence</b>: If the fractional distortion reduction is small, stop; else repeat:
+    $$\frac{D_{old} - D_{new}}{D_{old}} \lt \epsilon$$</li>
+  </ol>
+</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initial Codebook $C_0$</div>
+<div class="n">Partition training vectors into Voronoi regions $R_i$</div>
+<div class="n hi">Update codevectors: $\mathbf{y}_i$ = centroid of region $R_i$</div>
+<div class="n">Compute total average distortion $D$</div>
+<div class="n d">$(D_{old} - D_{new}) / D_{old} \lt \epsilon$ ?</div>
+<div class="n t">Stop (Final Codebook)</div>
+</div></div>
+<figcaption><b>Fig 2.10</b> · Flowchart of the LBG (Generalized Lloyd) Codebook Design Algorithm</figcaption>
+<p class="draw">✍ Draw it: vertical flow from Initial Codebook to Partitioning to Centroid Update to Distortion Check decision diamond.</p></figure>
+
+<div class="tw"><table>
+<tr><th>Codebook Architecture</th><th>Search Complexity</th><th>Memory Requirement</th><th>Primary Advantage</th></tr>
+<tr><td><b>Full-Search (Unstructured)</b></td><td>$O(N)$ (High)</td><td>$O(N \cdot k)$</td><td>Lowest distortion, optimal codebook</td></tr>
+<tr><td><b>Tree-Structured VQ (TSVQ)</b></td><td>$O(\log_2 N)$ (Very Low)</td><td>$O(2N \cdot k)$</td><td>Fast binary tree search</td></tr>
+<tr><td><b>Multistage VQ (MSVQ)</b></td><td>$O(M \cdot N^{1/M})$</td><td>Low</td><td>Low complexity for large codebooks</td></tr>
+<tr><td><b>Split VQ</b></td><td>Low (splits vector)</td><td>Very Low</td><td>Common for LPC parameter quantization</td></tr>
+</table></div>
+
+<div class="ex"><b>Worked Example: Tiny LBG 2D Codebook Centroid Update</b>
+<div class="step">Given 4 2D points: $P_1(1,2)$, $P_2(2,4)$, $P_3(7,8)$, $P_4(9,10)$.</div>
+<div class="step">Initial overall centroid: $C = \left(\dfrac{1+2+7+9}{4}, \dfrac{2+4+8+10}{4}\right) = (4.75, 6.0)$.</div>
+<div class="step">Split into 2 initial codevectors: $C_1 = (4, 5)$ and $C_2 = (5, 7)$.</div>
+<div class="step">Partitioning by nearest Euclidean distance:</div>
+<div class="step">$P_1(1,2)$ and $P_2(2,4)$ are closer to $C_1(4,5)$ &rarr; Region $R_1$.</div>
+<div class="step">$P_3(7,8)$ and $P_4(9,10)$ are closer to $C_2(5,7)$ &rarr; Region $R_2$.</div>
+<div class="step">Updated Centroids:</div>
+<div class="step">$C_1^* = \left(\dfrac{1+2}{2}, \dfrac{2+4}{2}\right) = (1.5, 3.0)$</div>
+<div class="step">$C_2^* = \left(\dfrac{7+9}{2}, \dfrac{8+10}{2}\right) = (8.0, 9.0)$</div>
+<span class="ans">Updated LBG Centroids: $C_1^* = (1.5, 3.0)$, $C_2^* = (8.0, 9.0)$</span>
+</div>
+
+<div class="recall"><b>Quick recall</b> VQ quantizes sample vectors directly; LBG algorithm designs codebooks via Voronoi partitioning and centroid updating.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-short">
+<h3>2.10 Short answers (1 mark)</h3>
+<dl class="sa">
+<dt>1. Define Linear Prediction in speech processing.</dt><dd>Estimation technique that predicts current speech sample $x[n]$ as a weighted sum of $p$ past samples: $\hat{x}[n] = \sum a_k x[n-k]$.</dd>
+
+<dt>2. What are the Yule-Walker normal equations?</dt><dd>Set of matrix equations $\sum a_k R(i-k) = R(i)$ derived by minimizing mean squared prediction error.</dd>
+
+<dt>3. Why is speech analyzed in short frames?</dt><dd>Because speech is non-stationary over long durations but quasi-stationary over short 20-30 ms windows.</dd>
+
+<dt>4. Define Prediction Gain (PG).</dt><dd>Ratio of speech signal variance to prediction error variance: $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB.</dd>
+
+<dt>5. State the computational complexity of the Levinson-Durbin algorithm.</dt><dd>Solves normal equations recursively in $O(p^2)$ operations compared to $O(p^3)$ for direct matrix inversion.</dd>
+
+<dt>6. What condition on reflection coefficients ($k_m$) guarantees filter stability?</dt><dd>The all-pole synthesis filter is stable if and only if $|k_m| \lt 1$ for all $m = 1, \dots, p$.</dd>
+
+<dt>7. Differentiate short-term and long-term linear prediction.</dt><dd>Short-term LP ($p \approx 10$) models vocal tract formants; long-term LP models pitch periodicity $T$.</dd>
+
+<dt>8. What is Moving Average (MA) prediction?</dt><dd>Predicts current sample from past prediction errors rather than past speech samples.</dd>
+
+<dt>9. State the SQNR formula for a $B$-bit uniform quantizer.</dt><dd>$SQNR \approx 6.02B + 1.76$ dB for a full-scale sinusoidal signal.</dd>
+
+<dt>10. State the two Lloyd-Max optimum quantization conditions.</dt><dd>(1) Decision boundary is midpoint of adjacent levels $d_k = (y_k + y_{k+1})/2$; (2) Level $y_k$ is the centroid of the interval PDF.</dd>
+
+<dt>11. What is logarithmic companding?</dt><dd>Non-uniform quantization technique passing signal through a logarithmic compressor (μ-law / A-law) before uniform quantization.</dd>
+
+<dt>12. Differentiate forward (AQF) and backward (AQB) adaptive quantization.</dt><dd>AQF calculates step size from input frame and transmits it; AQB estimates step size from past quantized output.</dd>
+
+<dt>13. Explain the basic principle of Differential PCM (DPCM).</dt><dd>Quantizes the difference $e[n] = x[n] - \hat{x}[n]$ between current sample and predicted sample.</dd>
+
+<dt>14. What is Vector Quantization (VQ)?</dt><dd>Quantization technique mapping a $k$-dimensional vector of samples to the nearest codevector codeword in a codebook.</dd>
+
+<dt>15. What is the LBG algorithm?</dt><dd>Iterative codebook design algorithm (Generalized Lloyd) alternating between Voronoi partitioning and centroid updating.</dd>
+
+<dt>16. What is prediction order $p$?</dt><dd>The number of past samples used by the predictor; e.g. $p = 3$ uses $x[n-1]$, $x[n-2]$, $x[n-3]$. Speech LPC typically uses $p \approx 10$–$16$.</dd>
+
+<dt>17. Define the prediction residual with an example.</dt><dd>$e[n] = x[n] - \hat{x}[n]$, the part the predictor misses. If $x[n] = 20$ and $\hat{x}[n] = 18$, then $e[n] = 2$. A good predictor keeps $e[n] \approx 0$.</dd>
+
+<dt>18. Write the short-time frame equation and explain its symbols.</dt><dd>$x_m[n] = x[n]\,w[n-mL]$, where $w[n]$ = window (Hamming / Hanning), $m$ = frame index and $L$ = frame shift (hop size). Frames are 20-30 ms with about 50% overlap.</dd>
+
+<dt>19. What is segmental prediction gain (SPG)?</dt><dd>The average of the per-frame prediction gains in dB over $M$ frames: $SPG = \frac{1}{M}\sum_{m=1}^{M} G_p(m)$. It is used because $G_p$ changes from frame to frame in non-stationary speech.</dd>
+
+<dt>20. Why do voiced frames give a higher prediction gain than unvoiced frames?</dt><dd>Voiced frames are periodic and strongly correlated, so the residual is small; unvoiced frames are noise-like with weak correlation (e.g. Frame A: $6.06$ dB, Frame B: $0.32$ dB).</dd>
+
+<dt>21. What is a Toeplitz matrix? Why does Levinson-Durbin use it?</dt><dd>A symmetric matrix whose every diagonal holds one constant value. The Yule-Walker autocorrelation matrix is Toeplitz, which lets Levinson-Durbin solve it recursively in $O(p^2)$.</dd>
+
+<dt>22. Write the long-term prediction (LTP) model.</dt><dd>$e[n] \approx \beta\, e[n-T]$ with final residual $r[n] = e[n] - \beta\, e[n-T]$, where $T$ = pitch lag and $\beta$ = LTP coefficient; $P(z) = 1 - \beta z^{-T}$.</dd>
+
+<dt>23. How are the pitch lag $T$ and coefficient $\beta$ estimated?</dt><dd>For each candidate $T$, compute $\beta(T) = \sum e[n]e[n-T] / \sum e^2[n-T]$ and the error $E(T) = \sum r^2[n]$; choose the $T$ with minimum $E(T)$.</dd>
+
+<dt>24. What is 3-tap LTP and why is it used?</dt><dd>$\hat{e}[n] = \beta_{-1}e[n-T-1] + \beta_0 e[n-T] + \beta_1 e[n-T+1]$. It works better when the pitch period is not a whole number of samples.</dd>
+
+<dt>25. What is the typical pitch lag range at 8 kHz sampling?</dt><dd>Pitch periods are about 2.5-20 ms ($F_0$ about 50-400 Hz), i.e. a lag of about 20-160 samples.</dd>
+
+<dt>26. Give the total prediction gain of a two-stage (LPC + LTP) predictor.</dt><dd>$G_{p,\text{short}} + G_{p,\text{long}} = 10\log_{10}(\sigma_x^2/\sigma_e^2) + 10\log_{10}(\sigma_e^2/\sigma_r^2)$ dB.</dd>
+
+<dt>27. Differentiate AR and MA models.</dt><dd>AR predicts from past outputs, is all-pole (IIR) and models sharp peaks; MA uses past inputs / errors, is all-zero (FIR) and models dips (anti-resonances).</dd>
+
+<dt>28. Why is an MA model always stable?</dt><dd>It has no feedback: its impulse response $h[n] = b_n$ for $n = 0, \dots, q$ and zero after, so the output can never grow without limit.</dd>
+
+<dt>29. Why is AR preferred over MA for speech?</dt><dd>Formants are sharp spectral peaks that a few poles capture; AR coefficients come from linear Yule-Walker equations, while MA would need a very high order.</dd>
+
+<dt>30. Expand ARMA and state where MA structure appears in speech.</dt><dd>AutoRegressive Moving Average (poles + zeros). MA structure appears in nasal sounds (anti-resonances / zeros) and in FIR filters such as pre-emphasis.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u2-long">
+<h3>2.11 Long-answer frames (8 marks)</h3>
+
+<h4>Q1. Explain Linear Prediction concepts, Yule-Walker normal equations, and solve an order-2 prediction example.</h4>
+<ol>
+<li>Define Linear Prediction, prediction error $e[n] = x[n] - \sum a_k x[n-k]$, and draw Error Filter Fig 2.1.</li>
+<li>Give the expanded form $\hat{x}[n] = a_1x[n-1] + \dots + a_px[n-p]$, meaning of order $p$, and draw the order-3 predictor Fig 2.11 with the example $\hat{x}[n] = 11.4$.</li>
+<li>Derive Normal Equations by setting $\partial E / \partial a_i = 0$ to get $\sum a_k R(i-k) = R(i)$.</li>
+<li>Formulate matrix representation for $p=2$.</li>
+<li>Provide complete worked numerical solution for $R(0)=5.0$, $R(1)=3.0$, $R(2)=1.0$ obtaining $a_1=0.75$, $a_2=-0.25$, $E_2=3.0$.</li>
+<li>Explain Prediction Gain $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB and compute $G_p = 2.218$ dB.</li>
+<li>Table of solution methods: autocorrelation vs covariance vs Levinson-Durbin; list uses (compression, modeling, spectral estimation, forecasting).</li>
+<li>Conclusion: LP models vocal tract acoustic properties with minimal filter coefficients.</li>
+</ol>
+
+<h4>Q2. Detail the Levinson-Durbin algorithm, reflection coefficients, and filter stability with a step-by-step example.</h4>
+<ol>
+<li>Define Levinson-Durbin algorithm purpose ($O(p^2)$ recursive solution to normal equations, Toeplitz matrix).</li>
+<li>List recursion formulas: $E_0 = R(0)$, $k_m$, $a_j^{(m)} = a_j^{(m-1)} - k_m\,a_{m-j}^{(m-1)}$, and $E_m = (1-k_m^2)\,E_{m-1}$.</li>
+<li>Draw Levinson-Durbin algorithm flowchart Fig 2.3.</li>
+<li>Explain Reflection Coefficients $k_m$ and the stability criterion $|k_m| \lt 1$; table of by-products.</li>
+<li>Provide full step-by-step worked example for order $p=2$ showing $k_1=0.6$, $E_1=3.2$, $k_2=-0.25$, $a_1=0.75$, $a_2=-0.25$, $E_2=3.0$.</li>
+<li>Second example ($R = 10, 6, 4$): $a_1 = 0.5625$, $a_2 = 0.0625$, $E_2 = 6.375$.</li>
+<li>Compare direct matrix inversion $O(p^3)$ vs Levinson-Durbin recursion $O(p^2)$; mnemonic R → E → K → a → E.</li>
+<li>Conclusion: Levinson-Durbin algorithm is essential for fast, stable LPC parameter computation.</li>
+</ol>
+
+<h4>Q3. Compare Short-Term vs Long-Term LP models, and detail moving average prediction.</h4>
+<ol>
+<li>Explain Short-Term LP ($p \approx 10$): vocal tract formants and short-lag correlation removal.</li>
+<li>Short-term LPC details: all-pole $A(z)$, frames 20-30 ms (160-240 samples at 8 kHz), overlap, windowing, new $a_k(m)$ per frame.</li>
+<li>Explain Long-Term LP: vocal cord pitch periodicity $T$ and long-lag pitch correlation removal.</li>
+<li>Draw cascaded Short-Term and Long-Term Prediction Error Filter system (Fig 2.4).</li>
+<li>Define Moving Average (MA) prediction $\hat{x}[n] = \sum_{k=1}^{q} b_k e[n-k]$ (all-zero predictor).</li>
+<li>Present comprehensive comparison table: Short-Term vs Long-Term vs Moving Average, plus LPC vs LTP quick compare.</li>
+<li>Conclusion: Joint short-term and long-term prediction achieves maximum residual error energy reduction.</li>
+</ol>
+
+<h4>Q4. Explain Scalar Quantization: Uniform, Optimum Lloyd-Max, and Logarithmic Companding.</h4>
+<ol>
+<li>Define Scalar Quantization, decision boundaries $d_k$, and reconstruction levels $y_k$.</li>
+<li>Explain Uniform Quantizer (step size $\Delta$), mid-tread vs mid-rise, and draw staircase curve Fig 2.5.</li>
+<li>Derive $SQNR \approx 6.02B + 1.76$ dB formula and show worked calculation for 3-bit quantizer.</li>
+<li>Explain Optimum Lloyd-Max Quantizer conditions (midpoint boundaries, centroid levels).</li>
+<li>Explain Logarithmic Companding (μ-law / A-law) with Compressor &rarr; Quantizer &rarr; Expander Fig 2.6.</li>
+<li>Provide worked companding calculation for $\mu = 255$ and $x = 0.5$.</li>
+<li>Conclusion: Companding provides uniform SQNR across wide dynamic speech range.</li>
+</ol>
+
+<h4>Q5. Discuss Adaptive Quantization (AQF/AQB) and Differential Quantizers (DPCM/ADPCM).</h4>
+<ol>
+<li>Define Adaptive Quantization and dynamic step size adaptation.</li>
+<li>Differentiate Forward Adaptive (AQF) vs Backward Adaptive (AQB) with block diagram Fig 2.7.</li>
+<li>Explain Differential PCM (DPCM) principle: quantizing difference signal $e[n] = x[n] - \hat{x}[n]$ and reconstruction $\tilde{x}[n] = \hat{x}[n] + \hat{e}[n]$.</li>
+<li>Draw DPCM Encoder block diagram (Fig 2.8) emphasizing feedback predictor synchronization.</li>
+<li>Explain ADPCM (Adaptive DPCM, G.726 @ 32 kbps) combining adaptive step size and adaptive predictor.</li>
+<li>Table comparing PCM vs DPCM vs ADPCM across bit-rates and performance.</li>
+<li>Conclusion: Differential quantization removes inter-sample redundancy to cut bit-rates in half.</li>
+</ol>
+
+<h4>Q6. Explain Vector Quantization (VQ), distortion measures, LBG codebook design, and codebook types.</h4>
+<ol>
+<li>Define Vector Quantization (VQ) and draw Encoder/Decoder architecture Fig 2.9.</li>
+<li>Detail Distortion Measures: Squared Euclidean MSE, Weighted Euclidean, and Itakura-Saito.</li>
+<li>Explain LBG (Generalized Lloyd) Algorithm 4 steps (Initialization, Partitioning, Centroid update, Convergence).</li>
+<li>Draw LBG Algorithm flowchart Fig 2.10.</li>
+<li>Provide worked numerical example for tiny 2D LBG centroid split and update step-by-step.</li>
+<li>Present Codebook Types Table (Full-Search, Tree-Structured TSVQ, Multistage MSVQ, Split VQ).</li>
+<li>Conclusion: VQ achieves high compression efficiency close to rate-distortion theoretical limits.</li>
+</ol>
+
+<h4>Q7. Explain linear prediction analysis of non-stationary signals and prediction gain, with a frame-by-frame example.</h4>
+<ol>
+<li>Non-stationarity problem: LP assumes stationary statistics, but vocal tract, pitch and energy change as we talk.</li>
+<li>Solution: short-time analysis, 20-30 ms frames with about 50% overlap, Hamming / Hanning window, $x_m[n] = x[n]\,w[n-mL]$, time-varying $a_k(m)$.</li>
+<li>Draw the frame-analysis flow Fig 2.12 (and the chain Fig 2.2).</li>
+<li>Table: stationary LP vs short-time LP.</li>
+<li>Define $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB with interpretation (large = good, small = poor) and $SPG = \frac{1}{M}\sum G_p(m)$.</li>
+<li>Example: Frame A ($R(0) = 96$, $R(1) = 81$, $a_1 = 0.844$, $\sigma_x^2 = 12$, $\sigma_e^2 = 2.97$, $G_p = 6.06$ dB) vs Frame B ($G_p = 0.32$ dB); $SPG = 3.19$ dB.</li>
+<li>Relation to prediction order (gain rises then saturates, $p \approx 10$–$16$) and use as a quality metric.</li>
+<li>Conclusion: frame-based LP tracks the changing vocal tract; $G_p$ and SPG measure how well it predicts.</li>
+</ol>
+
+<h4>Q8. Explain long-term prediction (LTP): model, estimation of pitch lag and coefficient, 3-tap LTP and two-stage prediction gain.</h4>
+<ol>
+<li>Purpose: short-term LPC removes formants but leaves pitch periodicity in voiced speech.</li>
+<li>Model: $e[n] \approx \beta e[n-T]$, $r[n] = e[n] - \beta e[n-T]$, $P(z) = 1 - \beta z^{-T}$; lag about 20-160 samples at 8 kHz.</li>
+<li>Draw the cascade Fig 2.13 ($x[n] \to$ LPC $\to e[n] \to$ LTP $\to r[n]$).</li>
+<li>Estimating $T$ and $\beta$: $\beta(T)$ formula, $E(T) = \sum r^2[n]$, 5 steps; toy example gives $T = 4$, $\beta = 0.885$.</li>
+<li>3-tap LTP formula and Fig 2.14; benefit when the pitch period is not an integer.</li>
+<li>Two-stage gain: $G_{p,\text{short}} + G_{p,\text{long}}$; example $10 + 3.01 = 13.01$ dB.</li>
+<li>Conclusion: LPC + LTP leave a flat, low-energy residual, giving better coding of voiced speech.</li>
+</ol>
+
+<h4>Q9. Explain moving average (MA) prediction models and compare AR and MA models.</h4>
+<ol>
+<li>Three model families table: AR (past outputs, all-pole), MA (past inputs, all-zero), ARMA (both, pole-zero).</li>
+<li>MA model $x[n] = \sum_{k=0}^{q} b_k u[n-k]$ and MA prediction $\hat{x}[n] = \sum_{k=1}^{q} b_k e[n-k]$.</li>
+<li>Draw AR(1) vs MA(1) block diagrams Fig 2.15 (feedback vs feed-forward).</li>
+<li>No feedback → FIR: $h[n] = b_n$ for $n = 0, \dots, q$, length $q + 1$, always stable.</li>
+<li>AR vs MA comparison table (impulse response, stability, spectral shape, solving, order).</li>
+<li>Numerical contrast with $a_1 = b_1 = 0.8$: AR $h[n] = 1, 0.8, 0.64, \dots$ vs MA $h[n] = 1, 0.8, 0, 0$; draw Fig 2.16.</li>
+<li>Why AR is preferred for speech; where MA shows up (nasal anti-resonances, ARMA, FIR pre-emphasis).</li>
+<li>Conclusion and mnemonic: AR = peaks, MA = zeros, ARMA = both.</li>
+</ol>
+<a class="top" href="#top">↑ top</a></section>
+</section>

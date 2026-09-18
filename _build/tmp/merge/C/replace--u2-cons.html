@@ -1,0 +1,161 @@
+<section class="topic" id="u2-cons">
+<h3>2.6 Constructors and their types</h3>
+<p class="hook">A constructor is the setup step that runs automatically the moment an object is born, like filling a form while opening a bank account. <span class="hg">(object bante hi apne aap chalta hai)</span></p>
+<div class="def"><b>Definition:</b> A <mark>constructor</mark> is a special member of a class that has the <mark>same name as the class</mark>, has <mark>no return type</mark> (not even <code>void</code>), and is called automatically by <code>new</code> to initialise a newly created object.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Constructors</span><ul>
+<li><span>Default<br>(added by compiler)</span></li><li><span>No-arg<br>(written by us)</span></li><li><span>Parameterized</span></li><li><span>Copy<br>(user-written)</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.7</b> · Types of constructors in Java</figcaption><p class="draw">✍ Draw it: root box Constructors with four boxes under it.</p></figure>
+<ul>
+<li><mark>Default constructor</mark>: if a class has <b>no</b> constructor, the compiler adds one with no parameters; fields get default values (0, <code>null</code>, <code>false</code>). It disappears as soon as you write any constructor.</li>
+<li><mark>No-arg constructor</mark>: written by the programmer with no parameters, to set fixed starting values.</li>
+<li><mark>Parameterized constructor</mark>: takes arguments, so each object can start with different values: <code>new Point(3, 4)</code>.</li>
+<li><mark>Copy constructor</mark>: takes an object of the same class and copies its fields: <code>Point(Point p)</code>. Java does not provide it automatically (unlike C++); we write it ourselves.</li>
+<li><mark>Constructor overloading</mark>: several constructors in one class that differ in parameter list; <code>new</code> picks the matching one.</li>
+</ul>
+<div class="note"><b>Textbook variation:</b> some books call the programmer-written no-arg constructor the "default constructor" too. Strictly, the default constructor is the one the compiler supplies.</div>
+<pre class="code" data-file="ConstructorTypes.java"><code><span class="k">class</span> Point {
+    <span class="k">int</span> x, y;
+    Point() { x = 0; y = 0; }    <span class="c">// no-arg constructor</span>
+    Point(<span class="k">int</span> a, <span class="k">int</span> b) {        <span class="c">// parameterized constructor (overloaded)</span>
+        x = a; y = b;
+    }
+    Point(Point p) {             <span class="c">// copy constructor (we write it ourselves)</span>
+        x = p.x; y = p.y;
+    }
+    <span class="k">void</span> show(String label) {
+        System.out.println(label + " = (" + x + ", " + y + ")");
+    }
+}
+
+<span class="k">class</span> Empty { <span class="k">int</span> n; }           <span class="c">// no constructor: compiler adds default one</span>
+
+<span class="k">public</span> <span class="k">class</span> ConstructorTypes {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Point p1 = <span class="k">new</span> Point();         p1.show("p1");
+        Point p2 = <span class="k">new</span> Point(3, 4);     p2.show("p2");
+        Point p3 = <span class="k">new</span> Point(p2);       p3.show("p3 (copy of p2)");
+        System.out.println("Empty n = " + <span class="k">new</span> Empty().n);
+    }
+}</code></pre>
+<pre class="out">p1 = (0, 0)
+p2 = (3, 4)
+p3 (copy of p2) = (3, 4)
+Empty n = 0</pre>
+<p><b>Class-notes example — default constructor:</b> a constructor with no parameters supplies default values and announces itself when the object is built.</p>
+<pre class="code" data-file="DefaultConstr.java"><code><span class="k">public</span> <span class="k">class</span> DefaultConstr {
+    DefaultConstr() {                <span class="c">// constructor method: same name as class</span>
+        System.out.println("Default Constructor method called.");
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        DefaultConstr dc = <span class="k">new</span> DefaultConstr();    <span class="c">// constructor runs automatically here</span>
+    }
+}</code></pre>
+<pre class="out">Default Constructor method called.</pre>
+<p><b>Class-notes example — parameterized constructor:</b> different values passed in at <code>new</code> time give each object its own data.</p>
+<pre class="code" data-file="Students.java"><code><span class="k">public</span> <span class="k">class</span> Students {
+    <span class="k">int</span> id;
+    String name;
+
+    Students(<span class="k">int</span> i, String n) {      <span class="c">// parameterized constructor</span>
+        id = i;
+        name = n;
+    }
+    <span class="k">void</span> display() {
+        System.out.println(id + " " + name);
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Students s1 = <span class="k">new</span> Students(521, "Madhu");
+        Students s2 = <span class="k">new</span> Students(512, "Hari");
+        s1.display();
+        s2.display();
+    }
+}</code></pre>
+<pre class="out">521 Madhu
+512 Hari</pre>
+<p><b>Constructor chaining</b>: one constructor calling another. <code>this(...)</code> calls another constructor of the <b>same</b> class; <code>super(...)</code> calls the <b>parent</b> constructor. Either must be the first statement, so a constructor can use only one of them. If neither is written, the compiler inserts <code>super()</code>, so the parent part is always built first.</p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">new Employee()</div>
+<div class="n">Employee() calls this(25000)</div>
+<div class="n">Employee(int) calls super()</div>
+<div class="n hi">Person() body runs</div>
+<div class="n">Employee(int) body runs</div>
+<div class="n">Employee() body runs</div>
+<div class="n t">Object ready</div>
+</div></div><figcaption><b>Fig 2.8</b> · Constructor chaining: calls go down to the parent, bodies finish from parent back to child</figcaption><p class="draw">✍ Draw it: vertical flowchart of 7 boxes, ovals at start and end, shade the Person() box.</p></figure>
+<pre class="code" data-file="ChainDemo.java"><code><span class="k">class</span> Person {
+    Person() {
+        System.out.println("1. Person() runs first");
+    }
+}
+
+<span class="k">class</span> Employee <span class="k">extends</span> Person {
+    <span class="k">int</span> salary;
+
+    Employee() {
+        <span class="k">this</span>(25000);             <span class="c">// this(): calls another constructor of SAME class</span>
+        System.out.println("3. Employee() finishes last");
+    }
+    Employee(<span class="k">int</span> s) {
+        <span class="k">super</span>();                 <span class="c">// super(): calls parent constructor, must be 1st line</span>
+        salary = s;
+        System.out.println("2. Employee(int) salary = " + salary);
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> ChainDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        <span class="k">new</span> Employee();
+    }
+}</code></pre>
+<pre class="out">1. Person() runs first
+2. Employee(int) salary = 25000
+3. Employee() finishes last</pre>
+<p><b>Class-notes example — constructor overloading:</b> two constructors with a different number of parameters; <code>new</code> matches by the argument list, exactly like method overloading.</p>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Sum(...) overloaded</span><ul>
+<li><span>Sum(int, int)<br>new Sum(10, 11)</span></li>
+<li><span>Sum(int, int, int)<br>new Sum(10, 20, 30)</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.32</b> · Constructor overloading: each call is matched to the constructor whose parameter list fits</figcaption><p class="draw">✍ Draw it: root box "Sum(...) overloaded", two boxes below it, one per constructor with its matching call written under it.</p></figure>
+<pre class="code" data-file="Sum.java"><code><span class="k">public</span> <span class="k">class</span> Sum {
+    <span class="k">int</span> a, b, c;
+
+    Sum(<span class="k">int</span> x, <span class="k">int</span> y) {                <span class="c">// constructor with 2 parameters</span>
+        a = x;
+        b = y;
+    }
+    Sum(<span class="k">int</span> x, <span class="k">int</span> y, <span class="k">int</span> z) {         <span class="c">// constructor with 3 parameters (overloaded)</span>
+        a = x;
+        b = y;
+        c = z;
+    }
+    <span class="k">void</span> display() {
+        System.out.println("Sum is " + (a + b + c));
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Sum s1 = <span class="k">new</span> Sum(10, 11);          <span class="c">// matches the 2-parameter constructor</span>
+        Sum s2 = <span class="k">new</span> Sum(10, 20, 30);      <span class="c">// matches the 3-parameter constructor</span>
+        s1.display();
+        s2.display();
+    }
+}</code></pre>
+<pre class="out">Sum is 21
+Sum is 60</pre>
+<div class="note"><b>Common mistake:</b> forgetting that an unset field still compiles. In <code>Sum s1 = new Sum(10, 11)</code>, field <code>c</code> is never assigned by the 2-parameter constructor, so it keeps its default value <code>0</code> — that is why <code>10 + 11 + 0 = 21</code>, not an error.</div>
+<p><b>Rules of constructors</b></p>
+<ul>
+<li>Name must be <mark>exactly the class name</mark>; no return type.</li>
+<li>Cannot be <code>static</code>, <code>final</code> or <code>abstract</code>; access modifiers are allowed (a <code>private</code> constructor blocks outside object creation).</li>
+<li><code>this()</code> or <code>super()</code> must be the <mark>first statement</mark>; not both.</li>
+<li>Constructors are <mark>not inherited</mark>, so they cannot be overridden, but they can be overloaded.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Constructor</th><th>Method</th></tr>
+<tr><td>Name same as class</td><td>Any valid name</td></tr>
+<tr><td>No return type</td><td>Must have a return type (or <code>void</code>)</td></tr>
+<tr><td>Called automatically by <code>new</code></td><td>Called explicitly by the programmer</td></tr>
+<tr><td>Runs once per object</td><td>Can be called many times</td></tr>
+<tr><td>Not inherited</td><td>Inherited by subclasses</td></tr>
+<tr><td>Compiler gives a default one</td><td>Compiler gives none</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>S-N-A</b> rules: Same name as class, No return type, Automatically called by new.</div>
+<div class="recall"><b>Quick recall</b> 4 types: default, no-arg, parameterized, copy; overload by parameters; chain with this() / super() as first line. An unassigned field in an overloaded constructor silently keeps its default value.</div>
+<a class="top" href="#top">↑ top</a></section>

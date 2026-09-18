@@ -1,0 +1,130 @@
+<section class="topic" id="u2-dt">
+<h3>2.3 Decision Trees (ID3, entropy, information gain, Gini)</h3>
+<p class="hook">A decision tree is a game of "20 questions": ask the most useful question first, then keep asking until the answer is clear. <span class="hg">(sawaal pe sawaal, jawab tak)</span></p>
+<div class="def"><b>Definition:</b> A <mark>decision tree</mark> is a tree-shaped supervised model in which each <b>internal node</b> tests an attribute, each <b>branch</b> is an outcome of the test, and each <b>leaf node</b> holds a class label (or a value, for regression). Prediction follows one path from root to leaf.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 320" width="580">
+<rect class="hi" x="200" y="20" width="160" height="44" rx="4"/><text class="b" x="280" y="42">Outlook</text>
+<path class="arr" d="M280 64 L120 140"/><text class="r" x="190" y="92">Sunny</text>
+<path class="arr" d="M280 64 L400 140"/><text class="l" x="352" y="92">Rainy</text>
+<rect x="60" y="140" width="120" height="44" rx="22"/><text x="120" y="162">Yes (Play)</text>
+<rect class="hi" x="340" y="140" width="120" height="44" rx="4"/><text class="b" x="400" y="162">Wind</text>
+<path class="arr" d="M400 184 L325 250"/><text class="r" x="352" y="214">Strong</text>
+<path class="arr" d="M400 184 L485 250"/><text class="l" x="448" y="214">Weak</text>
+<rect x="270" y="250" width="110" height="44" rx="22"/><text x="325" y="272">No</text>
+<rect x="430" y="250" width="110" height="44" rx="22"/><text x="485" y="272">Yes (Play)</text>
+<text class="s" x="120" y="220">leaf</text><text class="s" x="120" y="236">(pure: 5 Yes)</text>
+<text class="s" x="470" y="42">root node</text>
+</svg></div><figcaption><b>Fig 2.5</b> · Decision tree built by ID3 from Table 2.3 (rectangles = attribute tests, rounded = leaves)</figcaption><p class="draw">✍ Draw it: root box "Outlook", two branches; Sunny → leaf Yes; Rainy → box "Wind" → Strong: No, Weak: Yes.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Training set S, attribute list</div>
+<div class="n">Compute entropy H(S)</div>
+<div class="n">Compute IG(S, A) for each attribute</div>
+<div class="n hi">Choose attribute with highest gain as node</div>
+<div class="n">Split S into subsets, one per value</div>
+<div class="n d">Subset pure or no attribute left?</div>
+<div class="n">Yes: make leaf (majority class). No: repeat for subset</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.6</b> · ID3 decision-tree construction flowchart (recursive)</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 4 boxes, diamond "pure?", box "leaf / repeat", oval.</p></figure>
+<h4>Formulas</h4>
+<ul>
+<li><mark>Entropy</mark> (impurity, disorder): $$H(S) = -\sum p_i \log_2 p_i$$ where $p_i$ = fraction of class $i$. $H = 0$ for a pure set; $H = 1$ for a 50-50 two-class set. <span class="hg">(kitna ghalmel hai)</span></li>
+<li><mark>Information gain</mark>: $$IG(S,A) = H(S) - \sum_v \frac{|S_v|}{|S|} H(S_v)$$ ID3 picks the attribute with <b>maximum gain</b>.</li>
+<li><mark>Gini index</mark> (used by <mark>CART</mark>): $$Gini(S) = 1 - \sum p_i^2$$ 0 = pure, 0.5 = worst for two classes. CART picks the split with the <b>lowest weighted Gini</b> and builds binary trees.</li>
+<li><mark>ID3</mark> (Quinlan) uses information gain; <mark>C4.5</mark> improves it with gain ratio and handles numeric attributes; <mark>CART</mark> uses Gini.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (ID3, computed in Python, 4 decimals) · <b>Table 2.3</b> Play cricket?
+<div class="tw"><table><tr><th>#</th><th>Outlook</th><th>Wind</th><th>Humidity</th><th>Play</th></tr>
+<tr><td>1</td><td>Rainy</td><td>Strong</td><td>High</td><td>No</td></tr>
+<tr><td>2</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>3</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>4</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>5</td><td>Rainy</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>6</td><td>Sunny</td><td>Strong</td><td>Normal</td><td>Yes</td></tr>
+<tr><td>7</td><td>Sunny</td><td>Strong</td><td>Normal</td><td>Yes</td></tr>
+<tr><td>8</td><td>Sunny</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>9</td><td>Sunny</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>10</td><td>Sunny</td><td>Weak</td><td>Normal</td><td>Yes</td></tr></table></div>
+<div class="step">Step 1 · Parent: 6 Yes, 4 No. $H(S) = -0.6 \log_2 0.6 - 0.4 \log_2 0.4 = 0.6(0.7370) + 0.4(1.3219) = 0.9710$</div>
+<div class="step">Step 2 · Outlook: Sunny 5Y/0N → $H = 0$; Rainy 1Y/4N → $H = -0.2 \log_2 0.2 - 0.8 \log_2 0.8 = 0.7219$</div>
+<div class="step">  weighted $= \dfrac{5}{10}(0) + \dfrac{5}{10}(0.7219) = 0.3610$ → $IG = 0.9710 - 0.3610 = 0.6100$</div>
+<div class="step">Step 3 · Wind: Strong 2Y/4N → $H = 0.9183$; Weak 4Y/0N → $H = 0$</div>
+<div class="step">  weighted $= \dfrac{6}{10}(0.9183) + \dfrac{4}{10}(0) = 0.5510$ → $IG = 0.4200$</div>
+<div class="step">Step 4 · Humidity: High 3Y/1N → $H = 0.8113$; Normal 3Y/3N → $H = 1.0000$</div>
+<div class="step">  weighted $= \dfrac{4}{10}(0.8113) + \dfrac{6}{10}(1) = 0.9245$ → $IG = 0.0464$</div>
+<div class="step">Step 5 · Highest gain = Outlook (0.6100) → ROOT. Sunny branch is pure → leaf Yes.</div>
+<div class="step">Step 6 · Rainy subset (1Y/4N, $H = 0.7219$): $IG(\text{Wind}) = 0.7219$, $IG(\text{Humidity}) = 0.3219$ → split on Wind. Strong → No (4/4), Weak → Yes (1/1): all leaves pure.</div>
+<div class="step">Gini check: $Gini(\text{parent}) = 1 - (0.6^2 + 0.4^2) = 0.4800$; weighted Gini: Outlook 0.1600, Wind 0.2667, Humidity 0.4500 → lowest is Outlook, same root.</div>
+<span class="ans">Root = Outlook; tree of Fig 2.5. New day (Rainy, Weak) → Play = Yes</span></div>
+<h4>Overfitting and pruning</h4>
+<ul>
+<li><mark>Overfitting</mark>: a fully grown tree keeps splitting until every leaf is pure, learning noise; it scores well on training data but poorly on test data.</li>
+<li><mark>Pre-pruning</mark> (early stopping): stop growing when depth limit, minimum samples per node, or minimum gain is reached.</li>
+<li><mark>Post-pruning</mark>: grow the full tree, then remove sub-trees that do not improve accuracy on validation data (e.g. reduced-error pruning, cost-complexity pruning in CART). <span class="hg">(faltu shaakhein kaat do)</span></li>
+</ul>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Easy to understand, can be drawn and explained as if-else rules</td><td>Overfits easily without pruning</td></tr>
+<tr><td>No feature scaling needed</td><td>Unstable: small data change can change the whole tree</td></tr>
+<tr><td>Handles categorical and numeric data</td><td>Greedy splits, not guaranteed globally best</td></tr>
+<tr><td>Fast prediction</td><td>Biased towards attributes with many values (ID3)</td></tr></table></div>
+<div class="tw"><table><tr><th>Point</th><th>ID3</th><th>CART</th></tr>
+<tr><td>Split measure</td><td>Information gain (entropy)</td><td>Gini index</td></tr>
+<tr><td>Tree shape</td><td>Multi-way splits</td><td>Binary splits</td></tr>
+<tr><td>Task</td><td>Classification</td><td>Classification and regression</td></tr></table></div>
+<ul><li><mark>Applications</mark>: loan approval rules at banks, medical diagnosis checklists, customer churn prediction, base learner of Random Forest.</li></ul>
+<h4>Entropy for more than two classes</h4>
+<p>The same $-\sum p_i \log_2 p_i$ formula works for any number of classes, not only Yes/No.</p>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · a node has Class A = 3, Class B = 2, Class C = 1
+<div class="step">$P(A)=0.5$, $P(B)=0.3333$, $P(C)=0.1667$</div>
+<div class="step">$H(S) = -0.5\log_2 0.5 - 0.3333\log_2 0.3333 - 0.1667\log_2 0.1667 = 0.5000+0.5283+0.4308$</div>
+<span class="ans">$H(S) \approx 1.4591$ (more classes can push entropy above 1 — the maximum for 3 equally-likely classes is $\log_2 3 \approx 1.585$)</span></div>
+<h4>Gain ratio and split information (used by C4.5)</h4>
+<ul>
+<li>Information gain alone favours an attribute that splits into many small groups (like an ID number: gain $\approx 1$ but useless for prediction). <mark>C4.5</mark> corrects this with the <mark>gain ratio</mark>: $$GainRatio(S,A) = \frac{IG(S,A)}{SplitInfo(A)}, \qquad SplitInfo(A) = -\sum_v \frac{|S_v|}{|S|}\log_2 \frac{|S_v|}{|S|}$$</li>
+<li>$SplitInfo$ has the same "$-\sum p \log_2 p$" shape as entropy, but over the SIZES of the groups, not the class labels. C4.5 picks the attribute with the highest gain ratio.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b"><b>ID3</b> Entropy → Information Gain → pick MAXIMUM</div>
+<div class="b"><b>C4.5</b> Entropy → Gain Ratio → pick MAXIMUM</div>
+<div class="b"><b>CART</b> Gini → Weighted Gini → pick MINIMUM</div>
+</div></div><figcaption><b>Fig 2.51</b> · One-line revision of what each algorithm optimises when choosing a split</figcaption><p class="draw">✍ Draw it: three boxes side by side, one line of text in each.</p></figure>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · parent entropy $0.80$; Attribute A splits 5/5, weighted entropy 0.40; Attribute B splits 8/2, weighted entropy 0.50
+<div class="step">$IG(A) = 0.80-0.40 = 0.40$; $SplitInfo(A) = -0.5\log_2 0.5 - 0.5\log_2 0.5 = 1.0000$ → $GainRatio(A) = 0.4000$</div>
+<div class="step">$IG(B) = 0.80-0.50 = 0.30$; $SplitInfo(B) = -0.8\log_2 0.8 - 0.2\log_2 0.2 = 0.7219$ → $GainRatio(B) = 0.4156$</div>
+<span class="ans">$GainRatio(B) \gt GainRatio(A)$ → C4.5 selects <b>B</b>, even though A had the higher raw information gain</span></div>
+<div class="note"><b>Common mistake:</b> C4.5 does NOT pick the attribute with the highest information gain — it picks the highest GAIN RATIO, precisely to remove IG's bias toward attributes with many distinct values.</div>
+<h4>Gini reduction</h4>
+<ul>
+<li><mark>Gini reduction</mark> $= Gini(\text{parent}) - \text{weighted } Gini$; CART picks the split with the highest reduction (the same choice as minimum weighted Gini).</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · parent 6 Yes, 4 No; a split gives weighted Gini $= 0.16$
+<div class="step">$Gini(\text{parent}) = 1-(0.6)^2-(0.4)^2 = 0.4800$</div>
+<span class="ans">Gini reduction $= 0.48-0.16 = 0.32$</span></div>
+<h4>Splitting a continuous attribute</h4>
+<p>C4.5/CART handle a numeric attribute (like Temperature) by testing a <mark>threshold</mark> and treating it as a two-way split, "$\le$ threshold" vs "$\gt$ threshold" — the threshold is chosen the same way as any other split, by maximum gain.</p>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 500 130" width="500">
+<path d="M40 70 H460"/>
+<circle cx="120" cy="70" r="7"/><text class="s" x="120" y="95">20, No</text>
+<circle cx="200" cy="70" r="7"/><text class="s" x="200" y="95">25, No</text>
+<circle class="dot" cx="280" cy="70" r="7"/><text class="s" x="280" y="95">30, Yes</text>
+<circle class="dot" cx="360" cy="70" r="7"/><text class="s" x="360" y="95">35, Yes</text>
+<line class="dash acc" x1="240" y1="30" x2="240" y2="110"/><text class="s" x="240" y="20">threshold 27.5</text>
+</svg></div><figcaption><b>Fig 2.52</b> · A numeric attribute split at a threshold — the same value 27.5 can be a perfect split for one attribute and useless for another</figcaption><p class="draw">✍ Draw it: a number line, 4 dots labelled with their value and class, one dashed vertical line at the threshold.</p></figure>
+<div class="ex"><b>Worked example</b> (computed in Python) · Temperature: 20 No, 25 No, 30 Yes, 35 Yes; try threshold $27.5$
+<div class="step">Parent 2Y/2N: $H=1$. $\le 27.5$: 20,25 both No → $H=0$. $\gt 27.5$: 30,35 both Yes → $H=0$</div>
+<div class="step">Weighted $H = \frac24(0)+\frac24(0) = 0$ → $IG = 1-0 = 1$ (a perfect threshold)</div>
+<div class="step">Now Age: 20 No, 25 Yes, 30 Yes, 35 No, SAME threshold 27.5: left (20,25) is 1Y/1N ($H=1$), right (30,35) is 1Y/1N ($H=1$) → weighted $H=1$ → $IG=0$</div>
+<span class="ans">Same threshold, same shape of data, opposite result — the gain depends on how the classes fall on each side, never on the threshold value alone</span></div>
+<h4>Predicting with a built tree</h4>
+<p>Once a tree like Fig 2.5 is built, a new case is classified by walking root → leaf, reading off its attribute values.</p>
+<div class="ex"><b>Worked example</b> · using the tree of Fig 2.5 (root Outlook; Sunny → leaf Yes; Rainy → Wind → Strong: No, Weak: Yes)
+<div class="step">Outlook = Rain, Wind = Weak: Rain branch → Wind branch → Weak leaf</div>
+<span class="ans">Prediction = <b>Yes</b></span></div>
+<div class="ex"><b>Worked example</b> · same tree
+<div class="step">Outlook = Rain, Wind = Strong: Rain branch → Wind branch → Strong leaf</div>
+<span class="ans">Prediction = <b>No</b></span></div>
+<div class="mn"><b>Mnemonic</b> <b>E-G-S-R</b>: <b>E</b>ntropy, <b>G</b>ain for each attribute, <b>S</b>plit on best, <b>R</b>epeat till pure.</div>
+<div class="note"><b>Common mistake:</b> ID3 picks the HIGHEST information gain but the LOWEST Gini / entropy after split. Also use log base 2, not log base 10.</div>
+<div class="recall"><b>Quick recall</b> $H = -\sum p_i \log_2 p_i$; $IG = H(\text{parent}) - \text{weighted } H(\text{children})$; $Gini = 1 - \sum p_i^2$; prune to stop overfitting.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

@@ -1,0 +1,45 @@
+<section class="topic" id="u2-operations">
+<h3>2.10 Data Operations</h3>
+<p class="hook">Operations are the actions you perform on data: on one item (crop one photo) or on a whole collection (filter, join, count). <span class="hg">(data par kaam: ek par ya poore samooh par)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data operations</mark> are the procedures a data model allows for retrieving and manipulating data. They act either on a <mark>single data item</mark> or on a <mark>collection</mark> of items (selection/filtering, projection, join, union, aggregation, sorting), and at big data scale they are run in parallel.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Data operations</span><ul>
+<li><span>On single item</span><ul><li><span>Read / update</span></li><li><span>Transform (crop image)</span></li></ul></li>
+<li><span>On collection</span><ul><li><span>Selection / filter</span></li><li><span>Projection</span></li><li><span>Join / union</span></li><li><span>Aggregation</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.15</b> · Classification of data operations</figcaption><p class="draw">✍ Draw it: root box, 2 children (single item, collection), leaves under each (2 and 4).</p></figure>
+<ul>
+<li><mark>Single-item operations</mark>: work on one record / object: look up a record, update a field, resize or crop one image.</li>
+<li><mark>Selection (filtering / subsetting)</mark>: keep only items that satisfy a condition (orders with amount ≥ 200). <span class="hg">(shart par chhaanto)</span></li>
+<li><mark>Projection (substructure extraction)</mark>: keep only some attributes (just name and city columns).</li>
+<li><mark>Join</mark>: combine two collections on a common key (orders + customers on customer_id).</li>
+<li><mark>Union</mark>: merge two collections of the same structure (Jan sales ∪ Feb sales).</li>
+<li><mark>Aggregation</mark>: compute summary values over groups: count, sum, average, min, max.</li>
+<li><mark>Sorting / ranking</mark>: order results (top 10 products).</li>
+<li><mark>Big data aspect</mark>: collection operations are split over many machines (e.g. MapReduce: map filters/transforms, reduce aggregates).</li>
+</ul>
+<div class="ex"><b>Example</b> (orders collection: city, amount in Rs)<div class="step">Data: (Delhi,250), (Pune,400), (Delhi,150), (Pune,100), (Delhi,300)</div><div class="step">Selection amount ≥ 200 → (Delhi,250), (Pune,400), (Delhi,300)</div><div class="step">Aggregation SUM by city on all orders → Delhi = 250+150+300 = 700; Pune = 400+100 = 500</div><div class="step">COUNT by city → Delhi 3, Pune 2; AVG → Delhi 700/3 = 233.33, Pune 500/2 = 250.00 (2 decimals)</div><span class="ans">Selection gives 3 orders; totals Delhi 700, Pune 500; averages 233.33 and 250.00.</span></div>
+<div class="tw"><table>
+<tr><th>Selection</th><th>Projection</th></tr>
+<tr><td>Chooses rows (items)</td><td>Chooses columns (attributes)</td></tr>
+<tr><td>Based on a condition</td><td>Based on attribute list</td></tr>
+<tr><td>Reduces number of records</td><td>Reduces width of each record</td></tr>
+</table></div>
+<h4>DataOps: Operating the Data Pipeline Itself</h4>
+<p class="hook">The class notes also use "data operations" for a second, different idea: <mark>DataOps</mark>, a DevOps-style way of running the whole data pipeline so it stays fast, tested and trustworthy — not the select/join/aggregate operations above. <span class="hg">(pipeline ko bhi DevOps jaisa chalao)</span></p>
+<div class="def"><b>Definition:</b> <mark>DataOps</mark> is an Agile approach, borrowed from <mark>DevOps</mark>, for building and running the end-to-end data pipeline so that big data reaches business decisions faster, with better quality and predictability.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Build pipeline</div><div class="n hi">Automated testing<small>validate data + logic</small></div><div class="n">Deploy</div><div class="n">Monitor<small>SPC, alerts</small></div>
+</div></div><figcaption><b>Fig 2.54</b> · DataOps loop for a data pipeline</figcaption><p class="draw">✍ Draw it: 4 boxes in a row with arrows, loop the last box back to the first; shade "Automated testing".</p></figure>
+<ul>
+<li><mark>Why DataOps matters</mark>: rapid experimentation, collaboration across the whole data lifecycle, high quality with low error rates, data transparency, and simpler, continuous delivery of insight.</li>
+<li><mark>Automated testing</mark>: automated tests validate the data entering the system, and the inputs, outputs and business logic at every transformation step — a bad record is caught right where it is introduced, not after the report is built.</li>
+<li><mark>Monitoring</mark>: <mark>Statistical Process Control (SPC)</mark> continuously watches the pipeline's data flow and flags it the moment something drifts from normal, so the system is always known to be working as intended.</li>
+<li><mark>Technology-agnostic</mark>: DataOps is a way of working, not one tool or framework — it can be built with whatever pipeline tools an organisation already has.</li>
+<li><mark>Benefits</mark>: better cooperation between development, operations and data teams; higher efficiency through automation; better-quality data (errors caught early); better use of resources.</li>
+<li><mark>Costs</mark>: integrating many different tools can be hard, more automation needs more security care, the change is complex to roll out, and it needs upfront investment in tooling and training.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Collection operations <b>"SPJUA"</b>: "Sab Pizza Jaldi Uthao Abhi" = Selection, Projection, Join, Union, Aggregation.</div>
+<div class="mn"><b>Mnemonic</b> DataOps = Agile + DevOps for data: automated <b>test</b> → <b>deploy</b> → <b>monitor</b>, on repeat.</div>
+<div class="note"><b>Common mistake:</b> mixing selection with projection: selection picks rows, projection picks columns.</div>
+<div class="recall"><b>Quick recall</b> Single item vs collection; collection ops = select, project, join, union, aggregate (run in parallel for big data). DataOps = Agile/DevOps-style pipeline operation: automated testing + SPC monitoring keep the pipeline fast and trustworthy.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

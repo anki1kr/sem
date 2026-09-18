@@ -1,0 +1,77 @@
+<section class="topic" id="u2-static">
+<h3>2.5 Static data members, static methods and static block</h3>
+<p class="hook">A classroom whiteboard: every student has their own notebook, but there is one whiteboard shared by all. <span class="hg">(static = sabka ek common copy)</span></p>
+<div class="def"><b>Definition:</b> A <mark>static data member</mark> (class variable) is declared with <code>static</code> and has <mark>only one copy shared by all objects</mark> of the class; it is created when the class is loaded. A <mark>static method</mark> belongs to the class and can be called without an object, and a <mark>static block</mark> runs once when the class is loaded.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 240" width="600">
+<rect x="30" y="30" width="150" height="60" rx="4"/><text x="105" y="60">v1: name=Aman</text>
+<rect x="225" y="30" width="150" height="60" rx="4"/><text x="300" y="60">v2: name=Riya</text>
+<rect x="420" y="30" width="150" height="60" rx="4"/><text x="495" y="60">v3: name=Kabir</text>
+<rect class="hi" x="190" y="150" width="220" height="50" rx="4"/><text x="300" y="175">static count = 3</text>
+<path class="arr" d="M105 90 L250 150"/>
+<path class="arr" d="M300 90 V150"/>
+<path class="arr" d="M495 90 L350 150"/>
+<text class="s" x="300" y="220">one shared copy, stored with the class</text>
+</svg></div><figcaption><b>Fig 2.6</b> · Each object has its own name, but all share the single static count</figcaption><p class="draw">✍ Draw it: three object boxes on top, one shaded box below labelled static count, three arrows down into it.</p></figure>
+<ul>
+<li><mark>Shared copy</mark>: change it through any object or the class name, all objects see the new value. Good for counters, rates, constants.</li>
+<li>Access it as <mark>ClassName.var</mark> (preferred), e.g. <code>Visitor.count</code>.</li>
+<li><mark>Static method</mark>: called as <code>ClassName.method()</code>; can use static members directly but <b>cannot use instance variables, <code>this</code> or <code>super</code></b> directly. <code>main</code> is static so the JVM can call it without an object.</li>
+<li><mark>Static block</mark> <code>static { ... }</code>: runs once when the class is loaded, before any object; used to initialise static data.</li>
+<li><mark>Instance variable</mark> vs static: instance = one copy per object; static = one copy per class.</li>
+</ul>
+<p><b>A static field you already use every day</b>: <code>System</code> (package <code>java.lang</code>) declares three predefined <mark>static</mark> fields — <code>in</code> (keyboard, standard input stream), <code>out</code> (monitor, standard output stream) and <code>err</code> (monitor, standard error stream). That is exactly why <code>System.out.println(...)</code> works in every program without ever creating an object of <code>System</code>: <code>out</code> is reached as <code>ClassName.member</code>, the same rule as <code>Visitor.count</code> above.</p>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>System.in</b>standard input stream (keyboard)</div>
+<div class="b"><b>System.out</b>standard output stream (monitor)</div>
+<div class="b"><b>System.err</b>standard error stream (monitor)</div>
+</div></div><figcaption><b>Fig 2.31</b> · Three predefined static fields of the System class, all reached as ClassName.member</figcaption><p class="draw">✍ Draw it: three side-by-side boxes labelled System.in, System.out, System.err with one line under each.</p></figure>
+<pre class="code" data-file="SystemStaticDemo.java"><code><span class="k">public</span> <span class="k">class</span> SystemStaticDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        System.out.println("out is a static field of the System class");
+        java.io.PrintStream p1 = System.out;   <span class="c">// read the static field</span>
+        java.io.PrintStream p2 = System.out;   <span class="c">// read it again</span>
+        System.out.println("p1 == p2 ? " + (p1 == p2));
+    }
+}</code></pre>
+<pre class="out">out is a static field of the System class
+p1 == p2 ? true</pre>
+<div class="note"><b>Common mistake:</b> thinking <code>System.out</code> is a method call by itself. <code>out</code> is a static <b>field</b> (of type <code>PrintStream</code>); <code>.println(...)</code> is the method being called ON that field. <code>p1 == p2</code> is <code>true</code> because both read the SAME shared static field, not two separate copies.</div>
+<div class="tw"><table>
+<tr><th>Instance variable</th><th>Static variable</th></tr>
+<tr><td>One copy per object</td><td>One copy per class</td></tr>
+<tr><td>Created when object is created</td><td>Created when class is loaded</td></tr>
+<tr><td>Accessed by <code>obj.var</code></td><td>Accessed by <code>ClassName.var</code></td></tr>
+<tr><td>Example: student name</td><td>Example: total students</td></tr>
+</table></div>
+<p>Program: object counter using a static variable, static block and static method.</p>
+<pre class="code" data-file="CounterDemo.java"><code><span class="k">class</span> Visitor {
+    <span class="k">static</span> <span class="k">int</span> count;            <span class="c">// ONE shared copy for all objects</span>
+    String name;                 <span class="c">// separate copy in each object</span>
+
+    <span class="k">static</span> {                     <span class="c">// static block: runs once, when class loads</span>
+        count = 0;
+        System.out.println("static block ran");
+    }
+    Visitor(String n) {
+        name = n;
+        count++;                 <span class="c">// every new object updates the shared copy</span>
+    }
+    <span class="k">static</span> <span class="k">void</span> report() {       <span class="c">// static method: called without an object</span>
+        System.out.println("Visitors so far = " + count);
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> CounterDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        <span class="k">new</span> Visitor("Aman");
+        <span class="k">new</span> Visitor("Riya");
+        <span class="k">new</span> Visitor("Kabir");
+        Visitor.report();
+    }
+}</code></pre>
+<pre class="out">static block ran
+Visitors so far = 3</pre>
+<div class="mn"><b>Mnemonic</b> <b>V-M-B</b>: static can be applied to Variables, Methods and Blocks (and also nested classes).</div>
+<div class="note"><b>Common mistake:</b> using an instance field inside <code>main</code> directly. A static method has no <code>this</code>, so create an object first.</div>
+<div class="recall"><b>Quick recall</b> static = belongs to class, one shared copy; static block runs once at class loading; static method has no this. System.in/out/err are static fields of System — proof you already use static members daily.</div>
+<a class="top" href="#top">↑ top</a></section>

@@ -1,0 +1,226 @@
+<section class="topic" id="u1-loops">
+<h3>1.8 Iteration &amp; Jump Statements (for, while, do-while, break, continue)</h3>
+<p class="hook">Looping statements repeat a block of code until a specified condition becomes false. <span class="hg">(jab tak condition true hai, tab tak chalao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Iteration statements</mark> (loops) repeatedly execute a statement block as long as a loop termination condition remains true.</div>
+
+<ul>
+<li><code>for</code> loop: Entry-controlled loop ideal when the number of iterations is known in advance (initialization; condition; update).</li>
+<li><code>while</code> loop: Entry-controlled loop that tests condition before executing the loop body.</li>
+<li><code>do-while</code> loop: Exit-controlled loop that executes the body at least once before testing condition.</li>
+<li><mark>Enhanced for</mark> loop (for-each): Simplifies traversing collections and arrays without manual index tracking. Syntax: <code>for (Type var : array) { ... }</code>.</li>
+<li><mark>Labeled for loop</mark>: A <code>label:</code> placed before a loop lets a <code>break</code> or <code>continue</code> inside a NESTED loop target the labelled (usually outer) loop directly, instead of only the innermost one. Syntax: <code>label: for (init; cond; update) { ... }</code>.</li>
+<li><code>break</code>: Immediately terminates the innermost loop or switch block.</li>
+<li><code>continue</code>: Skips the rest of the current iteration and jumps to the next loop evaluation step.</li>
+</ul>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 220" width="540">
+<text class="b" x="130" y="20">while Loop (Entry-controlled)</text>
+<polygon points="130,40 210,75 130,110 50,75" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="130" y="75">Condition?</text>
+<path class="arr" d="M130 110 V150"/>
+<rect x="70" y="150" width="120" height="40" rx="6"/><text x="130" y="170">Loop Body</text>
+<path class="arr" d="M70 170 H20 V75 H50"/>
+
+<text class="b" x="400" y="20">do-while Loop (Exit-controlled)</text>
+<rect x="340" y="40" width="120" height="40" rx="6"/><text x="400" y="60">Loop Body</text>
+<path class="arr" d="M400 80 V120"/>
+<polygon points="400,120 480,155 400,190 320,155" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
+<text x="400" y="155">Condition?</text>
+<path class="arr" d="M320 155 H280 V60 H340"/>
+</svg></div>
+<figcaption><b>Fig 1.18</b> · Flowchart comparison between while (entry-controlled) and do-while (exit-controlled) loops</figcaption>
+<p class="draw">✍ Draw it: left diagram for while (condition top, body bottom), right diagram for do-while (body top, condition bottom).</p></figure>
+
+<div class="tw"><table>
+<tr><th>Feature</th><th>while Loop</th><th>do-while Loop</th></tr>
+<tr><td>Control Type</td><td>Entry-controlled</td><td>Exit-controlled</td></tr>
+<tr><td>Condition Check</td><td>Tested at the beginning</td><td>Tested at the end</td></tr>
+<tr><td>Minimum Executions</td><td>0 times (if condition is false initially)</td><td>At least 1 time guaranteed</td></tr>
+<tr><td>Syntax</td><td><code>while(cond) { ... }</code></td><td><code>do { ... } while(cond);</code></td></tr>
+</table></div>
+
+<p>Program: Demonstrating for loop, break/continue jump statements, and do-while loop.</p>
+<pre class="code" data-file="LoopDemo.java"><code><span class="k">public class</span> LoopDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> sum = 0;
+        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 5; i++) {
+            <span class="k">if</span> (i == 4) <span class="k">continue</span>; <span class="c">// Skip i=4</span>
+            sum += i;
+        }
+        System.out.println("Sum = " + sum);
+        <span class="k">int</span> count = 1;
+        <span class="k">do</span> {
+            System.out.print(count + " ");
+            count++;
+        } <span class="k">while</span> (count &lt;= 3);
+        System.out.println();
+    }
+}</code></pre>
+<pre class="out">Sum = 11
+1 2 3</pre>
+
+<p><b>Jump statements in detail</b> &mdash; <code>break</code> and <code>continue</code> alter the normal control flow of a loop: <code>break</code> immediately jumps to the statement right after the loop (ending it), while <code>continue</code> immediately jumps to the next iteration test, skipping only the rest of the current pass.</p>
+
+<p>Program: <code>break</code> stops the loop completely once <code>i</code> reaches 5.</p>
+<pre class="code" data-file="BreakDemo.java"><code><span class="k">public class</span> BreakDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 10; i++) {
+            <span class="k">if</span> (i == 5) {
+                <span class="k">break</span>;             <span class="c">// terminate the loop when i is 5</span>
+            }
+            System.out.println(i);
+        }
+        System.out.println("Loop is over.");
+    }
+}</code></pre>
+<pre class="out">1
+2
+3
+4
+Loop is over.</pre>
+
+<p>Program: <code>continue</code> skips only the even numbers, the loop itself keeps running to 10.</p>
+<pre class="code" data-file="ContinueDemo.java"><code><span class="k">public class</span> ContinueDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 10; i++) {
+            <span class="k">if</span> (i % 2 == 0) {
+                <span class="k">continue</span>;          <span class="c">// skip printing when i is even</span>
+            }
+            System.out.println(i);
+        }
+    }
+}</code></pre>
+<pre class="out">1
+3
+5
+7
+9</pre>
+
+<p>Program: a <mark>labelled</mark> <code>break outer</code> exits BOTH the outer and inner <code>for</code> loops in one step, the moment <code>i==2 &amp;&amp; j==2</code>; a plain unlabelled <code>break</code> here would only have stopped the inner loop.</p>
+<pre class="code" data-file="LabeledLoopDemo.java"><code><span class="k">public class</span> LabeledLoopDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        outer:
+        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 3; i++) {
+            <span class="k">for</span> (<span class="k">int</span> j = 1; j &lt;= 3; j++) {
+                <span class="k">if</span> (i == 2 &amp;&amp; j == 2) {
+                    <span class="k">break</span> outer;   <span class="c">// exits BOTH loops at once</span>
+                }
+                System.out.println("i=" + i + ", j=" + j);
+            }
+        }
+        System.out.println("Loop ended");
+    }
+}</code></pre>
+<pre class="out">i=1, j=1
+i=1, j=2
+i=1, j=3
+i=2, j=1
+Loop ended</pre>
+
+<p><b>Classic loop-based programs</b> &mdash; frequent lab/exam programs that use only loops, <code>if-else</code>, and operators already covered above. Each extracts digits with the same <code>while (n &gt; 0) { r = n % 10; ...; n = n / 10; }</code> pattern and finishes with one comparison, so the same flowchart shape applies to both the Palindrome and Armstrong checks below.</p>
+
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 520 285" width="520">
+<ellipse cx="150" cy="37" rx="45" ry="16"/><text x="150" y="42">Start</text>
+<path class="arr" d="M150 53 V71"/>
+<rect x="60" y="73" width="180" height="34" rx="4"/><text x="150" y="94">Read n; temp = n</text>
+<path class="arr" d="M150 107 V125"/>
+<polygon points="150,127 220,162 150,197 80,162"/><text x="150" y="166">n &gt; 0 ?</text>
+<path class="arr" d="M150 197 V217"/><text class="s" x="168" y="210">Yes</text>
+<rect x="70" y="219" width="160" height="42" rx="6"/><text x="150" y="236">r=n%10; n=n/10</text><text x="150" y="252">update sum with r</text>
+<path class="arr" d="M70 240 H30 V162 H78"/>
+<path class="arr" d="M220 162 H340"/><text class="s" x="270" y="152">No</text>
+<rect class="hi" x="342" y="137" width="140" height="50" rx="6"/><text x="412" y="159">Compare</text><text x="412" y="175">temp with sum</text>
+</svg></div>
+<figcaption><b>Fig 1.51</b> · Shared digit-extraction loop pattern (Palindrome checks the reversed number, Armstrong checks the sum of cubes)</figcaption>
+<p class="draw">✍ Draw it: Start &rarr; read box &rarr; diamond "n&gt;0?" &rarr; Yes loops back after extracting one digit, No exits to a final compare box.</p></figure>
+
+<p>Program 1: Fibonacci series &mdash; each term is the sum of the previous two.</p>
+<pre class="code" data-file="Fibonacci.java"><code><span class="k">public class</span> Fibonacci {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> n1 = 0, n2 = 1, n3, count = 10;
+        System.out.print(n1 + " " + n2);
+        <span class="k">for</span> (<span class="k">int</span> i = 2; i &lt; count; i++) {
+            n3 = n1 + n2;
+            System.out.print(" " + n3);
+            n1 = n2;
+            n2 = n3;
+        }
+        System.out.println();
+    }
+}</code></pre>
+<pre class="out">0 1 1 2 3 5 8 13 21 34</pre>
+
+<p>Program 2: Prime number check &mdash; a number is prime if no value from 2 up to (but not including) itself divides it evenly.</p>
+<pre class="code" data-file="PrimeNum.java"><code><span class="k">public class</span> PrimeNum {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> num = 17;
+        <span class="k">int</span> flag = 0;
+        <span class="k">for</span> (<span class="k">int</span> i = 2; i &lt; num; i++) {
+            <span class="k">if</span> (num % i == 0) {
+                System.out.println(num + " is not a prime number");
+                flag = 1;
+                <span class="k">break</span>;
+            }
+        }
+        <span class="k">if</span> (flag == 0) {
+            System.out.println(num + " is a prime number");
+        }
+    }
+}</code></pre>
+<pre class="out">17 is a prime number</pre>
+
+<p>Program 3: Palindrome number check &mdash; reverse the digits with a <code>while</code> loop and compare the reversed value to the original.</p>
+<pre class="code" data-file="PalindromeCheck.java"><code><span class="k">public class</span> PalindromeCheck {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> r, sum = 0, temp;
+        <span class="k">int</span> n = 454;
+        temp = n;
+        <span class="k">while</span> (n &gt; 0) {
+            r = n % 10;
+            sum = (sum * 10) + r;
+            n = n / 10;
+        }
+        <span class="k">if</span> (temp == sum) {
+            System.out.println("Palindrome Number");
+        } <span class="k">else</span> {
+            System.out.println("Not palindrome");
+        }
+    }
+}</code></pre>
+<pre class="out">Palindrome Number</pre>
+
+<p>Program 4: Factorial using a simple <code>for</code> loop &mdash; <code>fact</code> is multiplied by every integer from 1 to <code>num</code>.</p>
+<pre class="code" data-file="Factorial.java"><code><span class="k">public class</span> Factorial {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> i, fact = 1;
+        <span class="k">int</span> num = 5;
+        <span class="k">for</span> (i = 1; i &lt;= num; i++) {
+            fact = fact * i;
+        }
+        System.out.println("Factorial of " + num + " is: " + fact);
+    }
+}</code></pre>
+<pre class="out">Factorial of 5 is: 120</pre>
+
+<p>Program 5: Armstrong number check &mdash; a 3-digit Armstrong number equals the sum of the cubes of its own digits (1&sup3;+5&sup3;+3&sup3; = 153).</p>
+<pre class="code" data-file="ArmstrongNum.java"><code><span class="k">public class</span> ArmstrongNum {
+    <span class="k">public static void</span> main(String[] args) {
+        <span class="k">int</span> sum = 0, r, temp;
+        <span class="k">int</span> n = 153;
+        temp = n;
+        <span class="k">while</span> (n &gt; 0) {
+            r = n % 10;
+            sum = sum + (r * r * r);
+            n = n / 10;
+        }
+        <span class="k">if</span> (temp == sum) {
+            System.out.println("Armstrong number");
+        } <span class="k">else</span> {
+            System.out.println("Not a Armstrong Number");
+        }
+    }
+}</code></pre>
+<pre class="out">Armstrong number</pre>
+
+<div class="recall"><b>Quick recall</b> <code>while</code> checks condition first; <code>do-while</code> executes body at least once. <code>break</code> exits loop, <code>continue</code> skips iteration. A labelled <code>break label;</code>/<code>continue label;</code> targets an outer loop from inside a nested one.</div>
+<a class="top" href="#top">↑ top</a></section>

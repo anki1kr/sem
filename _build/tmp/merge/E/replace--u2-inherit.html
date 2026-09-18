@@ -1,0 +1,71 @@
+<section class="topic" id="u2-inherit">
+<h3>2.8 Inheritance, extends and super</h3>
+<p class="hook">A child inherits the family surname and property, and can add things of its own. <span class="hg">(baap ka sab bete ko milta hai, beta apna bhi jod sakta hai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Inheritance</mark> is the mechanism by which one class (subclass / child) acquires the fields and methods of another class (superclass / parent) using the <code>extends</code> keyword. It represents an <mark>IS-A</mark> relationship and provides code reusability.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Dog<small>subclass / child</small></div><div class="ar">extends (IS-A)</div><div class="n hi">Animal<small>superclass / parent</small></div>
+</div></div><figcaption><b>Fig 2.15</b> · Dog extends Animal: Dog IS-A Animal (arrow points from child to parent)</figcaption><p class="draw">✍ Draw it: two boxes, arrow from child to parent, write "extends" on the arrow.</p></figure>
+<ul>
+<li>Syntax: <code>class Child extends Parent { ... }</code>. A class can extend <mark>only one</mark> class.</li>
+<li><mark>Reusability</mark>: write common code once in the parent; children reuse it. <span class="hg">(code dobara nahi likhna)</span></li>
+<li><mark>IS-A test</mark>: "Dog is an Animal" makes sense, so inheritance fits.</li>
+<li>Child inherits non-private members; <mark>private</mark> members and <mark>constructors</mark> are not inherited.</li>
+<li>Every class that extends nothing implicitly extends <mark>java.lang.Object</mark>, the root of all classes.</li>
+<li>A <code>final</code> class (e.g. <code>String</code>) cannot be extended.</li>
+</ul>
+<p><b>The super keyword</b> has three uses:</p>
+<div class="tw"><table>
+<tr><th>Use</th><th>Syntax</th><th>Purpose</th></tr>
+<tr><td>Parent's variable</td><td><code>super.value</code></td><td>When child has a field with the same name</td></tr>
+<tr><td>Parent's method</td><td><code>super.show()</code></td><td>Call parent version of an overridden method</td></tr>
+<tr><td>Parent's constructor</td><td><code>super(args)</code></td><td>Initialise parent part; first line of child constructor</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> super <b>V-M-C</b>: Variable, Method, Constructor.</div>
+<pre class="code" data-file="SingleInherit.java"><code><span class="k">class</span> Animal {                   <span class="c">// parent (super) class</span>
+    String name = "Animal";
+    <span class="k">void</span> eat() {
+        System.out.println(name + " is eating");
+    }
+}
+
+<span class="k">class</span> Dog <span class="k">extends</span> Animal {       <span class="c">// child (sub) class: Dog IS-A Animal</span>
+    Dog() {
+        name = "Tommy";          <span class="c">// inherited field</span>
+    }
+    <span class="k">void</span> bark() {
+        System.out.println(name + " is barking");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> SingleInherit {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Dog d = <span class="k">new</span> Dog();
+        d.eat();                 <span class="c">// inherited method</span>
+        d.bark();                <span class="c">// own method</span>
+    }
+}</code></pre>
+<pre class="out">Tommy is eating
+Tommy is barking</pre>
+<p>A child gets every <b>non-private</b> member of the parent automatically, with no re-typing. The class notes' own single-inheritance example shows this with a field instead of a method:</p>
+<pre class="code" data-file="Programmer.java"><code><span class="k">class</span> Employee {
+    <span class="k">int</span> salary = 4000;
+}
+
+<span class="k">class</span> Programmer <span class="k">extends</span> Employee {
+    <span class="k">int</span> bonus = 1000;
+
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Programmer p = <span class="k">new</span> Programmer();
+        System.out.println("Programmer salary is: " + p.salary);  <span class="c">// salary: inherited, not redeclared</span>
+        System.out.println("Bonus of programmer is: " + p.bonus);
+    }
+}</code></pre>
+<pre class="out">Programmer salary is: 4000
+Bonus of programmer is: 1000</pre>
+<figure class="fig"><div class="canvas"><div class="boxes c2">
+<div class="b"><b>Parent class</b>private fields stay hidden here; default/protected/public members are available to the child</div>
+<div class="b hi"><b>Child class</b>uses the inherited non-private members directly, as if they were its own (<code>p.salary</code> above)</div>
+</div></div><figcaption><b>Fig 2.54</b> · What a child actually receives from the parent: everything except private members and constructors</figcaption><p class="draw">✍ Draw it: two boxes side by side, Parent and Child, list what crosses over between them.</p></figure>
+<div class="note"><b>Common mistake:</b> thinking a private field is "inherited but hidden, reachable somehow". It is not reachable from the child class at all, not even indirectly, unless the parent itself exposes it through a public/protected method.</div>
+<div class="recall"><b>Quick recall</b> extends = inheritance = IS-A; super reaches parent's variable, method, constructor; Object is the root class.</div>
+<a class="top" href="#top">↑ top</a></section>

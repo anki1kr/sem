@@ -1,0 +1,608 @@
+<section class="unit" id="u2">
+<h2><span class="uno">Unit II</span>Machine Learning - Supervised Learning (Regression / Classification)</h2>
+<p class="unit-sub">Learning from labelled examples: KNN, decision trees, Naive Bayes, linear and logistic regression, SVM and kernel methods.</p>
+
+<!-- ============ 2.1 ============ -->
+<section class="topic" id="u2-intro">
+<h3>2.1 Supervised learning: regression vs classification</h3>
+<p class="hook">A teacher gives questions WITH answers; the student learns the pattern and then answers new questions. <span class="hg">(answer key ke saath padhai)</span></p>
+<div class="def"><b>Definition:</b> <mark>Supervised learning</mark> is learning a function f that maps an input x to an output y from a training set of labelled pairs (x, y), so that f can predict y for new, unseen x.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Labelled data<small>(x, y) pairs</small></div><div class="ar">train</div><div class="n hi">Model f(x)</div><div class="ar">new x</div><div class="n">Prediction ŷ</div>
+</div></div><figcaption><b>Fig 2.1</b> · Supervised learning pipeline</figcaption><p class="draw">✍ Draw it: three boxes left to right, arrows labelled "train" and "new x".</p></figure>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Supervised learning</span><ul>
+<li><span>Regression<br>(number output)</span><ul><li><span>Linear regression</span></li></ul></li>
+<li><span>Classification<br>(class output)</span><ul><li><span>KNN</span></li><li><span>Decision tree</span></li><li><span>Naive Bayes</span></li><li><span>Logistic reg.</span></li><li><span>SVM</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.2</b> · Two types of supervised learning and the algorithms of this unit</figcaption><p class="draw">✍ Draw it: root box, two children (Regression, Classification), algorithm names as leaves.</p></figure>
+<ul>
+<li><mark>Features</mark> (x) = input attributes; <mark>label / target</mark> (y) = the known answer.</li>
+<li><mark>Regression</mark>: y is continuous, e.g. predicting a flat's price or tomorrow's temperature.</li>
+<li><mark>Classification</mark>: y is a category, e.g. spam / not spam, pass / fail. <span class="hg">(dabba chunna)</span></li>
+<li><mark>Training set</mark> is used to fit the model; <mark>test set</mark> checks it on unseen data.</li>
+<li><mark>Overfitting</mark> = model memorises training data and fails on new data; <mark>underfitting</mark> = model too simple to capture the pattern.</li>
+<li>Note: KNN and decision trees can also do regression (average of neighbours / leaf mean); SVM has a regression form (SVR).</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Regression</th><th>Classification</th></tr>
+<tr><td>Output</td><td>Continuous number</td><td>Discrete class label</td></tr>
+<tr><td>Example</td><td>House price, marks</td><td>Spam / not spam</td></tr>
+<tr><td>Typical error measure</td><td>MSE, R²</td><td>Accuracy, log-loss</td></tr>
+<tr><td>Algorithm in unit</td><td>Linear regression</td><td>KNN, DT, NB, logistic, SVM</td></tr></table></div>
+<div class="recall"><b>Quick recall</b> Supervised = labelled data. Number output = regression, class output = classification.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.2 KNN ============ -->
+<section class="topic" id="u2-knn">
+<h3>2.2 Nearest-Neighbours (K-Nearest Neighbours, KNN)</h3>
+<p class="hook">"Tell me who your neighbours are, I'll tell you who you are." A new student in a hostel is guessed to like cricket if most of the nearest roommates do. <span class="hg">(jaisa padosi, waisa tum)</span></p>
+<div class="def"><b>Definition:</b> <mark>K-Nearest Neighbours</mark> is a non-parametric, instance-based supervised algorithm that classifies a new point by the <b>majority class of its k closest training points</b> (for regression: the average of their values), closeness measured by a distance such as Euclidean distance.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 490 470" width="490">
+<path class="arr" d="M40 410 H455"/><path class="arr" d="M40 410 V30"/>
+<text class="s" x="464" y="410">x</text><text class="s" x="26" y="34">y</text>
+<circle class="none dash" cx="250" cy="230" r="140"/>
+<circle class="dot" cx="70" cy="230" r="6"/><text x="70" y="212">A</text>
+<circle class="dot" cx="190" cy="290" r="6"/><text x="190" y="272">B</text>
+<circle class="dot" cx="250" cy="350" r="6"/><text class="l" x="264" y="350">C</text>
+<circle cx="310" cy="230" r="6"/><text x="310" y="212">D</text>
+<circle cx="370" cy="110" r="6"/><text x="370" y="92">E</text>
+<circle cx="310" cy="50" r="6"/><text x="310" y="32">F</text>
+<rect class="hi" x="243" y="223" width="14" height="14"/><text x="250" y="256">Q (3,3)</text>
+<circle class="dot" cx="420" cy="300" r="6"/><text class="l" x="432" y="300">Red</text>
+<circle cx="420" cy="325" r="6"/><text class="l" x="432" y="325">Blue</text>
+<rect class="hi" x="414" y="344" width="12" height="12"/><text class="l" x="432" y="350">Query</text>
+<text class="s" x="250" y="444">dashed circle holds the k = 3 nearest</text>
+</svg></div><figcaption><b>Fig 2.3</b> · KNN: query Q and the circle holding its 3 nearest neighbours (D, B, C)</figcaption><p class="draw">✍ Draw it: x-y axes, filled dots (Red), hollow dots (Blue), a square for Q, dashed circle around Q through the 3rd nearest point.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Training data + query point + k</div>
+<div class="n">Compute distance to every training point</div>
+<div class="n">Sort distances in ascending order</div>
+<div class="n">Take the k nearest points</div>
+<div class="n hi">Majority vote of their classes</div>
+<div class="n io">Output predicted class</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.4</b> · KNN algorithm flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 4 process boxes top to bottom, parallelogram, oval.</p></figure>
+<h4>Distance formulas (points p = (x1, y1), q = (x2, y2))</h4>
+<ul>
+<li><mark>Euclidean distance</mark> = √[(x1 − x2)² + (y1 − y2)²] (straight-line distance). In n dimensions: √Σ(pi − qi)².</li>
+<li><mark>Manhattan distance</mark> = |x1 − x2| + |y1 − y2| (city-block distance, like walking along Chandigarh's grid of sectors). <span class="hg">(gali-gali chal ke)</span></li>
+<li><mark>Minkowski</mark> = (Σ|pi − qi|^p)^(1/p); p = 1 gives Manhattan, p = 2 gives Euclidean.</li>
+</ul>
+<h4>Key points</h4>
+<ul>
+<li><mark>Choosing k</mark>: small k (k = 1) is noisy and overfits; large k smooths too much and underfits. Pick k by trying values on validation data; a common rule of thumb starts near √n.</li>
+<li><mark>Odd k</mark> for two classes avoids a tie in voting (k = 3, 5, 7).</li>
+<li><mark>Feature scaling</mark> is compulsory: a feature measured in lakhs (salary) swamps one measured in years (age). Use min-max normalisation or standardisation first.</li>
+<li><mark>Lazy learner</mark>: no training phase, it just stores data; all work happens at prediction time, so prediction is slow for big data. <span class="hg">(exam ke din hi padhta hai)</span></li>
+<li><mark>Weighted KNN</mark>: closer neighbours get larger vote weight (e.g. 1/distance).</li>
+</ul>
+<div class="ex"><b>Worked example</b> (values computed in Python, 3 decimals)
+<div class="step">Training: A(0,3) Red, B(2,2) Red, C(3,1) Red, D(4,3) Blue, E(5,5) Blue, F(4,6) Blue. Query Q = (3,3), k = 3.</div>
+<div class="tw"><table><tr><th>Point</th><th>Class</th><th>Euclidean = √[(x−3)² + (y−3)²]</th><th>Distance</th><th>Manhattan</th><th>Rank</th></tr>
+<tr><td>D(4,3)</td><td>Blue</td><td>√(1 + 0) = √1</td><td>1.000</td><td>1</td><td>1</td></tr>
+<tr><td>B(2,2)</td><td>Red</td><td>√(1 + 1) = √2</td><td>1.414</td><td>2</td><td>2</td></tr>
+<tr><td>C(3,1)</td><td>Red</td><td>√(0 + 4) = √4</td><td>2.000</td><td>2</td><td>3</td></tr>
+<tr><td>E(5,5)</td><td>Blue</td><td>√(4 + 4) = √8</td><td>2.828</td><td>4</td><td>4</td></tr>
+<tr><td>A(0,3)</td><td>Red</td><td>√(9 + 0) = √9</td><td>3.000</td><td>3</td><td>5</td></tr>
+<tr><td>F(4,6)</td><td>Blue</td><td>√(1 + 9) = √10</td><td>3.162</td><td>4</td><td>6</td></tr></table></div>
+<div class="step">k = 3 nearest: D (Blue), B (Red), C (Red) → votes Red = 2, Blue = 1.</div>
+<div class="step">Compare k = 1: only D → Blue. So the answer depends on k.</div>
+<span class="ans">k = 3 → Q is classified Red</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Very simple, no training time</td><td>Slow prediction (distance to every point)</td></tr>
+<tr><td>Works for classification and regression</td><td>Needs feature scaling</td></tr>
+<tr><td>Naturally handles many classes</td><td>Sensitive to noise and irrelevant features</td></tr>
+<tr><td>Non-linear boundaries for free</td><td>Poor in high dimensions (curse of dimensionality); memory heavy</td></tr></table></div>
+<ul><li><mark>Applications</mark>: recommendation ("users similar to you liked"), handwritten digit recognition, simple medical diagnosis from similar patients, filling missing values (KNN imputation).</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>D-S-K-V</b>: <b>D</b>istance to all, <b>S</b>ort, pick <b>K</b>, <b>V</b>ote.</div>
+<div class="note"><b>Common mistake:</b> KNN has no "training" of weights. "k" is the number of neighbours, not the number of classes or clusters (that is k-means, an unsupervised method).</div>
+<div class="recall"><b>Quick recall</b> KNN = lazy learner; find k nearest by Euclidean distance, majority vote; odd k, scale features.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.3 DECISION TREE ============ -->
+<section class="topic" id="u2-dt">
+<h3>2.3 Decision Trees (ID3, entropy, information gain, Gini)</h3>
+<p class="hook">A decision tree is a game of "20 questions": ask the most useful question first, then keep asking until the answer is clear. <span class="hg">(sawaal pe sawaal, jawab tak)</span></p>
+<div class="def"><b>Definition:</b> A <mark>decision tree</mark> is a tree-shaped supervised model in which each <b>internal node</b> tests an attribute, each <b>branch</b> is an outcome of the test, and each <b>leaf node</b> holds a class label (or a value, for regression). Prediction follows one path from root to leaf.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 320" width="580">
+<rect class="hi" x="200" y="20" width="160" height="44" rx="4"/><text class="b" x="280" y="42">Outlook</text>
+<path class="arr" d="M280 64 L120 140"/><text class="r" x="190" y="92">Sunny</text>
+<path class="arr" d="M280 64 L400 140"/><text class="l" x="352" y="92">Rainy</text>
+<rect x="60" y="140" width="120" height="44" rx="22"/><text x="120" y="162">Yes (Play)</text>
+<rect class="hi" x="340" y="140" width="120" height="44" rx="4"/><text class="b" x="400" y="162">Wind</text>
+<path class="arr" d="M400 184 L325 250"/><text class="r" x="352" y="214">Strong</text>
+<path class="arr" d="M400 184 L485 250"/><text class="l" x="448" y="214">Weak</text>
+<rect x="270" y="250" width="110" height="44" rx="22"/><text x="325" y="272">No</text>
+<rect x="430" y="250" width="110" height="44" rx="22"/><text x="485" y="272">Yes (Play)</text>
+<text class="s" x="120" y="220">leaf</text><text class="s" x="120" y="236">(pure: 5 Yes)</text>
+<text class="s" x="470" y="42">root node</text>
+</svg></div><figcaption><b>Fig 2.5</b> · Decision tree built by ID3 from Table 2.3 (rectangles = attribute tests, rounded = leaves)</figcaption><p class="draw">✍ Draw it: root box "Outlook", two branches; Sunny → leaf Yes; Rainy → box "Wind" → Strong: No, Weak: Yes.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Training set S, attribute list</div>
+<div class="n">Compute entropy H(S)</div>
+<div class="n">Compute Gain(S, A) for each attribute</div>
+<div class="n hi">Choose attribute with highest gain as node</div>
+<div class="n">Split S into subsets, one per value</div>
+<div class="n d">Subset pure or no attribute left?</div>
+<div class="n">Yes: make leaf (majority class). No: repeat for subset</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.6</b> · ID3 decision-tree construction flowchart (recursive)</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 4 boxes, diamond "pure?", box "leaf / repeat", oval.</p></figure>
+<h4>Formulas</h4>
+<ul>
+<li><mark>Entropy</mark> (impurity, disorder): H(S) = − Σ pi log₂ pi, where pi = fraction of class i. H = 0 for a pure set; H = 1 for a 50-50 two-class set. <span class="hg">(kitna ghalmel hai)</span></li>
+<li><mark>Information gain</mark>: Gain(S, A) = H(S) − Σ (|Sv| / |S|) · H(Sv). ID3 picks the attribute with <b>maximum gain</b>.</li>
+<li><mark>Gini index</mark> (used by <mark>CART</mark>): Gini(S) = 1 − Σ pi². 0 = pure, 0.5 = worst for two classes. CART picks the split with the <b>lowest weighted Gini</b> and builds binary trees.</li>
+<li><mark>ID3</mark> (Quinlan) uses information gain; <mark>C4.5</mark> improves it with gain ratio and handles numeric attributes; <mark>CART</mark> uses Gini.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (ID3, computed in Python, 4 decimals) · <b>Table 2.3</b> Play cricket?
+<div class="tw"><table><tr><th>#</th><th>Outlook</th><th>Wind</th><th>Humidity</th><th>Play</th></tr>
+<tr><td>1</td><td>Rainy</td><td>Strong</td><td>High</td><td>No</td></tr>
+<tr><td>2</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>3</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>4</td><td>Rainy</td><td>Strong</td><td>Normal</td><td>No</td></tr>
+<tr><td>5</td><td>Rainy</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>6</td><td>Sunny</td><td>Strong</td><td>Normal</td><td>Yes</td></tr>
+<tr><td>7</td><td>Sunny</td><td>Strong</td><td>Normal</td><td>Yes</td></tr>
+<tr><td>8</td><td>Sunny</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>9</td><td>Sunny</td><td>Weak</td><td>High</td><td>Yes</td></tr>
+<tr><td>10</td><td>Sunny</td><td>Weak</td><td>Normal</td><td>Yes</td></tr></table></div>
+<div class="step">Step 1 · Parent: 6 Yes, 4 No. H(S) = −0.6 log₂0.6 − 0.4 log₂0.4 = 0.6(0.7370) + 0.4(1.3219) = 0.9710</div>
+<div class="step">Step 2 · Outlook: Sunny 5Y/0N → H = 0; Rainy 1Y/4N → H = −0.2 log₂0.2 − 0.8 log₂0.8 = 0.7219</div>
+<div class="step">  weighted = (5/10)(0) + (5/10)(0.7219) = 0.3610 → Gain = 0.9710 − 0.3610 = 0.6100</div>
+<div class="step">Step 3 · Wind: Strong 2Y/4N → H = 0.9183; Weak 4Y/0N → H = 0</div>
+<div class="step">  weighted = (6/10)(0.9183) + (4/10)(0) = 0.5510 → Gain = 0.4200</div>
+<div class="step">Step 4 · Humidity: High 3Y/1N → H = 0.8113; Normal 3Y/3N → H = 1.0000</div>
+<div class="step">  weighted = (4/10)(0.8113) + (6/10)(1) = 0.9245 → Gain = 0.0464</div>
+<div class="step">Step 5 · Highest gain = Outlook (0.6100) → ROOT. Sunny branch is pure → leaf Yes.</div>
+<div class="step">Step 6 · Rainy subset (1Y/4N, H = 0.7219): Gain(Wind) = 0.7219, Gain(Humidity) = 0.3219 → split on Wind. Strong → No (4/4), Weak → Yes (1/1): all leaves pure.</div>
+<div class="step">Gini check: Gini(parent) = 1 − (0.6² + 0.4²) = 0.4800; weighted Gini: Outlook 0.1600, Wind 0.2667, Humidity 0.4500 → lowest is Outlook, same root.</div>
+<span class="ans">Root = Outlook; tree of Fig 2.5. New day (Rainy, Weak) → Play = Yes</span></div>
+<h4>Overfitting and pruning</h4>
+<ul>
+<li><mark>Overfitting</mark>: a fully grown tree keeps splitting until every leaf is pure, learning noise; it scores well on training data but poorly on test data.</li>
+<li><mark>Pre-pruning</mark> (early stopping): stop growing when depth limit, minimum samples per node, or minimum gain is reached.</li>
+<li><mark>Post-pruning</mark>: grow the full tree, then remove sub-trees that do not improve accuracy on validation data (e.g. reduced-error pruning, cost-complexity pruning in CART). <span class="hg">(faltu shaakhein kaat do)</span></li>
+</ul>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Easy to understand, can be drawn and explained as if-else rules</td><td>Overfits easily without pruning</td></tr>
+<tr><td>No feature scaling needed</td><td>Unstable: small data change can change the whole tree</td></tr>
+<tr><td>Handles categorical and numeric data</td><td>Greedy splits, not guaranteed globally best</td></tr>
+<tr><td>Fast prediction</td><td>Biased towards attributes with many values (ID3)</td></tr></table></div>
+<div class="tw"><table><tr><th>Point</th><th>ID3</th><th>CART</th></tr>
+<tr><td>Split measure</td><td>Information gain (entropy)</td><td>Gini index</td></tr>
+<tr><td>Tree shape</td><td>Multi-way splits</td><td>Binary splits</td></tr>
+<tr><td>Task</td><td>Classification</td><td>Classification and regression</td></tr></table></div>
+<ul><li><mark>Applications</mark>: loan approval rules at banks, medical diagnosis checklists, customer churn prediction, base learner of Random Forest.</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>E-G-S-R</b>: <b>E</b>ntropy, <b>G</b>ain for each attribute, <b>S</b>plit on best, <b>R</b>epeat till pure.</div>
+<div class="note"><b>Common mistake:</b> ID3 picks the HIGHEST information gain but the LOWEST Gini / entropy after split. Also use log base 2, not log base 10.</div>
+<div class="recall"><b>Quick recall</b> H = −Σp log₂p; Gain = H(parent) − weighted H(children); Gini = 1 − Σp²; prune to stop overfitting.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.4 NAIVE BAYES ============ -->
+<section class="topic" id="u2-nb">
+<h3>2.4 Naive Bayes classifier</h3>
+<p class="hook">A doctor guesses the disease by combining "how common is it" with "how typical are these symptoms for it". <span class="hg">(pehle ka andaaza + naya saboot)</span></p>
+<div class="def"><b>Definition:</b> <mark>Naive Bayes</mark> is a probabilistic classifier based on <mark>Bayes' theorem</mark> that assumes all features are <b>conditionally independent given the class</b>; it predicts the class with the highest posterior probability P(C | X).</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Prior<small>P(C)</small></div><div class="ar">×</div><div class="n">Likelihood<small>P(X | C)</small></div><div class="ar">÷ P(X)</div><div class="n hi">Posterior<small>P(C | X)</small></div>
+</div></div><figcaption><b>Fig 2.7</b> · Bayes' theorem as a pipeline: prior × likelihood, normalised by evidence</figcaption><p class="draw">✍ Draw it: three boxes, arrows labelled "×" and "÷ P(X)".</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Training table + new sample X</div>
+<div class="n">Prior P(C) = class count / total</div>
+<div class="n">Likelihood P(xi | C) for each feature</div>
+<div class="n">Score = P(C) × Π P(xi | C)</div>
+<div class="n hi">Pick class with the largest score</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.8</b> · Naive Bayes classification flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 3 process boxes, highlighted box, oval.</p></figure>
+<ul>
+<li><mark>Bayes' theorem</mark>: P(C | X) = P(X | C) · P(C) / P(X).</li>
+<li><mark>Prior</mark> P(C): belief about the class before seeing features.</li>
+<li><mark>Likelihood</mark> P(X | C): how probable the features are if the class is C.</li>
+<li><mark>Posterior</mark> P(C | X): updated probability after seeing features. <mark>Evidence</mark> P(X) is the same for every class, so it can be ignored when comparing.</li>
+<li><mark>Conditional independence</mark> ("naive" assumption): P(x1, x2, …, xn | C) = P(x1 | C) · P(x2 | C) ⋯ P(xn | C). Rarely true in real life, yet the classifier works well. <span class="hg">(sab features apne-apne, bhole-bhaale)</span></li>
+<li><mark>Laplace smoothing</mark>: if any count is 0, the whole product becomes 0. Use P(xi | C) = (count + 1) / (nC + k), where k = number of values of that feature.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · <b>Table 2.4</b>
+<div class="tw"><table><tr><th>#</th><th>Weather</th><th>Temp</th><th>Play</th></tr>
+<tr><td>1</td><td>Sunny</td><td>Hot</td><td>No</td></tr><tr><td>2</td><td>Sunny</td><td>Mild</td><td>Yes</td></tr>
+<tr><td>3</td><td>Rainy</td><td>Mild</td><td>Yes</td></tr><tr><td>4</td><td>Rainy</td><td>Hot</td><td>No</td></tr>
+<tr><td>5</td><td>Sunny</td><td>Mild</td><td>Yes</td></tr><tr><td>6</td><td>Rainy</td><td>Mild</td><td>No</td></tr>
+<tr><td>7</td><td>Sunny</td><td>Hot</td><td>Yes</td></tr><tr><td>8</td><td>Rainy</td><td>Mild</td><td>Yes</td></tr></table></div>
+<div class="step">Classify X = (Weather = Sunny, Temp = Mild).</div>
+<div class="step">Priors: P(Yes) = 5/8, P(No) = 3/8</div>
+<div class="step">Likelihoods: P(Sunny | Yes) = 3/5, P(Mild | Yes) = 4/5; P(Sunny | No) = 1/3, P(Mild | No) = 1/3</div>
+<div class="step">Score(Yes) = 5/8 × 3/5 × 4/5 = 0.3000</div>
+<div class="step">Score(No)  = 3/8 × 1/3 × 1/3 = 0.0417</div>
+<div class="step">Normalised: P(Yes | X) = 0.3000 / (0.3000 + 0.0417) = 0.8780</div>
+<div class="step">With Laplace smoothing (k = 2 values each): Yes = 5/8 × 4/7 × 5/7 = 0.2551; No = 3/8 × 2/5 × 2/5 = 0.0600 → still Yes.</div>
+<span class="ans">Play = Yes (posterior ≈ 0.878)</span></div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Naive Bayes types</span><ul>
+<li><span>Gaussian<br>(continuous)</span></li><li><span>Multinomial<br>(counts)</span></li><li><span>Bernoulli<br>(0/1 features)</span></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.9</b> · Types of Naive Bayes</figcaption><p class="draw">✍ Draw it: one root, three leaf boxes with data type in brackets.</p></figure>
+<ul>
+<li><mark>Gaussian NB</mark>: continuous features, assumes each follows a normal distribution per class (e.g. height, marks).</li>
+<li><mark>Multinomial NB</mark>: count features such as word frequencies in a document (text classification).</li>
+<li><mark>Bernoulli NB</mark>: binary features, word present / absent.</li>
+</ul>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Very fast to train and predict</td><td>Independence assumption rarely holds</td></tr>
+<tr><td>Works with small training data</td><td>Zero-frequency problem (needs smoothing)</td></tr>
+<tr><td>Handles many features and classes (text)</td><td>Probability values are poorly calibrated</td></tr>
+<tr><td>Not badly affected by irrelevant features</td><td>Cannot learn feature interactions</td></tr></table></div>
+<ul><li><mark>Applications</mark>: spam filtering, sentiment analysis of reviews, news article categorisation, simple medical diagnosis.</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>P-L-P</b>: <b>P</b>rior × <b>L</b>ikelihood → <b>P</b>osterior.</div>
+<div class="note"><b>Common mistake:</b> P(Sunny | Yes) is counted inside the Yes rows only (3 of 5), not over all 8 rows.</div>
+<div class="recall"><b>Quick recall</b> P(C|X) ∝ P(C)·ΠP(xi|C); naive = features independent given class; Laplace fixes zeros.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.5 LINEAR REGRESSION ============ -->
+<section class="topic" id="u2-linreg">
+<h3>2.5 Linear models: Linear Regression</h3>
+<p class="hook">Fit the straightest ruler line through scattered dots so that the dots are, on average, as close to the line as possible. <span class="hg">(beech se seedhi line)</span></p>
+<div class="def"><b>Definition:</b> <mark>Linear regression</mark> is a supervised regression method that models a continuous output as a linear function of the input, y = b₀ + b₁x, with b₀ (intercept) and b₁ (slope) found by the <mark>least squares</mark> method, i.e. minimising the sum of squared errors.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 300" width="600">
+<path class="arr" d="M60 260 H570"/><path class="arr" d="M60 260 V22"/>
+<text class="s" x="140" y="278">1</text><text class="s" x="220" y="278">2</text><text class="s" x="300" y="278">3</text><text class="s" x="380" y="278">4</text><text class="s" x="460" y="278">5</text><text class="s" x="540" y="278">6</text>
+<text class="s r" x="50" y="191">2</text><text class="s r" x="50" y="123">4</text><text class="s r" x="50" y="54">6</text>
+<path class="acc" d="M60 184.6 L540 61.1"/>
+<line class="dash" x1="140" y1="191.4" x2="140" y2="164"/><line class="dash" x1="220" y1="122.9" x2="220" y2="143.4"/>
+<line class="dash" x1="300" y1="88.6" x2="300" y2="122.9"/><line class="dash" x1="380" y1="122.9" x2="380" y2="102.3"/>
+<line class="dash" x1="460" y1="88.6" x2="460" y2="81.7"/>
+<circle class="dot" cx="140" cy="191.4" r="5"/><circle class="dot" cx="220" cy="122.9" r="5"/><circle class="dot" cx="300" cy="88.6" r="5"/><circle class="dot" cx="380" cy="122.9" r="5"/><circle class="dot" cx="460" cy="88.6" r="5"/>
+<circle class="hi" cx="540" cy="61.1" r="6"/><text class="r" x="526" y="40">ŷ(6) = 5.8</text>
+<text class="l b" x="80" y="40">ŷ = 2.2 + 0.6x</text>
+<text class="s l" x="160" y="222">dashed = residual (y − ŷ)</text>
+</svg></div><figcaption><b>Fig 2.10</b> · Least-squares line through the 5 points of the worked example, with residuals</figcaption><p class="draw">✍ Draw it: axes, 5 dots, one straight line through their middle, short vertical dashes from each dot to the line.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Data points (x, y)</div>
+<div class="n">Find means x̄ and ȳ</div>
+<div class="n">b₁ = Σ(x−x̄)(y−ȳ) / Σ(x−x̄)²</div>
+<div class="n">b₀ = ȳ − b₁x̄</div>
+<div class="n hi">Predict ŷ = b₀ + b₁x</div>
+<div class="n">Evaluate SSE, MSE, R²</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.11</b> · Simple linear regression (least squares) flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 5 boxes with the formulas, oval.</p></figure>
+<ul>
+<li><mark>Model</mark>: y = b₀ + b₁x + ε; b₀ = intercept (value when x = 0), b₁ = slope (change in y per unit x), ε = error.</li>
+<li><mark>Residual</mark> e = y − ŷ. <mark>Least squares</mark> chooses b₀, b₁ to minimise SSE = Σ(y − ŷ)².</li>
+<li><mark>MSE</mark> = SSE / n. <mark>R²</mark> = 1 − SSE/SST, where SST = Σ(y − ȳ)²; R² = fraction of variance explained (1 = perfect fit).</li>
+<li><mark>Gradient descent</mark> (iterative alternative): (1) start with b₀ = b₁ = 0; (2) compute gradient of MSE w.r.t. each coefficient; (3) update b ← b − α·gradient (α = learning rate) and repeat until the error stops falling.</li>
+<li><mark>Multiple linear regression</mark>: y = b₀ + b₁x₁ + b₂x₂ + … + bₙxₙ (many inputs, e.g. price from area, rooms, floor).</li>
+<li>Assumptions: linear relation, independent errors, constant error variance, no strong multicollinearity.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python) · x = hours studied, y = test score (out of 10)
+<div class="tw"><table><tr><th>x</th><th>y</th><th>x − x̄</th><th>y − ȳ</th><th>(x−x̄)(y−ȳ)</th><th>(x−x̄)²</th><th>ŷ</th><th>e = y − ŷ</th><th>e²</th></tr>
+<tr><td>1</td><td>2</td><td>−2</td><td>−2</td><td>4</td><td>4</td><td>2.8</td><td>−0.8</td><td>0.64</td></tr>
+<tr><td>2</td><td>4</td><td>−1</td><td>0</td><td>0</td><td>1</td><td>3.4</td><td>0.6</td><td>0.36</td></tr>
+<tr><td>3</td><td>5</td><td>0</td><td>1</td><td>0</td><td>0</td><td>4.0</td><td>1.0</td><td>1.00</td></tr>
+<tr><td>4</td><td>4</td><td>1</td><td>0</td><td>0</td><td>1</td><td>4.6</td><td>−0.6</td><td>0.36</td></tr>
+<tr><td>5</td><td>5</td><td>2</td><td>1</td><td>2</td><td>4</td><td>5.2</td><td>−0.2</td><td>0.04</td></tr>
+<tr><th>Σ</th><th></th><th></th><th></th><th>6</th><th>10</th><th></th><th></th><th>2.40</th></tr></table></div>
+<div class="step">x̄ = 15/5 = 3, ȳ = 20/5 = 4</div>
+<div class="step">b₁ = 6 / 10 = 0.6;  b₀ = 4 − 0.6 × 3 = 2.2  →  ŷ = 2.2 + 0.6x</div>
+<div class="step">Predict x = 6: ŷ = 2.2 + 0.6 × 6 = 5.8</div>
+<div class="step">SSE = 2.40;  MSE = 2.40 / 5 = 0.48</div>
+<div class="step">SST = Σ(y − ȳ)² = 4 + 0 + 1 + 0 + 1 = 6;  R² = 1 − 2.40/6 = 0.60</div>
+<span class="ans">ŷ = 2.2 + 0.6x, ŷ(6) = 5.8, MSE = 0.48, R² = 0.60</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Simple, fast, closed-form solution</td><td>Only captures linear relationships</td></tr>
+<tr><td>Coefficients are easy to interpret</td><td>Very sensitive to outliers (squared error)</td></tr>
+<tr><td>Basis for many advanced models</td><td>Assumptions (constant variance etc.) often violated</td></tr></table></div>
+<ul><li><mark>Applications</mark>: house price estimation, sales forecasting from ad spend, predicting marks from study hours, crop yield from rainfall.</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>M-S-I-P</b>: <b>M</b>eans, <b>S</b>lope, <b>I</b>ntercept, <b>P</b>redict.</div>
+<div class="note"><b>Common mistake:</b> compute b₁ BEFORE b₀ (b₀ needs b₁). And R² = 1 − SSE/SST, not SSE/SST.</div>
+<div class="recall"><b>Quick recall</b> b₁ = Σ(x−x̄)(y−ȳ)/Σ(x−x̄)², b₀ = ȳ − b₁x̄; least squares minimises SSE; R² = 1 − SSE/SST.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.6 LOGISTIC REGRESSION ============ -->
+<section class="topic" id="u2-logreg">
+<h3>2.6 Linear models: Logistic Regression</h3>
+<p class="hook">Take the linear score, squash it into a probability between 0 and 1, then say "Yes" if it is above 0.5. <span class="hg">(score ko 0-1 mein dabao)</span></p>
+<div class="def"><b>Definition:</b> <mark>Logistic regression</mark> is a supervised <b>classification</b> method that models the probability of the positive class as p = σ(z) = 1 / (1 + e^(−z)), where z = w₀ + w₁x₁ + … + wₙxₙ, and assigns class 1 when p ≥ 0.5.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 290" width="600">
+<path class="arr" d="M50 240 H570"/><path class="arr" d="M300 250 V26"/>
+<line class="dash" x1="60" y1="40" x2="540" y2="40"/><line class="dash" x1="60" y1="140" x2="540" y2="140"/>
+<text class="r s" x="52" y="40">1.0</text><text class="r s" x="52" y="140">0.5</text><text class="r s" x="52" y="240">0</text>
+<text class="s" x="60" y="260">−6</text><text class="s" x="314" y="260">0</text><text class="s" x="540" y="260">6</text><text class="s" x="556" y="224">z</text>
+<polyline class="acc" points="60,239.5 80,239.2 100,238.7 120,237.8 140,236.4 160,234.1 180,230.5 200,224.8 220,216.2 240,203.5 260,186.2 280,164.5 300,140.0 320,115.5 340,93.8 360,76.5 380,63.8 400,55.2 420,49.5 440,45.9 460,43.6 480,42.2 500,41.3 520,40.8 540,40.5"/>
+<circle class="dot acc" cx="340" cy="93.8" r="5"/><text class="l s" x="354" y="102">z = 1, p = 0.731</text>
+<text class="s" x="440" y="170">predict 1 (p ≥ 0.5)</text><text class="s" x="150" y="110">predict 0 (p &lt; 0.5)</text>
+</svg></div><figcaption><b>Fig 2.12</b> · Sigmoid (S-curve) σ(z), plotted from computed values; threshold 0.5 at z = 0</figcaption><p class="draw">✍ Draw it: axes, dashed lines at 0.5 and 1, an S-shaped curve passing through (0, 0.5).</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Input x, weights w</div>
+<div class="n">z = w₀ + w₁x₁ + … + wₙxₙ</div>
+<div class="n">p = 1 / (1 + e^(−z))</div>
+<div class="n d">p ≥ 0.5 ?</div>
+<div class="n hi">Yes: class 1 · No: class 0</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.13</b> · Logistic regression prediction flowchart (weights learned by minimising log-loss)</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 2 boxes (z, sigmoid), diamond, result box, oval.</p></figure>
+<ul>
+<li><mark>Sigmoid</mark> σ(z) = 1/(1 + e^(−z)): σ(0) = 0.5, σ(+∞) → 1, σ(−∞) → 0.</li>
+<li><mark>Log-odds (logit)</mark>: ln[p / (1 − p)] = z = w₀ + w₁x. The model is linear in the log-odds, hence a "linear model".</li>
+<li><mark>Decision boundary</mark>: p = 0.5 exactly where z = 0, i.e. w₀ + w₁x₁ + … = 0 → a straight line / hyperplane.</li>
+<li><mark>Log-loss</mark> (binary cross-entropy): L = −[y ln p + (1 − y) ln(1 − p)]; weights are learned by minimising it with gradient descent (no closed form).</li>
+<li>Multi-class: one-vs-rest or softmax (multinomial) logistic regression.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (computed in Python, 4 decimals) · pass / fail from hours studied, learned weights w₀ = −4, w₁ = 1
+<div class="step">Student with 5 hours: z = −4 + 1 × 5 = 1</div>
+<div class="step">p = 1 / (1 + e^(−1)) = 1 / (1 + 0.3679) = 0.7311 ≥ 0.5 → Pass</div>
+<div class="step">If actual y = 1: log-loss = −ln(0.7311) = 0.3133</div>
+<div class="step">Student with 3 hours: z = −1, p = 0.2689 &lt; 0.5 → Fail</div>
+<div class="step">Boundary: z = 0 → −4 + x = 0 → x = 4 hours (p = 0.5)</div>
+<span class="ans">5 hours → p = 0.7311 → Pass; boundary at 4 hours</span></div>
+<div class="tw"><table><tr><th>Point</th><th>Linear regression</th><th>Logistic regression</th></tr>
+<tr><td>Task</td><td>Regression</td><td>Classification</td></tr>
+<tr><td>Output</td><td>Any real number</td><td>Probability 0 to 1, then class</td></tr>
+<tr><td>Function</td><td>ŷ = b₀ + b₁x</td><td>p = σ(w₀ + w₁x)</td></tr>
+<tr><td>Curve</td><td>Straight line</td><td>S-shaped sigmoid</td></tr>
+<tr><td>Loss</td><td>Squared error (MSE)</td><td>Log-loss (cross-entropy)</td></tr>
+<tr><td>Fitting</td><td>Closed-form least squares</td><td>Iterative (gradient descent)</td></tr></table></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Gives probabilities, not just labels</td><td>Linear decision boundary only</td></tr>
+<tr><td>Fast, simple, interpretable weights</td><td>Needs feature engineering for non-linear data</td></tr>
+<tr><td>Less prone to overfitting with regularisation</td><td>Affected by strongly correlated features</td></tr></table></div>
+<ul><li><mark>Applications</mark>: credit default risk, email spam detection, disease yes/no prediction, click-through prediction for online ads.</li></ul>
+<div class="note"><b>Common mistake:</b> despite the name, logistic regression is a CLASSIFICATION algorithm.</div>
+<div class="recall"><b>Quick recall</b> p = 1/(1+e^(−z)); log-odds linear; boundary at p = 0.5 (z = 0); loss = log-loss.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.7 SVM ============ -->
+<section class="topic" id="u2-svm">
+<h3>2.7 Linear models: Support Vector Machines (SVM)</h3>
+<p class="hook">Separate two groups with the widest possible road, not just any line; the points touching the road's edges decide where it goes. <span class="hg">(sabse chaudi sadak beech mein)</span></p>
+<div class="def"><b>Definition:</b> A <mark>Support Vector Machine</mark> is a supervised classifier that finds the <mark>hyperplane</mark> w·x + b = 0 separating two classes with the <b>maximum margin</b>; the training points lying on the margin boundaries are called <mark>support vectors</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 440" width="540">
+<path class="dash" d="M60 360 L380 40"/><path class="acc" d="M80 400 L440 40"/><path class="dash" d="M140 400 L500 40"/>
+<text class="s" x="380" y="28">−1</text><text class="s" x="440" y="28">0</text><text class="s" x="500" y="28">+1</text>
+<circle cx="110" cy="190" r="7"/><circle cx="160" cy="130" r="7"/><circle cx="80" cy="260" r="7"/><circle cx="210" cy="110" r="7"/>
+<circle cx="180" cy="240" r="7"/><circle class="none" cx="180" cy="240" r="13"/>
+<circle cx="240" cy="180" r="7"/><circle class="none" cx="240" cy="180" r="13"/>
+<circle class="dot" cx="380" cy="260" r="7"/><circle class="dot" cx="330" cy="350" r="7"/><circle class="dot" cx="420" cy="190" r="7"/><circle class="dot" cx="430" cy="330" r="7"/>
+<circle class="dot" cx="300" cy="240" r="7"/><circle class="none" cx="300" cy="240" r="13"/>
+<circle class="dot" cx="240" cy="300" r="7"/><circle class="none" cx="240" cy="300" r="13"/>
+<path class="arr2" d="M213 207 L273 267"/>
+<text class="l s" x="300" y="292">margin = 2/‖w‖</text>
+<circle cx="400" cy="395" r="6"/><text class="l s" x="412" y="395">class −1</text>
+<circle class="dot" cx="400" cy="418" r="6"/><text class="l s" x="412" y="418">class +1</text>
+<text class="l s" x="24" y="425">line labels = value of w·x + b</text>
+</svg></div><figcaption><b>Fig 2.14</b> · SVM: hyperplane (solid), margin boundaries w·x + b = ±1 (dashed), support vectors ringed</figcaption><p class="draw">✍ Draw it: three parallel slanted lines (middle solid), hollow dots on one side, filled dots on the other, ring the dots touching the dashed lines, double arrow for margin.</p></figure>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n io">Labelled data, yi ∈ {−1, +1}</div>
+<div class="n">Choose kernel and C</div>
+<div class="n">Solve: maximise margin 2/‖w‖</div>
+<div class="n">subject to yi(w·xi + b) ≥ 1</div>
+<div class="n hi">Keep support vectors, get w, b</div>
+<div class="n io">Predict sign(w·x + b)</div>
+<div class="n t">Stop</div>
+</div></div><figcaption><b>Fig 2.15</b> · SVM training and prediction flowchart</figcaption><p class="draw">✍ Draw it: oval, parallelogram, 4 boxes, parallelogram, oval.</p></figure>
+<ul>
+<li><mark>Hyperplane</mark>: w·x + b = 0 (a line in 2D, plane in 3D). w = normal (perpendicular) vector, b = bias.</li>
+<li><mark>Margin</mark>: distance between the planes w·x + b = +1 and w·x + b = −1, equal to <b>2/‖w‖</b>. Maximising margin = minimising ½‖w‖².</li>
+<li><mark>Support vectors</mark>: points with yi(w·xi + b) = 1, lying on the margin boundary; only they decide the hyperplane. Removing other points does not change it.</li>
+<li><mark>Hard margin</mark>: no point allowed inside the margin; works only for perfectly separable data.</li>
+<li><mark>Soft margin</mark>: slack variables ξi allow some violations; minimise ½‖w‖² + C Σξi. <mark>C</mark> large = few violations, narrow margin (risk overfit); C small = wide margin, more violations. <span class="hg">(C = galti ki saza)</span></li>
+<li>Prediction: class = sign(w·x + b). Multi-class via one-vs-one or one-vs-rest.</li>
+</ul>
+<div class="tw"><table><tr><th>Point</th><th>Hard margin</th><th>Soft margin</th></tr>
+<tr><td>Errors allowed</td><td>None</td><td>Some (slack ξ)</td></tr>
+<tr><td>Data needed</td><td>Linearly separable</td><td>Overlapping / noisy is fine</td></tr>
+<tr><td>Control parameter</td><td>None</td><td>C (penalty)</td></tr>
+<tr><td>Outliers</td><td>Very sensitive</td><td>More robust</td></tr></table></div>
+<div class="ex"><b>Worked example</b> (computed in Python) · w = (3, 4), b = −5
+<div class="step">‖w‖ = √(3² + 4²) = √25 = 5</div>
+<div class="step">Margin width = 2/‖w‖ = 2/5 = 0.4; each side 1/‖w‖ = 0.2</div>
+<div class="step">Point (2, 0): 3(2) + 4(0) − 5 = +1 → on +1 boundary → support vector, class +1</div>
+<div class="step">Point (0, 1): 3(0) + 4(1) − 5 = −1 → on −1 boundary → support vector, class −1</div>
+<div class="step">Point (2, 1): 6 + 4 − 5 = +5 → class +1 (outside margin)</div>
+<div class="step">Point (0, 0): 0 + 0 − 5 = −5 → class −1</div>
+<span class="ans">Margin = 0.4; (2,0) and (0,1) are support vectors</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Effective in high-dimensional data (text, genes)</td><td>Slow on very large datasets</td></tr>
+<tr><td>Maximum margin gives good generalisation</td><td>Choice of kernel, C, γ needs tuning</td></tr>
+<tr><td>Memory efficient (only support vectors)</td><td>No direct probability output</td></tr>
+<tr><td>Kernels handle non-linear data</td><td>Needs feature scaling; hard to interpret</td></tr></table></div>
+<ul><li><mark>Applications</mark>: text and spam classification, handwritten digit recognition, face detection, protein / gene classification in bioinformatics.</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>H-M-S</b>: <b>H</b>yperplane in the middle, <b>M</b>argin 2/‖w‖, <b>S</b>upport vectors on the edges.</div>
+<div class="note"><b>Common mistake:</b> margin is 2/‖w‖, not 2‖w‖. Bigger ‖w‖ means SMALLER margin.</div>
+<div class="recall"><b>Quick recall</b> w·x + b = 0; maximise 2/‖w‖; support vectors on ±1; soft margin with C.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.8 KERNELS ============ -->
+<section class="topic" id="u2-kernel">
+<h3>2.8 Nonlinearity and Kernel Methods</h3>
+<p class="hook">Coins mixed on a table cannot be split by one straight stick, but lift the heavy ones up into the air and a flat sheet separates them. <span class="hg">(upar utha ke alag karo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Kernel methods</mark> handle non-linearly separable data by implicitly mapping inputs to a higher-dimensional feature space φ(x) where a linear separator exists; a <mark>kernel function</mark> K(x, z) = φ(x)·φ(z) computes the dot product in that space <b>without computing φ explicitly</b> (the kernel trick).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 320" width="620">
+<text class="b" x="160" y="30">1D: no single cut works</text>
+<path d="M30 230 H290"/>
+<circle class="dot" cx="40" cy="230" r="7"/><circle class="dot" cx="80" cy="230" r="7"/>
+<circle cx="120" cy="230" r="7"/><circle cx="160" cy="230" r="7"/><circle cx="200" cy="230" r="7"/>
+<circle class="dot" cx="240" cy="230" r="7"/><circle class="dot" cx="280" cy="230" r="7"/>
+<text class="s" x="40" y="254">−3</text><text class="s" x="80" y="254">−2</text><text class="s" x="120" y="254">−1</text><text class="s" x="160" y="254">0</text><text class="s" x="200" y="254">1</text><text class="s" x="240" y="254">2</text><text class="s" x="280" y="254">3</text>
+<path class="arr" d="M300 200 H368"/><text class="s" x="335" y="170">φ(x) = (x, x²)</text>
+<text class="b" x="470" y="30">2D: a line separates</text>
+<path class="arr" d="M370 280 H590"/><path class="arr" d="M470 290 V46"/>
+<line class="acc dash" x1="370" y1="217.5" x2="580" y2="217.5"/><text class="l s" x="372" y="204">x² = 2.5</text>
+<circle class="dot" cx="380" cy="55" r="7"/><circle class="dot" cx="410" cy="180" r="7"/>
+<circle cx="440" cy="255" r="7"/><circle cx="470" cy="280" r="7"/><circle cx="500" cy="255" r="7"/>
+<circle class="dot" cx="530" cy="180" r="7"/><circle class="dot" cx="560" cy="55" r="7"/>
+<text class="s" x="160" y="290">filled: |x| ≥ 2 · hollow: |x| ≤ 1</text>
+</svg></div><figcaption><b>Fig 2.16</b> · Mapping 1D data x → (x, x²): inseparable on a line, separable by the line x² = 2.5 in 2D</figcaption><p class="draw">✍ Draw it: left, a number line with filled dots at both ends and hollow dots in the middle; arrow φ; right, a U-shaped set of dots with a horizontal dashed line between the groups.</p></figure>
+<table><tr><th>x</th><td>−3</td><td>−2</td><td>−1</td><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+<tr><th>x²</th><td>9</td><td>4</td><td>1</td><td>0</td><td>1</td><td>4</td><td>9</td></tr>
+<tr><th>Class</th><td>A</td><td>A</td><td>B</td><td>B</td><td>B</td><td>A</td><td>A</td></tr></table>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Input x<small>not linearly separable</small></div><div class="ar">K(x, z)</div><div class="n hi">Implicit φ(x)<small>higher dimension</small></div><div class="ar">linear SVM</div><div class="n">Non-linear boundary<small>in original space</small></div>
+</div></div><figcaption><b>Fig 2.17</b> · Kernel trick: a linear method in feature space gives a curved boundary in input space</figcaption><p class="draw">✍ Draw it: three boxes left to right, arrows labelled "K(x, z)" and "linear SVM".</p></figure>
+<h4>Why a linear boundary fails</h4>
+<ul>
+<li><mark>XOR problem</mark>: points (0,0), (1,1) in class 0 and (0,1), (1,0) in class 1 cannot be split by any single straight line.</li>
+<li><mark>Circular data</mark>: one class inside a circle, the other in a ring around it; boundary must be a circle, not a line.</li>
+<li>Fix: add features (x², xy, …) so that the data becomes <mark>linearly separable in the new space</mark> (Cover's theorem idea: higher dimension makes separation more likely).</li>
+<li>Problem: explicit mapping to very high (even infinite) dimension is costly. <mark>Kernel trick</mark>: algorithms like SVM only need dot products xi·xj, so replace them by K(xi, xj). <span class="hg">(bina upar gaye, upar wala hisaab)</span></li>
+<li>A valid kernel must be symmetric and positive semi-definite (<mark>Mercer's condition</mark>).</li>
+</ul>
+<div class="tw"><table><tr><th>Kernel</th><th>Formula</th><th>Use</th></tr>
+<tr><td>Linear</td><td>K(x, z) = x·z</td><td>Already linearly separable, text data</td></tr>
+<tr><td>Polynomial</td><td>K(x, z) = (x·z + c)^d</td><td>Feature interactions, curved boundaries (degree d)</td></tr>
+<tr><td>RBF / Gaussian</td><td>K(x, z) = exp(−γ‖x − z‖²), γ = 1/(2σ²)</td><td>Most common default; very flexible</td></tr>
+<tr><td>Sigmoid</td><td>K(x, z) = tanh(κ x·z + c)</td><td>Behaves like a neural-network neuron</td></tr></table></div>
+<div class="ex"><b>Worked example</b> (computed in Python, 3 decimals) · polynomial kernel, d = 2, c = 0, x = (1, 2), z = (3, 4)
+<div class="step">Kernel way: x·z = 1×3 + 2×4 = 11 → K = 11² = 121</div>
+<div class="step">Explicit map for d = 2: φ(v) = (v₁², √2·v₁v₂, v₂²)</div>
+<div class="step">φ(x) = (1, √2×2, 4) = (1, 2.828, 4)</div>
+<div class="step">φ(z) = (9, √2×12, 16) = (9, 16.971, 16)</div>
+<div class="step">φ(x)·φ(z) = 1×9 + 2.828×16.971 + 4×16 = 9 + 48 + 64 = 121</div>
+<div class="step">Same answer, but the kernel needed only a 2D dot product, never the 3D vectors.</div>
+<div class="step">Bonus RBF (γ = 0.5): ‖x − z‖² = 2² + 2² = 8 → K = e^(−4) = 0.018</div>
+<span class="ans">K(x, z) = (x·z)² = 121 = φ(x)·φ(z)</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Learns non-linear boundaries with linear algorithms</td><td>Choosing kernel and parameters (d, γ) is trial-and-error</td></tr>
+<tr><td>Avoids explicit high-dimensional computation</td><td>Kernel matrix is n × n: costly for large n</td></tr>
+<tr><td>Works with SVM, kernel PCA, kernel ridge regression</td><td>Harder to interpret; can overfit (large γ)</td></tr></table></div>
+<ul><li><mark>Applications</mark>: image classification with RBF-SVM, handwriting recognition, bioinformatics sequence classification, non-linear regression (kernel ridge / SVR).</li></ul>
+<div class="mn"><b>Mnemonic</b> <b>L-P-R-S</b> kernels: <b>L</b>inear, <b>P</b>olynomial, <b>R</b>BF, <b>S</b>igmoid ("Linear Polynomial Rahe Sada").</div>
+<div class="note"><b>Common mistake:</b> the kernel trick does NOT compute φ(x); it computes the dot product directly. Also √2 appears in φ so that the cross term matches 2x₁x₂z₁z₂.</div>
+<div class="recall"><b>Quick recall</b> Non-linear data → map φ to higher dimension → linear separator; K(x,z) = φ(x)·φ(z) without φ.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.9 COMPARISON ============ -->
+<section class="topic" id="u2-compare">
+<h3>2.9 Comparison of all algorithms</h3>
+<p class="hook">Same goal (predict y from x), six different ways of thinking: neighbours, questions, probabilities, lines, S-curves, widest roads. <span class="hg">(ek manzil, chhe raaste)</span></p>
+<div class="def"><b>Definition:</b> Supervised algorithms differ in <mark>how they represent the model</mark> (stored instances, rules, probabilities, weights) and in <mark>how they learn</mark> (lazy vs eager, closed-form vs iterative).</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Unit II algorithms</span><ul>
+<li><span>Instance-based</span><ul><li><span>KNN</span></li></ul></li>
+<li><span>Rule / tree</span><ul><li><span>Decision tree</span></li></ul></li>
+<li><span>Probabilistic</span><ul><li><span>Naive Bayes</span></li></ul></li>
+<li><span>Linear models</span><ul><li><span>Linear reg.</span></li><li><span>Logistic reg.</span></li><li><span>SVM (+ kernels)</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 2.18</b> · Family tree of the Unit II algorithms</figcaption><p class="draw">✍ Draw it: root, four family boxes, algorithm names under each.</p></figure>
+<div class="tw"><table><tr><th>Algorithm</th><th>Task</th><th>Model / idea</th><th>Learner type</th><th>Key formula</th><th>Scaling needed</th><th>Boundary</th><th>Main weakness</th></tr>
+<tr><td>KNN</td><td>Classif. + regr.</td><td>Majority of k nearest</td><td>Lazy</td><td>Euclidean distance</td><td>Yes</td><td>Non-linear</td><td>Slow prediction</td></tr>
+<tr><td>Decision tree</td><td>Classif. + regr.</td><td>If-else splits</td><td>Eager</td><td>Entropy, gain, Gini</td><td>No</td><td>Axis-parallel</td><td>Overfitting</td></tr>
+<tr><td>Naive Bayes</td><td>Classification</td><td>Bayes' theorem</td><td>Eager</td><td>P(C)·ΠP(xi|C)</td><td>No</td><td>Probabilistic</td><td>Independence assumption</td></tr>
+<tr><td>Linear regression</td><td>Regression</td><td>Straight-line fit</td><td>Eager</td><td>b₁ = Sxy/Sxx</td><td>Helps (for GD)</td><td>Line</td><td>Only linear, outliers</td></tr>
+<tr><td>Logistic regression</td><td>Classification</td><td>Sigmoid of linear score</td><td>Eager</td><td>1/(1+e^(−z))</td><td>Helps</td><td>Linear</td><td>Linear boundary</td></tr>
+<tr><td>SVM</td><td>Classif. (+ SVR)</td><td>Maximum margin</td><td>Eager</td><td>margin 2/‖w‖</td><td>Yes</td><td>Linear / kernel</td><td>Tuning, slow on big n</td></tr></table></div>
+<div class="mn"><b>Mnemonic</b> <b>K-D-N-L-L-S</b>: "<b>K</b>ids <b>D</b>on't <b>N</b>eed <b>L</b>ong <b>L</b>ectures, <b>S</b>ir" = KNN, Decision tree, Naive Bayes, Linear, Logistic, SVM.</div>
+<div class="recall"><b>Quick recall</b> Only KNN is lazy; only linear regression is pure regression; trees and NB need no scaling.</div>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.10 SHORT ============ -->
+<section class="topic" id="u2-short">
+<h3>2.10 Short answers (1.5 marks)</h3>
+<dl class="sa">
+<dt>Q1. Differentiate regression and classification.</dt><dd>Regression predicts a continuous value (e.g. price); classification predicts a discrete class label (e.g. spam / not spam). Linear regression vs logistic regression is the standard pair.</dd>
+<dt>Q2. Why is KNN called a lazy learner?</dt><dd>It builds no model during training; it only stores the data and does all computation (distances, voting) at prediction time.</dd>
+<dt>Q3. Write the Euclidean and Manhattan distance formulas.</dt><dd>Euclidean d = √Σ(pi − qi)²; Manhattan d = Σ|pi − qi|.</dd>
+<dt>Q4. Why is an odd value of k preferred in KNN?</dt><dd>For two-class problems an odd k prevents a tie in the majority vote.</dd>
+<dt>Q5. Define entropy.</dt><dd>Entropy measures impurity of a set: H(S) = −Σ pi log₂ pi. It is 0 for a pure set and 1 for an equal two-class split.</dd>
+<dt>Q6. What is information gain?</dt><dd>Reduction in entropy after splitting on attribute A: Gain(S, A) = H(S) − Σ(|Sv|/|S|)H(Sv). ID3 splits on the attribute with the highest gain.</dd>
+<dt>Q7. Define Gini index.</dt><dd>Gini = 1 − Σ pi²; an impurity measure used by CART; 0 means pure, lower weighted Gini means a better split.</dd>
+<dt>Q8. What is pruning?</dt><dd>Removing branches of a decision tree that add little accuracy, to reduce overfitting. Pre-pruning stops growth early; post-pruning cuts a fully grown tree.</dd>
+<dt>Q9. State Bayes' theorem.</dt><dd>P(C | X) = P(X | C) · P(C) / P(X): posterior = likelihood × prior / evidence.</dd>
+<dt>Q10. Why is Naive Bayes called "naive"?</dt><dd>It assumes all features are conditionally independent of each other given the class, which is rarely true in practice.</dd>
+<dt>Q11. What is Laplace smoothing?</dt><dd>Adding 1 to every count, P = (count + 1)/(n + k), so that an unseen feature value does not make the whole probability zero.</dd>
+<dt>Q12. What is the least squares method?</dt><dd>Choosing regression coefficients that minimise the sum of squared residuals Σ(y − ŷ)²; gives b₁ = Σ(x−x̄)(y−ȳ)/Σ(x−x̄)², b₀ = ȳ − b₁x̄.</dd>
+<dt>Q13. What does R² indicate?</dt><dd>R² = 1 − SSE/SST, the proportion of variance in y explained by the model; closer to 1 means better fit.</dd>
+<dt>Q14. Write the sigmoid function and its role.</dt><dd>σ(z) = 1/(1 + e^(−z)); it converts the linear score of logistic regression into a probability between 0 and 1.</dd>
+<dt>Q15. What are support vectors?</dt><dd>Training points lying on the margin boundaries w·x + b = ±1; they alone determine the SVM hyperplane.</dd>
+<dt>Q16. Define margin in SVM.</dt><dd>The distance between the two margin boundaries on either side of the hyperplane, equal to 2/‖w‖; SVM maximises it.</dd>
+<dt>Q17. What is the kernel trick?</dt><dd>Replacing dot products xi·xj with a kernel K(xi, xj) = φ(xi)·φ(xj), so a linear algorithm works in a higher-dimensional space without computing φ explicitly.</dd>
+<dt>Q18. Name any four kernel functions.</dt><dd>Linear x·z; polynomial (x·z + c)^d; RBF/Gaussian exp(−γ‖x − z‖²); sigmoid tanh(κx·z + c).</dd>
+</dl>
+<a class="top" href="#top">↑ top</a>
+</section>
+
+<!-- ============ 2.11 LONG ============ -->
+<section class="topic" id="u2-long">
+<h3>2.11 Long-answer frames (15 marks)</h3>
+<h4>Q1. Explain the K-Nearest Neighbours algorithm with an example. How is k chosen?</h4>
+<ol>
+<li>Define supervised learning in one line; define KNN (instance-based, lazy learner).</li>
+<li>Distance measures: Euclidean, Manhattan, Minkowski with formulas.</li>
+<li>Algorithm steps; draw Fig 2.4 (flowchart).</li>
+<li>Draw Fig 2.3: scatter with query point and circle of k nearest.</li>
+<li>Worked example: 6 points, query (3,3), distance table, k = 3 vote → Red; note k = 1 gives Blue.</li>
+<li>Choosing k: small vs large k, odd k, validation; feature scaling; weighted KNN.</li>
+<li>Advantages / disadvantages table; applications.</li>
+<li>Conclusion: simple, accurate for small scaled data, slow for big data.</li>
+</ol>
+<h4>Q2. What is a decision tree? Explain ID3 with entropy and information gain on a dataset.</h4>
+<ol>
+<li>Definition: root, internal node, branch, leaf.</li>
+<li>Formulas: entropy, information gain; Gini index for CART.</li>
+<li>ID3 steps; draw Fig 2.6.</li>
+<li>Worked example on Table 2.3: H(S) = 0.9710; gains Outlook 0.6100, Wind 0.4200, Humidity 0.0464 → root Outlook; Rainy branch split on Wind.</li>
+<li>Draw the final tree, Fig 2.5; classify a new sample.</li>
+<li>Overfitting; pre-pruning and post-pruning.</li>
+<li>ID3 vs CART table; advantages / disadvantages; applications.</li>
+<li>Conclusion: interpretable if-else model, needs pruning.</li>
+</ol>
+<h4>Q3. Explain Bayes' theorem and the Naive Bayes classifier with a numerical example.</h4>
+<ol>
+<li>Bayes' theorem with prior, likelihood, evidence, posterior; draw Fig 2.7.</li>
+<li>Naive (conditional independence) assumption and resulting formula.</li>
+<li>Steps; draw Fig 2.8.</li>
+<li>Worked example Table 2.4: (Sunny, Mild) → scores 0.3000 vs 0.0417 → Yes (0.878).</li>
+<li>Zero-frequency problem and Laplace smoothing (0.2551 vs 0.0600).</li>
+<li>Types: Gaussian, Multinomial, Bernoulli; draw Fig 2.9.</li>
+<li>Advantages / disadvantages; applications (spam filtering).</li>
+<li>Conclusion.</li>
+</ol>
+<h4>Q4. Explain simple linear regression using least squares. Fit a line to given data and find R².</h4>
+<ol>
+<li>Definition of linear models; y = b₀ + b₁x + ε; meaning of slope and intercept.</li>
+<li>Least squares idea: minimise SSE; formulas for b₁ and b₀.</li>
+<li>Steps; draw Fig 2.11.</li>
+<li>Worked example: 5 points → ŷ = 2.2 + 0.6x, ŷ(6) = 5.8, SSE 2.40, MSE 0.48, R² 0.60; draw Fig 2.10.</li>
+<li>Gradient descent idea; multiple linear regression; assumptions.</li>
+<li>Advantages / disadvantages; applications.</li>
+<li>Conclusion.</li>
+</ol>
+<h4>Q5. Explain logistic regression. How does it differ from linear regression?</h4>
+<ol>
+<li>Definition: classification using the sigmoid.</li>
+<li>Sigmoid formula and properties; draw Fig 2.12 (S-curve).</li>
+<li>Log-odds, decision boundary at p = 0.5 (z = 0), log-loss, gradient descent.</li>
+<li>Steps; draw Fig 2.13.</li>
+<li>Worked example: w₀ = −4, w₁ = 1, 5 hours → p = 0.7311 → Pass; boundary 4 hours.</li>
+<li>Linear vs logistic regression table.</li>
+<li>Advantages / disadvantages; applications; conclusion.</li>
+</ol>
+<h4>Q6. Explain Support Vector Machines: hyperplane, margin, support vectors, hard and soft margin.</h4>
+<ol>
+<li>Definition and idea of maximum margin.</li>
+<li>Hyperplane w·x + b = 0; margin boundaries ±1; draw Fig 2.14.</li>
+<li>Margin = 2/‖w‖; optimisation: minimise ½‖w‖² subject to yi(w·xi + b) ≥ 1.</li>
+<li>Support vectors and why only they matter.</li>
+<li>Hard vs soft margin table, role of C.</li>
+<li>Worked example: w = (3,4), b = −5 → margin 0.4; identify support vectors.</li>
+<li>Steps (Fig 2.15); advantages / disadvantages; applications; conclusion.</li>
+</ol>
+<h4>Q7. What is nonlinearity in data? Explain kernel methods and the kernel trick with an example.</h4>
+<ol>
+<li>Why linear boundaries fail: XOR, circular data.</li>
+<li>Mapping to higher dimension φ(x); draw Fig 2.16 (x → (x, x²)) with the value table.</li>
+<li>Kernel trick: K(x, z) = φ(x)·φ(z); draw Fig 2.17; Mercer's condition.</li>
+<li>Kernel types table: linear, polynomial, RBF, sigmoid with formulas.</li>
+<li>Worked example: x = (1,2), z = (3,4): (x·z)² = 121 = φ(x)·φ(z); RBF value 0.018.</li>
+<li>Advantages / disadvantages; applications.</li>
+<li>Conclusion: kernels let linear models learn non-linear boundaries cheaply.</li>
+</ol>
+<a class="top" href="#top">↑ top</a>
+</section>
+</section>

@@ -1,0 +1,63 @@
+<section class="topic" id="u1-intro">
+<h3>1.1 Big Data: Introduction and evolution</h3>
+<p class="hook">Big data is data too big, too fast or too messy for one ordinary database server to store and analyse in reasonable time. <span class="hg">(itna data ki ek normal DB machine haath khade kar de)</span></p>
+<div class="def"><b>Definition:</b> <mark>Big data</mark> refers to data sets whose volume, velocity and variety exceed the capacity of traditional database systems to capture, store, manage and analyse them, and which therefore need new, distributed and cost-effective forms of processing to extract insight and support decisions.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
+</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes left to right joined by arrows, a decade under each.</p></figure>
+<ul>
+<li><mark>Evolution</mark>: file systems → relational databases (Codd's relational model, 1970) → data warehouses for reporting → web-scale data from search engines and social media → Google's GFS (2003) and MapReduce (2004) papers → open-source Hadoop (2006) → NoSQL, Spark and cloud platforms.</li>
+<li>The term "3 Vs" (volume, velocity, variety) is usually traced to <mark>Doug Laney</mark>'s 2001 META Group note; later authors added more Vs.</li>
+<li><mark>Why traditional RDBMS fails</mark> at this scale:
+ <ul>
+ <li><b>Scale-up only</b>: an RDBMS mostly grows by buying a bigger server; cost rises steeply and there is a hardware ceiling. <span class="hg">(badi machine ki bhi limit hai)</span></li>
+ <li><b>Fixed schema</b> (schema-on-write): table structure must be designed before loading; JSON, logs, images and video do not fit rows and columns.</li>
+ <li><b>Speed</b>: continuous streams (clicks, sensor readings) arrive faster than row-by-row inserts and joins can keep up.</li>
+ <li><b>Cost</b>: licensed database software plus high-end storage for petabytes is expensive.</li>
+ <li><b>Single point of failure</b>: one large server failing stops everything.</li>
+ </ul></li>
+<li><mark>Big data approach</mark>: split data across many cheap (commodity) machines, move the computation to where data sits, store raw data first and decide structure later (schema-on-read).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Traditional data</th><th>Big data</th></tr>
+<tr><td>Size</td><td>Gigabytes to a few terabytes</td><td>Terabytes to petabytes and beyond</td></tr>
+<tr><td>Structure</td><td>Mostly structured (tables)</td><td>Structured + semi-structured + unstructured</td></tr>
+<tr><td>Schema</td><td>Schema-on-write, fixed</td><td>Often schema-on-read, flexible</td></tr>
+<tr><td>Architecture</td><td>Centralised, scale-up</td><td>Distributed, scale-out</td></tr>
+<tr><td>Processing</td><td>Mostly batch SQL on one server</td><td>Parallel batch and real-time streaming</td></tr>
+<tr><td>Hardware</td><td>High-end servers</td><td>Clusters of commodity machines</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> "Big data" is not only about size. A small but very fast stream, or data in many mixed formats, is also a big-data problem.</div>
+<h4>Big Data driving factors</h4>
+<ul>
+<li><mark>Everything went online</mark>: the web, e-commerce and now <mark>smart/IoT objects</mark> mean almost every action (a click, a swipe, a sensor reading) leaves a digital trace. <span class="hg">(har cheez ab online, har cheez data chhod rahi hai)</span></li>
+<li>More kinds of sources add data every year: social media, sensor networks, digital images/video, cell phones, purchase/transaction records, web logs, medical records, archives, military/surveillance systems, e-commerce, and large scientific research projects.</li>
+<li>Early-2010s industry studies (e.g. IDC's "Digital Universe" reports) projected global data volume to grow many-fold through 2020 — figures like "tens of zettabytes" and "hundreds of times growth since 2005" are widely quoted in big-data tutorials. Treat these as order-of-magnitude illustrations of Volume, not numbers to reproduce precisely: different reports quote different exact figures, and none of them are current any more.</li>
+</ul>
+<h4>Advantages of Big Data</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Decisions</b>data-driven, not guesswork</div>
+<div class="b"><b>Cost</b>commodity hardware, open source</div>
+<div class="b"><b>Fraud</b>catches unusual patterns fast</div>
+<div class="b"><b>Productivity</b>quick overview of huge data</div>
+<div class="b"><b>Service</b>personalised offers</div>
+<div class="b"><b>Agility</b>faster response than competitors</div>
+</div></div><figcaption><b>Fig 1.30</b> · Advantages of Big Data</figcaption><p class="draw">✍ Draw it: six boxes in a 3×2 grid, one advantage word per box.</p></figure>
+<ul>
+<li><mark>Better decision-making</mark>: more usable data means business decisions based on evidence rather than guesswork.</li>
+<li><mark>Reduced cost</mark> of business processes: distributed storage/processing on commodity hardware plus open-source tools cut infrastructure spend versus scaling up one large server.</li>
+<li><mark>Fraud detection</mark>: models trained on transaction history flag anomalies (an impossible travel pattern on a card, an odd purchase time) faster than manual review.</li>
+<li><mark>Increased productivity</mark>: analysts and data scientists get a quick, tool-assisted overview of large data instead of sifting through it by hand.</li>
+<li><mark>Improved customer service</mark>: data from social media, email and CRM systems exposes customer pain points, enabling targeted, personalised offers.</li>
+<li><mark>Increased agility</mark>: insight ahead of competitors lets a business adjust products, communication and strategy faster.</li>
+</ul>
+<h4>Disadvantages / challenges of Big Data</h4>
+<ul>
+<li><mark>Lack of talent</mark>: skilled big-data engineers and data scientists are scarce, so hiring is slow and expensive, especially for smaller companies.</li>
+<li><mark>Security risks</mark>: large pooled data sets attract attackers; a breach can leak sensitive information and damage trust.</li>
+<li><mark>Compliance</mark>: personal/confidential data must be stored, handled and processed to government and industry rules, which gets harder to manage as volume grows.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Advantages <b>D-C-F-P-S-A</b>: <b>D</b>ecisions, <b>C</b>ost, <b>F</b>raud, <b>P</b>roductivity, <b>S</b>ervice, <b>A</b>gility. Disadvantages <b>T-S-C</b>: <b>T</b>alent, <b>S</b>ecurity, <b>C</b>ompliance.</div>
+<div class="recall"><b>Quick recall</b> Big data = data beyond traditional DB capacity (volume/velocity/variety). RDBMS fails due to scale-up limits, fixed schema, speed and cost.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

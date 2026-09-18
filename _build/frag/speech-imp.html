@@ -1,0 +1,525 @@
+<section class="unit" id="imp">
+<h2><span class="uno">Important questions</span>8-mark answers</h2>
+<p class="unit-sub">Paper: 6 &times; 1 mark + 3 &times; 8 marks (an 8 can come as 4 + 4). Each answer below is written to the 8-mark length. No teacher-supplied important list was given for this subject, so this set is derived from the syllabus and the long-answer frames already in the Unit I / Unit II notes, chosen to cover every topic of both units.</p>
+
+<section class="topic" id="iq1"><h3>Q1. Explain the human speech production mechanism and the Source-Filter model with a neat diagram.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the three production stages, the components table, voiced/unvoiced contrast, and the source-filter block diagram.</p>
+<div class="def"><b>Definition:</b> <mark>Speech production</mark> is the physiological process where airflow from the lungs passes through the vocal cords (larynx) to create an acoustic excitation source, which is then filtered by the vocal tract (pharynx, oral and nasal cavities) to produce spoken sounds. The <mark>Source-Filter Model</mark> represents speech $s[n]$ as the output of a linear time-varying vocal tract filter $H(z)$ excited by either a periodic impulse train (voiced) or white noise (unvoiced).</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 200" width="580">
+<rect x="20" y="30" width="120" height="40" rx="6"/><text x="80" y="50">Impulse Train (P)</text>
+<rect x="20" y="130" width="120" height="40" rx="6"/><text x="80" y="150">White Noise (N)</text>
+<circle cx="210" cy="100" r="22"/><text x="210" y="100">Switch</text>
+<path class="arr" d="M140 50 L195 85"/>
+<path class="arr" d="M140 150 L195 115"/>
+<path class="arr" d="M232 100 H280"/>
+<rect x="280" y="80" width="70" height="40" rx="6"/><text x="315" y="100">Gain G</text>
+<path class="arr" d="M350 100 H400"/>
+<rect class="hi" x="400" y="75" width="110" height="50" rx="6"/><text x="455" y="100">Filter H(z)</text>
+<path class="arr" d="M510 100 H550"/>
+<text class="b" x="565" y="100">s[n]</text>
+</svg></div>
+<figcaption><b>Fig 1.2</b> &middot; Source-Filter Block Diagram model of speech production</figcaption>
+<p class="draw">&#9997; Draw it: periodic impulse and noise sources feeding a switch, followed by Gain G box, Vocal Tract Filter H(z) box, and speech output s[n].</p></figure>
+<ul>
+<li><mark>Three-stage process</mark>: <b>1. Conceptualization</b> (choosing what to say) &rarr; <b>2. Formulation</b> (words and grammar) &rarr; <b>3. Articulation</b> (lungs, vocal cords, tongue physically produce the sound).</li>
+<li><mark>Key components</mark>: Lungs (air reservoir, energy source); Vocal cords in the larynx (vibrate for voiced sounds, stay open for unvoiced); Vocal tract (pharynx, oral, nasal cavity &ndash; acts as the resonating filter); Articulators (tongue, lips, jaw, velum &ndash; change the vocal tract shape).</li>
+<li><mark>Voiced sounds</mark>: vocal cords vibrate quasi-periodically (vowels /a/, /e/); has a pitch period $T_0$. <mark>Unvoiced sounds</mark>: vocal cords stay open, turbulent air makes noise (fricatives /s/, /f/); no vibration.</li>
+<li><mark>Source-Filter equation</mark>: $s[n]$ = excitation (impulse train or white noise) $\times$ Gain $G$, filtered by $H(z)$, the vocal tract transfer function.</li>
+<li><mark>Link to LPC</mark>: LPC is the mathematical form of the source-filter idea &ndash; its all-pole filter stands in for the vocal tract, $\hat{x}[n] = \sum_{k=1}^{p} a_k\,x[n-k]$.</li>
+<li><mark>Types of production models</mark>: Physiological (models the body), Acoustic/Source-Filter (models the sound), Psycholinguistic (models the brain stages above), LPC (models the maths).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Sound Type</th><th>Vocal Cord State</th><th>Excitation Nature</th><th>Typical Examples</th></tr>
+<tr><td>Voiced</td><td>Vibrating (oscillating)</td><td>Periodic impulse train</td><td>Vowels (/a/, /o/), Nasals (/m/)</td></tr>
+<tr><td>Unvoiced</td><td>Open (relaxed)</td><td>Random white noise</td><td>Fricatives (/s/, /f/, /sh/)</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Stages <b>CFA</b>: <b>C</b>onceptualize &rarr; <b>F</b>ormulate &rarr; <b>A</b>rticulate. Models <b>PAPL</b> (Papa Aaj Padhenge LPC): <b>P</b>hysiological, <b>A</b>coustic, <b>P</b>sycholinguistic, <b>L</b>PC.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.2, and give the three stages plus the voiced/unvoiced table &ndash; skip the model-types list.</div>
+<div class="recall"><b>Quick recall</b> Speech = Source (glottal excitation) &times; Filter (vocal tract $H(z)$). Voiced = periodic impulses, Unvoiced = random noise. Process: Conceptualization &rarr; Formulation &rarr; Articulation.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq2"><h3>Q2. Describe the human auditory system: parts of the ear, the pathway to the brain, and how hearing works.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the three-part ear diagram, the parts/jobs table, hearing range figures, and the pathway to the brain.</p>
+<div class="def"><b>Definition:</b> The <mark>Human Auditory System</mark> processes acoustic sound pressure waves through three main anatomical regions &ndash; the outer ear, middle ear, and inner ear (<mark>cochlea</mark>) &ndash; mapping frequencies along the basilar membrane for neural perception.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<rect x="20" y="50" width="130" height="80" rx="6"/><text x="85" y="80">Outer Ear</text><text class="s" x="85" y="105">Pinna &amp; Canal</text>
+<path class="arr" d="M150 90 H200"/>
+<rect x="200" y="50" width="130" height="80" rx="6"/><text x="265" y="80">Middle Ear</text><text class="s" x="265" y="105">Eardrum &amp; Ossicles</text>
+<path class="arr" d="M330 90 H380"/>
+<rect class="hi" x="380" y="50" width="140" height="80" rx="6"/><text x="450" y="75">Inner Ear</text><text class="b" x="450" y="95">Cochlea</text><text class="s" x="450" y="115">Basilar Membrane</text>
+</svg></div>
+<figcaption><b>Fig 1.3</b> &middot; Three major divisions of the Human Auditory System</figcaption>
+<p class="draw">&#9997; Draw it: three consecutive boxes for Outer Ear, Middle Ear (Ossicles), and Inner Ear (Cochlea/Basilar membrane).</p></figure>
+<ul>
+<li><mark>Human hearing range</mark>: 20 Hz to 20,000 Hz; most sensitive between 1 kHz and 4 kHz. <mark>Telephone band</mark>: 300 Hz to 3400 Hz (8 kHz sampling).</li>
+<li><mark>Cochlea &amp; basilar membrane</mark>: acts as a biological frequency analyzer &ndash; high frequencies resonate near the stiff base, low frequencies near the flexible apex.</li>
+<li><mark>Auditory masking</mark>: a louder sound renders a softer adjacent-frequency sound inaudible; exploited by perceptual codecs.</li>
+<li><mark>How hearing works (5 steps)</mark>: (1) sound waves vibrate the eardrum; (2) vibrations pass through the ossicles malleus &rarr; incus &rarr; stapes; (3) ossicles drive the fluid-filled cochlea; (4) hair cells convert motion to electrical signals sent along the auditory nerve; (5) the brain translates the signals into sound.</li>
+<li><mark>Pathway to the brain</mark>: hair cells (cochlea) &rarr; auditory nerve &rarr; cochlear nucleus &rarr; superior olivary nucleus (compares both ears) &rarr; lateral lemniscus &rarr; inferior colliculus &rarr; (medial geniculate body) &rarr; auditory cortex in the temporal lobe.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Part</th><th>Structures</th><th>Job</th></tr>
+<tr><td><b>1. Outer ear</b></td><td>Pinna, ear canal, eardrum (tympanic membrane)</td><td>Pinna collects sound and funnels it into the canal; the eardrum vibrates with the sound</td></tr>
+<tr><td><b>2. Middle ear</b></td><td>Ossicles: malleus, incus, stapes; Eustachian tube</td><td>Ossicles amplify vibrations and pass them to the oval window; the Eustachian tube equalises air pressure</td></tr>
+<tr><td><b>3. Inner ear</b></td><td>Cochlea (organ of Corti, basilar membrane, hair cells); auditory nerve</td><td>Basilar membrane vibrates; hair cells turn vibration into electrical signals sent to the brain</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Ossicles <b>MIS</b>: <b>M</b>alleus &rarr; <b>I</b>ncus &rarr; <b>S</b>tapes. Pathway: <b>C</b>an <b>S</b>achin <b>L</b>ead <b>I</b>ndia's <b>M</b>atch <b>A</b>gain? (Cochlear, Superior olivary, Lateral lemniscus, Inferior colliculus, Medial geniculate, Auditory cortex).</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.3, and give the parts/jobs table for outer, middle and inner ear only &ndash; skip the pathway chain and the mnemonic.</div>
+<div class="recall"><b>Quick recall</b> Hearing range 20 Hz&ndash;20 kHz; telephone band 300&ndash;3400 Hz. Cochlea does frequency decomposition. Pathway: hair cells &rarr; auditory nerve &rarr; brainstem stations &rarr; auditory cortex (temporal lobe).</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq3"><h3>Q3. Explain the general structure of a speech coder and classify speech coding techniques (Waveform, Parametric, Hybrid) with examples.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the encoder/decoder block diagram, the classification tree, and the comparison table with the compression-ratio example.</p>
+<div class="def"><b>Definition:</b> A <mark>speech coder</mark> consists of an <mark>encoder</mark> that analyzes and quantizes input speech into a bitstream, and a <mark>decoder</mark> that synthesizes speech back from it. <mark>Speech coding techniques</mark> are classified into: (1) Waveform Coders, (2) Parametric Coders (Vocoders), and (3) Hybrid Coders.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 210" width="620">
+<text class="b" x="200" y="22">ENCODER</text>
+<rect x="20" y="45" width="120" height="40" rx="6"/><text x="80" y="65">Filter/Sample</text>
+<path class="arr" d="M140 65 H170"/>
+<rect class="hi" x="170" y="45" width="90" height="40" rx="6"/><text x="215" y="65">Analysis</text>
+<path class="arr" d="M260 65 H290"/>
+<rect x="290" y="45" width="90" height="40" rx="6"/><text x="335" y="65">Quantize</text>
+<path class="arr" d="M380 65 H410 V110 H420"/>
+<rect class="acc" x="420" y="90" width="160" height="40" rx="6"/><text x="500" y="110">Bitstream Channel</text>
+<path class="arr" d="M500 130 V165 H390"/>
+<text class="b" x="205" y="122">DECODER</text>
+<rect x="300" y="145" width="90" height="40" rx="6"/><text x="345" y="165">Decode</text>
+<path class="arr" d="M300 165 H270"/>
+<rect class="hi" x="170" y="145" width="100" height="40" rx="6"/><text x="220" y="165">Synthesis</text>
+<path class="arr" d="M170 165 H140"/>
+<rect x="20" y="145" width="120" height="40" rx="6"/><text x="80" y="165">Output Speech</text>
+</svg></div>
+<figcaption><b>Fig 1.4</b> &middot; General Architecture of a Speech Encoder and Decoder System</figcaption>
+<p class="draw">&#9997; Draw it: top pipeline for Encoder (Filter/Sample &rarr; Analysis &rarr; Quantize), channel box in middle, bottom pipeline for Decoder (Decode &rarr; Synthesis &rarr; Output).</p></figure>
+<ul>
+<li><mark>Encoder stages</mark>: Input (digital speech) &rarr; Analysis (spectral envelope, pitch, voicing) &rarr; Coding (compact bitstream).</li>
+<li><mark>Decoder stages</mark>: Input (bitstream) &rarr; Decoding (drives a synthesis model) &rarr; Output (reconstructed speech).</li>
+<li><mark>Waveform coders</mark>: reproduce the waveform sample by sample &ndash; PCM (64 kbps), ADPCM (32 kbps), sub-band coding (SBC). High bit-rate, high quality, robust to noise.</li>
+<li><mark>Parametric coders (vocoders)</mark>: send only model parameters &ndash; LPC-10 (2.4 kbps), formant coding. Very low bit-rate, synthetic/robotic quality.</li>
+<li><mark>Hybrid coders</mark>: LPC filter excited by a codebook &ndash; CELP, AMR, MBE. Medium bit-rate, near-toll quality.</li>
+<li><mark>Factors influencing classification</mark>: bit rate, complexity, quality, robustness (mnemonic <b>BCQR</b>).</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Speech Coding Classification</span><ul>
+<li><span>Waveform Coders</span><ul>
+  <li><span>PCM (64 kbps)</span></li>
+  <li><span>DPCM / ADPCM (32 kbps)</span></li>
+</ul></li>
+<li><span>Parametric Coders</span><ul>
+  <li><span>LPC-10 (2.4 kbps)</span></li>
+  <li><span>Mel-Vocoders</span></li>
+</ul></li>
+<li><span>Hybrid Coders</span><ul>
+  <li><span>CELP (4.8 - 16 kbps)</span></li>
+  <li><span>MELP / EFR</span></li>
+</ul></li>
+</ul></li></ul></div></div>
+<figcaption><b>Fig 1.5</b> &middot; Classification Hierarchy of Speech Coding Techniques</figcaption>
+<p class="draw">&#9997; Draw it: root node splitting into Waveform Coders, Parametric Coders, and Hybrid Coders with key examples under each.</p></figure>
+<div class="tw"><table>
+<tr><th>Codec Family</th><th>Bit-rate Range</th><th>Quality (MOS)</th><th>Standard Examples</th></tr>
+<tr><td><b>Waveform</b></td><td>16 &ndash; 64 kbps</td><td>High (4.0 &ndash; 4.5)</td><td>PCM (G.711), ADPCM (G.726)</td></tr>
+<tr><td><b>Parametric</b></td><td>1.2 &ndash; 4.8 kbps</td><td>Low/Synthetic (2.5 &ndash; 3.2)</td><td>LPC-10, MELP</td></tr>
+<tr><td><b>Hybrid</b></td><td>4.8 &ndash; 16 kbps</td><td>Toll/High (3.8 &ndash; 4.2)</td><td>CELP (G.729), AMR</td></tr>
+</table></div>
+<div class="ex"><b>Worked Example: Compression compared with 64 kbps PCM</b>
+<div class="step">PCM reference: $8000 \times 8 = 64000$ bits/s $= 64$ kbps</div>
+<div class="step">Hybrid CELP at 8 kbps: ratio $= \dfrac{64}{8} = 8$</div>
+<div class="step">Vocoder at 2.4 kbps: ratio $= \dfrac{64}{2.4} = 26.67$; at 1.2 kbps: ratio $= \dfrac{64}{1.2} = 53.33$</div>
+<span class="ans">CELP compresses 8 : 1; vocoders about 26.67 : 1 and 53.33 : 1</span>
+</div>
+<div class="mn"><b>Mnemonic</b> <b>BQCD</b> (Bhai Quality Chahiye, Delay nahi): Bit rate, Quality, Complexity, Delay. <b>W-P-H</b>: Waveform (exact shape, high rate), Parametric (synthetic, very low rate), Hybrid (best of both).</div>
+<div class="note"><b>If it comes as 4 marks:</b> draw Fig 1.4, give the encoder/decoder stages, and name the three families with one example each &ndash; skip Fig 1.5 and the compression-ratio numeric.</div>
+<div class="recall"><b>Quick recall</b> Speech Coder = Encoder (Analysis + Quantization) + Channel + Decoder (Synthesis). Waveform = PCM/ADPCM (high rate); Parametric = LPC-10 (low rate); Hybrid = CELP (best trade-off).</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq4"><h3>Q4. Discuss the requirements of speech codecs: quality, coding delay, and robustness, with trade-offs.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the four-dimension diagram, the MOS/G.114 tables, and one worked numeric (SNR or delay).</p>
+<div class="def"><b>Definition:</b> The performance of a <mark>speech codec</mark> is governed by four core requirements: low bit rate, high perceptual quality, minimal processing delay, and high noise/channel-error robustness.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Bit Rate</b>Bandwidth usage (kbps). Lower is better for network capacity.</div>
+<div class="b"><b>Speech Quality</b>Measured on MOS scale (1 to 5). Higher score is more natural.</div>
+<div class="b hi"><b>Coding Delay</b>Frame size + look-ahead + processing + transmission delay (ms). Total one-way up to 150 ms is acceptable (ITU-T G.114).</div>
+<div class="b"><b>Robustness</b>Resistance to packet loss, bit errors, and background noise.</div>
+</div></div>
+<figcaption><b>Fig 1.6</b> &middot; Four Core Trade-off Dimensions of Speech Codecs</figcaption>
+<p class="draw">&#9997; Draw it: a 2x2 card grid showing Bit Rate, Speech Quality, Coding Delay, and Robustness.</p></figure>
+<ul>
+<li><mark>Quality</mark>: intelligibility, naturalness, absence of artifacts. Metrics: MOS (subjective, 1&ndash;5, toll quality &ge; 4.0), PESQ (objective), SD (spectral distortion), SNR (signal power vs error power).</li>
+<li><mark>Coding delay</mark>: algorithmic/frame delay (buffering, typically 10&ndash;30 ms) + processing delay + transmission delay. High delay ($>$150 ms) causes echo and disrupts turn-taking.</li>
+<li><mark>Robustness</mark>: noise robustness, reverberation robustness, packet-loss robustness. VAD (Voice Activity Detection) saves bits during silence; CNG (Comfort Noise Generation) plays soft noise so the line does not sound dead.</li>
+<li><mark>Trade-offs</mark>: higher quality costs more bit rate; lower bit rate costs some quality; more robustness (longer analysis windows) costs more delay.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>One-way delay</th><th>G.114 classification</th></tr>
+<tr><td>0 to 150 ms</td><td>Acceptable for most users</td></tr>
+<tr><td>150 to 400 ms</td><td>Acceptable depending on the impact</td></tr>
+<tr><td>Above 400 ms</td><td>Unacceptable for general network planning</td></tr>
+</table></div>
+<div class="ex"><b>Worked Example: SNR of a decoded frame</b>
+<div class="step">Original $x = [4, -2, 3, 1]$, decoded $\tilde{x} = [3.9, -2.1, 3.2, 0.9]$</div>
+<div class="step">Signal power sum: $16 + 4 + 9 + 1 = 30$. Error $= [0.1, 0.1, -0.2, 0.1]$; error power sum $= 0.07$</div>
+<div class="step">$SNR = 10\log_{10}\left(\dfrac{30}{0.07}\right) = 10\log_{10}(428.57) = 26.32$ dB</div>
+<span class="ans">SNR is about 26.32 dB</span>
+</div>
+<div class="mn"><b>Mnemonic</b> Quality <b>INA</b>: Intelligibility, Naturalness, Absence of artifacts. Metrics: <b>My Phone Sounds Sweet</b> (MOS, PESQ, SD, SNR). Robustness <b>NRP</b>: Noise, Reverberation, Packet loss.</div>
+<div class="note"><b>If it comes as 4 marks:</b> draw Fig 1.6 and give the G.114 delay table &ndash; skip the SNR numeric and the metrics mnemonic.</div>
+<div class="recall"><b>Quick recall</b> Four requirements: Bit rate, Quality (MOS, PESQ, SD, SNR), Delay (G.114: 0&ndash;150/150&ndash;400/&gt;400 ms), Robustness (VAD + CNG).</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq5"><h3>Q5. Explain the methods of pitch-period estimation and compute the pitch period for a given lag using autocorrelation.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the autocorrelation formula and curve, the methods comparison, and a computed $T_0$/$F_0$ example.</p>
+<div class="def"><b>Definition:</b> <mark>Pitch-period estimation</mark> is the process of determining the fundamental period $T_0$ (or fundamental frequency $F_0 = 1/T_0$) of a voiced speech segment.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 160" width="540">
+<line class="acc" x1="40" y1="120" x2="500" y2="120"/>
+<line class="acc" x1="40" y1="20" x2="40" y2="140"/>
+<path class="none" d="M40 20 Q80 120 120 110 T200 120 T280 30 T360 115 T440 120" stroke-width="2.2"/>
+<circle class="dot acc" cx="40" cy="20" r="5"/>
+<circle class="dot acc" cx="280" cy="30" r="5"/>
+<text class="s" x="40" y="10">k=0 (Max)</text>
+<text class="b" x="280" y="15">Secondary Peak at k=4 (Pitch Lag P0)</text>
+<path class="arr2" d="M40 140 H280"/>
+<text class="s" x="160" y="155">Pitch Period P0 = 4 samples</text>
+</svg></div>
+<figcaption><b>Fig 1.7</b> &middot; Autocorrelation curve $R(k)$ displaying secondary peak at pitch period lag $k = P_0$</figcaption>
+<p class="draw">&#9997; Draw it: horizontal lag axis, peak at k=0, decaying curve with a clear secondary peak at pitch period lag P0.</p></figure>
+<ul>
+<li><mark>Fundamental frequency ranges</mark>: adult males 80&ndash;160 Hz, adult females 150&ndash;300 Hz, children 200&ndash;500 Hz.</li>
+<li><mark>Autocorrelation method</mark>: $R(k) = \sum_n x[n]\,x[n+k]$; for voiced speech, $R(k)$ shows a secondary peak at lag $k = P_0$, giving $T_0 = P_0/f_s$. $R(0)$ is always the largest, so the peak is searched only for $k \gt 0$.</li>
+<li><mark>AMDF</mark> (low-complexity alternative): $\text{AMDF}[k] = \frac{1}{N}\sum |x[n]-x[n+k]|$; pitch lag is found from a <b>dip</b> instead of a peak.</li>
+<li><mark>Cepstrum</mark>: $c[n] = \mathcal{F}^{-1}\{\log|X(\omega)|\}$; separates the vocal tract from the excitation, giving a clean peak at quefrency $T_0$.</li>
+<li><mark>SIFT</mark>: LP inverse filter removes the vocal tract first; autocorrelation of the residual gives an unambiguous pitch peak.</li>
+<li><mark>General procedure</mark>: pre-processing (filter, digitise) &rarr; framing + windowing ($x_m[n] = x[n]\,w[n-mL]$) &rarr; pitch detection &rarr; post-processing (smooth the contour).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Method</th><th>How $T_0$ is found</th><th>Weakness</th></tr>
+<tr><td><b>Autocorrelation</b></td><td>Largest peak of $R(k)$ after lag 0</td><td>Formant peaks can be mistaken for pitch</td></tr>
+<tr><td><b>Cepstrum</b></td><td>Peak at quefrency $=T_0$</td><td>Needs FFT and log: more computation</td></tr>
+<tr><td><b>SIFT</b></td><td>Autocorrelation of the LP residual</td><td>Depends on a good LP analysis</td></tr>
+</table></div>
+<div class="ex"><b>Worked Example: From autocorrelation lag to $T_0$ and $F_0$</b>
+<div class="step">Sampling rate $f_s = 8000$ Hz. The largest peak of $R(k)$ after lag 0 is at $k = 80$ samples.</div>
+<div class="step">$T_0 = \dfrac{k}{f_s} = \dfrac{80}{8000} = 0.01$ s $= 10$ ms; $F_0 = \dfrac{1}{T_0} = 100$ Hz (adult male range)</div>
+<span class="ans">Lag 80 at 8 kHz gives $T_0 = 10$ ms and $F_0 = 100$ Hz</span>
+</div>
+<div class="mn"><b>Mnemonic</b> Methods <b>ACSW</b>: Autocorrelation, Cepstrum, SIFT, Wavelet. Procedure <b>PFDP</b>: Prepare, Frame + window, Detect, Polish (post-process).</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, draw Fig 1.7, and the autocorrelation formula plus the $T_0=k/f_s$ computation &ndash; skip the methods table and AMDF.</div>
+<div class="recall"><b>Quick recall</b> Pitch lag $P_0$ = major non-zero peak of $R(k)$; $T_0 = P_0/f_s$, $F_0 = 1/T_0$. Methods: autocorrelation, AMDF, cepstrum, SIFT, wavelet.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq6"><h3>Q6. Define poles and zeros, compare all-pole and all-zero filters, and explain discrete-time convolution with a worked example.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the pole/zero definitions with stability, the FIR/IIR block diagram, and the convolution formula worked step-by-step.</p>
+<div class="def"><b>Definition:</b> For $H(z) = B(z)/A(z)$, <mark>zeros</mark> are values of $z$ making $B(z)=0$ (so $H=0$); <mark>poles</mark> are values making $A(z)=0$ (so $H \to \infty$). An <mark>all-pole filter</mark> (IIR) is $H(z) = G/A(z)$; an <mark>all-zero filter</mark> (FIR) is $H(z) = B(z)$. <mark>Convolution</mark> combines input $x[n]$ with impulse response $h[n]$: $y[n] = \sum_k x[k]\,h[n-k]$.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 180" width="560">
+<text class="b" x="130" y="20">All-Zero (FIR) Filter</text>
+<rect x="20" y="45" width="60" height="35" rx="4"/><text x="50" y="62">x[n]</text>
+<path class="arr" d="M80 62 H130"/>
+<rect class="hi" x="130" y="45" width="50" height="35" rx="4"/><text x="155" y="62">z^-1</text>
+<path class="arr" d="M180 62 H220"/>
+<circle cx="235" cy="62" r="15"/><text x="235" y="62">+</text>
+<path class="arr" d="M250 62 H280"/>
+<text class="b" x="295" y="62">y[n]</text>
+
+<text class="b" x="420" y="20">All-Pole (IIR) Filter</text>
+<rect x="340" y="45" width="50" height="35" rx="4"/><text x="365" y="62">x[n]</text>
+<path class="arr" d="M390 62 H420"/>
+<circle cx="435" cy="62" r="15"/><text x="435" y="62">+</text>
+<path class="arr" d="M450 62 H500"/>
+<text class="b" x="515" y="62">y[n]</text>
+<path class="arr" d="M480 62 V120 H440"/>
+<rect class="hi" x="390" y="103" width="50" height="35" rx="4"/><text x="415" y="120">z^-1</text>
+<path class="arr" d="M390 120 H360 V62 H420"/>
+</svg></div>
+<figcaption><b>Fig 1.8</b> &middot; Block Diagram representation of All-Zero (FIR) and All-Pole (IIR) Linear Filters</figcaption>
+<p class="draw">&#9997; Draw it: left diagram for feedforward FIR with delay z^-1, right diagram for feedback IIR with feedback loop z^-1.</p></figure>
+<ul>
+<li><mark>All-pole filter</mark>: only poles, uses feedback (IIR), stable only if every pole has $|z| \lt 1$; models vocal tract formants (LPC). Examples: Butterworth, Bessel.</li>
+<li><mark>All-zero filter</mark>: only zeros, no feedback (FIR); all its poles sit at $z=0$, inside the unit circle, so it is <b>always stable</b>; models anti-resonances.</li>
+<li><mark>Convolution steps</mark>: Flip $h[k]$, Shift by $n$, Multiply, Sum (Fig 1.9). Output length $= M+N-1$.</li>
+<li><mark>Properties</mark>: convolution is <b>commutative</b> ($x*h = h*x$); the <b>convolution theorem</b> says convolution in time equals multiplication in frequency, $x[n]*h[n] \Longleftrightarrow X(\omega)H(\omega)$.</li>
+<li><mark>Applications</mark>: LTI filters (output = input convolved with impulse response; speech = excitation convolved with vocal tract response), image blurring/edge detection, CNN layers.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 140" width="540">
+<rect x="20" y="45" width="100" height="40" rx="6"/><text x="70" y="65">1. Flip h[k]</text>
+<path class="arr" d="M120 65 H160"/>
+<rect x="160" y="45" width="100" height="40" rx="6"/><text x="210" y="65">2. Shift by n</text>
+<path class="arr" d="M260 65 H300"/>
+<rect x="300" y="45" width="100" height="40" rx="6"/><text x="350" y="65">3. Multiply</text>
+<path class="arr" d="M400 65 H440"/>
+<rect class="hi" x="440" y="45" width="80" height="40" rx="6"/><text x="480" y="65">4. Sum y[n]</text>
+</svg>
+</div>
+<figcaption><b>Fig 1.9</b> &middot; Four steps of Discrete Convolution: Flip, Shift, Multiply, and Sum</figcaption>
+<p class="draw">&#9997; Draw it: horizontal 4-step chain from Flip to Shift to Multiply to Sum.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>All-pole filter</th><th>All-zero filter</th></tr>
+<tr><td>Structure</td><td>Feedback (recursive)</td><td>Feed-forward (non-recursive)</td></tr>
+<tr><td>Impulse response</td><td>Infinite (IIR)</td><td>Finite (FIR), $q+1$ samples</td></tr>
+<tr><td>Stability</td><td>Needs all poles inside the unit circle</td><td>Always stable</td></tr>
+<tr><td>In speech</td><td>Vocal tract formants (LPC)</td><td>Anti-resonances (nasal sounds)</td></tr>
+</table></div>
+<div class="ex"><b>Worked Example: Computation of Discrete Convolution</b>
+<div class="step">$x[n] = [1, 2, 3]$ ($N=3$), $h[n] = [2, 1]$ ($M=2$). Output length $= M+N-1 = 4$.</div>
+<div class="step">$y[0] = 1(2) = 2$; $y[1] = 1(1)+2(2) = 5$; $y[2] = 2(1)+3(2) = 8$; $y[3] = 3(1) = 3$</div>
+<span class="ans">Convolved Output $y[n] = [2, 5, 8, 3]$</span>
+</div>
+<div class="mn"><b>Mnemonic</b> <b>Pole = Peak</b>, <b>Zero = Zero-dip</b>. <b>FIR = Finite and Forever stable</b>; <b>IIR = Inside the circle, or it Runs away</b>. Convolution steps <b>FSMS</b>: Flip, Shift, Multiply, Sum.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the pole/zero definitions, draw Fig 1.8, and the convolution formula plus its worked example &ndash; skip Fig 1.9 and the comparison table.</div>
+<div class="recall"><b>Quick recall</b> All-pole $H(z)=G/A(z)$ (stable if $|z|\lt1$); all-zero $H(z)=B(z)$ (always stable). Convolution $y[n]=\sum_k x[k]h[n-k]$, length $M+N-1$, commutative.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq7"><h3>Q7. Explain Power Spectral Density, the Periodogram, the Autoregressive model, and Autocorrelation estimation.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; the examiner wants the Wiener-Khinchin theorem, the periodogram/AR formulas, and the biased-vs-unbiased autocorrelation example.</p>
+<div class="def"><b>Definition:</b> <mark>Power Spectral Density</mark> (PSD) represents how signal power is distributed across frequency, defined by the Wiener-Khinchin theorem as the Fourier Transform of the autocorrelation sequence $R(k)$.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 160" width="540">
+<text class="b" x="140" y="20">Periodogram (High Variance)</text>
+<path class="none" d="M20 120 L40 40 L60 110 L80 30 L100 120 L120 50 L140 115" stroke-width="1.8"/>
+<text class="b" x="400" y="20">AR Model Spectrum (Smooth)</text>
+<path class="none acc" d="M280 120 Q340 20 400 60 T520 120" stroke-width="2.5"/>
+</svg></div>
+<figcaption><b>Fig 1.10</b> &middot; Comparison between noisy Periodogram spectrum and smooth AR Model spectrum</figcaption>
+<p class="draw">&#9997; Draw it: left jagged curve for Periodogram PSD vs right smooth envelope curve for AR Model PSD.</p></figure>
+<ul>
+<li><mark>Periodogram</mark> (direct non-parametric PSD estimator): $$\hat{S}(\omega) = \frac{1}{N}\left|\sum_{n=0}^{N-1} x[n]\,e^{-j\omega n}\right|^2$$ Drawback: high variance and spectral leakage from finite rectangular windowing; reduced by Hamming windowing.</li>
+<li><mark>Autoregressive (AR) Model</mark>: $$x[n] = \sum_{k=1}^{p} a_k x[n-k] + e[n]$$ It is the mathematical foundation of the all-pole filter and LPC; gives a smoother, parametric spectral estimate than the periodogram.</li>
+<li><mark>Biased autocorrelation</mark>: $\hat{R}_b(k) = \frac{1}{N}\sum x[n]x[n+k]$ (guarantees a positive semi-definite spectrum). <mark>Unbiased</mark>: $\hat{R}_u(k) = \frac{1}{N-k}\sum x[n]x[n+k]$ (a true average over the $N-k$ terms actually summed).</li>
+</ul>
+<div class="ex"><b>Worked Example: Biased vs Unbiased Autocorrelation Estimation</b>
+<div class="step">$x = [3, 1, -2, 4, 2]$ ($N=5$). Sums: $k{=}0$: $34$; $k{=}1$: $1$; $k{=}2$: $-6$.</div>
+<div class="step">Biased ($\div N=5$): $\hat{R}_b = [6.8, 0.2, -1.2]$. Unbiased ($\div(N-k)$): $\hat{R}_u = [6.8, 0.25, -2.0]$</div>
+<span class="ans">Biased $= [6.8, 0.2, -1.2]$; Unbiased $= [6.8, 0.25, -2.0]$</span>
+</div>
+<div class="note"><b>If it comes as 4 marks:</b> state the Wiener-Khinchin theorem, the AR model formula, and draw Fig 1.10 &ndash; skip the biased/unbiased numeric.</div>
+<div class="recall"><b>Quick recall</b> Wiener-Khinchin: PSD is the Fourier Transform of autocorrelation. Periodogram is noisy; the AR model gives a smooth spectral envelope, the basis of LPC.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq8"><h3>Q8. Explain Linear Prediction, derive the Yule-Walker normal equations, and solve an order-2 prediction example.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the error-filter diagram, the normal-equation derivation, and the complete $a_1,a_2,E_2$ numeric.</p>
+<div class="def"><b>Definition:</b> <mark>Linear prediction</mark> models the current speech sample as a linear combination of $p$ previous samples: $$\hat{x}[n] = \sum_{k=1}^{p} a_k\,x[n-k]$$ The <mark>prediction error</mark> is $$e[n] = x[n] - \hat{x}[n]$$</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 580 180" width="580">
+<rect x="20" y="55" width="70" height="40" rx="6"/><text x="55" y="75">x[n]</text>
+<path class="arr" d="M90 75 H140"/>
+<circle cx="155" cy="75" r="15"/><text x="155" y="75">+</text>
+<path class="arr" d="M170 75 H220"/>
+<text class="b" x="245" y="75">e[n]</text>
+<path class="arr" d="M115 75 V130 H170"/>
+<rect class="hi" x="170" y="110" width="130" height="40" rx="6"/><text x="235" y="130">Predictor P(z)</text>
+<path class="arr" d="M300 130 H340 V75 H170"/>
+<text class="s" x="320" y="118">x&#770;[n]</text>
+</svg></div>
+<figcaption><b>Fig 2.1</b> &middot; Linear Prediction Error Filter Block Diagram</figcaption>
+<p class="draw">&#9997; Draw it: input x[n] going to summer, feedback loop to Predictor P(z) box producing x&#770;[n], error e[n] output.</p></figure>
+<ul>
+<li><mark>Prediction order $p$</mark>: number of past samples used, e.g. $p=3$ gives $\hat{x}[n] = a_1x[n-1]+a_2x[n-2]+a_3x[n-3]$.</li>
+<li><mark>Good predictor</mark>: if $\hat{x}[n] \approx x[n]$ then $e[n] \approx 0$; residual is close to white noise.</li>
+<li><mark>Why speech is predictable</mark>: vocal tract inertia correlates adjacent samples; glottal quasi-periodicity correlates samples one pitch period apart.</li>
+<li><mark>Derivation</mark>: minimise mean squared error $E = \frac{1}{N}\sum_n\left(x[n]-\sum_{k=1}^{p}a_k x[n-k]\right)^2$. Setting $\partial E/\partial a_i = 0$ gives the <b>Yule-Walker normal equations</b>: $$\sum_{k=1}^{p} a_k\,R(i-k) = R(i), \quad i=1,\dots,p$$</li>
+<li><mark>Matrix form ($p=2$)</mark>: $$\begin{bmatrix} R(0) &amp; R(1) \\ R(1) &amp; R(0) \end{bmatrix} \begin{bmatrix} a_1 \\ a_2 \end{bmatrix} = \begin{bmatrix} R(1) \\ R(2) \end{bmatrix}$$</li>
+<li><mark>Why useful</mark>: compression (code only the small residual), signal modeling (few coefficients represent the signal), spectral estimation, forecasting.</li>
+</ul>
+<div class="ex"><b>Worked Example: Order-2 Linear Prediction, solving the Normal Equations</b>
+<div class="step">Given $R(0)=5.0$, $R(1)=3.0$, $R(2)=1.0$: $$\begin{bmatrix} 5.0 &amp; 3.0 \\ 3.0 &amp; 5.0 \end{bmatrix}\begin{bmatrix} a_1 \\ a_2 \end{bmatrix} = \begin{bmatrix} 3.0 \\ 1.0 \end{bmatrix}$$</div>
+<div class="step">$\Delta = (5.0)(5.0)-(3.0)(3.0) = 16.0$</div>
+<div class="step">$a_1 = \dfrac{3.0(5.0)-1.0(3.0)}{16.0} = \dfrac{12}{16} = 0.75$; $a_2 = \dfrac{5.0(1.0)-3.0(3.0)}{16.0} = \dfrac{-4}{16} = -0.25$</div>
+<div class="step">$E_2 = R(0) - a_1R(1) - a_2R(2) = 5.0 - 2.25 + 0.25 = 3.0$</div>
+<span class="ans">$a_1 = 0.75$, $a_2 = -0.25$, Residual Energy $E_2 = 3.0$</span>
+</div>
+<div class="mn"><b>Mnemonic</b> "Linear Prediction = Past se Future ka Andaza". Past samples &rarr; Prediction; Actual &minus; Predicted = Error; Minimise MSE &rarr; Yule-Walker.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, draw Fig 2.1, and the normal-equation formula with just the final answer $a_1=0.75$, $a_2=-0.25$, $E_2=3.0$ &ndash; skip the matrix-solve steps.</div>
+<div class="recall"><b>Quick recall</b> LP predicts $x[n]$ from $p$ past samples; minimising $E$ gives $\sum a_k R(i-k) = R(i)$; example gives $a_1=0.75$, $a_2=-0.25$, $E_2=3.0$.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq9"><h3>Q9. Explain Prediction Gain and Segmental Prediction Gain, and compute the prediction gain for a given speech frame.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the formula, interpretation, and the complete Frame-A step-by-step numeric.</p>
+<div class="def"><b>Definition:</b> <mark>Prediction Gain</mark> ($G_p$) measures LP compression efficiency as the ratio of signal variance to prediction-error variance: $$G_p = 10\log_{10}\left(\frac{\sigma_x^2}{\sigma_e^2}\right)\ \text{dB}$$ where $\sigma_x^2$ = power of the original signal and $\sigma_e^2$ = power of the residual $e[n] = x[n]-\hat{x}[n]$.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n io">Speech signal $x[n]$</div>
+<div class="n">Framing<small>20-30 ms, 50% overlap</small></div>
+<div class="n">Windowing<small>Hamming / Hanning</small></div>
+<div class="n">LP analysis per frame</div>
+<div class="n hi">Time-varying $a_k(m)$</div>
+<div class="n">Prediction error $e[n]$</div>
+<div class="n t">Prediction gain $G_p$</div>
+</div></div>
+<figcaption><b>Fig 2.12</b> &middot; Short-time (frame-based) LP analysis flow, from framing to prediction gain</figcaption>
+<p class="draw">&#9997; Draw it: 7 boxes top to bottom joined by arrows: Speech &rarr; Framing &rarr; Windowing &rarr; LP analysis &rarr; time-varying coefficients &rarr; error e[n] &rarr; gain.</p></figure>
+<ul>
+<li><mark>Interpretation</mark>: large $G_p$ &rarr; predictor removes most redundancy, residual close to white noise, effective model. Small $G_p$ &rarr; poor prediction.</li>
+<li><mark>Voiced vs unvoiced</mark>: voiced frames (periodic, strong formants) give <b>higher</b> gain; unvoiced (noise-like) give <b>lower</b> gain.</li>
+<li><mark>Segmental prediction gain (SPG)</mark>: average of per-frame dB gains over $M$ frames: $$SPG = \frac{1}{M}\sum_{m=1}^{M} G_p(m)$$</li>
+<li><mark>Relation to order</mark>: increasing $p$ raises gain, but it saturates after a point; typical order $p\approx10$&ndash;$16$ for 8&ndash;16 kHz speech.</li>
+</ul>
+<div class="ex"><b>Worked Example: Frame A, voiced-like, $x_A=[2,4,6,5,3,1,-1,-2]$, $p=1$</b>
+<div class="step">$R(0) = \sum x^2[n] = 96$ (sum of squares); $R(1) = \sum x[n]x[n-1] = 81$ (products of adjacent samples)</div>
+<div class="step">$a_1 = R(1)/R(0) = 81/96 = 0.844$; signal power $\sigma_x^2 = 96/8 = 12$</div>
+<div class="step">Residual $e[n] = x[n]-a_1x[n-1]$ for $n=1,\dots,7$: $2.31, 2.63, -0.06, -1.22, -1.53, -1.84, -1.16$, so $\sum e^2[n] = 20.81$</div>
+<div class="step">Residual power (average over the 7 residual samples): $\sigma_e^2 = 20.81/7 = 2.97$</div>
+<div class="step">$G_p = 10\log_{10}(12/2.97) = 10\log_{10}(4.04) = 6.06$ dB</div>
+<span class="ans">Frame A: $a_1=0.844$, $\sigma_x^2=12$, $\sigma_e^2=2.97$, $G_p=6.06$ dB (high gain: predictable)</span>
+</div>
+<p>Frame B (unvoiced-like, noisier samples) gives a much lower $G_p = 0.32$ dB, so the segmental gain over the two frames is $SPG = (6.06+0.32)/2 = 3.19$ dB &ndash; more correlation always means a higher gain.</p>
+<div class="note"><b>Common mistake:</b> $\sigma_e^2$ is the average squared error, $\sigma_e^2 = 20.81/7 = 2.97$, NOT $12 \times 2.97/8 = 4.455$. That wrong value would give $10\log_{10}(12/4.455) = 4.30$ dB, not $6.06$ dB.</div>
+<div class="mn"><b>Mnemonic</b> "Original / Error &rarr; Gain": original power over error power, in dB.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the formula and interpretation, and Frame A's final numbers ($a_1=0.844$, $\sigma_x^2=12$, $\sigma_e^2=2.97$, $G_p=6.06$ dB) &ndash; skip Frame B, SPG, and the common-mistake note.</div>
+<div class="recall"><b>Quick recall</b> $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB; large = good, small = poor; SPG = average of frame gains; Frame A (voiced) 6.06 dB &gt; Frame B (unvoiced) 0.32 dB.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq10"><h3>Q10. Explain the Levinson-Durbin algorithm and reflection coefficients, and solve a step-by-step numerical example.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the recursion formulas, the flowchart, and the complete order-2 numeric matching the direct matrix solve.</p>
+<div class="def"><b>Definition:</b> The <mark>Levinson-Durbin algorithm</mark> is an efficient recursive algorithm that solves the Yule-Walker equations in $O(p^2)$ operations, computing predictor coefficients $a_k$ alongside intermediate <mark>reflection coefficients</mark> $k_m$, using the Toeplitz (symmetric) structure of the autocorrelation matrix instead of inverting it.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initialize $E_0 = R(0)$, $m = 1$</div>
+<div class="n hi">Compute reflection coefficient: $k_m = \dfrac{R(m) - \sum_{j=1}^{m-1} a_j^{(m-1)} R(m-j)}{E_{m-1}}$</div>
+<div class="n">Update predictor coefficients: $a_m^{(m)} = k_m$, $a_j^{(m)} = a_j^{(m-1)} - k_m\, a_{m-j}^{(m-1)}$</div>
+<div class="n">Update residual energy: $E_m = (1 - k_m^2)\,E_{m-1}$</div>
+<div class="n d">$m = p$ ?</div>
+<div class="n t">Stop (Output $a_k = a_k^{(p)}$ and $k_m$)</div>
+</div></div>
+<figcaption><b>Fig 2.3</b> &middot; Flowchart of the Levinson-Durbin Recursive Algorithm</figcaption>
+<p class="draw">&#9997; Draw it: vertical recursion flow initializing E0, computing km, updating predictor coefficients and Em, with a loop decision diamond m == p.</p></figure>
+<ul>
+<li><mark>Toeplitz matrix</mark>: the Yule-Walker matrix is symmetric with one constant value per diagonal; Levinson-Durbin exploits this instead of inverting the matrix.</li>
+<li><mark>New-from-old rule</mark>: new $a_j$ = old $a_j$ $-$ $k_m$ $\times$ old $a_{m-j}$ (the mirror coefficient).</li>
+<li><mark>Stability condition</mark>: the all-pole filter is stable if and only if $|k_m| \lt 1$ for every $m = 1,\dots,p$.</li>
+<li><mark>Complexity</mark>: reduces matrix inversion from $O(p^3)$ to $O(p^2)$; space $O(p)$.</li>
+<li><mark>By-products</mark>: reflection coefficients (also called PARCOR), and the error energy $E_m$ at every order (never increases as order grows).</li>
+</ul>
+<div class="ex"><b>Worked Example: Levinson-Durbin, $R(0)=5.0$, $R(1)=3.0$, $R(2)=1.0$, order $p=2$</b>
+<div class="step">Initialization: $E_0 = R(0) = 5.0$.</div>
+<div class="step"><b>Iteration 1 ($m=1$):</b> $k_1 = R(1)/E_0 = 3.0/5.0 = 0.6$ ($|0.6|\lt1$, stable); $a_1^{(1)} = k_1 = 0.6$</div>
+<div class="step">$E_1 = (1-k_1^2)E_0 = (1-0.36)\times5.0 = 3.2$</div>
+<div class="step"><b>Iteration 2 ($m=2$):</b> $k_2 = \dfrac{R(2)-a_1^{(1)}R(1)}{E_1} = \dfrac{1.0-1.8}{3.2} = -0.25$ ($|-0.25|\lt1$, stable)</div>
+<div class="step">$a_2^{(2)} = k_2 = -0.25$; $a_1^{(2)} = a_1^{(1)} - k_2\,a_1^{(1)} = 0.6-(-0.25)(0.6) = 0.75$</div>
+<div class="step">$E_2 = (1-k_2^2)E_1 = (1-0.0625)\times3.2 = 3.0$</div>
+<span class="ans">Reflection coeffs: $k_1=0.6$, $k_2=-0.25$; predictor coeffs: $a_1=0.75$, $a_2=-0.25$ (matches the direct matrix solve of Q8)</span>
+</div>
+<div class="note"><b>Common mistake:</b> sign convention. Some books write $A(z) = 1+\sum a_k z^{-k}$ (opposite sign for $a_k$). These notes use $\hat{x}[n] = +\sum a_k x[n-k]$; do not mix the two conventions in one answer.</div>
+<div class="mn"><b>Mnemonic</b> "R &rarr; E &rarr; K &rarr; a &rarr; E": $R(0..p)$ &rarr; initial error $E_0$ &rarr; reflection coefficient $k_m$ &rarr; coefficients $a_j^{(m)}$ &rarr; updated error $E_m$.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the recursion formulas, draw Fig 2.3, and only the order-1 step ($k_1=0.6$, $a_1^{(1)}=0.6$, $E_1=3.2$) &ndash; state that order 2 continues the same way.</div>
+<div class="recall"><b>Quick recall</b> Levinson-Durbin solves normal equations in $O(p^2)$; input $R(0..p)$, output $a_k$, $k_m$, $E_p$; stable iff every $|k_m|\lt1$.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq11"><h3>Q11. Compare Short-Term and Long-Term linear prediction models, and explain Moving-Average prediction, contrasting AR and MA.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the cascade diagram, the model formulas, and the AR-vs-MA comparison table.</p>
+<div class="def"><b>Definition:</b> <mark>Short-term prediction</mark> (order $p\approx10$&ndash;$16$) models the vocal-tract formants; <mark>long-term prediction</mark> (LTP) models pitch periodicity using lag $T$. A <mark>moving-average (MA) model</mark> of order $q$ forms the signal from current and past inputs only: $$x[n] = \sum_{k=0}^{q} b_k\,u[n-k]$$</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 160" width="700">
+<rect x="20" y="55" width="100" height="40" rx="6"/><text x="70" y="75">Speech x[n]</text>
+<path class="arr" d="M120 75 H150"/>
+<rect class="hi" x="150" y="47" width="150" height="56" rx="6"/><text x="225" y="67">Short-Term Filter</text><text class="s" x="225" y="87">A(z), order~10</text>
+<path class="arr" d="M300 75 H360"/>
+<text class="b" x="330" y="61">e[n]</text>
+<rect class="hi" x="360" y="47" width="150" height="56" rx="6"/><text x="435" y="67">Long-Term Filter</text><text class="s" x="435" y="87">P(z), pitch period T</text>
+<path class="arr" d="M510 75 H548"/>
+<text class="b l" x="554" y="75">r[n] (Residual)</text>
+</svg></div>
+<figcaption><b>Fig 2.4</b> &middot; Cascaded Short-Term and Long-Term Prediction Error Filter system</figcaption>
+<p class="draw">&#9997; Draw it: horizontal cascade from Speech input x[n] through Short-Term Filter A(z), giving e[n], then Long-Term Filter P(z), giving the final residual r[n].</p></figure>
+<ul>
+<li><mark>Short-term LP</mark>: near samples $x[n-1],\dots,x[n-p]$; all-pole $A(z) = 1-\sum a_k z^{-k}$; removes short-lag (formant) correlation.</li>
+<li><mark>Long-term LP (LTP)</mark>: predicts the residual from one pitch period back, $e[n]\approx\beta e[n-T]$; error filter $P(z) = 1-\beta z^{-T}$; removes long-lag (pitch) correlation.</li>
+<li><mark>MA prediction</mark>: uses past prediction errors instead of past samples, $\hat{x}[n] = \sum_{k=1}^{q} b_k e[n-k]$; no feedback so it is FIR, $h[n]=b_n$ for $n=0,\dots,q$, always stable.</li>
+<li><mark>Why AR is preferred for speech</mark>: formants are sharp peaks that a few poles model efficiently with linear Yule-Walker equations; an MA model would need a very high order for the same peaks.</li>
+<li><mark>Where MA appears</mark>: nasal sounds (anti-resonances), ARMA models, FIR pre-emphasis filters.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Property</th><th>AR (short-term LPC)</th><th>MA (all-zero)</th></tr>
+<tr><td>Impulse response</td><td>Infinite (IIR), decays</td><td>Finite (FIR), $q+1$ terms</td></tr>
+<tr><td>Stability</td><td>Needs poles inside unit circle</td><td>Always stable</td></tr>
+<tr><td>Spectral shape</td><td>Sharp resonant peaks</td><td>Broad dips / notches</td></tr>
+</table></div>
+<div class="ex"><b>Worked Example: AR(1) vs MA(1), $a_1=b_1=0.8$</b>
+<div class="step">AR(1): $x[n]=0.8x[n-1]+u[n]$, so $h[n]=0.8^n$: $1, 0.8, 0.64,\dots$ never exactly zero (IIR).</div>
+<div class="step">MA(1): $x[n]=u[n]+0.8u[n-1]$, so $h[n] = 1, 0.8, 0, 0,\dots$ (only 2 nonzero taps, FIR).</div>
+<span class="ans">AR(1) is infinite and decaying; MA(1) is finite</span>
+</div>
+<div class="mn"><b>Mnemonic</b> AR = Apna past Result (past outputs); MA = past input Mixture (past errors); ARMA = dono. AR = Peaks, MA = Zeros.</div>
+<div class="note"><b>If it comes as 4 marks:</b> give both definitions, draw Fig 2.4, and the AR-vs-MA table &ndash; skip the AR(1)/MA(1) numeric.</div>
+<div class="recall"><b>Quick recall</b> Short-term LP ($p\approx10$&ndash;$16$) models formants; long-term LP models pitch period $T$; MA predicts from past errors and is always stable (FIR).</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq12"><h3>Q12. Explain Scalar Quantization: Uniform, Optimum Lloyd-Max, Logarithmic Companding, and Adaptive/Differential quantizers.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the staircase diagram, the SQNR formula, the Lloyd-Max conditions, and the companding/DPCM formulas.</p>
+<div class="def"><b>Definition:</b> <mark>Scalar quantization</mark> maps a continuous sample $x$ to a discrete level $y_k = Q(x)$ using decision boundaries $d_k$. <mark>Adaptive quantization</mark> adapts the step size $\Delta[n]$ to local signal variance; <mark>differential quantization</mark> (DPCM) quantizes the difference $e[n] = x[n]-\hat{x}[n]$.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
+<line class="acc" x1="40" y1="140" x2="480" y2="140"/>
+<line class="acc" x1="40" y1="20" x2="40" y2="160"/>
+<polyline class="none" points="40,140 100,140 100,110 180,110 180,80 260,80 260,50 340,50 340,20 420,20" stroke-width="2"/>
+<text class="s" x="490" y="140">Input x</text>
+<text class="s" x="40" y="14">Output Q(x)</text>
+</svg></div>
+<figcaption><b>Fig 2.5</b> &middot; Uniform Quantizer Staircase Input-Output Characteristic</figcaption>
+<p class="draw">&#9997; Draw it: x-y axes with a stepped staircase curve jumping at decision boundaries d_k up to output levels y_k.</p></figure>
+<ul>
+<li><mark>Uniform quantizer</mark>: equal step $\Delta = (x_{max}-x_{min})/L$; mid-tread (0 is a level) or mid-rise (0 is a boundary). $$SQNR \approx 6.02B + 1.76\ \text{dB}$$ each extra bit adds about 6 dB.</li>
+<li><mark>Optimum Lloyd-Max quantizer</mark>: boundary condition $d_k = (y_k+y_{k+1})/2$; reconstruction condition $y_k$ = centroid of its PDF region &ndash; minimises MSE for a known PDF.</li>
+<li><mark>Logarithmic companding</mark>: compresses dynamic range before uniform quantization, expands at the receiver. $\mu$-law ($\mu=255$): $C(x) = \dfrac{\ln(1+\mu|x|)}{\ln(1+\mu)}\text{sgn}(x)$. A-law uses $A=87.6$.</li>
+<li><mark>Adaptive quantization</mark>: Forward (AQF) &ndash; step size from the input frame, transmitted as side information; Backward (AQB) &ndash; step size estimated from past quantized output, no side information needed.</li>
+<li><mark>DPCM</mark>: quantizes $e[n]=x[n]-\hat{x}[n]$; decoder rebuilds $\tilde{x}[n] = \hat{x}[n]+\hat{e}[n]$, predictor in the feedback loop keeps encoder/decoder synchronised.</li>
+<li><mark>ADPCM</mark>: combines an adaptive step size with an adaptive predictor (e.g. ITU G.726 @ 32 kbps).</li>
+</ul>
+<div class="ex"><b>Worked Example: Uniform SQNR and Companding</b>
+<div class="step">3-bit quantizer ($L=2^3=8$ levels): $SQNR \approx 6.02(3)+1.76 = 19.82$ dB.</div>
+<div class="step">$\mu$-law for $x=0.5$, $\mu=255$: $C(0.5) = \dfrac{\ln(128.5)}{\ln(256)} = \dfrac{4.8559}{5.5452} = 0.8757$</div>
+<span class="ans">$SQNR = 19.82$ dB (3-bit); $C(0.5) = 0.8757$</span>
+</div>
+<div class="mn"><b>Mnemonic</b> AQF = step size sent Forward (as side info); AQB = estimated Backward (from past output, no side info).</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, draw Fig 2.5, and the SQNR formula with the 3-bit numeric &ndash; skip Lloyd-Max, companding and AQF/AQB.</div>
+<div class="recall"><b>Quick recall</b> Uniform $SQNR\approx6.02B+1.76$ dB; Lloyd-Max: boundaries at midpoints, levels at centroids; $\mu$-law compresses weak signals; AQF sends step size, AQB estimates it; DPCM quantizes the difference signal.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq13"><h3>Q13. Explain Vector Quantization, distortion measures, and the LBG algorithm for codebook design.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; the examiner wants the VQ definition, the distortion formulas, and the LBG flowchart with a small worked numeric.</p>
+<div class="def"><b>Definition:</b> <mark>Vector quantization</mark> (VQ) blocks $k$ consecutive samples into a vector $\mathbf{x}$ and maps it to the closest codevector $\mathbf{y}_i$ in a codebook $C=\{\mathbf{y}_1,\dots,\mathbf{y}_N\}$, transmitting only the index $i$.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Initial Codebook $C_0$</div>
+<div class="n">Partition training vectors into Voronoi regions $R_i$</div>
+<div class="n hi">Update codevectors: $\mathbf{y}_i$ = centroid of region $R_i$</div>
+<div class="n">Compute total average distortion $D$</div>
+<div class="n d">$(D_{old} - D_{new}) / D_{old} \lt \epsilon$ ?</div>
+<div class="n t">Stop (Final Codebook)</div>
+</div></div>
+<figcaption><b>Fig 2.10</b> &middot; Flowchart of the LBG (Generalized Lloyd) Codebook Design Algorithm</figcaption>
+<p class="draw">&#9997; Draw it: vertical flow from Initial Codebook to Partitioning to Centroid Update to Distortion Check decision diamond.</p></figure>
+<ul>
+<li><mark>Distortion measures</mark>: Squared Euclidean (MSE) $d(\mathbf{x},\mathbf{y}) = \sum(x_i-y_i)^2$; Weighted Euclidean $d = (\mathbf{x}-\mathbf{y})^T\mathbf{W}(\mathbf{x}-\mathbf{y})$; Itakura-Saito (spectral distortion between LPC envelopes).</li>
+<li><mark>LBG algorithm</mark> (4 steps): (1) start with an initial codebook; (2) <b>partition</b> &ndash; assign each training vector to its nearest codevector (Voronoi region); (3) <b>update</b> &ndash; recompute each codevector as the centroid of its assigned vectors; (4) <b>check convergence</b> &ndash; stop when $(D_{old}-D_{new})/D_{old} \lt \epsilon$, else repeat.</li>
+<li><mark>Codebook types</mark>: Full-Search (lowest distortion, $O(N)$ search); Tree-Structured (TSVQ, fast $O(\log_2 N)$ search); Multistage (MSVQ, low complexity for large codebooks); Split VQ (common for LPC parameter quantization).</li>
+</ul>
+<div class="ex"><b>Worked Example: Tiny LBG 2D Codebook Centroid Update</b>
+<div class="step">4 points: $P_1(1,2)$, $P_2(2,4)$, $P_3(7,8)$, $P_4(9,10)$. Initial codevectors $C_1=(4,5)$, $C_2=(5,7)$.</div>
+<div class="step">Partitioning: $P_1,P_2$ closer to $C_1$ &rarr; region $R_1$; $P_3,P_4$ closer to $C_2$ &rarr; region $R_2$.</div>
+<div class="step">Updated centroids: $C_1^* = \left(\dfrac{1+2}{2},\dfrac{2+4}{2}\right) = (1.5,3.0)$; $C_2^* = \left(\dfrac{7+9}{2},\dfrac{8+10}{2}\right) = (8.0,9.0)$</div>
+<span class="ans">Updated LBG Centroids: $C_1^* = (1.5,3.0)$, $C_2^* = (8.0,9.0)$</span>
+</div>
+<div class="note"><b>If it comes as 4 marks:</b> give the definition, draw Fig 2.10, and the four LBG steps &ndash; skip the distortion formulas and the codebook-types list.</div>
+<div class="recall"><b>Quick recall</b> VQ maps a vector to the nearest codebook entry and sends only its index. LBG: partition (Voronoi) &rarr; update (centroid) &rarr; check convergence, repeat.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq-1m"><h3>1-mark questions</h3>
+<dl class="sa">
+<dt>1. Differentiate voiced and unvoiced speech sounds.</dt><dd>Voiced sounds come from vibrating vocal cords giving periodic impulse excitation (vowels); unvoiced sounds use open vocal cords producing random noise excitation (fricatives /s/).</dd>
+<dt>2. What is the Source-Filter Model of speech production?</dt><dd>Speech = excitation source (periodic impulses or noise) filtered by a linear vocal tract system $H(z)$.</dd>
+<dt>3. State the standard human hearing and telephone speech frequency bands.</dt><dd>Human hearing: 20 Hz to 20 kHz; telephone speech band: 300 Hz to 3400 Hz (8 kHz sampling).</dd>
+<dt>4. Classify speech coding techniques into three major categories.</dt><dd>Waveform Coders (PCM/ADPCM), Parametric Coders/Vocoders (LPC-10), and Hybrid Coders (CELP family).</dd>
+<dt>5. What is Mean Opinion Score (MOS)?</dt><dd>A subjective speech-quality rating from 1 (unacceptable) to 5 (excellent); toll-quality calls need MOS &ge; 4.0.</dd>
+<dt>6. Define pitch period and fundamental frequency ($F_0$).</dt><dd>Pitch period $T_0$ is one vocal-fold vibration cycle; $F_0 = 1/T_0$.</dd>
+<dt>7. Differentiate All-Pole (IIR) and All-Zero (FIR) filters.</dt><dd>All-pole $H(z)=G/A(z)$ models vocal tract resonances (formants); all-zero $H(z)=B(z)$ models feedforward zeroes.</dd>
+<dt>8. State the discrete-time convolution formula.</dt><dd>$y[n] = \sum_k x[k]\,h[n-k]$; combines input with filter impulse response.</dd>
+<dt>9. What is the Wiener-Khinchin theorem?</dt><dd>The PSD of a stationary signal is the Fourier Transform of its autocorrelation sequence.</dd>
+<dt>10. Differentiate biased and unbiased autocorrelation estimators.</dt><dd>Biased divides by frame size $N$ (positive semi-definite PSD); unbiased divides by $N-k$.</dd>
+<dt>11. List the types of speech production models.</dt><dd>Physiological, Acoustic (source-filter), Psycholinguistic, and LPC models.</dd>
+<dt>12. Define poles and zeros. Why is an all-zero (FIR) filter always stable?</dt><dd>Zeros make $H(z)$'s numerator zero; poles make its denominator zero. An FIR filter's poles all sit at $z=0$, inside the unit circle, so it is always stable.</dd>
+<dt>13. Define Linear Prediction in speech processing.</dt><dd>Estimation technique predicting $x[n]$ as a weighted sum of $p$ past samples: $\hat{x}[n]=\sum a_k x[n-k]$.</dd>
+<dt>14. Define Prediction Gain (PG).</dt><dd>Ratio of signal variance to prediction-error variance: $G_p = 10\log_{10}(\sigma_x^2/\sigma_e^2)$ dB.</dd>
+<dt>15. State the computational complexity of the Levinson-Durbin algorithm.</dt><dd>Solves normal equations recursively in $O(p^2)$, compared to $O(p^3)$ for direct matrix inversion.</dd>
+<dt>16. What condition on reflection coefficients ($k_m$) guarantees filter stability?</dt><dd>The all-pole filter is stable if and only if $|k_m| \lt 1$ for all $m = 1,\dots,p$.</dd>
+<dt>17. Differentiate short-term and long-term linear prediction.</dt><dd>Short-term LP ($p\approx10$) models vocal tract formants; long-term LP models pitch periodicity $T$.</dd>
+<dt>18. What is Moving Average (MA) prediction?</dt><dd>Predicting the current sample from past prediction errors rather than past speech samples.</dd>
+<dt>19. State the SQNR formula for a $B$-bit uniform quantizer.</dt><dd>$SQNR \approx 6.02B + 1.76$ dB for a full-scale sinusoidal signal.</dd>
+<dt>20. State the two Lloyd-Max optimum quantization conditions.</dt><dd>(1) Decision boundary is the midpoint of adjacent levels, $d_k=(y_k+y_{k+1})/2$; (2) level $y_k$ is the centroid of its PDF interval.</dd>
+<dt>21. What is Vector Quantization (VQ)?</dt><dd>Mapping a $k$-dimensional vector of samples to the nearest codevector in a codebook.</dd>
+<dt>22. What is the LBG algorithm?</dt><dd>An iterative (Generalized Lloyd) codebook design algorithm alternating Voronoi partitioning and centroid updating.</dd>
+<dt>23. What is a Toeplitz matrix? Why does Levinson-Durbin use it?</dt><dd>A symmetric matrix whose every diagonal holds one constant value; the Yule-Walker matrix is Toeplitz, letting Levinson-Durbin solve it recursively in $O(p^2)$.</dd>
+<dt>24. Differentiate AR and MA models.</dt><dd>AR predicts from past outputs, is all-pole (IIR), models sharp peaks; MA predicts from past inputs/errors, is all-zero (FIR), models dips.</dd>
+<dt>25. Differentiate forward (AQF) and backward (AQB) adaptive quantization.</dt><dd>AQF computes the step size from the input frame and transmits it; AQB estimates it from past quantized output (no side information).</dd>
+</dl>
+<a class="top" href="#top">&uarr; top</a></section>
+</section>

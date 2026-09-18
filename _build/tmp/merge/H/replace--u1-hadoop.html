@@ -1,0 +1,69 @@
+<section class="topic" id="u1-hadoop">
+<h3>1.8 Introduction to Hadoop</h3>
+<p class="hook">Hadoop lets a cluster of cheap computers store and process huge data together, as if it were one big machine. <span class="hg">(bahut saari sasti machines milkar ek badi machine)</span></p>
+<div class="def"><b>Definition:</b> <mark>Apache Hadoop</mark> is an open-source Java-based framework for distributed storage and distributed processing of very large data sets across clusters of commodity hardware, using simple programming models, and designed to detect and handle failures at the software level.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Applications<small>MapReduce, Spark, Hive, Pig ...</small></div>
+<div class="l hi">YARN<small>resource management + job scheduling</small></div>
+<div class="l hi">HDFS<small>distributed storage</small></div>
+<div class="l">Hadoop Common<small>shared Java libraries and utilities</small></div>
+</div></div><figcaption><b>Fig 1.11</b> · Core components of Hadoop (Hadoop 2.x / 3.x)</figcaption><p class="draw">✍ Draw it: four stacked boxes, top to bottom: Applications, YARN, HDFS, Common.</p></figure>
+<ul>
+<li><mark>History</mark>: created by Doug Cutting and Mike Cafarella out of the Nutch web-search project, based on Google's GFS (2003) and MapReduce (2004) papers; became a separate project in 2006 and an Apache top-level project in 2008. Named after a toy elephant belonging to Cutting's son.</li>
+<li><mark>Core modules</mark>: <b>Hadoop Common</b> (libraries), <b>HDFS</b> (storage), <b>YARN</b> (resources, added in Hadoop 2), <b>MapReduce</b> (processing model).</li>
+<li><mark>Key idea: data locality</mark>: send the program to the nodes where the data blocks already are, instead of moving terabytes over the network. <span class="hg">(data ke paas code bhejo)</span></li>
+<li><mark>Master–slave</mark> design: a master keeps metadata and schedules work, many slave (worker) nodes store data and run tasks.</li>
+<li><mark>Real-world adoption</mark>: well-known users include Facebook, Yahoo, Netflix and eBay; vendors and integrators such as Microsoft, IBM, Intel, MapR, Cloudera and Hortonworks built products and distributions around Hadoop.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>MapReduce</b>distributed processing (Map + Reduce)</div>
+<div class="b hi"><b>HDFS</b>distributed storage in blocks</div>
+<div class="b"><b>YARN</b>resource management + scheduling</div>
+<div class="b"><b>Common</b>shared Java libraries/utilities</div>
+</div></div><figcaption><b>Fig 1.50</b> · The four core components of Hadoop architecture</figcaption><p class="draw">✍ Draw it: a row of four boxes, one component name and its one-line role in each.</p></figure>
+<h4>Features / advantages</h4>
+<ul>
+<li><mark>Scalable</mark>: add nodes to grow storage and compute (scale-out).</li>
+<li><mark>Fault tolerant</mark>: blocks are replicated (default 3 copies); failed tasks are re-run on another node.</li>
+<li><mark>Cost-effective</mark>: runs on commodity hardware; open source (Apache License 2.0).</li>
+<li><mark>Flexible</mark>: stores any data type without a schema up front.</li>
+<li><mark>High throughput</mark>: parallel processing of large batches.</li>
+</ul>
+<h4>Limitations</h4>
+<ul>
+<li><mark>Small files problem</mark>: every file and block is metadata in NameNode memory, so millions of tiny files overload it.</li>
+<li><mark>Batch-oriented</mark>: MapReduce is not suited to low-latency, interactive or real-time queries.</li>
+<li><mark>Slow for iterative jobs</mark> (machine learning, graph algorithms) because MapReduce writes intermediate data to disk; Spark addresses this with in-memory processing.</li>
+<li><mark>Complex to program and manage</mark>: low-level Java MapReduce code; many moving parts.</li>
+<li><mark>Security</mark> was minimal by default in early versions (Kerberos integration added later).</li>
+<li>In Hadoop 1.x the NameNode was a <mark>single point of failure</mark>; Hadoop 2 added NameNode High Availability.</li>
+</ul>
+<h4>Uses of Hadoop</h4>
+<ul>
+<li><mark>Analytics and big data</mark>: research, production data processing and analytics that need to process terabytes to petabytes of data.</li>
+<li><mark>Data storage and archiving</mark>: low-cost storage on commodity hardware for transactions, clickstreams, sensor/machine data.</li>
+<li><mark>Data lakes</mark>: complements a data lake by storing large amounts of raw, unrefined data without preprocessing.</li>
+<li><mark>Marketing analytics</mark>: storing and analysing customer relationship management (CRM) data.</li>
+<li><mark>Risk management</mark>: banks, insurers and other financial firms build risk-analysis and risk-management models on Hadoop.</li>
+<li><mark>AI and machine learning</mark>: processes data and runs model-training workloads for machine learning applications.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Analytics</b>TB–PB scale processing</div>
+<div class="b"><b>Storage / archiving</b>low-cost, commodity disks</div>
+<div class="b"><b>Data lakes</b>raw data, no preprocessing</div>
+<div class="b"><b>Marketing analytics</b>CRM data</div>
+<div class="b"><b>Risk management</b>banking / insurance models</div>
+<div class="b"><b>AI / ML</b>data prep + model training</div>
+</div></div><figcaption><b>Fig 1.51</b> · Common uses of Hadoop</figcaption><p class="draw">✍ Draw it: a 3 × 2 grid of six boxes, one use-case name in each.</p></figure>
+<div class="tw"><table>
+<tr><th>Point</th><th>Hadoop 1.x</th><th>Hadoop 2.x / 3.x</th></tr>
+<tr><td>Components</td><td>HDFS + MapReduce</td><td>HDFS + YARN + MapReduce (and other engines)</td></tr>
+<tr><td>Resource management</td><td>JobTracker + TaskTracker</td><td>ResourceManager + NodeManager (YARN)</td></tr>
+<tr><td>Processing models</td><td>MapReduce only</td><td>MapReduce, Spark, Tez and others on YARN</td></tr>
+<tr><td>Default block size</td><td>64 MB</td><td>128 MB</td></tr>
+<tr><td>NameNode HA</td><td>No (single point of failure)</td><td>Yes (active + standby)</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>C-H-Y-M</b> = "<b>C</b>hai <b>H</b>ai <b>Y</b>aar, <b>M</b>asala": Common, HDFS, YARN, MapReduce.</div>
+<div class="recall"><b>Quick recall</b> Hadoop = open-source framework for distributed storage (HDFS) + processing (MapReduce) with YARN for resources, on commodity hardware; fault tolerant via replication.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

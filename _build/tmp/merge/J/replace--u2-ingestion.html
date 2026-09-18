@@ -1,0 +1,82 @@
+<section class="topic" id="u2-ingestion">
+<h3>2.7 Data Ingestion</h3>
+<p class="hook">Ingestion is the front door: getting data from its sources into your data system, ideally automatically. <span class="hg">(data ko system ke andar laana)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data ingestion</mark> is the process of getting data from its sources into the data system being built or used (for storage and processing), either in <mark>batches</mark> or as a continuous <mark>stream</mark>, according to an <mark>ingestion policy</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Sources<small>DB, files, sensors, APIs</small></div><div class="ar">collect</div><div class="n">Ingestion layer<small>batch / stream</small></div><div class="ar">validate</div><div class="n">Staging<small>clean, convert</small></div><div class="ar">load</div><div class="n hi">Storage</div>
+</div></div><figcaption><b>Fig 2.12</b> · Data ingestion pipeline</figcaption><p class="draw">✍ Draw it: 4 boxes left to right, label arrows collect, validate, load; shade Storage.</p></figure>
+<ul>
+<li><mark>Batch ingestion</mark>: data collected and loaded at intervals (e.g. nightly load of the day's sales). <span class="hg">(ikattha karke ek saath)</span></li>
+<li><mark>Streaming (real-time) ingestion</mark>: each record flows in as it is produced (sensor readings, tweets, clicks). <span class="hg">(lagatar behta hua)</span></li>
+<li><mark>Automation</mark>: at big data scale, ingestion must be automated, not manual uploads.</li>
+<li><mark>Infrastructure questions</mark> to ask before designing ingestion:
+  <ul>
+  <li>How many data sources are there, and will the number grow?</li>
+  <li>How large is each data item, and at what rate does data arrive?</li>
+  <li>What to do with bad data (reject, repair, or flag and keep)?</li>
+  <li>What to do when data arrives too fast / too much, or too little?</li>
+  </ul></li>
+<li><mark>Ingestion policy / error policy</mark>: e.g. hospital medical records are never discarded; errors are flagged but data retained. For a high-volume social-media stream, bad records may simply be dropped.</li>
+<li><mark>Typical tools</mark>: Apache Kafka / Flume (streams, logs), Sqoop (relational DB to Hadoop).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Batch ingestion</th><th>Streaming ingestion</th></tr>
+<tr><td>Timing</td><td>Periodic (hourly, daily)</td><td>Continuous, as generated</td></tr>
+<tr><td>Latency</td><td>High (wait for next batch)</td><td>Low (seconds or less)</td></tr>
+<tr><td>Data size per load</td><td>Large chunks</td><td>Small records, many per second</td></tr>
+<tr><td>Use case</td><td>Payroll, monthly reports</td><td>Fraud alerts, live traffic</td></tr>
+<tr><td>Example tools</td><td>Sqoop, scheduled ETL jobs</td><td>Kafka, Flume</td></tr>
+</table></div>
+<div class="ex"><b>Example</b> (ingestion rate of smart meters)<div class="step">10,00,000 meters, 1 reading every 15 min → readings/day per meter = 24 × 60 / 15 = 96</div><div class="step">Total readings/day = 10,00,000 × 96 = 9,60,00,000 (96 million)</div><div class="step">Size at 200 bytes each = 96,000,000 × 200 = 19,200,000,000 B = 19.2 GB/day (1 GB = 10<sup>9</sup> B)</div><div class="step">Rate = 96,000,000 / 86,400 s = 1111.1 readings per second (1 decimal)</div><span class="ans">≈ 1111 readings/s and 19.2 GB/day, so a streaming ingestion system is needed.</span></div>
+<h4>More Ingestion Tools</h4>
+<ul>
+<li><mark>Apache NiFi</mark>: automates and manages data flows between systems (drag-and-drop pipeline routing).</li>
+<li><mark>AWS Kinesis / Azure Event Hubs</mark>: managed cloud services for ingesting real-time streams at scale.</li>
+</ul>
+<h4>Data Ingestion Techniques: ETL, ELT and CDC</h4>
+<figure class="fig"><div class="canvas">
+<div class="chain"><div class="n">Extract</div><div class="n">Transform</div><div class="n hi">Load</div></div>
+<div class="chain"><div class="n">Extract</div><div class="n hi">Load</div><div class="n">Transform</div></div>
+</div><figcaption><b>Fig 2.50</b> · ETL (top row) vs ELT (bottom row): same 3 steps, different order</figcaption><p class="draw">✍ Draw it: two rows of 3 boxes with arrows; top row shade the 3rd box (Load), bottom row shade the 2nd box (Load).</p></figure>
+<ul>
+<li><mark>Choice of technique depends on</mark>: the business requirement, the complexity of the data, and the infrastructure already in place.</li>
+<li><mark>ETL (Extract, Transform, Load)</mark>: data is extracted, cleaned/transformed into a consistent format, then loaded into storage such as a data warehouse. Best when structured, ready-to-analyse data is the priority (reports, strict quality rules, relational databases).</li>
+<li><mark>ELT (Extract, Load, Transform)</mark>: data is extracted and loaded into the target (a data lake / cloud platform) in raw form first, and transformed later, on demand, inside that system. Best for large volumes of unstructured / semi-structured data where transformation can wait.</li>
+<li><mark>CDC (Change Data Capture)</mark>: detects and captures only the changes (insert / update / delete) made at a source and replicates just those changes to the target in real time, instead of reloading the whole dataset. Used for high-frequency trading, e-commerce, or keeping systems in sync with minimal lag.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>ETL</th><th>ELT</th></tr>
+<tr><td>Order</td><td>Extract → Transform → Load</td><td>Extract → Load → Transform</td></tr>
+<tr><td>Transform happens</td><td>Before loading, in a separate engine</td><td>After loading, inside the target system</td></tr>
+<tr><td>Best for</td><td>Structured data, strict schema, reports</td><td>Large raw / unstructured / semi-structured data</td></tr>
+<tr><td>Target system</td><td>Data warehouse</td><td>Data lake / cloud platform</td></tr>
+</table></div>
+<h4>Data Sources for Ingestion: Structured, Semi-structured, Unstructured</h4>
+<ul>
+<li><mark>Structured data</mark>: highly organised, fixed schema, rows and columns (relational databases). Easiest to ingest — the schema itself rejects bad values.</li>
+<li><mark>Semi-structured data</mark>: some organisation via tags/markers (JSON, CSV, NoSQL records) but no rigid schema; flexible; needs parsing/transformation.</li>
+<li><mark>Unstructured data</mark>: no defined structure at all (images, video, audio, documents); hardest to process; usually stored raw in a data lake and analysed with ML / NLP.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Feature</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr>
+<tr><td>Definition</td><td>Highly organised, predefined schema (rows and columns)</td><td>Partially organised with tags/markers for flexibility (JSON, CSV)</td><td>No predefined structure or organisation</td></tr>
+<tr><td>Examples</td><td>Relational databases (MySQL, PostgreSQL)</td><td>JSON files, NoSQL databases, CSV logs</td><td>Images, videos, audio files, text documents</td></tr>
+<tr><td>Ease of processing</td><td>Easiest — strict schema</td><td>Moderate — needs parsing and transformation</td><td>Most challenging — no structure</td></tr>
+<tr><td>Storage</td><td>Relational databases / data warehouses</td><td>Data lakes, NoSQL databases, cloud storage</td><td>Data lakes / specialised raw-file storage</td></tr>
+<tr><td>Ingestion approach</td><td>Typically batch</td><td>Flexible — real-time or batch</td><td>Ingested raw, processed later</td></tr>
+<tr><td>Tools used</td><td>SQL tools: MySQL, PostgreSQL</td><td>MongoDB, Google BigQuery (flexible-schema tools)</td><td>Hadoop, Apache Spark, AI/ML processing tools</td></tr>
+<tr><td>Use case examples</td><td>Reports, transactional systems</td><td>API responses, web/app logs</td><td>Image recognition, speech / sentiment analysis</td></tr>
+</table></div>
+<h4>Challenges in Data Ingestion</h4>
+<ul>
+<li><mark>Handling large volumes</mark>: data keeps growing (especially real-time IoT / social-media streams), so the pipeline must scale continuously.</li>
+<li><mark>Data quality and consistency</mark>: multiple sources arrive in different formats or with conflicts; validation is needed at ingestion time, not only later.</li>
+<li><mark>Security and compliance</mark>: personal data (name, address, payment details) must be encrypted and access-controlled during ingestion to meet regulations such as GDPR or HIPAA.</li>
+<li><mark>Latency requirements</mark>: when a use case needs instant insight, the pipeline must process and expose data with very little delay.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Ingestion technique choice = <b>"B-C-I"</b>: Business need, data Complexity, existing Infrastructure. Ingestion challenges = <b>"V-Q-S-L"</b>: Volume, Quality, Security, Latency.</div>
+<div class="mn"><b>Mnemonic</b> Ingestion questions <b>"S-S-R-B-T"</b>: Sources (how many, growing?), Size, Rate, Bad data, Too much / too little.</div>
+<div class="note"><b>Common mistake:</b> confusing ingestion with storage. Ingestion moves data in; storage is where it rests.</div>
+<div class="recall"><b>Quick recall</b> Ingestion = bringing data in; batch vs stream; ETL transforms before loading, ELT after, CDC replicates only the changes; sources are structured/semi-structured/unstructured; plan for volume, quality, security and latency.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

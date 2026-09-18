@@ -1,0 +1,35 @@
+<section class="topic" id="u1-tech">
+<h3>1.6 Big Data technologies</h3>
+<p class="hook">No single tool does it all; big data systems are a stack of layers, each with its own tools.</p>
+<div class="def"><b>Definition:</b> <mark>Big data technologies</mark> are the software frameworks and platforms used to ingest, store, process, analyse and visualise very large and diverse data sets, typically on distributed clusters.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l">Visualisation<small>Tableau, Power BI, dashboards</small></div>
+<div class="l">Analytics / query<small>Hive, Pig, Spark SQL, ML libraries</small></div>
+<div class="row"><div class="l hi">Batch processing<small>MapReduce, Spark</small></div><div class="l hi">Stream processing<small>Spark Streaming, Flink, Storm</small></div></div>
+<div class="row"><div class="l">Distributed storage<small>HDFS, cloud object store</small></div><div class="l">NoSQL databases<small>HBase, Cassandra, MongoDB</small></div></div>
+<div class="l">Ingestion<small>Sqoop, Flume, Kafka</small></div>
+<div class="l">Data sources<small>apps, sensors, logs, RDBMS</small></div>
+</div></div><figcaption><b>Fig 1.6</b> · Big data technology landscape as layers</figcaption><p class="draw">✍ Draw it: six stacked rectangles bottom-up (sources, ingestion, storage | NoSQL, batch | stream, analytics, visualisation).</p></figure>
+<ul>
+<li><mark>Ingestion</mark>: bring data in. Sqoop (bulk RDBMS ↔ Hadoop), Flume (log collection), Kafka (event streaming).</li>
+<li><mark>Storage</mark>: HDFS (distributed file system), cloud object storage (e.g. Amazon S3), data lakes.</li>
+<li><mark>NoSQL databases</mark>: flexible-schema, scale-out stores: HBase, Cassandra, MongoDB, Redis, Neo4j.</li>
+<li><mark>Batch processing</mark>: process stored data in large chunks: Hadoop MapReduce, Apache Spark.</li>
+<li><mark>Streaming (real-time)</mark>: process data as it arrives: Kafka Streams, Spark Streaming, Apache Flink, Apache Storm.</li>
+<li><mark>Analytics</mark>: SQL-on-Hadoop (Hive, Impala), scripting (Pig), machine learning (Spark MLlib), languages R and Python.</li>
+<li><mark>Visualisation</mark>: Tableau, Power BI, Python/R plotting libraries.</li>
+<li><mark>Cloud platforms</mark> package these as managed services (AWS, Microsoft Azure, Google Cloud).</li>
+<li><mark>Implementation languages</mark>: Hadoop's core is written in <mark>Java</mark>; MapReduce jobs are most naturally written in Java, but Hadoop Streaming lets a mapper/reducer be written in <mark>Python</mark> (or any language that reads stdin/writes stdout), and Hadoop Pipes gives a native <mark>C++</mark> API — R is used mainly at the analytics/ML layer, not to write the core framework.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Batch processing</th><th>Stream processing</th></tr>
+<tr><td>Data</td><td>Stored, bounded data set</td><td>Continuous, unbounded flow</td></tr>
+<tr><td>Latency</td><td>Minutes to hours</td><td>Milliseconds to seconds</td></tr>
+<tr><td>Tools</td><td>MapReduce, Spark</td><td>Kafka Streams, Flink, Spark Streaming</td></tr>
+<tr><td>Use</td><td>Monthly sales report</td><td>Live fraud alert</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> <b>I S P A V</b> = "<b>I</b> <b>S</b>ell <b>P</b>ani <b>A</b>nd <b>V</b>ada" → Ingest, Store, Process, Analyse, Visualise.</div>
+<div class="note"><b>Common mistake:</b> Some sources list "Scala and Hadoop" as the two most popular open-source big data frameworks — but <b>Scala</b> is a general-purpose JVM programming language (created by Martin Odersky), not a big data framework by itself. <b>Apache Spark</b>, which happens to be written in Scala, is the framework usually meant there; Spark itself also offers APIs in Java, Python and R.</div>
+<div class="recall"><b>Quick recall</b> Layers: ingest (Sqoop/Flume/Kafka) → store (HDFS/NoSQL) → process (MapReduce/Spark, streaming) → analyse (Hive/Pig) → visualise. Core Hadoop is Java; jobs can also be written via Streaming (Python) or Pipes (C++).</div>
+<a class="top" href="#top">↑ top</a>
+</section>

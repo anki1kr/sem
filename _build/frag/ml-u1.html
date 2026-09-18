@@ -1,0 +1,847 @@
+<section class="unit" id="u1">
+<h2><span class="uno">Unit I</span>Introduction of Machine Learning (ML)</h2>
+<p class="unit-sub">What ML is, how a learning system is designed, its perspectives and issues, the types of learning, how data is represented as numbers and graphs, and where ML is used.</p>
+
+<section class="topic" id="u1-important">
+<h3>Important topics</h3>
+<ol>
+<li><a href="#u1-types">Different types of ML</a> (supervised, <a href="#u1-unsup">unsupervised</a>, <a href="#u1-rl">reinforcement</a>)</li>
+<li><a href="#u1-apps">Applications of ML</a></li>
+<li><a href="#u1-issues">Various issues in ML</a></li>
+<li>Data representations: <a href="#u1-numrep">numerical</a>, <a href="#u1-graphrep">graph</a></li>
+<li><a href="#u2-linreg">Linear regression with example and basic numerical</a></li>
+<li><a href="#u2-cost">Hypothesis function; cost function definition and derivation</a></li>
+<li><a href="#u2-logreg">Logistic regression</a></li>
+<li><a href="#u2-ensemble">Ensemble learning</a></li>
+<li><a href="#u2-intro">Classification and regression</a></li>
+<li><a href="#u2-outliers">Outliers</a></li>
+<li><a href="#u2-knn">KNN: find the class (numerical)</a></li>
+</ol>
+</section>
+<section class="topic" id="u1-basics">
+<h3>1.1 Machine Learning: basic concepts</h3>
+<p class="hook">Instead of writing rules by hand, we show the computer examples and it finds the rules itself. <span class="hg">(rules hum nahi likhte, data se machine khud seekhti hai)</span></p>
+<div class="def"><b>Definition (Tom Mitchell, 1997):</b> "A computer program is said to <mark>learn</mark> from experience <b>E</b> with respect to some class of tasks <b>T</b> and performance measure <b>P</b>, if its performance at tasks in T, as measured by P, improves with experience E."</div>
+<div class="def"><b>Informal definition (commonly attributed to Arthur Samuel, 1959, who coined the term "machine learning" while working on a checkers-playing program at IBM):</b> Machine learning is the field of study that gives computers the ability to learn without being explicitly programmed.</div>
+<div class="def"><b>A further definition (class notes, cited there as ref. [2]):</b> Machine learning is programming computers to <mark>optimize a performance criterion</mark> using example data or past experience: a model is fixed up to some parameters, and learning is running a program that optimizes those parameters using the training data. The model may be <mark>predictive</mark> (to make future predictions), <mark>descriptive</mark> (to gain knowledge from data), or both.</div>
+<div class="def"><b>A further definition (class notes, cited there as ref. [4], preface):</b> Machine learning is the field of study concerned with the question of how to construct computer programs that automatically improve with experience.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 250" width="700">
+<rect x="20" y="30" width="140" height="36" rx="6"/><text x="90" y="48">Data</text>
+<rect x="20" y="76" width="140" height="36" rx="6"/><text x="90" y="94">Program (rules)</text>
+<rect class="hi" x="210" y="50" width="120" height="60" rx="6"/><text x="270" y="80">Computer</text>
+<rect x="380" y="60" width="150" height="40" rx="6"/><text x="455" y="80">Output</text>
+<path class="arr" d="M160 48 L210 70"/><path class="arr" d="M160 94 L210 90"/><path class="arr" d="M330 80 H380"/>
+<text class="b" x="615" y="80">Traditional</text>
+<line class="dash" x1="20" y1="130" x2="680" y2="130"/>
+<rect x="20" y="150" width="140" height="36" rx="6"/><text x="90" y="168">Data</text>
+<rect x="20" y="196" width="140" height="36" rx="6"/><text x="90" y="214">Output (labels)</text>
+<rect class="hi" x="210" y="170" width="120" height="60" rx="6"/><text x="270" y="200">Computer</text>
+<rect x="380" y="180" width="150" height="40" rx="6"/><text x="455" y="200">Program (model)</text>
+<path class="arr" d="M160 168 L210 190"/><path class="arr" d="M160 214 L210 210"/><path class="arr" d="M330 200 H380"/>
+<text class="b" x="615" y="200">Machine learning</text>
+</svg></div><figcaption><b>Fig 1.1</b> · Traditional programming vs machine learning</figcaption><p class="draw">✍ Draw it: two rows. Top: Data + Program into Computer, out comes Output. Bottom: Data + Output into Computer, out comes Program (model).</p></figure>
+<ul>
+<li><mark>Learning</mark> = improving at a task (T), measured by P, through experience E. <span class="hg">(practice se better hona)</span></li>
+<li><mark>Task T</mark>: what the system must do, e.g. classify an email as spam or not.</li>
+<li><mark>Performance P</mark>: a number that tells how well it does, e.g. accuracy (% correct).</li>
+<li><mark>Experience E</mark>: the data or practice it learns from, e.g. emails already labelled spam / not spam.</li>
+<li><mark>Well-posed learning problem</mark>: a problem where T, P and E are all clearly identified (Mitchell).</li>
+<li>ML is used when rules are <mark>too hard to write by hand</mark> (face recognition), when rules <mark>change</mark> (spam tricks change), or when data is <mark>huge</mark>.</li>
+<li>What "<mark>model</mark>" means (class notes' remark): loosely, a mathematical expression or equation, a mathematical structure such as a graph or tree, a division of a dataset into disjoint subsets, or a set of logical "if ... then ... else ..." rules - not an exhaustive list.</li>
+<li>A computer program that learns from experience is called a <mark>machine learning program</mark>, or simply a <mark>learner</mark>.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Problem</th><th>Task T</th><th>Performance P</th><th>Experience E</th></tr>
+<tr><td>Checkers (Mitchell)</td><td>Playing checkers</td><td>% of games won against opponents</td><td>Practice games played against itself</td></tr>
+<tr><td>Handwriting recognition (Mitchell)</td><td>Recognising handwritten words in images</td><td>% of words correctly classified</td><td>Database of handwritten words with their classifications</td></tr>
+<tr><td>Robot driving (Mitchell)</td><td>Driving on public four-lane highways using vision sensors</td><td>Average distance travelled before an error</td><td>Images and steering commands recorded while watching a human driver</td></tr>
+<tr><td>Spam filter</td><td>Flag emails as spam / not spam</td><td>% of emails correctly classified</td><td>Emails already labelled by users</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Traditional programming</th><th>Machine learning</th></tr>
+<tr><td>Input</td><td>Data + hand-written rules</td><td>Data + known outputs (examples)</td></tr>
+<tr><td>Output</td><td>Answers</td><td>A model (learned rules)</td></tr>
+<tr><td>Who makes rules</td><td>Programmer</td><td>Algorithm, from data</td></tr>
+<tr><td>Changing situation</td><td>Programmer must rewrite rules</td><td>Retrain on new data</td></tr>
+<tr><td>Best for</td><td>Clear, fixed logic (billing, payroll)</td><td>Fuzzy patterns (faces, speech, spam)</td></tr>
+</table></div>
+<h4>AI vs ML vs DL</h4>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 520 300" width="520">
+<ellipse cx="260" cy="150" rx="240" ry="130"/>
+<ellipse class="hi" cx="260" cy="170" rx="165" ry="95"/>
+<ellipse cx="260" cy="195" rx="90" ry="50"/>
+<text class="b" x="260" y="40">Artificial Intelligence</text>
+<text class="s" x="260" y="58">machines acting smart</text>
+<text class="b" x="260" y="100">Machine Learning</text>
+<text class="s" x="260" y="120">learns from data</text>
+<text class="b" x="260" y="185">Deep Learning</text>
+<text class="s" x="260" y="207">many-layer neural nets</text>
+</svg></div><figcaption><b>Fig 1.2</b> · DL is a subset of ML, and ML is a subset of AI</figcaption><p class="draw">✍ Draw it: three nested ovals, outer AI, middle ML, inner DL, one label each.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>AI</th><th>ML</th><th>DL</th></tr>
+<tr><td>Meaning</td><td>Making machines behave intelligently</td><td>Machines learning patterns from data</td><td>ML using neural networks with many layers</td></tr>
+<tr><td>Scope</td><td>Widest (includes rule-based expert systems)</td><td>Subset of AI</td><td>Subset of ML</td></tr>
+<tr><td>Features</td><td>May use no learning at all</td><td>Often hand-designed features</td><td>Learns features itself from raw data</td></tr>
+<tr><td>Data / compute</td><td>Varies</td><td>Moderate</td><td>Large data, GPUs</td></tr>
+<tr><td>Example</td><td>Chess engine with fixed rules</td><td>Spam filter</td><td>Face unlock, speech recognition</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Spam filter tested on 100 emails, 92 classified correctly.</div><div class="step">$P = \text{accuracy} = \dfrac{92}{100} \times 100 = 92\%$</div><div class="step">If after training on more labelled emails (more E) accuracy rises, the program is learning.</div><span class="ans">T = classify email, P = 92% accuracy, E = labelled emails</span></div>
+<div class="mn"><b>Mnemonic</b> <b>T-P-E</b> = "Task, Performance, Experience" - "Tea Pe Enjoy": the task gets better as experience grows.</div>
+<div class="note"><b>Common mistake:</b> Writing Samuel's sentence as an exact quote from his 1959 paper. It is a later paraphrase commonly attributed to him; Mitchell's T/P/E is the formal textbook definition.</div>
+<div class="note"><b>Common mistake:</b> The student's own class notes (uni1.pdf) label the T/P/E example above as a "<b>chess</b> learning problem" (same T/P/E wording: T = playing, P = % games won, E = practice games against itself). The standard textbook example - Mitchell's, and Samuel's original 1959 program at IBM - is <b>checkers</b>, not chess; write "checkers" in the exam.</div>
+<div class="recall"><b>Quick recall</b> ML = learn from E to improve at T measured by P. Traditional: data + rules → output; ML: data + output → rules. $\text{AI} \supset \text{ML} \supset \text{DL}$.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-terms">
+<h3>1.2 Basic terminology</h3>
+<p class="hook">Before any algorithm, learn the vocabulary: rows, columns, answers, and how well the model does on new data. <span class="hg">(ML ki basic bhasha)</span></p>
+<div class="def"><b>Definition:</b> A <mark>dataset</mark> is a collection of examples (instances); each example is described by <mark>features</mark> (input attributes) and, in supervised learning, a <mark>label</mark> (target output). A <mark>model</mark> is the function learned from the training set that maps features to outputs.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="l hi">Dataset: 1000 labelled examples</div>
+<div class="row"><div class="l">Training set<small>800 rows (80%) - model learns</small></div><div class="l">Test set<small>200 rows (20%) - model checked</small></div></div>
+<div class="l">Generalization = accuracy on unseen test data</div>
+</div></div><figcaption><b>Fig 1.3</b> · Splitting a dataset into training and test sets</figcaption><p class="draw">✍ Draw it: one wide box (dataset), below it two side-by-side boxes (train 80%, test 20%), one box at bottom (generalization).</p></figure>
+<ul>
+<li><mark>Instance / example / sample</mark>: one row of the dataset (one house, one email).</li>
+<li><mark>Feature (attribute)</mark>: one input column, e.g. area, rooms. <span class="hg">(input column)</span></li>
+<li><mark>Label (target)</mark>: the answer column we want to predict, e.g. price, spam / not spam.</li>
+<li><mark>Training set</mark>: data the model learns from. <mark>Test set</mark>: data kept aside to check the model on unseen cases. A <mark>validation set</mark> is sometimes also kept for tuning.</li>
+<li><mark>Model</mark>: the learned mapping $f(x) \to y$. <mark>Hypothesis</mark> $h$: one candidate function the learner considers; the <mark>hypothesis space $H$</mark> is the set of all candidates.</li>
+<li><mark>Target function</mark>: the true (unknown) function we want to learn; the model is an approximation of it.</li>
+<li><mark>Generalization</mark>: ability to perform well on new, unseen data, not just training data. <span class="hg">(naye data pe bhi sahi)</span></li>
+<li><mark>Overfitting</mark>: model memorises training data including noise; training error low, test error high.</li>
+<li><mark>Underfitting</mark>: model too simple to capture the pattern; both training and test error high.</li>
+<li><mark>Bias</mark>: error from wrong / too-simple assumptions (causes underfitting). <mark>Variance</mark>: error from being too sensitive to the particular training set (causes overfitting).</li>
+<li><mark>Bias-variance trade-off</mark>: making the model more complex lowers bias but raises variance; the best model balances both. For squared error, $\text{expected error} = \text{bias}^2 + \text{variance} + \text{irreducible noise}$.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Area (sq ft)</th><th>Rooms</th><th>Age (years)</th><th>Price (lakh) = label</th></tr>
+<tr><td>1200</td><td>3</td><td>5</td><td>60</td></tr>
+<tr><td>850</td><td>2</td><td>12</td><td>38</td></tr>
+<tr><td>1500</td><td>4</td><td>2</td><td>82</td></tr>
+</table></div>
+<p>Each row = one instance, the first three columns = features, the last column = label (illustrative values).</p>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 620 340" width="620">
+<path class="arr" d="M80 290 H580"/><path class="arr" d="M80 290 V30"/>
+<polyline points="80,57 107,131 133,168 160,190 187,205 213,215 240,223 267,230 293,234 320,238 347,242 373,245 400,247 427,249 453,251 480,253 507,254 533,255 560,257"/>
+<polyline class="acc" points="80,46 107,119 133,154 160,173 187,184 213,189 240,190 267,188 293,183 320,177 347,168 373,158 400,146 427,133 453,118 480,101 507,83 533,64 560,43"/>
+<line class="dash" x1="240" y1="290" x2="240" y2="62"/>
+<text class="s" x="240" y="50">Best fit</text>
+<text x="150" y="70">Underfitting</text>
+<text x="400" y="70">Overfitting</text>
+<text class="r" x="560" y="238">Training error</text>
+<text class="r" x="515" y="40">Test error</text>
+<text x="45" y="160">Error</text>
+<text class="s" x="105" y="305">simple</text>
+<text class="s" x="555" y="305">complex</text>
+<text x="330" y="322">Model complexity</text>
+</svg></div><figcaption><b>Fig 1.4</b> · Training and test error vs model complexity (underfitting on the left, overfitting on the right)</figcaption><p class="draw">✍ Draw it: X axis complexity, Y axis error. Training error keeps falling; test error falls then rises (U shape). Mark the lowest test error as best fit.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Underfitting</th><th>Overfitting</th></tr>
+<tr><td>Model</td><td>Too simple</td><td>Too complex</td></tr>
+<tr><td>Training error</td><td>High</td><td>Very low</td></tr>
+<tr><td>Test error</td><td>High</td><td>High</td></tr>
+<tr><td>Cause</td><td>High bias</td><td>High variance</td></tr>
+<tr><td>Fix</td><td>More features, more complex model</td><td>More data, simpler model, regularization, early stopping</td></tr>
+<tr><td>Student analogy</td><td>Did not study enough</td><td>Rote-learned past papers, fails new questions</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">$\text{Dataset} = 1000$ rows, split $80 : 20$</div><div class="step">$\text{Training} = 1000 \times 0.8 = 800$ rows; $\text{Test} = 1000 \times 0.2 = 200$ rows</div><div class="step">Train accuracy 99%, test accuracy 70% → big gap → overfitting.</div><span class="ans">800 train / 200 test; large train-test gap signals overfitting</span></div>
+<div class="note"><b>Common mistake:</b> Checking a model on the same data it was trained on. That measures memory, not generalization.</div>
+<div class="recall"><b>Quick recall</b> Row = instance, column = feature, answer = label. Underfit = high bias; overfit = high variance; aim for good generalization.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-workflow">
+<h3>1.3 ML workflow (life cycle)</h3>
+<p class="hook">Building an ML system is a step-by-step pipeline, from defining the problem to watching the model after launch. <span class="hg">(problem se deploy tak ka safar)</span></p>
+<div class="def"><b>Definition:</b> The <mark>machine learning life cycle</mark> is the ordered set of steps used to build and maintain an ML model: define the problem, collect and prepare data, choose and train a model, evaluate it, and deploy and monitor it.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Define problem</div>
+<div class="n">Collect data</div>
+<div class="n">Prepare / clean data</div>
+<div class="n">Feature engineering</div>
+<div class="n">Choose model</div>
+<div class="n hi">Train model</div>
+<div class="n d">Good on test data?</div>
+<div class="n t">Deploy and monitor</div>
+</div></div><figcaption><b>Fig 1.5</b> · ML workflow; if the evaluation fails, go back to data or model steps</figcaption><p class="draw">✍ Draw it: oval, five boxes down, a diamond "good on test?", oval "deploy". Add a side arrow from diamond back to "prepare data" labelled No.</p></figure>
+<ul>
+<li><mark>Define problem</mark>: fix T, P, E; decide classification, regression, clustering, etc.</li>
+<li><mark>Collect data</mark>: databases, sensors, logs, web, surveys.</li>
+<li><mark>Prepare data</mark>: remove duplicates, handle missing values and outliers. <span class="hg">(safai)</span></li>
+<li><mark>Feature engineering</mark>: pick useful features, encode categories, scale numbers (see 1.10).</li>
+<li><mark>Choose and train model</mark>: fit the algorithm on the training set.</li>
+<li><mark>Evaluate</mark>: test set metrics - accuracy, precision, recall (classification); MSE, RMSE (regression).</li>
+<li><mark>Tune</mark>: adjust hyperparameters using a validation set, then re-evaluate.</li>
+<li><mark>Deploy and monitor</mark>: put into an app; watch for performance drop when real data changes, retrain when needed.</li>
+</ul>
+<div class="ex"><b>Example</b><div class="step">Food-delivery time prediction: problem = predict minutes (regression).</div><div class="step">Data = past orders: distance, restaurant prep time, hour, weather. Label = actual delivery minutes.</div><div class="step">Train → test error checked → deploy in app → monitor during festivals and rain, retrain.</div><span class="ans">Problem → Data → Prepare → Features → Model → Train → Evaluate → Deploy</span></div>
+<div class="mn"><b>Mnemonic</b> "<b>P</b>lease <b>C</b>ook <b>P</b>aneer <b>F</b>or <b>M</b>y <b>T</b>iffin <b>E</b>very <b>D</b>ay" = Problem, Collect, Prepare, Features, Model, Train, Evaluate, Deploy.</div>
+<div class="recall"><b>Quick recall</b> 8 steps, and it is a loop: poor evaluation sends you back to data or model.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-design">
+<h3>1.4 Designing a learning system (Mitchell)</h3>
+<p class="hook">Mitchell designs a checkers-playing learner by making four choices one after another. <span class="hg">(chaar faisle = ek learning system)</span></p>
+<div class="def"><b>Definition:</b> Designing a learning system means making four design choices: (1) the <mark>training experience</mark>, (2) the exact <mark>target function</mark> to learn, (3) a <mark>representation</mark> for that function, and (4) a <mark>learning algorithm</mark> (function approximation algorithm) to learn it from training examples.</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Task T and measure P</div>
+<div class="n">1. Training experience</div>
+<div class="n">2. Target function</div>
+<div class="n">3. Representation</div>
+<div class="n">4. Learning algorithm</div>
+<div class="n t">Final design</div>
+</div></div><figcaption><b>Fig 1.6</b> · The four design choices in order</figcaption><p class="draw">✍ Draw it: oval, four numbered boxes straight down, oval.</p></figure>
+<h4>Step 1: Choose the training experience</h4>
+<ul>
+<li><mark>Direct vs indirect feedback</mark>: direct = board states each labelled with the correct move; indirect = only the final win / loss of whole games, so credit must be assigned to earlier moves (<mark>credit assignment problem</mark>).</li>
+<li><mark>Control over sequence</mark>: teacher picks examples, or learner asks the teacher, or learner explores on its own (plays against itself).</li>
+<li><mark>Representative distribution</mark>: training examples should look like the cases the final system will be tested on. Learning only from self-play may miss positions a human champion would play.</li>
+</ul>
+<h4>Step 2: Choose the target function</h4>
+<ul>
+<li>Direct choice: <mark>$\text{ChooseMove} : B \to M$</mark> (board state to best legal move) - hard to learn with indirect experience.</li>
+<li>Mitchell's choice: <mark>$V : B \to \mathbb{R}$</mark>, an evaluation function giving a higher score to better board states. Pick the move leading to the highest $V$.</li>
+<li>Ideal $V$: $+100$ for a won board, $-100$ for a lost board, $0$ for a draw; for other boards $V(b) = V(b')$ of the best final board reachable. This is not efficiently computable, so we learn an approximation <mark>$\hat{V}$</mark>.</li>
+</ul>
+<h4>Step 3: Choose a representation</h4>
+<ul>
+<li>Linear function of six board features: $$\hat{V}(b) = w_0 + w_1 x_1 + w_2 x_2 + w_3 x_3 + w_4 x_4 + w_5 x_5 + w_6 x_6$$</li>
+<li>$x_1$ = black pieces, $x_2$ = red pieces, $x_3$ = black kings, $x_4$ = red kings, $x_5$ = black pieces threatened by red, $x_6$ = red pieces threatened by black.</li>
+<li>Learning now means finding good <mark>weights $w_0$ to $w_6$</mark>. A richer representation can express more, but needs more data. <span class="hg">(zyada powerful = zyada data chahiye)</span></li>
+</ul>
+<h4>Step 4: Choose a learning algorithm</h4>
+<ul>
+<li><mark>Estimate training values</mark>: $$V_{train}(b) \leftarrow \hat{V}(\text{Successor}(b))$$ where $\text{Successor}(b)$ is the next board after the program's move and the opponent's reply.</li>
+<li><mark>Adjust weights with LMS</mark> (least mean squares) to reduce squared error: $$E = \sum \big(V_{train}(b) - \hat{V}(b)\big)^2$$</li>
+<li>For each training example: $$w_i \leftarrow w_i + \eta\,\big(V_{train}(b) - \hat{V}(b)\big)\,x_i$$ where $\eta$ is a small learning rate (e.g. 0.1).</li>
+</ul>
+<h4>Final design: four modules</h4>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 300" width="640">
+<rect class="hi" x="225" y="20" width="190" height="44" rx="6"/><text x="320" y="42">Experiment Generator</text>
+<rect x="30" y="128" width="180" height="44" rx="6"/><text x="120" y="150">Performance System</text>
+<rect x="430" y="128" width="180" height="44" rx="6"/><text x="520" y="150">Generalizer</text>
+<rect x="230" y="236" width="180" height="44" rx="6"/><text x="320" y="258">Critic</text>
+<path class="arr" d="M225 42 H120 V128"/><text class="s" x="172" y="28">New problem</text>
+<path class="arr" d="M120 172 V258 H230"/><text class="s" x="175" y="274">Solution trace</text>
+<path class="arr" d="M410 258 H520 V172"/><text class="s" x="462" y="276">Training examples</text>
+<path class="arr" d="M520 128 V42 H415"/><text class="s" x="466" y="28">Hypothesis V̂</text>
+<text class="s" x="320" y="150">learning loop</text>
+</svg></div><figcaption><b>Fig 1.7</b> · Final design of the checkers learning system (four modules in a loop)</figcaption><p class="draw">✍ Draw it: four boxes in a diamond (top Experiment Generator, left Performance System, bottom Critic, right Generalizer); arrows clockwise with the four labels.</p></figure>
+<div class="tw"><table>
+<tr><th>Module</th><th>Input</th><th>Output</th><th>Job</th></tr>
+<tr><td>Performance System</td><td>New problem (initial board)</td><td>Solution trace (game history)</td><td>Plays the game using current $\hat{V}$</td></tr>
+<tr><td>Critic</td><td>Game history</td><td>Training examples $(b, V_{train}(b))$</td><td>Judges moves, produces training values</td></tr>
+<tr><td>Generalizer</td><td>Training examples</td><td>Hypothesis $\hat{V}$ (new weights)</td><td>Learns / generalizes, e.g. by LMS</td></tr>
+<tr><td>Experiment Generator</td><td>Current hypothesis</td><td>New practice problem</td><td>Picks the next game to learn most</td></tr>
+</table></div>
+<div class="ex"><b>Example (one LMS weight update, values rounded to 2 decimals)</b><div class="step">Board $b$: $x_1 = 3$, $x_2 = 2$, other features $0$. Weights $w_0 = 0.5$, $w_1 = 0.2$, $w_2 = -0.1$. $\eta = 0.1$</div><div class="step">$\hat{V}(b) = 0.5 + 0.2 \times 3 + (-0.1) \times 2 = 0.5 + 0.6 - 0.2 = 0.9$</div><div class="step">$V_{train}(b) = 1.5 \rightarrow \text{error} = 1.5 - 0.9 = 0.6$</div><div class="step">$w_0 \leftarrow 0.5 + 0.1 \times 0.6 \times 1 = 0.56$</div><div class="step">$w_1 \leftarrow 0.2 + 0.1 \times 0.6 \times 3 = 0.38$</div><div class="step">$w_2 \leftarrow -0.1 + 0.1 \times 0.6 \times 2 = 0.02$</div><span class="ans">New weights: $w_0 = 0.56$, $w_1 = 0.38$, $w_2 = 0.02$ ($\hat{V}$ moves toward $V_{train}$)</span></div>
+<div class="mn"><b>Mnemonic</b> Four choices "<b>E-T-R-A</b>" = Experience, Target, Representation, Algorithm ("Every Team Runs Algorithms"). Four modules "<b>P-C-G-E</b>" = Performance, Critic, Generalizer, Experiment generator ("Please Check Good Examples").</div>
+<div class="note"><b>Common mistake:</b> Treating $V_{train}$ as the true value. It is only an estimate taken from the successor board, which is why the Critic is needed and learning improves gradually.</div>
+<div class="recall"><b>Quick recall</b> Experience → target $V : B \to \mathbb{R}$ → linear $\hat{V}$ with $w_0 \ldots w_6$ → LMS update. Loop: Experiment Generator → Performance System → Critic → Generalizer.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-persp">
+<h3>1.5 Perspectives in Machine Learning</h3>
+<p class="hook">Different ways of looking at the same thing: learning is searching, estimating probabilities, or minimising error. <span class="hg">(ek hi cheez ko alag nazariye se dekhna)</span></p>
+<div class="def"><b>Definition (Mitchell):</b> One useful perspective on machine learning is that it involves <mark>searching a very large space of possible hypotheses</mark> to determine one that best fits the observed data and any prior knowledge held by the learner.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 520 260" width="520">
+<ellipse cx="260" cy="135" rx="230" ry="105"/>
+<text class="b" x="260" y="55">Hypothesis space H</text>
+<circle class="dot" cx="130" cy="110" r="6"/><text class="s" x="130" y="92">h1</text>
+<circle class="dot" cx="200" cy="180" r="6"/><text class="s" x="200" y="200">h2</text>
+<circle class="dot" cx="320" cy="190" r="6"/><text class="s" x="320" y="210">h3</text>
+<circle class="dot acc" cx="380" cy="115" r="8"/><text class="s" x="385" y="92">h* best fits data</text>
+<path class="arr dash" d="M136 116 L194 174"/>
+<path class="arr dash" d="M208 182 L312 190"/>
+<path class="arr dash" d="M326 184 L374 122"/>
+</svg></div><figcaption><b>Fig 1.8</b> · Learning as search: the learner moves through hypotheses until it finds h* that best fits the training data</figcaption><p class="draw">✍ Draw it: big oval labelled H, three dots h1, h2, h3 joined by dashed arrows ending at a bold dot h*.</p></figure>
+<ul>
+<li><mark>Learning as search</mark>: in checkers, $H$ = all functions $\hat{V}$ that weights $w_0 \ldots w_6$ can express; LMS searches $H$ by tuning weights. <span class="hg">(sahi hypothesis dhoondhna)</span></li>
+<li>Different algorithms = different <mark>ways of searching</mark> different hypothesis spaces: numeric weights (linear models, neural nets), decision trees, rules.</li>
+<li>Viewing learning as search lets us analyse <mark>size of $H$</mark>, number of examples needed, and confidence in the result.</li>
+<li><mark>Statistical / probabilistic perspective</mark> (Murphy): data comes from an unknown probability distribution; learning = estimating it and predicting with uncertainty, e.g. $P(\text{spam} \mid \text{words})$.</li>
+<li><mark>Optimization perspective</mark>: choose a loss function (e.g. squared error) and find parameters that minimise it (gradient descent, LMS).</li>
+<li><mark>Function approximation</mark>: learn an approximation $\hat{f}$ of an unknown target function $f$ from input-output examples.</li>
+<li><mark>Multi-disciplinary roots</mark> (Mitchell ch. 1): artificial intelligence, Bayesian methods, computational complexity theory, control theory, information theory, philosophy, psychology and neurobiology, statistics.</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Search</b>find best $h$ in $H$</div>
+<div class="b"><b>Statistical</b>estimate probabilities</div>
+<div class="b"><b>Optimization</b>minimise loss</div>
+<div class="b"><b>Function approx.</b>$\hat{f}$ close to $f$</div>
+<div class="b"><b>Biological</b>brain-inspired neural nets</div>
+<div class="b"><b>Info. theory</b>entropy, compression</div>
+</div></div><figcaption><b>Fig 1.9</b> · Main perspectives on machine learning</figcaption><p class="draw">✍ Draw it: 2 rows × 3 boxes, one keyword in each.</p></figure>
+<div class="tw"><table>
+<tr><th>Discipline</th><th>What it gives to ML</th></tr>
+<tr><td>Statistics</td><td>Estimating from samples, confidence, hypothesis testing</td></tr>
+<tr><td>Bayesian methods</td><td>Probability as degree of belief; naive Bayes classifier</td></tr>
+<tr><td>Computational complexity</td><td>Bounds on computation and number of examples needed</td></tr>
+<tr><td>Information theory</td><td>Entropy, information gain (used in decision trees)</td></tr>
+<tr><td>Psychology and neurobiology</td><td>Neural network models, practice curves</td></tr>
+<tr><td>Control theory</td><td>Learning to control processes (links to reinforcement learning)</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> Thinking the search is random guessing. The search is guided: each new hypothesis is chosen to reduce error on the training data.</div>
+<div class="recall"><b>Quick recall</b> Mitchell: learning = search in hypothesis space $H$ for $h$ that best fits data + prior knowledge. Also: statistical, optimization, function approximation views.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-issues">
+<h3>1.6 Issues in Machine Learning</h3>
+<p class="hook">The open questions and real-world headaches that decide whether an ML system works. <span class="hg">(ML ki mushkilein)</span></p>
+<div class="def"><b>Definition:</b> <mark>Issues in machine learning</mark> are the fundamental questions (which algorithm, how much data, what prior knowledge, which experience, what function, what representation) and practical problems (data quality, overfitting, bias, interpretability, computation) that affect how well a learner generalizes.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>1. Algorithms</b>which one, when it converges</div>
+<div class="b"><b>2. Training data</b>how much is enough</div>
+<div class="b"><b>3. Prior knowledge</b>how it guides learning</div>
+<div class="b"><b>4. Next experience</b>which example to pick</div>
+<div class="b"><b>5. Function approx.</b>what function to learn</div>
+<div class="b"><b>6. Representation</b>change it automatically</div>
+</div></div><figcaption><b>Fig 1.10</b> · Mitchell's six issues in machine learning</figcaption><p class="draw">✍ Draw it: 2 rows × 3 numbered boxes, one short phrase each.</p></figure>
+<h4>Mitchell's issues (textbook list)</h4>
+<ul>
+<li><mark>Algorithms</mark>: What algorithms exist for learning general target functions from specific training examples? In what settings do they converge to the desired function given enough data? Which work best for which problems and representations?</li>
+<li><mark>Amount of training data</mark>: How much training data is sufficient? What bounds relate confidence in the learned hypothesis to the amount of experience and the character of the hypothesis space?</li>
+<li><mark>Prior knowledge</mark>: When and how can the learner's prior knowledge guide generalization? Can it help even when only approximately correct?</li>
+<li><mark>Choosing training experience</mark>: What is the best strategy for choosing the next training experience, and how does this choice change the complexity of the learning problem?</li>
+<li><mark>Reducing to function approximation</mark>: What is the best way to reduce the learning task to one or more function approximation problems? Which specific functions should be learned? Can this itself be automated?</li>
+<li><mark>Altering representation</mark>: How can the learner automatically change its representation to improve its ability to represent and learn the target function?</li>
+</ul>
+<h4>Practical issues</h4>
+<ul>
+<li><mark>Data quality</mark>: missing values, noise, wrong labels, outliers. <span class="hg">(garbage in, garbage out)</span></li>
+<li><mark>Insufficient or unrepresentative data</mark>: model fails on cases it never saw.</li>
+<li><mark>Overfitting / underfitting</mark>: poor generalization (see Fig 1.4).</li>
+<li><mark>Bias and fairness</mark>: if training data is skewed (e.g. mostly one group), predictions can be unfair to others.</li>
+<li><mark>Interpretability</mark>: complex models (deep nets) are hard to explain - a problem in loans and medicine.</li>
+<li><mark>Computation cost</mark>: large data and models need time, memory, GPUs.</li>
+<li><mark>Privacy and security</mark>: personal data must be protected; models can be fooled by crafted inputs.</li>
+<li><mark>Concept drift</mark>: real-world data changes over time, so accuracy drops unless retrained.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Issue</th><th>Effect</th><th>Common remedy</th></tr>
+<tr><td>Too little data</td><td>High variance, overfitting</td><td>Collect more data, data augmentation, simpler model</td></tr>
+<tr><td>Noisy / missing data</td><td>Wrong patterns learned</td><td>Cleaning, imputation</td></tr>
+<tr><td>Irrelevant features</td><td>Slower, less accurate</td><td>Feature selection</td></tr>
+<tr><td>Biased data</td><td>Unfair decisions</td><td>Balanced sampling, fairness checks</td></tr>
+<tr><td>Black-box model</td><td>Users cannot trust it</td><td>Simpler models, explanation tools</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Mitchell's six: "<b>A</b>ll <b>D</b>ata <b>P</b>eople <b>C</b>an <b>F</b>ind <b>R</b>ight" = Algorithms, Data amount, Prior knowledge, Choosing experience, Function approximation, Representation.</div>
+<div class="recall"><b>Quick recall</b> 6 Mitchell issues (ADPCFR) + practical: data quality, overfitting, bias, interpretability, computation, privacy, drift.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-types">
+<h3>1.7 Types of Machine Learning: supervised learning</h3>
+<p class="hook">Types are decided by what feedback the learner gets: correct answers, no answers, or rewards. <span class="hg">(teacher hai, teacher nahi, ya inaam-saza)</span></p>
+<div class="def"><b>Definition:</b> <mark>Supervised learning</mark> learns a mapping from inputs $X$ to outputs $Y$ using a <mark>labelled</mark> training set of pairs $(x, y)$, so that it can predict $y$ for new $x$. If $y$ is a category it is <mark>classification</mark>; if $y$ is a continuous number it is <mark>regression</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Machine Learning</span><ul>
+<li><span>Supervised</span><ul><li><span>Classification</span></li><li><span>Regression</span></li></ul></li>
+<li><span>Unsupervised</span><ul><li><span>Clustering</span></li><li><span>Dim. reduction</span></li><li><span>Association</span></li></ul></li>
+<li><span>Semi-supervised</span></li>
+<li><span>Reinforcement</span></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.11</b> · Types of machine learning</figcaption><p class="draw">✍ Draw it: root box, four children; two under supervised, three under unsupervised.</p></figure>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Labelled data<small>(x, y) pairs</small></div>
+<div class="n">Learning algorithm</div>
+<div class="n hi">Model f(x)</div>
+<div class="ar">new x</div>
+<div class="n">Predicted y</div>
+</div></div><figcaption><b>Fig 1.12</b> · Supervised learning pipeline</figcaption><p class="draw">✍ Draw it: four boxes left to right with arrows; label the last arrow "new x".</p></figure>
+<ul>
+<li>Needs a <mark>teacher / supervisor</mark>: every training example has the correct answer. <span class="hg">(answer key ke saath padhai)</span></li>
+<li><mark>Classification</mark>: output is a discrete class. Binary (spam / not spam) or multi-class (digit 0-9).</li>
+<li><mark>Regression</mark>: output is a real number (house price, temperature, delivery time).</li>
+<li>Algorithms: <mark>KNN, decision tree, naive Bayes, logistic regression, SVM</mark> (classification); <mark>linear regression</mark> (regression). Covered in Unit II.</li>
+<li>Evaluation: accuracy, precision, recall (classification); MSE, RMSE, MAE (regression).</li>
+<li>Limitation: labelling data is <mark>costly and slow</mark>.</li>
+</ul>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 260" width="640">
+<rect x="20" y="20" width="290" height="200" rx="6"/>
+<circle class="dot" cx="60" cy="60" r="5"/><circle class="dot" cx="90" cy="90" r="5"/><circle class="dot" cx="70" cy="120" r="5"/><circle class="dot" cx="120" cy="70" r="5"/><circle class="dot" cx="110" cy="110" r="5"/>
+<circle cx="220" cy="150" r="6"/><circle cx="250" cy="180" r="6"/><circle cx="200" cy="190" r="6"/><circle cx="260" cy="130" r="6"/><circle cx="230" cy="110" r="6"/>
+<line class="dash" x1="150" y1="200" x2="280" y2="40"/>
+<text class="s" x="95" y="38">Class A</text><text class="s" x="270" y="205">Class B</text>
+<text x="165" y="240">Classification: output = class</text>
+<rect x="330" y="20" width="290" height="200" rx="6"/>
+<circle class="dot" cx="360" cy="190" r="5"/><circle class="dot" cx="400" cy="170" r="5"/><circle class="dot" cx="430" cy="160" r="5"/><circle class="dot" cx="470" cy="130" r="5"/><circle class="dot" cx="510" cy="120" r="5"/><circle class="dot" cx="550" cy="90" r="5"/><circle class="dot" cx="590" cy="70" r="5"/>
+<line class="acc" x1="350" y1="195" x2="600" y2="55"/>
+<text class="s" x="560" y="40">fitted line</text>
+<text x="475" y="240">Regression: output = number</text>
+</svg></div><figcaption><b>Fig 1.13</b> · Classification separates classes with a boundary; regression fits a line through numeric values</figcaption><p class="draw">✍ Draw it: two boxes. Left: filled and hollow dots split by a dashed line. Right: rising dots with a straight line through them.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Classification</th><th>Regression</th></tr>
+<tr><td>Output</td><td>Discrete label / category</td><td>Continuous number</td></tr>
+<tr><td>Question</td><td>"Which class?"</td><td>"How much / how many?"</td></tr>
+<tr><td>Example</td><td>Spam or not; tumour benign or malignant</td><td>House price; tomorrow's temperature</td></tr>
+<tr><td>Algorithms</td><td>KNN, decision tree, naive Bayes, logistic regression, SVM</td><td>Linear regression, regression trees</td></tr>
+<tr><td>Metrics</td><td>Accuracy, precision, recall, F1</td><td>MSE, RMSE, MAE</td></tr>
+</table></div>
+<h4>The idea of a discriminant (classification)</h4>
+<p>A <mark>discriminant</mark> is a rule or function used to assign a label to a new observation.</p>
+<div class="tw"><table>
+<tr><th>Score1</th><th>Score2</th><th>Result</th></tr>
+<tr><td>29</td><td>43</td><td>Pass</td></tr>
+<tr><td>22</td><td>29</td><td>Fail</td></tr>
+<tr><td>10</td><td>47</td><td>Fail</td></tr>
+<tr><td>31</td><td>55</td><td>Pass</td></tr>
+<tr><td>17</td><td>18</td><td>Fail</td></tr>
+<tr><td>33</td><td>54</td><td>Pass</td></tr>
+<tr><td>32</td><td>40</td><td>Pass</td></tr>
+<tr><td>20</td><td>41</td><td>Pass</td></tr>
+</table></div>
+<div class="ex"><b>Example: two discriminants disagree on a new point (Score1 = 25, Score2 = 36)</b><div class="step">Rule A: IF $\text{Score1}+\text{Score2} \ge 60$ THEN Pass ELSE Fail - checked against all 8 rows above, Rule A gets every one right.</div><div class="step">Rule B: IF $\text{Score1} \ge 20$ AND $\text{Score2} \ge 40$ THEN Pass ELSE Fail - checked against all 8 rows, Rule B also gets every one right.</div><div class="step">New point: $25+36 = 61 \ge 60 \rightarrow$ Rule A says <b>Pass</b>.</div><div class="step">New point: $25 \ge 20$ (true) but $36 \ge 40$ (false) $\rightarrow$ Rule B says <b>Fail</b>.</div><span class="ans">Two discriminants that both fit ALL the training data can still disagree on a new point - the notes pose exactly this question without resolving it. That is the point: the "correct" discriminant is not obvious from training data alone, so a principled algorithm (KNN, decision tree, naive Bayes, logistic regression, SVM - table above) is needed instead of a hand-guessed rule.</span></div>
+<p>More classification examples from the class notes: <mark>optical character recognition</mark> (as many classes as characters to recognise); <mark>face recognition</mark> (harder than OCR - a face is 3-D, and pose/lighting change the image); <mark>medical diagnosis</mark> (inputs = age, gender, history, symptoms; classes = illnesses; some inputs may be missing); and labelling an astronomical object as star / galaxy / nebula from noisy images. A discriminant can also be a plain threshold rule on different features, e.g. loan risk with $x_1$ = annual income, $x_2$ = annual savings: IF $x_1 \gt \theta_1$ AND $x_2 \gt \theta_2$ THEN low-risk ELSE high-risk.</p>
+<h4>The general idea of regression</h4>
+<p>A regression problem assumes a model $y = f(x,\theta)$ and optimizes the parameters $\theta$ so the predictions are as close as possible to the true training values. Example (class notes): predicting a used car's <b>Price</b> from its <b>Age</b>, <b>Distance</b> travelled and <b>Weight</b>: $$\text{Price} = a_0 + a_1 \cdot \text{Age} + a_2 \cdot \text{Distance} + a_3 \cdot \text{Weight}$$ where $\theta = (a_0,a_1,a_2,a_3)$ are parameters learned from past sales data (how to fit them is developed in Unit II).</p>
+<h4>Another supervised example: healthy or sick?</h4>
+<div class="tw"><table>
+<tr><th>Gender</th><th>Age</th><th>Label</th></tr>
+<tr><td>M</td><td>48</td><td>Sick</td></tr>
+<tr><td>M</td><td>67</td><td>Sick</td></tr>
+<tr><td>F</td><td>53</td><td>Healthy</td></tr>
+<tr><td>M</td><td>49</td><td>Healthy</td></tr>
+<tr><td>F</td><td>34</td><td>Sick</td></tr>
+<tr><td>M</td><td>21</td><td>Healthy</td></tr>
+</table></div>
+<p>Based on this labelled data, when a new patient enters the clinic, the learner predicts healthy or sick - a supervised, binary-classification problem. Section 1.8 revisits this same (gender, age) data with the label column hidden.</p>
+<div class="note"><b>Common mistake:</b> Logistic regression is a <b>classification</b> algorithm despite its name; it outputs a class probability.</div>
+<div class="recall"><b>Quick recall</b> Supervised = labelled $(x, y)$. Category output → classification; number output → regression.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-unsup">
+<h3>1.8 Unsupervised learning</h3>
+<p class="hook">No answers are given; the algorithm finds groups and hidden structure on its own. <span class="hg">(bina teacher ke pattern dhoondhna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Unsupervised learning</mark> finds patterns, groups or structure in <mark>unlabelled</mark> data (only $x$, no $y$). Main tasks are <mark>clustering</mark>, <mark>dimensionality reduction</mark> and <mark>association rule mining</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Unsupervised learning</span><ul>
+<li><span>Clustering</span><ul><li><span>K-means</span></li><li><span>Hierarchical</span></li></ul></li>
+<li><span>Dim. reduction</span><ul><li><span>PCA</span></li></ul></li>
+<li><span>Association</span><ul><li><span>Apriori</span></li></ul></li>
+</ul></li></ul></div></div><figcaption><b>Fig 1.14</b> · Tasks of unsupervised learning with an example algorithm for each</figcaption><p class="draw">✍ Draw it: root, three task boxes, one or two algorithm boxes under each.</p></figure>
+<ul>
+<li><mark>Clustering</mark>: put similar items in the same group. E.g. customer segmentation by spending habits. <span class="hg">(milte-julte ek group mein)</span></li>
+<li><mark>Dimensionality reduction</mark>: reduce many features to fewer while keeping most information (PCA); helps visualisation and speed.</li>
+<li><mark>Association rules</mark>: find items that occur together - market basket analysis, e.g. rule $\{\text{bread}\} \rightarrow \{\text{butter}\}$.</li>
+<li><mark>Anomaly detection</mark> is often done unsupervised: flag points unlike the rest (unusual transactions).</li>
+<li>Advantage: <mark>no labelling cost</mark>. Limitation: results are <mark>harder to evaluate</mark> because there is no answer key.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Supervised</th><th>Unsupervised</th></tr>
+<tr><td>Data</td><td>Labelled $(x, y)$</td><td>Unlabelled ($x$ only)</td></tr>
+<tr><td>Goal</td><td>Predict output</td><td>Discover structure</td></tr>
+<tr><td>Tasks</td><td>Classification, regression</td><td>Clustering, dim. reduction, association</td></tr>
+<tr><td>Evaluation</td><td>Compare with true labels</td><td>Indirect (cluster quality measures)</td></tr>
+<tr><td>Example</td><td>Spam detection</td><td>Grouping shoppers</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Shop data: customers described by (monthly visits, amount spent), no labels.</div><div class="step">Clustering gives groups like "frequent, high spend", "rare, low spend".</div><div class="step">Shop sends different offers to each group.</div><span class="ans">Unlabelled data → clusters → business decision</span></div>
+<div class="ex"><b>Example: the same clinic data as 1.7, with the label hidden</b><div class="step">(Gender, Age) only - M/48, M/67, F/53, M/49, F/34, M/21 - the "Healthy/Sick" column is removed.</div><div class="step">Without labels there is no accuracy to compute; the question changes from "predict the label" to "can we infer anything about these patients?" - e.g. do they group by age?</div><span class="ans">Same raw data, two different problems: 1.7 = supervised (label known), here = unsupervised (label hidden)</span></div>
+<div class="mn"><b>Mnemonic</b> Unsupervised tasks "<b>C-D-A</b>" = Clustering, Dimensionality reduction, Association ("CDA - Clusters Don't Ask for answers").</div>
+<div class="recall"><b>Quick recall</b> Unsupervised = no labels; finds groups (K-means), fewer features (PCA), co-occurring items (Apriori).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-rl">
+<h3>1.9 Reinforcement learning, semi-supervised learning and comparison</h3>
+<p class="hook">Learn by trial and error: try an action, get a reward or penalty, repeat to maximise total reward. <span class="hg">(inaam aur saza se seekhna)</span></p>
+<div class="def"><b>Definition:</b> <mark>Reinforcement learning</mark> is learning in which an <mark>agent</mark> interacts with an <mark>environment</mark>, takes <mark>actions</mark> in <mark>states</mark>, receives <mark>rewards</mark>, and learns a <mark>policy</mark> (state → action) that maximises cumulative reward over time.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 260" width="560">
+<rect class="hi" x="200" y="20" width="160" height="50" rx="6"/><text class="b" x="280" y="45">Agent</text>
+<rect x="200" y="180" width="160" height="50" rx="6"/><text class="b" x="280" y="205">Environment</text>
+<path class="arr" d="M360 45 H480 V205 H360"/><text x="420" y="30">Action a(t)</text>
+<path class="arr" d="M200 222 H40 V35 H200"/><text class="s" x="120" y="240">state s(t+1)</text>
+<path class="arr" d="M200 195 H90 V60 H200"/><text class="s" x="145" y="183">reward r(t+1)</text>
+</svg></div><figcaption><b>Fig 1.15</b> · Reinforcement learning loop: agent acts, environment returns new state and reward</figcaption><p class="draw">✍ Draw it: Agent box on top, Environment box below. Arrow on right Agent → Environment (action); two arrows on left Environment → Agent (state, reward).</p></figure>
+<ul>
+<li><mark>Agent</mark>: the learner / decision maker (robot, game player).</li>
+<li><mark>Environment</mark>: everything the agent interacts with (game board, road).</li>
+<li><mark>State $s$</mark>: current situation. <mark>Action $a$</mark>: what the agent does.</li>
+<li><mark>Reward $r$</mark>: number fed back; positive = good, negative = penalty. Often <mark>delayed</mark> (win known only at the end).</li>
+<li><mark>Policy $\pi$</mark>: the rule mapping states to actions; goal is the policy with maximum total reward.</li>
+<li><mark>Exploration vs exploitation</mark>: try new actions to learn, or use the best known action to earn reward. <span class="hg">(naya try karein ya jo pata hai wahi karein)</span></li>
+<li>Algorithms: <mark>Q-learning</mark>, SARSA, deep Q-networks. Examples: game playing (DeepMind's AlphaGo used RL along with supervised learning and tree search), robot walking, Mitchell's checkers player learning from self-play.</li>
+</ul>
+<h4>Semi-supervised learning (brief)</h4>
+<ul>
+<li><mark>Semi-supervised learning</mark> uses a <mark>small labelled</mark> set plus a <mark>large unlabelled</mark> set; useful when labelling is expensive.</li>
+<li>Example: a few hundred labelled medical scans with thousands unlabelled; the model labels confident unlabelled cases and retrains (self-training).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Supervised</th><th>Unsupervised</th><th>Reinforcement</th></tr>
+<tr><td>Data / feedback</td><td>Labelled examples $(x, y)$</td><td>Unlabelled data $(x)$</td><td>Rewards from environment</td></tr>
+<tr><td>Goal</td><td>Predict correct output</td><td>Find hidden structure</td><td>Maximise cumulative reward</td></tr>
+<tr><td>Supervisor</td><td>Yes (answer key)</td><td>No</td><td>No; only reward signal</td></tr>
+<tr><td>Feedback timing</td><td>Immediate, per example</td><td>None</td><td>Often delayed</td></tr>
+<tr><td>Tasks</td><td>Classification, regression</td><td>Clustering, dim. reduction, association</td><td>Sequential decision making, control</td></tr>
+<tr><td>Algorithms</td><td>KNN, decision tree, SVM, linear regression</td><td>K-means, PCA, Apriori</td><td>Q-learning, SARSA</td></tr>
+<tr><td>Example</td><td>Spam filter</td><td>Customer segmentation</td><td>Game-playing agent, robot</td></tr>
+</table></div>
+<div class="ex"><b>Example</b><div class="step">Robot in a maze. State = current cell; actions = up/down/left/right.</div><div class="step">Reward: $+10$ reaching exit, $-1$ per step, $-5$ hitting a wall.</div><div class="step">Over many episodes it learns a policy giving the shortest safe path (highest total reward).</div><span class="ans">Agent + environment + state + action + reward → policy</span></div>
+<div class="mn"><b>Mnemonic</b> RL loop "<b>A-E-S-A-R</b>" = Agent, Environment, State, Action, Reward - "<b>A</b>ll <b>E</b>xams <b>S</b>tart <b>A</b>fter <b>R</b>evision".</div>
+<div class="note"><b>Common mistake:</b> Calling reward a "label". A label says the correct answer; a reward only says how good the chosen action was.</div>
+<div class="recall"><b>Quick recall</b> Supervised = teacher, unsupervised = no teacher, reinforcement = reward critic. Semi-supervised = few labels + many unlabelled.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-numrep">
+<h3>1.10 Data representation: numerical representation</h3>
+<p class="hook">Algorithms only understand numbers, so every email, image or colour must first become a list of numbers. <span class="hg">(sab kuch number mein badlo)</span></p>
+<div class="def"><b>Definition:</b> <mark>Numerical representation</mark> expresses each example as a <mark>feature vector</mark> $x = (x_1, x_2, \ldots, x_d) \in \mathbb{R}^d$ of $d$ numeric features. A dataset of $n$ examples is stored as an <mark>$n \times d$ feature matrix</mark> $X$, with labels in an $n \times 1$ vector $y$.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Raw object<small>house, email, image</small></div>
+<div class="n">Extract features</div>
+<div class="n">Encode + scale</div>
+<div class="n hi">Feature vector x</div>
+<div class="n">ML model</div>
+</div></div><figcaption><b>Fig 1.16</b> · From a raw object to a numeric feature vector</figcaption><p class="draw">✍ Draw it: five boxes in a row joined by arrows.</p></figure>
+<ul>
+<li><mark>Feature vector</mark>: one row. House → $x = (1200, 3, 5)$ for (area, rooms, age).</li>
+<li><mark>Feature matrix</mark>: rows = examples ($n$), columns = features ($d$). The 3-house table in 1.2 gives $X$ of size <mark>$3 \times 3$</mark>. <span class="hg">(rows = examples, columns = features)</span></li>
+<li><mark>Numerical features</mark>: continuous (area, price) or discrete counts (rooms).</li>
+<li><mark>Categorical features</mark>: text values (colour, city) must be <mark>encoded</mark>.</li>
+<li><mark>Label encoding</mark>: each category → an integer. Good for ordered categories ($\text{low} \lt \text{medium} \lt \text{high}$); for unordered ones it wrongly implies an order.</li>
+<li><mark>One-hot encoding</mark>: one 0/1 column per category, exactly one 1 per row. No false order, but more columns.</li>
+<li><mark>Feature scaling</mark>: bring features to similar ranges so a large-range feature (salary) does not dominate a small one (age). Needed for distance-based methods like KNN.</li>
+<li><mark>Min-max normalization</mark>: $$x' = \frac{x - x_{min}}{x_{max} - x_{min}}$$ result in $[0, 1]$.</li>
+<li><mark>Z-score standardization</mark>: $$z = \frac{x - \mu}{\sigma}$$ result has mean 0 and standard deviation 1.</li>
+<li><mark>Images</mark>: a grayscale image is a matrix of pixel intensities 0-255; a $28 \times 28$ image flattens to 784 features. Colour images have 3 channels (R, G, B): $H \times W \times 3$.</li>
+<li><mark>Text (bag-of-words)</mark>: build a vocabulary; each document = vector of word counts. Word order is ignored.</li>
+</ul>
+<div class="ex"><b>Example 1: label vs one-hot encoding</b><div class="step">Colours: Red, Green, Blue, Green. Sorted categories: Blue, Green, Red.</div><div class="step">Label encoding: $\text{Blue} = 0,\ \text{Green} = 1,\ \text{Red} = 2 \rightarrow \text{column} = [2, 1, 0, 1]$</div><div class="step">One-hot (columns Blue, Green, Red): $\text{Red} = [0, 0, 1]$; $\text{Green} = [0, 1, 0]$; $\text{Blue} = [1, 0, 0]$; $\text{Green} = [0, 1, 0]$</div><span class="ans">Label: $[2, 1, 0, 1]$; one-hot: $4 \times 3$ matrix of 0/1</span></div>
+<div class="tw"><table>
+<tr><th>Colour</th><th>Label encoded</th><th>Blue</th><th>Green</th><th>Red</th></tr>
+<tr><td>Red</td><td>2</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><td>Green</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+<tr><td>Blue</td><td>0</td><td>1</td><td>0</td><td>0</td></tr>
+<tr><td>Green</td><td>1</td><td>0</td><td>1</td><td>0</td></tr>
+</table></div>
+<div class="ex"><b>Example 2: min-max scaling (marks = 40, 55, 70, 85, 100)</b><div class="step">$x_{min} = 40,\ x_{max} = 100,\ x_{max} - x_{min} = 60$</div><div class="step">$40 \rightarrow \dfrac{40-40}{60} = 0$; $55 \rightarrow \dfrac{15}{60} = 0.25$; $70 \rightarrow \dfrac{30}{60} = 0.5$; $85 \rightarrow \dfrac{45}{60} = 0.75$; $100 \rightarrow \dfrac{60}{60} = 1$</div><span class="ans">$[0, 0.25, 0.5, 0.75, 1]$</span></div>
+<div class="ex"><b>Example 3: z-score (same marks; population $\sigma$; rounded to 2 decimals)</b><div class="step">$\mu = \dfrac{40+55+70+85+100}{5} = \dfrac{350}{5} = 70$</div><div class="step">Squared deviations: $900, 225, 0, 225, 900 \rightarrow \text{sum} = 2250$</div><div class="step">$\sigma = \sqrt{\dfrac{2250}{5}} = \sqrt{450} = 21.21$</div><div class="step">$z(40) = \dfrac{40-70}{21.21} = -1.41$; $z(55) = \dfrac{-15}{21.21} = -0.71$; $z(70) = 0$; $z(85) = 0.71$; $z(100) = 1.41$</div><span class="ans">$[-1.41, -0.71, 0, 0.71, 1.41]$</span></div>
+<p>Some books use the sample standard deviation (divide by $n - 1$) for z-scores; then $\sigma = \sqrt{2250/4}$ and the values change slightly.</p>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 640 210" width="640">
+<text class="s" x="95" y="18">3×3 grayscale image</text>
+<rect x="20" y="35" width="50" height="50"/><text x="45" y="60">0</text>
+<rect x="70" y="35" width="50" height="50"/><text x="95" y="60">128</text>
+<rect x="120" y="35" width="50" height="50"/><text x="145" y="60">255</text>
+<rect x="20" y="85" width="50" height="50"/><text x="45" y="110">64</text>
+<rect x="70" y="85" width="50" height="50"/><text x="95" y="110">200</text>
+<rect x="120" y="85" width="50" height="50"/><text x="145" y="110">32</text>
+<rect x="20" y="135" width="50" height="50"/><text x="45" y="160">255</text>
+<rect x="70" y="135" width="50" height="50"/><text x="95" y="160">0</text>
+<rect x="120" y="135" width="50" height="50"/><text x="145" y="160">100</text>
+<path class="arr" d="M185 110 H245"/><text class="s" x="215" y="96">flatten</text>
+<text class="l" x="255" y="92">x = [0, 128, 255, 64, 200, 32, 255, 0, 100]</text>
+<text class="l" x="255" y="130">x/255 = [0, 0.5, 1, 0.25, 0.78, 0.13, 1, 0, 0.39]</text>
+</svg></div><figcaption><b>Fig 1.17</b> · An image is a pixel matrix; flattening row by row gives a 9-feature vector</figcaption><p class="draw">✍ Draw it: 3×3 grid of numbers, arrow "flatten", then the 9 numbers in one bracket.</p></figure>
+<div class="ex"><b>Example 4: bag-of-words</b><div class="step">$D_1$ = "ML is fun", $D_2$ = "ML is useful and ML is easy" (lower-cased)</div><div class="step">Vocabulary (sorted) = [and, easy, fun, is, ml, useful]</div><div class="step">$D_1 \rightarrow [0, 0, 1, 1, 1, 0]$</div><div class="step">$D_2 \rightarrow [1, 1, 0, 2, 2, 1]$</div><span class="ans">Each document becomes a 6-number count vector</span></div>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Min-max normalization</th><th>Z-score standardization</th></tr>
+<tr><td>Formula</td><td>$\dfrac{x - x_{min}}{x_{max} - x_{min}}$</td><td>$\dfrac{x - \mu}{\sigma}$</td></tr>
+<tr><td>Range</td><td>$[0, 1]$</td><td>Not fixed; mean 0, std 1</td></tr>
+<tr><td>Outliers</td><td>Sensitive (one extreme value squeezes the rest)</td><td>Less affected</td></tr>
+<tr><td>Used for</td><td>Pixel values, neural network inputs</td><td>Features roughly bell-shaped, linear models, SVM</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> Label-encoding unordered categories like city names for a distance-based model. $\text{Mumbai} = 2$ and $\text{Delhi} = 1$ falsely makes Mumbai "bigger"; use one-hot instead.</div>
+<div class="recall"><b>Quick recall</b> Example → feature vector in $\mathbb{R}^d$; dataset → $n \times d$ matrix. Categories: label or one-hot. Scale: min-max $[0,1]$ or z-score (mean 0, std 1). Image = pixel matrix; text = word counts.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-graphrep">
+<h3>1.11 Data representation: graph representation</h3>
+<p class="hook">When the relationships between items matter (who is friends with whom), store the data as a graph of nodes and edges. <span class="hg">(rishton wala data = graph)</span></p>
+<div class="def"><b>Definition:</b> A <mark>graph</mark> $G = (V, E)$ consists of a set of <mark>vertices (nodes)</mark> $V$ representing entities and a set of <mark>edges</mark> $E$ representing relationships between pairs of nodes. Edges may be <mark>directed</mark> or <mark>undirected</mark>, and <mark>weighted</mark> or unweighted. It is stored as an <mark>adjacency matrix</mark> or an <mark>adjacency list</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 460 260" width="460">
+<line x1="80" y1="70" x2="260" y2="70"/><line x1="80" y1="70" x2="170" y2="200"/><line x1="260" y1="70" x2="170" y2="200"/><line x1="170" y1="200" x2="380" y2="200"/>
+<circle class="hi" cx="80" cy="70" r="24"/><text class="b" x="80" y="70">A</text>
+<circle class="hi" cx="260" cy="70" r="24"/><text class="b" x="260" y="70">B</text>
+<circle class="hi" cx="170" cy="200" r="24"/><text class="b" x="170" y="200">C</text>
+<circle class="hi" cx="380" cy="200" r="24"/><text class="b" x="380" y="200">D</text>
+<text x="170" y="56">4</text><text x="110" y="140">2</text><text x="232" y="140">5</text><text x="275" y="186">3</text>
+</svg></div><figcaption><b>Fig 1.18</b> · Undirected weighted graph with edges A-B (4), A-C (2), B-C (5), C-D (3)</figcaption><p class="draw">✍ Draw it: four circles A, B top and C, D bottom; four lines with weights written on them.</p></figure>
+<ul>
+<li><mark>Node</mark>: an entity (person, product, web page, atom). <mark>Edge</mark>: a relation (friend, bought, link, bond).</li>
+<li><mark>Undirected</mark>: relation both ways (Facebook-style friendship). <mark>Directed</mark>: one way (following someone on Instagram, a web link). <span class="hg">(ek taraf ya dono taraf)</span></li>
+<li><mark>Weighted</mark>: edge carries a number (distance, rating, strength).</li>
+<li><mark>Degree</mark>: number of edges at a node; directed graphs have in-degree and out-degree.</li>
+<li><mark>Adjacency matrix</mark>: $V \times V$ table, $$A[i][j] = \begin{cases} \text{weight (or 1)} &amp; \text{if edge } i\text{-}j \text{ exists} \\ 0 &amp; \text{otherwise} \end{cases}$$ Symmetric for undirected graphs. Space $O(V^2)$; edge check $O(1)$.</li>
+<li><mark>Adjacency list</mark>: for each node, a list of its neighbours. Space $O(V + E)$; best for sparse graphs.</li>
+<li>Node features can be kept as vectors too, so graph ML combines <mark>numerical + graph representation</mark>. <mark>Graph Neural Networks (GNNs)</mark> learn directly on graphs.</li>
+</ul>
+<div class="ex"><b>Example: adjacency matrix of Fig 1.18</b><div class="step">$A\text{-}B = 4 \rightarrow A[A][B] = A[B][A] = 4$; $A\text{-}C = 2$; $B\text{-}C = 5$; $C\text{-}D = 3$; all other entries $0$.</div><div class="step">Degrees: $A = 2,\ B = 2,\ C = 3,\ D = 1$ (count non-zero entries in each row)</div><span class="ans">Symmetric $4 \times 4$ matrix below</span></div>
+<div class="tw"><table>
+<tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th></tr>
+<tr><th>A</th><td>0</td><td>4</td><td>2</td><td>0</td></tr>
+<tr><th>B</th><td>4</td><td>0</td><td>5</td><td>0</td></tr>
+<tr><th>C</th><td>2</td><td>5</td><td>0</td><td>3</td></tr>
+<tr><th>D</th><td>0</td><td>0</td><td>3</td><td>0</td></tr>
+</table></div>
+<div class="ex"><b>Example: adjacency list of Fig 1.18 (neighbour, weight)</b><div class="step">$A \rightarrow (B, 4),\ (C, 2)$</div><div class="step">$B \rightarrow (A, 4),\ (C, 5)$</div><div class="step">$C \rightarrow (A, 2),\ (B, 5),\ (D, 3)$</div><div class="step">$D \rightarrow (C, 3)$</div><span class="ans">$\text{Total entries} = 2 \times 4 \text{ edges} = 8$</span></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 260" width="700">
+<path class="arr" d="M104 70 L234 70"/><path class="arr" d="M246 90 L185 179"/><path class="arr" d="M156 180 L95 91"/><path class="arr" d="M194 200 L354 200"/>
+<circle cx="80" cy="70" r="24"/><text class="b" x="80" y="70">A</text>
+<circle cx="260" cy="70" r="24"/><text class="b" x="260" y="70">B</text>
+<circle cx="170" cy="200" r="24"/><text class="b" x="170" y="200">C</text>
+<circle cx="380" cy="200" r="24"/><text class="b" x="380" y="200">D</text>
+<text class="b l" x="470" y="50">Adjacency list</text>
+<text class="l" x="470" y="85">A → B</text>
+<text class="l" x="470" y="115">B → C</text>
+<text class="l" x="470" y="145">C → A, D</text>
+<text class="l" x="470" y="175">D → (none)</text>
+</svg></div><figcaption><b>Fig 1.19</b> · Directed unweighted graph (A→B, B→C, C→A, C→D) with its adjacency list</figcaption><p class="draw">✍ Draw it: same four circles with arrowheads on edges; write the list on the right.</p></figure>
+<div class="tw"><table>
+<tr><th>From \ To</th><th>A</th><th>B</th><th>C</th><th>D</th><th>Out-degree</th></tr>
+<tr><th>A</th><td>0</td><td>1</td><td>0</td><td>0</td><td>1</td></tr>
+<tr><th>B</th><td>0</td><td>0</td><td>1</td><td>0</td><td>1</td></tr>
+<tr><th>C</th><td>1</td><td>0</td><td>0</td><td>1</td><td>2</td></tr>
+<tr><th>D</th><td>0</td><td>0</td><td>0</td><td>0</td><td>0</td></tr>
+<tr><th>In-degree</th><td>1</td><td>1</td><td>1</td><td>1</td><td></td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Adjacency matrix</th><th>Adjacency list</th></tr>
+<tr><td>Structure</td><td>$V \times V$ 2-D array</td><td>Array of neighbour lists</td></tr>
+<tr><td>Space</td><td>$O(V^2)$</td><td>$O(V + E)$</td></tr>
+<tr><td>Check edge $(u, v)$</td><td>$O(1)$</td><td>$O(\text{degree of } u)$</td></tr>
+<tr><td>Best for</td><td>Dense graphs, matrix maths</td><td>Sparse graphs (social networks)</td></tr>
+<tr><td>Undirected graph</td><td>Symmetric matrix</td><td>Each edge stored twice</td></tr>
+</table></div>
+<h4>Where graphs are used in ML</h4>
+<ul>
+<li><mark>Social networks</mark>: users = nodes, friendships = edges; friend suggestion is <mark>link prediction</mark>.</li>
+<li><mark>Recommendation systems</mark>: user-item bipartite graph (user bought / rated item); recommend items linked to similar users.</li>
+<li><mark>Knowledge graphs</mark>: entities and facts as triples, e.g. (Delhi, capital of, India); used by search engines to answer questions (Google introduced its Knowledge Graph in 2012).</li>
+<li><mark>Chemistry / biology</mark>: molecules with atoms as nodes and bonds as edges; predict molecule properties.</li>
+<li><mark>Road networks</mark>: junctions and roads; travel-time estimation and route planning.</li>
+<li><mark>Fraud detection</mark>: accounts and transactions forming suspicious rings.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Numerical representation</th><th>Graph representation</th></tr>
+<tr><td>Unit</td><td>Feature vector per example</td><td>Nodes and edges</td></tr>
+<tr><td>Captures</td><td>Properties of each item</td><td>Relationships between items</td></tr>
+<tr><td>Storage</td><td>$n \times d$ matrix</td><td>Adjacency matrix / list</td></tr>
+<tr><td>Assumption</td><td>Examples treated as independent</td><td>Examples linked to each other</td></tr>
+<tr><td>Example</td><td>House price table</td><td>Friendship network</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Graph types "<b>D-U-W</b>" = Directed, Undirected, Weighted. Storage "<b>M-L</b>" = Matrix (dense), List (sparse) - "Matrix for Many edges, List for Less".</div>
+<div class="note"><b>Common mistake:</b> Writing a non-symmetric matrix for an undirected graph. Every undirected edge $u\text{-}v$ must appear at both $[u][v]$ and $[v][u]$.</div>
+<div class="recall"><b>Quick recall</b> $G = (V, E)$. Matrix $O(V^2)$, list $O(V + E)$. Used in social networks, recommendation, knowledge graphs, molecules, maps.</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-apps">
+<h3>1.12 Applications of Machine Learning</h3>
+<p class="hook">ML is already inside the apps you use daily: spam filters, video suggestions, maps, voice assistants. <span class="hg">(roz ke apps mein ML)</span></p>
+<div class="def"><b>Definition:</b> <mark>Applications of machine learning</mark> are real-world tasks where a model learned from data performs prediction, classification, grouping or decision making, such as spam filtering, recommendation, fraud detection, medical diagnosis, speech recognition and autonomous driving.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Internet</b>spam filter, search, recommendations</div>
+<div class="b"><b>Finance</b>fraud detection, credit scoring</div>
+<div class="b"><b>Healthcare</b>scan analysis, risk prediction</div>
+<div class="b"><b>Language</b>speech, translation, chatbots</div>
+<div class="b"><b>Vision</b>face unlock, number plates</div>
+<div class="b"><b>Transport</b>ETA, driver assistance</div>
+</div></div><figcaption><b>Fig 1.20</b> · Major application areas of machine learning</figcaption><p class="draw">✍ Draw it: 2 rows × 3 boxes, domain on top, two examples below.</p></figure>
+<div class="tw"><table>
+<tr><th>Domain</th><th>Application</th><th>ML task</th><th>Type</th></tr>
+<tr><td>Email</td><td>Spam filtering (e.g. Gmail's spam folder)</td><td>Classification</td><td>Supervised</td></tr>
+<tr><td>E-commerce / OTT</td><td>Product and video recommendations (Amazon, Netflix, YouTube)</td><td>Recommendation, clustering of users</td><td>Supervised + unsupervised</td></tr>
+<tr><td>Banking / payments</td><td>Flagging unusual card or UPI transactions</td><td>Classification, anomaly detection</td><td>Supervised + unsupervised</td></tr>
+<tr><td>Healthcare</td><td>Detecting disease signs in X-rays or retina images</td><td>Image classification</td><td>Supervised</td></tr>
+<tr><td>Food delivery</td><td>Predicting delivery time</td><td>Regression</td><td>Supervised</td></tr>
+<tr><td>Real estate</td><td>House price prediction</td><td>Regression</td><td>Supervised</td></tr>
+<tr><td>Retail</td><td>Customer segmentation, market basket analysis</td><td>Clustering, association</td><td>Unsupervised</td></tr>
+<tr><td>Speech / language</td><td>Voice assistants, Google Translate</td><td>Speech recognition, translation</td><td>Supervised (deep learning)</td></tr>
+<tr><td>Vision</td><td>Face unlock on phones, number-plate reading</td><td>Classification, detection</td><td>Supervised</td></tr>
+<tr><td>Games</td><td>AlphaGo defeating Lee Sedol (2016)</td><td>Decision making</td><td>Reinforcement (+ supervised)</td></tr>
+<tr><td>Robotics / cars</td><td>Driver assistance, robot control</td><td>Perception + control</td><td>Supervised + reinforcement</td></tr>
+<tr><td>Agriculture</td><td>Crop disease detection from leaf photos</td><td>Image classification</td><td>Supervised</td></tr>
+<tr><td>Manufacturing</td><td>Process optimization, control and troubleshooting</td><td>Regression, anomaly detection</td><td>Supervised + unsupervised</td></tr>
+<tr><td>Telecommunications</td><td>Analysing call patterns for network optimization and service quality</td><td>Clustering, prediction</td><td>Unsupervised + supervised</td></tr>
+</table></div>
+<ul>
+<li><mark>Prediction</mark>: numbers about the future (sales, delivery time, weather).</li>
+<li><mark>Recognition</mark>: images, speech, handwriting (a classic example in Mitchell).</li>
+<li><mark>Personalisation</mark>: feeds, ads, playlists. <span class="hg">(har user ke liye alag)</span></li>
+<li><mark>Anomaly / fraud detection</mark>: rare, unusual events.</li>
+<li><mark>Decision and control</mark>: games, robots, traffic signals.</li>
+<li><mark>Large-scale science</mark>: physics, astronomy and biology now produce more data than people can analyse manually; the World Wide Web is too large to be searched by hand.</li>
+<li><mark>Data mining</mark>: applying ML methods to large databases is called data mining - a large volume of data is processed to construct a simple model with valuable use, e.g. high predictive accuracy (Mitchell also lists discovering useful patterns in large databases as a key use).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> "<b>S-R-F-H-S-V</b>" = Spam, Recommendation, Fraud, Healthcare, Speech, Vision - "<b>S</b>ome <b>R</b>ich <b>F</b>riends <b>H</b>ave <b>S</b>mart <b>V</b>ehicles".</div>
+<div class="recall"><b>Quick recall</b> For each application write: domain, task (classification / regression / clustering / control), type (supervised / unsupervised / RL).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-components">
+<h3>1.13 Machine learning basic concepts: components of the learning process</h3>
+<p class="hook">Every learner - human or machine - goes through the same four stages: store facts, form a concept from them, apply the concept to new cases, and check how well it worked. <span class="hg">(store - samajhna - lagana - jaanchna)</span></p>
+<div class="def"><b>Definition:</b> The learning process, whether by a human or a machine, has four components: <mark>data storage</mark>, <mark>abstraction</mark>, <mark>generalization</mark> and <mark>evaluation</mark>.</div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Data storage<small>facts, past experience</small></div>
+<div class="ar">extract</div>
+<div class="n">Abstraction<small>fit a model, form concepts</small></div>
+<div class="ar">apply widely</div>
+<div class="n">Generalization<small>rules for new, similar cases</small></div>
+<div class="ar">check</div>
+<div class="n hi">Evaluation<small>feedback -&gt; improve</small></div>
+</div></div><figcaption><b>Fig 1.21</b> · The four components of the learning process</figcaption><p class="draw">✍ Draw it: four boxes in a row joined by arrows, label each arrow (extract / apply widely / check).</p></figure>
+<ul>
+<li><mark>Data storage</mark>: facilities to store and retrieve large amounts of data. A human stores data in the <mark>brain</mark> and retrieves it using electrochemical signals; a computer uses hard disks, flash memory and RAM.</li>
+<li><mark>Abstraction</mark>: extracting knowledge from the stored data by creating general concepts about the data as a whole. <mark>Training</mark> = the process of fitting a model to a dataset; once trained, the data is summarised into an abstract form (the model).</li>
+<li><mark>Generalization</mark>: turning that abstracted knowledge into a form usable for future action, on tasks that are <mark>similar but not identical</mark> to ones already seen. The goal is to find the properties of the data most relevant to future tasks.</li>
+<li><mark>Evaluation</mark>: giving feedback to the user on how useful the learned knowledge is; this feedback is used to improve the whole learning process (loop back to earlier stages).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Component</th><th>Question it answers</th></tr>
+<tr><td>Data storage</td><td>Where does the raw data live, and how is it retrieved?</td></tr>
+<tr><td>Abstraction</td><td>What model / concept fits the stored data?</td></tr>
+<tr><td>Generalization</td><td>Does the concept work on new, similar cases?</td></tr>
+<tr><td>Evaluation</td><td>How good is the result, and what should be improved?</td></tr>
+</table></div>
+<div class="ex"><b>Example: learning to ride a bicycle (human learner)</b><div class="step">Data storage: memory of every past attempt and fall.</div><div class="step">Abstraction: the brain forms a "balance rule" - lean into the turn, pedal steady.</div><div class="step">Generalization: the same balance rule lets you ride a friend's unfamiliar bicycle.</div><div class="step">Evaluation: fewer falls over time -&gt; feedback that the rule works.</div><span class="ans">Same four stages as a machine learner: store -&gt; abstract -&gt; generalize -&gt; evaluate</span></div>
+<div class="mn"><b>Mnemonic</b> "<b>D</b>on't <b>A</b>void <b>G</b>etting <b>E</b>valuated" = Data storage, Abstraction, Generalization, Evaluation.</div>
+<div class="note"><b>Common mistake:</b> Confusing these four <i>components of the learning process</i> with Mitchell's four <i>design choices</i> in 1.4 (training experience, target function, representation, algorithm). Both are "four steps" but they answer different exam questions - this one is about the general nature of learning; 1.4 is about designing one specific learner (checkers).</div>
+<div class="recall"><b>Quick recall</b> Data storage (brain / HDD) -&gt; Abstraction (train a model) -&gt; Generalization (apply to new cases) -&gt; Evaluation (feedback, improve).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-data">
+<h3>1.14 Data representation: understanding raw data (units, examples, features, forms)</h3>
+<p class="hook">Before data becomes a feature vector (1.10), decide what one "row" of data means, what its "columns" are, and whether each column is a plain number, an unordered category, or an ordered category. <span class="hg">(row = example, column = feature)</span></p>
+<div class="def"><b>Definition:</b> A <mark>unit of observation</mark> is the smallest entity with measured properties of interest (a person, an object, a time point, a geographic region, a measurement). An <mark>example</mark> (also called an <mark>instance</mark>, <mark>case</mark> or <mark>record</mark>) is one recorded unit; a <mark>feature</mark> (also called an <mark>attribute</mark> or <mark>variable</mark>) is one recorded property. Examples and features are usually collected in a <mark>matrix format</mark>: rows = examples, columns = features.</div>
+<figure class="fig"><div class="canvas"><table>
+<tr><th>year</th><th>model</th><th>price</th><th>mileage</th><th>color</th><th>transmission</th></tr>
+<tr><td>2011</td><td>SEL</td><td>21992</td><td>7413</td><td>Yellow</td><td>AUTO</td></tr>
+<tr><td>2011</td><td>SEL</td><td>20995</td><td>10926</td><td>Gray</td><td>AUTO</td></tr>
+<tr><td>2012</td><td>SE</td><td>17500</td><td>8367</td><td>White</td><td>MANUAL</td></tr>
+<tr><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td><td>&hellip;</td></tr>
+</table></div><figcaption><b>Fig 1.22</b> · Examples and features collected in a matrix (automobile data; 9 examples $\times$ 6 features)</figcaption><p class="draw">✍ Draw it: a table, 6 labelled columns (features) as a bracket on top, rows down the side labelled "examples".</p></figure>
+<ul>
+<li><mark>Unit of observation</mark> examples: a person / object / thing, a time point, a geographic region, a measurement. Units are sometimes combined, e.g. <mark>person-years</mark>.</li>
+<li>Domains from the class notes: <mark>cancer detection</mark> (unit = patient; features = gender, age, blood pressure, biopsy finding); <mark>pet selection</mark> (unit = person; features = age, home region, family income); <mark>spam e-mail</mark> (unit = e-mail message; features = the words used in it).</li>
+<li>Automobile data (Fig 1.22): $n = 9$ examples, $d = 6$ features (year, model, price, mileage, color, transmission) $\rightarrow$ a $9 \times 6$ matrix, same idea as the $3 \times 3$ house matrix in 1.2.</li>
+<li><mark>Numeric data</mark>: a feature measured in numbers (price, mileage, age).</li>
+<li><mark>Categorical (nominal) data</mark>: a feature with a limited, fixed set of qualitative values that have <mark>no natural order</mark> (color, model, transmission).</li>
+<li><mark>Ordinal data</mark>: a nominal feature whose categories fall in an <mark>ordered list</mark>, e.g. clothing size (small, medium, large) or customer satisfaction (not at all happy &rarr; very happy).</li>
+</ul>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Numeric</b>measured in numbers: price, mileage, age</div>
+<div class="b"><b>Categorical (nominal)</b>fixed values, no order: color, model, transmission</div>
+<div class="b"><b>Ordinal</b>fixed values, ordered: shirt size, satisfaction rating</div>
+</div></div><figcaption><b>Fig 1.23</b> · The three forms of data</figcaption><p class="draw">✍ Draw it: 3 boxes in a row, one form name and one example each.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Numeric</th><th>Categorical (nominal)</th><th>Ordinal</th></tr>
+<tr><td>Values</td><td>Measured numbers</td><td>Fixed set, unordered</td><td>Fixed set, ordered</td></tr>
+<tr><td>Example</td><td>price, mileage, age</td><td>color, model, transmission</td><td>shirt size (small/medium/large)</td></tr>
+<tr><td>Best encoding for ML</td><td>used directly, or scaled (1.10)</td><td>one-hot encoding</td><td>rank-preserving numeric code</td></tr>
+</table></div>
+<div class="ex"><b>Example: classifying the features in Fig 1.22 by form</b><div class="step">year, price, mileage: <mark>numeric</mark> (measured in numbers).</div><div class="step">model, color, transmission: <mark>categorical</mark> (a fixed list of values with no order between them).</div><span class="ans">6 features: 3 numeric, 3 categorical (none ordinal in this particular table)</span></div>
+<div class="mn"><b>Mnemonic</b> "<b>N</b>o <b>C</b>ats <b>O</b>utside" = Numeric, Categorical, Ordinal.</div>
+<div class="note"><b>Common mistake:</b> One-hot encoding an ordinal feature (e.g. small/medium/large) throws away its order. A rank-preserving numeric code (small=1, medium=2, large=3, as in label encoding) usually works better for ordinal data than for unordered categorical data - see 1.10.</div>
+<div class="recall"><b>Quick recall</b> Unit of observation &rarr; example (row) &rarr; feature (column); $n$ examples $\times$ $d$ features = matrix. Numeric vs categorical (unordered) vs ordinal (ordered).</div>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-short">
+<h3>1.15 Short answers (1 mark)</h3>
+<dl class="sa">
+<dt>Define machine learning (Mitchell).</dt><dd>A program learns from experience E with respect to tasks T and performance measure P if its performance at T, measured by P, improves with E.</dd>
+<dt>What is a well-posed learning problem? Give T, P, E for checkers.</dt><dd>A learning problem with clearly identified task, performance measure and experience. Checkers: T = playing checkers, P = % games won, E = games played against itself.</dd>
+<dt>Differentiate traditional programming and ML.</dt><dd>Traditional: data + hand-written rules → output. ML: data + example outputs → learned rules (model), which then predict outputs for new data.</dd>
+<dt>How are AI, ML and DL related?</dt><dd>$\text{DL} \subset \text{ML} \subset \text{AI}$. AI = intelligent behaviour by machines; ML = AI that learns from data; DL = ML using multi-layer neural networks.</dd>
+<dt>What is overfitting?</dt><dd>The model fits training data including noise, giving very low training error but high test error, i.e. poor generalization. Caused by high variance.</dd>
+<dt>Define generalization.</dt><dd>The ability of a learned model to perform well on new, unseen data drawn from the same distribution as the training data.</dd>
+<dt>What is a hypothesis space?</dt><dd>The set $H$ of all candidate functions a learner can choose from; learning is a search through $H$ for the hypothesis that best fits the data.</dd>
+<dt>List the four choices in designing a learning system.</dt><dd>(1) Training experience, (2) target function, (3) representation of target function, (4) function approximation (learning) algorithm.</dd>
+<dt>Name the four modules of Mitchell's final design.</dt><dd>Performance System, Critic, Generalizer, Experiment Generator.</dd>
+<dt>Write the LMS weight update rule.</dt><dd>$$w_i \leftarrow w_i + \eta\,\big(V_{train}(b) - \hat{V}(b)\big)\,x_i$$ where $\eta$ is a small learning rate and $x_i$ is the $i$-th board feature.</dd>
+<dt>List any four issues in machine learning.</dt><dd>Choice of algorithm, amount of training data, use of prior knowledge, choice of representation (also: data quality, overfitting, bias, interpretability).</dd>
+<dt>Differentiate classification and regression.</dt><dd>Both are supervised. Classification predicts a discrete class (spam / not spam); regression predicts a continuous value (house price).</dd>
+<dt>What is unsupervised learning? Give two tasks.</dt><dd>Learning patterns from unlabelled data. Tasks: clustering (K-means) and dimensionality reduction (PCA); also association rules.</dd>
+<dt>Define agent, state, action and reward in RL.</dt><dd>Agent = learner that acts; state = current situation; action = choice made by the agent; reward = numeric feedback from the environment for that action.</dd>
+<dt>What is semi-supervised learning?</dt><dd>Learning from a small labelled set together with a large unlabelled set, used when labelling data is expensive.</dd>
+<dt>What is a feature vector and a feature matrix?</dt><dd>Feature vector = the $d$ numeric features of one example, $x \in \mathbb{R}^d$. Feature matrix = $n$ examples stacked as rows, size $n \times d$.</dd>
+<dt>Differentiate label encoding and one-hot encoding.</dt><dd>Label encoding gives each category one integer (Blue 0, Green 1, Red 2). One-hot gives one 0/1 column per category ($\text{Red} = [0, 0, 1]$), avoiding false order.</dd>
+<dt>Differentiate adjacency matrix and adjacency list.</dt><dd>Matrix: $V \times V$ array, $O(V^2)$ space, $O(1)$ edge check, good for dense graphs. List: neighbours per node, $O(V + E)$ space, good for sparse graphs.</dd>
+<dt>Name the four components of the learning process.</dt><dd>Data storage, abstraction (fit a model), generalization (apply to new cases), evaluation (feedback to improve).</dd>
+<dt>Differentiate data storage/abstraction from Mitchell's design choices.</dt><dd>Data storage-abstraction-generalization-evaluation describes learning in general (human or machine). Mitchell's training experience-target function-representation-algorithm describes designing one specific learner (e.g. the checkers player).</dd>
+<dt>Define unit of observation, example and feature.</dt><dd>Unit of observation = the smallest entity with measured properties (person, time point, region). Example (instance/case/record) = one recorded unit. Feature (attribute/variable) = one recorded property.</dd>
+<dt>List the three forms of data with an example each.</dt><dd>Numeric (price, mileage) - measured in numbers; categorical/nominal (color, model) - fixed unordered values; ordinal (shirt size small/medium/large) - fixed, ordered values.</dd>
+<dt>What is a discriminant in a classification problem?</dt><dd>A rule or function used to assign a label to a new observation, e.g. IF $\text{Score1}+\text{Score2} \ge 60$ THEN Pass ELSE Fail.</dd>
+</dl>
+<a class="top" href="#top">↑ top</a></section>
+
+<section class="topic" id="u1-long">
+<h3>1.16 Long-answer frames (8 marks)</h3>
+<h4>Q1. What is machine learning? Explain a well-posed learning problem with examples, and compare ML with traditional programming and with AI and DL.</h4>
+<ol>
+<li>Informal definition (commonly attributed to Samuel) and Mitchell's formal T/P/E definition.</li>
+<li>Explain T, P, E; well-posed learning problem.</li>
+<li>Table of T/P/E for checkers, handwriting recognition, robot driving, spam filter.</li>
+<li>Draw Fig 1.1 (traditional vs ML) and write the comparison table.</li>
+<li>Draw Fig 1.2 ($\text{AI} \supset \text{ML} \supset \text{DL}$) with the AI/ML/DL table.</li>
+<li>When to use ML: rules hard to write, changing rules, large data.</li>
+<li>Worked example: spam accuracy $92/100 = 92\%$.</li>
+<li>Conclusion: ML turns data into improving performance.</li>
+</ol>
+<h4>Q2. Explain the steps in designing a learning system with the checkers example. Draw the final design.</h4>
+<ol>
+<li>Introduction: learning problem T = checkers, P = % games won, E = self-play.</li>
+<li>Draw Fig 1.6 (four design choices).</li>
+<li>Choosing training experience: direct vs indirect feedback, credit assignment, control of sequence, representative distribution.</li>
+<li>Choosing target function: $\text{ChooseMove} : B \to M$ vs $V : B \to \mathbb{R}$; ideal values $+100$ / $-100$ / $0$.</li>
+<li>Choosing representation: $\hat{V}(b) = w_0 + w_1 x_1 + \cdots + w_6 x_6$ with the six features.</li>
+<li>Choosing algorithm: $V_{train}(b) \leftarrow \hat{V}(\text{Successor}(b))$; LMS rule; worked weight update example.</li>
+<li>Draw Fig 1.7 (Performance System, Critic, Generalizer, Experiment Generator) and the module table.</li>
+<li>Conclusion: other choices of representation and algorithm give other learners.</li>
+</ol>
+<h4>Q3. Discuss perspectives and issues in machine learning.</h4>
+<ol>
+<li>Perspective: learning as search in hypothesis space (Mitchell definition); draw Fig 1.8.</li>
+<li>Checkers example: $H$ = all weight settings; LMS searches $H$.</li>
+<li>Other perspectives: statistical/probabilistic, optimization, function approximation; draw Fig 1.9; contributing disciplines table.</li>
+<li>Mitchell's six issues with one line each; draw Fig 1.10.</li>
+<li>Practical issues: data quality, insufficient data, overfitting, bias and fairness, interpretability, computation, privacy, concept drift.</li>
+<li>Issue-effect-remedy table.</li>
+<li>Conclusion.</li>
+</ol>
+<h4>Q4. Explain the types of machine learning with suitable diagrams and examples. Compare them.</h4>
+<ol>
+<li>Introduction: types depend on the feedback available; draw Fig 1.11.</li>
+<li>Supervised: definition, Fig 1.12, classification vs regression with Fig 1.13, algorithms, examples. Discriminant idea with the Score1/Score2 pass-fail example (two rules disagreeing on a new point); general regression model $y=f(x,\theta)$ with the car-price example; healthy/sick patient example.</li>
+<li>Unsupervised: definition, clustering / dimensionality reduction / association (Fig 1.14), customer segmentation example; same patient data with the label hidden.</li>
+<li>Reinforcement: agent, environment, state, action, reward, policy; draw Fig 1.15; exploration vs exploitation; maze example.</li>
+<li>Semi-supervised in brief.</li>
+<li>Comparison table of supervised, unsupervised, reinforcement.</li>
+<li>Conclusion: choice depends on data and goal.</li>
+</ol>
+<h4>Q5. Explain numerical data representation in ML: feature vectors, encoding of categorical data and feature scaling, with examples.</h4>
+<ol>
+<li>Why numbers are needed; definition of feature vector and $n \times d$ feature matrix; draw Fig 1.16.</li>
+<li>House example: $x = (1200, 3, 5)$; $X$ is $3 \times 3$.</li>
+<li>Label encoding and one-hot encoding with the colour example and table.</li>
+<li>Min-max scaling: marks example → $[0, 0.25, 0.5, 0.75, 1]$.</li>
+<li>Z-score: $\mu = 70$, $\sigma = 21.21$ → $[-1.41, -0.71, 0, 0.71, 1.41]$; min-max vs z-score table.</li>
+<li>Images as pixel matrices: draw Fig 1.17; $28 \times 28$ → 784 features.</li>
+<li>Text as bag-of-words with the two-document example.</li>
+<li>Conclusion: good representation often matters as much as the algorithm.</li>
+</ol>
+<h4>Q6. What is graph representation of data? Explain adjacency matrix and adjacency list with an example and list uses of graphs in ML.</h4>
+<ol>
+<li>Definition $G = (V, E)$; node, edge, degree; directed, undirected, weighted.</li>
+<li>Draw Fig 1.18; write its $4 \times 4$ adjacency matrix and adjacency list.</li>
+<li>Draw Fig 1.19 (directed); its matrix with in/out-degree.</li>
+<li>Matrix vs list comparison table (space, edge check, best use).</li>
+<li>Uses: social networks (link prediction), recommendation (user-item graph), knowledge graphs, molecules, road networks, fraud rings; mention GNNs.</li>
+<li>Numerical vs graph representation table.</li>
+<li>Conclusion.</li>
+</ol>
+<h4>Q7. Describe various applications of machine learning.</h4>
+<ol>
+<li>Introduction: ML used wherever patterns in data help decisions.</li>
+<li>Draw Fig 1.20 (application areas).</li>
+<li>Explain 6-8 applications, each with domain, task and learning type (use the applications table).</li>
+<li>Link at least one example to each type: spam (supervised), segmentation (unsupervised), AlphaGo (reinforcement).</li>
+<li>Mention ML workflow used to build them (Fig 1.5) and the issues they face (bias, privacy).</li>
+<li>Conclusion.</li>
+</ol>
+<h4>Q8. Describe the basic components of the machine learning process, and explain how data is understood in terms of units of observation, examples, features and forms of data.</h4>
+<ol>
+<li>Introduction: learning (human or machine) has four components.</li>
+<li>Draw Fig 1.21; explain data storage, abstraction, generalization, evaluation with the component table.</li>
+<li>Bicycle-riding example; contrast with Mitchell's four design choices (1.4).</li>
+<li>Definitions: unit of observation, example (instance/case/record), feature (attribute/variable).</li>
+<li>Draw Fig 1.22 (examples $\times$ features matrix); cancer detection / pet selection / spam e-mail domains.</li>
+<li>Forms of data: numeric, categorical (nominal), ordinal; draw Fig 1.23 and the comparison table.</li>
+<li>Conclusion: good data understanding comes before numerical representation (1.10).</li>
+</ol>
+<a class="top" href="#top">↑ top</a></section>
+</section>

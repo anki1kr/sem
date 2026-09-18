@@ -1,0 +1,54 @@
+<section class="topic" id="u1-ecosystem">
+<h3>1.12 Hadoop ecosystem and open source technologies</h3>
+<p class="hook">Around the Hadoop core grew a family of open-source tools, each solving one job: ingest, query, store, coordinate, schedule.</p>
+<div class="def"><b>Definition:</b> The <mark>Hadoop ecosystem</mark> is the set of <mark>open source</mark> projects (mostly under the Apache Software Foundation) that work with HDFS and YARN to ingest, store, process, query, coordinate and manage big data. Open source means the source code is freely available to use, study, modify and redistribute under a licence such as Apache License 2.0.</div>
+<figure class="fig"><div class="canvas"><div class="stack">
+<div class="row"><div class="l">Oozie<small>workflow scheduling</small></div><div class="l">ZooKeeper<small>coordination</small></div></div>
+<div class="row"><div class="l hi">Hive<small>SQL-like</small></div><div class="l hi">Pig<small>scripting</small></div><div class="l hi">Spark<small>in-memory</small></div></div>
+<div class="l">MapReduce + YARN<small>processing + resources</small></div>
+<div class="row"><div class="l">HDFS<small>file storage</small></div><div class="l">HBase<small>NoSQL on HDFS</small></div></div>
+<div class="row"><div class="l">Sqoop<small>RDBMS data</small></div><div class="l">Flume<small>log data</small></div><div class="l">Kafka<small>event streams</small></div></div>
+</div></div><figcaption><b>Fig 1.18</b> · Hadoop ecosystem as layers (bottom: ingestion, top: management)</figcaption><p class="draw">✍ Draw it: five rows bottom-up: Sqoop|Flume|Kafka, HDFS|HBase, MapReduce+YARN, Hive|Pig|Spark, Oozie|ZooKeeper.</p></figure>
+<div class="tw"><table>
+<tr><th>Tool</th><th>Category</th><th>One-line role</th></tr>
+<tr><td>Hive</td><td>Query / warehouse</td><td>Data warehouse layer that lets you query HDFS data with SQL-like HiveQL (originally developed at Facebook).</td></tr>
+<tr><td>Pig</td><td>Scripting</td><td>High-level data-flow language Pig Latin for ETL-style transformations, compiled to jobs (originally developed at Yahoo).</td></tr>
+<tr><td>HBase</td><td>NoSQL storage</td><td>Distributed column-family database on HDFS for real-time random read/write, modelled on Google Bigtable.</td></tr>
+<tr><td>Sqoop</td><td>Ingestion</td><td>Bulk import/export of data between relational databases and Hadoop (the project was retired to the Apache Attic in 2021).</td></tr>
+<tr><td>Flume</td><td>Ingestion</td><td>Collects, aggregates and moves large volumes of streaming log/event data into HDFS.</td></tr>
+<tr><td>ZooKeeper</td><td>Coordination</td><td>Centralised service for configuration, naming, synchronisation and leader election in distributed systems — in the project's own words, for "maintaining configuration information, naming, providing distributed synchronization, and providing group services".</td></tr>
+<tr><td>Oozie</td><td>Workflow</td><td>Workflow scheduler that runs chains of Hadoop jobs (Hive, Pig, MapReduce) in order or on a time/data trigger.</td></tr>
+<tr><td>Spark</td><td>Processing</td><td>Fast general-purpose engine using in-memory computation for batch, SQL, streaming and machine learning (originated at UC Berkeley).</td></tr>
+<tr><td>Kafka</td><td>Streaming</td><td>Distributed publish–subscribe event-streaming platform for high-throughput real-time data pipelines (originated at LinkedIn).</td></tr>
+<tr><td>Presto</td><td>Query (SQL engine)</td><td>Distributed SQL query engine for running interactive analytic queries directly over HDFS and other sources, from gigabytes to petabytes; originated at Facebook (2012), open-sourced in 2013.</td></tr>
+<tr><td>Impala</td><td>Query (SQL engine)</td><td>Massively parallel, low-latency SQL query engine for data in HDFS/HBase, originated at Cloudera and now an Apache Software Foundation project.</td></tr>
+<tr><td>Zeppelin</td><td>Analytics notebook</td><td>Apache web-based notebook (like Jupyter) for interactive, visual data analytics on top of Spark and Hadoop.</td></tr>
+</table></div>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Presto</b>interactive SQL over HDFS</div>
+<div class="b"><b>Impala</b>low-latency SQL on Hadoop</div>
+<div class="b"><b>Zeppelin</b>notebook for Spark/Hadoop</div>
+</div></div><figcaption><b>Fig 1.54</b> · Three more Hadoop-ecosystem query/analytics tools</figcaption><p class="draw">✍ Draw it: three boxes in a row, tool name and one-line role in each.</p></figure>
+<ul>
+<li><mark>Open source advantages</mark>: no licence fee, large community, transparency, no vendor lock-in, rapid innovation.</li>
+<li><mark>Open source challenges</mark>: support depends on community or paid vendors, integration and version compatibility effort, need for skilled staff.</li>
+<li>Commercial <mark>distributions</mark> bundled and supported these tools (e.g. Cloudera; Hortonworks merged with Cloudera in 2019).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Point</th><th>Hive</th><th>Pig</th></tr>
+<tr><td>Language</td><td>HiveQL (declarative, SQL-like)</td><td>Pig Latin (procedural data flow)</td></tr>
+<tr><td>Users</td><td>Analysts who know SQL</td><td>Programmers / researchers</td></tr>
+<tr><td>Best for</td><td>Reporting, ad-hoc queries on structured data</td><td>ETL pipelines, semi-structured data</td></tr>
+</table></div>
+<div class="tw"><table>
+<tr><th>Point</th><th>MapReduce</th><th>Spark</th></tr>
+<tr><td>Intermediate data</td><td>Written to disk</td><td>Kept in memory where possible</td></tr>
+<tr><td>Speed</td><td>Slower, especially iterative jobs</td><td>Much faster for iterative / interactive work</td></tr>
+<tr><td>Workloads</td><td>Batch only</td><td>Batch, SQL, streaming, ML, graph</td></tr>
+<tr><td>APIs</td><td>Java (low-level)</td><td>Scala, Java, Python, R (high-level)</td></tr>
+</table></div>
+<div class="mn"><b>Mnemonic</b> Group by job: <b>In</b>gest = Sqoop, Flume, Kafka · <b>Store</b> = HDFS, HBase · <b>Process</b> = MapReduce, Spark · <b>Query</b> = Hive, Pig, Presto, Impala · <b>Manage</b> = ZooKeeper (zoo-keeper looks after the animals), Oozie (schedules the jobs) · <b>Notebook</b> = Zeppelin.</div>
+<div class="note"><b>Common mistake:</b> class-note slides list Presto as "Developed by: Apache Software Foundation". Presto actually originated at Facebook (development started 2012, open-sourced in 2013) and since 2019 is governed by the Presto Foundation under the Linux Foundation, not the Apache Software Foundation — unlike Hive, Pig, HBase, Impala, Oozie and ZooKeeper, which genuinely are Apache Software Foundation projects. Also: Sqoop moves bulk data from RDBMS; Flume moves streaming log data — do not swap them.</div>
+<div class="recall"><b>Quick recall</b> Hive = SQL, Pig = scripts, HBase = NoSQL on HDFS, Sqoop = RDBMS transfer, Flume = logs, ZooKeeper = coordination, Oozie = workflows, Spark = in-memory engine, Kafka = event streaming, Presto/Impala = interactive SQL engines, Zeppelin = analytics notebook.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

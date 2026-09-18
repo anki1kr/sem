@@ -1,0 +1,72 @@
+<section class="topic" id="u2-quality">
+<h3>2.9 Data Quality</h3>
+<p class="hook">Garbage in, garbage out: a perfect model on dirty data still gives wrong answers. <span class="hg">(ganda data, galat faisla)</span></p>
+<div class="def"><b>Definition:</b> <mark>Data quality</mark> is the degree to which data is accurate, complete, consistent, valid and timely for its intended use. <mark>Data cleaning</mark> is the process of detecting and fixing or removing dirty data (missing, invalid, duplicate, inconsistent values and outliers).</div>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n io">Raw data</div>
+<div class="n">Profile / explore</div>
+<div class="n">Detect issues<small>missing, invalid, duplicate</small></div>
+<div class="n">Fix: remove, estimate, merge</div>
+<div class="n">Validate against rules</div>
+<div class="n io">Clean data</div>
+</div></div><figcaption><b>Fig 2.14</b> · Data quality / cleaning flow</figcaption><p class="draw">✍ Draw it: parallelogram "Raw data", 4 process boxes downward, parallelogram "Clean data".</p></figure>
+<ul>
+<li><mark>Why quality matters</mark>: better decisions and analytics, regulatory compliance (finance, health), avoids cost of wrong actions, builds trust in reports.</li>
+<li><mark>Big data makes it harder</mark>: many sources, fast arrival and variety mean more inconsistency (veracity problem).</li>
+<li><mark>Dirty data issues</mark>:
+  <ul>
+  <li><mark>Missing values</mark>: empty field (no phone number).</li>
+  <li><mark>Invalid values</mark>: impossible data (age = 250).</li>
+  <li><mark>Duplicate records</mark>: same customer entered twice.</li>
+  <li><mark>Inconsistent values</mark>: "Delhi", "New Delhi", "DEL"; different units (°C vs °F).</li>
+  <li><mark>Outliers / noise</mark>: extreme values far from the rest.</li>
+  </ul></li>
+<li><mark>Ways to address</mark>: remove records with missing values, generate best estimates (mean / median) for invalid or missing values, merge duplicate records, remove outliers, standardise formats and units.</li>
+<li><mark>Dimensions</mark>: accuracy, completeness, consistency, validity, timeliness, uniqueness.</li>
+</ul>
+<div class="ex"><b>Example</b> (body temperature readings, °C)<div class="step">R1 = 36.6, R2 = 37.2, R3 = missing, R4 = 98.4, R5 = 36.9, R6 = duplicate of R2</div><div class="step">R4 = 98.4 is invalid in °C (entered in °F) → remove (or convert); R6 → merge with R2</div><div class="step">Valid values = 36.6, 37.2, 36.9 → mean = (36.6 + 37.2 + 36.9) / 3 = 110.7 / 3 = 36.9</div><div class="step">Missing R3 ← estimate with mean 36.9 (1 decimal)</div><span class="ans">Clean set: R1 36.6, R2 37.2, R3 36.9 (estimated), R5 36.9</span></div>
+<h4>Data Quality Assessment Framework (DQAF)</h4>
+<figure class="fig"><div class="canvas"><div class="boxes c3">
+<div class="b hi"><b>Completeness</b>% of data that is not missing</div>
+<div class="b"><b>Timeliness</b>how current the data is for its use</div>
+<div class="b"><b>Validity</b>follows the required format / rule</div>
+<div class="b"><b>Integrity</b>facts are dependable, trustworthy</div>
+<div class="b"><b>Uniqueness</b>each entity recorded only once</div>
+<div class="b"><b>Consistency</b>same fact agrees everywhere it is stored</div>
+</div></div><figcaption><b>Fig 2.52</b> · The 6 DQAF dimensions</figcaption><p class="draw">✍ Draw it: 6 boxes in a 3×2 grid, one-word title + 3-word meaning in each.</p></figure>
+<ul>
+<li><mark>DQAF</mark> (Data Quality Assessment Framework) rates a dataset on 6 dimensions, each typically scored 0-100: <mark>Completeness</mark>, <mark>Timeliness</mark>, <mark>Validity</mark>, <mark>Integrity</mark>, <mark>Uniqueness</mark>, <mark>Consistency</mark>.</li>
+<li><mark>Completeness</mark>: the percentage of the dataset that is missing.</li>
+<li><mark>Timeliness</mark>: whether the data is current enough for the decision (old customer data used today is a timeliness problem).</li>
+<li><mark>Validity</mark>: whether data follows the required policy / procedure / format (e.g. a birthday entered in the wrong format).</li>
+<li><mark>Integrity</mark>: whether the facts and figures are dependable and trustworthy.</li>
+<li><mark>Uniqueness</mark>: each real-world entity (e.g. a customer) is recorded only once.</li>
+<li><mark>Consistency</mark>: the same fact agrees wherever it is recorded, matching the collecting department's own goals.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> DQAF = <b>"C-T-V-I-U-C"</b>: Completeness, Timeliness, Validity, Integrity, Uniqueness, Consistency.</div>
+<div class="note"><b>Common mistake:</b> some data-quality frameworks name the sixth dimension "Accuracy" instead of "Integrity" — both mean the same thing (the facts are correct/dependable). Use the name your own notes give (Integrity, here) but recognise "Accuracy" as the same idea if a question uses that word instead.</div>
+<h4>Good Data Quality, Its Benefits, and Its Challenges</h4>
+<ul>
+<li><mark>Good data quality</mark> has 4 aspects:
+  <ul>
+  <li><mark>Accuracy</mark>: error-free, so it can be relied on for decisions.</li>
+  <li><mark>Completeness</mark>: has everything needed for the task at hand.</li>
+  <li><mark>Relevance</mark>: fits the current goal — outdated or irrelevant data misleads.</li>
+  <li><mark>Consolidation</mark>: free of duplicates — each fact stored only once.</li>
+  </ul></li>
+<li><mark>Benefits of high quality</mark>: lets a business build reliable KPIs and out-perform rivals, and lets teams pinpoint exactly where an operational workflow is failing.</li>
+<li><mark>Challenges in data quality</mark>:
+  <ul>
+  <li><mark>Incomplete data</mark>: hard to collect fully accurate, gap-free data.</li>
+  <li><mark>Data accuracy issues</mark>: inconsistent sources, input mistakes, system faults.</li>
+  <li><mark>Data integration complexity</mark>: merging many sources cleanly is hard.</li>
+  <li><mark>Data governance</mark>: needs clear ownership, policies and stewardship.</li>
+  </ul></li>
+<li><mark>How to improve quality</mark> (6 steps): define standards → data profiling (study structure/patterns/anomalies) → validation rules at entry → data governance (policies, steward roles) → regular audits → automated monitoring (continuous tracking with alerts).</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> Good quality = <b>"ACRC"</b>: Accuracy, Completeness, Relevance, Consolidation. Improve it = <b>"D-P-V-G-R-A"</b>: Define standards, Profile, Validate at entry, Govern, Regular audits, Automate monitoring.</div>
+<div class="mn"><b>Mnemonic</b> Dirty data <b>"MIDIO"</b> = Missing, Invalid, Duplicate, Inconsistent, Outliers.</div>
+<div class="note"><b>Common mistake:</b> always deleting outliers. Some outliers are real events (a genuine fraud); check before removing.</div>
+<div class="recall"><b>Quick recall</b> Quality = accurate, complete, consistent, valid, timely; clean MIDIO by remove / estimate / merge / standardise. DQAF scores 6 dimensions (Completeness, Timeliness, Validity, Integrity, Uniqueness, Consistency); good quality = ACRC; improve with define → profile → validate → govern → audit → automate.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

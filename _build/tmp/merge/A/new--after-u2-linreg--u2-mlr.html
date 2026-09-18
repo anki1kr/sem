@@ -1,0 +1,51 @@
+<section class="topic" id="u2-mlr">
+<h3>2.55 Multiple Linear Regression</h3>
+<p class="hook">Real prices rarely depend on just one thing — a flat's price depends on area AND rooms AND floor together; give the line one slope per input instead of one. <span class="hg">(ek nahi, kai factors ek saath)</span></p>
+<div class="def"><b>Definition:</b> <mark>Multiple Linear Regression</mark> is Linear Regression with <b>two or more</b> independent variables: $$\hat{y} = \beta_0 + \beta_1 x_1 + \beta_2 x_2 + \dots + \beta_n x_n$$ found the same way, by least squares, over ALL the inputs at once. <i>(Class notes write the coefficients as $b_0, b_1, \dots, b_n$ — same meaning as $\beta_0, \beta_1, \dots, \beta_n$.)</i></div>
+<figure class="fig"><div class="canvas"><div class="chain">
+<div class="n">Inputs<small>x₁, x₂, …, xₙ</small></div><div class="ar">ŷ = β₀+β₁x₁+…+βₙxₙ</div><div class="n hi">Predicted output ŷ</div>
+</div></div><figcaption><b>Fig 2.30</b> · Multiple linear regression: every input gets its own coefficient before summing</figcaption><p class="draw">✍ Draw it: two boxes left to right, arrow labelled with the ŷ formula.</p></figure>
+<figure class="fig"><div class="canvas"><div class="boxes c2">
+<div class="b"><b>x₁ up by 1</b>ŷ changes by β₁ (x₂ held fixed)</div>
+<div class="b"><b>x₂ up by 1</b>ŷ changes by β₂ (x₁ held fixed)</div>
+</div></div><figcaption><b>Fig 2.31</b> · Reading a coefficient: the effect of one input, holding the others constant</figcaption><p class="draw">✍ Draw it: two side-by-side boxes, one per input variable, each stating "+1 unit → ŷ changes by its own β".</p></figure>
+<ul>
+<li><mark>General equation</mark> (two or more inputs): at least TWO independent variables are needed — one input variable is <mark>Simple</mark> Linear Regression (§2.5), not Multiple.</li>
+<li><mark>Interpreting a coefficient</mark>: $\beta_j$ = expected change in $\hat{y}$ for a one-unit increase in $x_j$, <b>holding every other input constant</b>. e.g. if $\hat{y}=20+5x_1+2x_2$ and $x_1$ increases by 3 (with $x_2$ fixed), $\hat{y}$ increases by $5 \times 3 = 15$.</li>
+<li><mark>Coefficient estimation</mark> uses the same least-squares idea as simple regression, generalised to a matrix <mark>normal equation</mark>: $$\beta = (X^TX)^{-1}X^TY$$ where $X$ is the design matrix (a column of 1's for the intercept, plus one column per input) and $Y$ is the actual output column.</li>
+<li><mark>Multicollinearity</mark>: two or more inputs that are themselves highly correlated make the coefficient estimates unstable and hard to interpret. Diagnosed with the <mark>Variance Inflation Factor</mark> $$VIF_j = \frac{1}{1-R_j^2}$$ (bigger VIF = more collinearity); e.g. $R_j^2=0.80 \Rightarrow VIF_j = 1/(1-0.80) = 5$.</li>
+<li><mark>Assumptions</mark>: linearity, independent observations, <mark>homoscedasticity</mark> (residual variance roughly constant), residuals roughly normal, and low multicollinearity.</li>
+<li>Error metrics — MSE, MAE, RMSE, $R^2$ — are computed exactly as in §2.5, just summed over every row using this multi-input $\hat{y}$.</li>
+</ul>
+<div class="ex"><b>Worked example</b> (plugging into the equation; computed in Python)
+<div class="step">Marks model $\hat{y}=10+5x_1+0.2x_2$ ($x_1$ = study hours, $x_2$ = attendance%): for $x_1=5, x_2=80$: $\hat{y}=10+25+16=51$</div>
+<div class="step">House-price model $\hat{y}=50+2x_1+3x_2+5x_3$ ($x_1$ = area, $x_2$ = bedrooms, $x_3$ = location score): for $x_1=100, x_2=3, x_3=8$: $\hat{y}=50+200+9+40=299$</div>
+<div class="step">$\hat{y}=100+6x_1-3x_2$, for $x_1=5, x_2=4$: $\hat{y}=100+30-12=118$; the $-3$ on $x_2$ means each extra unit of $x_2$ LOWERS $\hat{y}$ by 3, with $x_1$ fixed</div>
+<div class="step">$\hat{y}=20+5x_1+2x_2$: if $x_1$ rises by 3 units ($x_2$ fixed), $\Delta\hat{y}=\beta_1 \Delta x_1 = 5(3)=15$</div>
+<span class="ans">Predicted marks $=51$; predicted price $=299$; third model $=118$; change in $\hat{y}=+15$</span></div>
+<div class="ex"><b>Worked example</b> (complete dataset; computed in Python) · $\hat{y}=15+4x_1+2x_2$
+<div class="tw"><table><tr><th>Obs</th><th>$x_1$</th><th>$x_2$</th><th>$y$</th><th>$\hat{y}$</th><th>$e=y-\hat{y}$</th></tr>
+<tr><td>1</td><td>2</td><td>5</td><td>30</td><td>33</td><td>−3</td></tr>
+<tr><td>2</td><td>4</td><td>3</td><td>37</td><td>37</td><td>0</td></tr>
+<tr><td>3</td><td>5</td><td>6</td><td>47</td><td>47</td><td>0</td></tr></table></div>
+<div class="step">$MSE = \dfrac{(-3)^2+0^2+0^2}{3} = \dfrac{9}{3} = 3$</div>
+<div class="step">$MAE = \dfrac{3+0+0}{3} = 1$;  $RMSE = \sqrt{3} \approx 1.732$</div>
+<span class="ans">$MSE=3$, $MAE=1$, $RMSE\approx1.732$</span></div>
+<div class="ex"><b>Worked example</b> (normal equation, conceptual) · $x_1=1,2,3$, $y=3,5,7$
+<div class="step">These points lie exactly on $y=1+2x_1$, so the coefficient vector is $\beta=(\beta_0,\beta_1)=(1,2)$ — this is exactly what $\beta=(X^TX)^{-1}X^TY$ returns for this data.</div>
+<div class="step">For a real dataset with noise, the same formula gives the LEAST-SQUARES-best $\beta_0,\beta_1,\dots,\beta_n$ in one matrix computation, instead of the separate mean/slope/intercept steps used for one input variable in §2.5.</div>
+<span class="ans">$\beta_0=1, \beta_1=2$ (perfect fit here); in general $\beta=(X^TX)^{-1}X^TY$</span></div>
+<div class="ex"><b>Worked example</b> (exam-style; computed in Python) · $\hat{y}=5+4x_1+0.2x_2+0.5x_3$ ($x_1$ = study hours, $x_2$ = attendance%, $x_3$ = assignment score), for $x_1=6, x_2=80, x_3=70$, actual $y=75$
+<div class="step">$\hat{y}=5+24+16+35=80$</div>
+<div class="step">$e=y-\hat{y}=75-80=-5$;  $|e|=5$;  $e^2=25$</div>
+<span class="ans">Predicted score $=80$; error $=-5$; absolute error $=5$; squared error $=25$</span></div>
+<div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
+<tr><td>Captures the combined effect of several real factors at once (price rarely depends on area alone)</td><td>Multicollinearity between inputs makes coefficients unstable and harder to interpret</td></tr>
+<tr><td>Still a closed-form / least-squares fit — fast to train</td><td>Needs more data as the number of inputs grows</td></tr>
+<tr><td>Coefficients say exactly how much each input matters</td><td>Assumptions (linearity, homoscedasticity, normal residuals) are harder to check with many inputs</td></tr></table></div>
+<ul><li><mark>Applications</mark>: study hours + attendance → marks, experience + education → salary, area + bedrooms + location score → house price.</li></ul>
+<div class="mn"><b>Mnemonic</b> Assumptions of MLR — <b>L-I-H-N</b>: <b>L</b>inearity, <b>I</b>ndependent observations, <b>H</b>omoscedasticity, <b>N</b>ormal residuals — plus low multicollinearity.</div>
+<div class="note"><b>Common mistake:</b> a model needs at least TWO independent variables to be called "Multiple" Linear Regression — one input variable is Simple Linear Regression (§2.5). Also, $\beta_j$ only means "effect of $x_j$ alone" when every OTHER input is held constant — it is not the total effect if the inputs move together.</div>
+<div class="recall"><b>Quick recall</b> $$\hat{y}=\beta_0+\beta_1x_1+\dots+\beta_nx_n, \qquad \beta=(X^TX)^{-1}X^TY$$ each $\beta_j$ = change in $\hat{y}$ per unit $x_j$ with the rest fixed; check multicollinearity via $VIF_j=1/(1-R_j^2)$.</div>
+<a class="top" href="#top">↑ top</a>
+</section>

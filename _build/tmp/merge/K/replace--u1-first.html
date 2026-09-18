@@ -1,0 +1,71 @@
+<section class="topic" id="u1-first">
+<h3>1.3 Structure of a Java Program</h3>
+<p class="hook">Every Java program starts execution from main() inside a public class. <span class="hg">(main method se program chalu hota hai)</span></p>
+<div class="def"><b>Definition:</b> A Java program consists of one or more class definitions where execution begins at the <code>public static void main(String[] args)</code> entry point.</div>
+<p>Program: Hello World program line-by-line structure demo.</p>
+<pre class="code" data-file="HelloWorld.java"><code><span class="c">// Every Java program must be inside a class</span>
+<span class="k">public class</span> HelloWorld {
+    <span class="c">// Entry point method executed by JVM</span>
+    <span class="k">public static void</span> main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}</code></pre>
+<pre class="out">Hello, Java!</pre>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">JVM Start</div>
+<div class="n">Load HelloWorld.class</div>
+<div class="n hi">Execute main(String[] args)</div>
+<div class="n io">System.out.println("Hello, Java!")</div>
+<div class="n t">JVM Exit</div>
+</div></div>
+<figcaption><b>Fig 1.5</b> · Execution sequence of the HelloWorld program</figcaption>
+<p class="draw">✍ Draw it: vertical flow from Start oval to class load box to main execution box to I/O print box to Stop oval.</p></figure>
+<ul>
+<li><code>public</code>: Keyword making the class/method accessible from outside the package by the JVM.</li>
+<li><code>class</code>: Keyword used to define a class template.</li>
+<li><code>static</code>: Allows the JVM to call <code>main()</code> without creating an instance object of the class first.</li>
+<li><code>void</code>: Return type indicating the method does not return any value.</li>
+<li><code>main</code>: Name of the entry-point method recognized by the JVM.</li>
+<li><code>String[] args</code>: Array of string parameters passed via command line arguments.</li>
+<li><code>System.out.println()</code>: System class, out static stream, println method to output text followed by a new line.</li>
+<li><code>System.out.println()</code> in full: <code>System</code> is a class in the <code>java.lang</code> package; <code>out</code> is an output-stream object that is a member of the <code>System</code> class; <code>println()</code> is a method supported by that <code>out</code> object, used to display any kind of output on the screen.</li>
+</ul>
+
+<p><b>Steps to write, compile and run a Java program:</b></p>
+<figure class="fig"><div class="canvas"><div class="flow">
+<div class="n t">Start</div>
+<div class="n">Install the JDK; add its <code>bin</code> folder to the PATH</div>
+<div class="n io">Write the source code in any editor (e.g. Notepad); save as ClassName.java</div>
+<div class="n hi">Compile: javac ClassName.java &rarr; creates ClassName.class</div>
+<div class="n io">Run: java ClassName</div>
+<div class="n t">Output appears</div>
+</div></div>
+<figcaption><b>Fig 1.33</b> · Steps to write, compile and run a Java program</figcaption>
+<p class="draw">✍ Draw it: vertical flow — Start oval, 4 process/IO boxes, Stop oval.</p></figure>
+<ul>
+<li>The PATH environment variable must point to the JDK's <code>bin</code> folder (e.g. <code>C:\Program Files\Java\jdk1.x.x\bin</code>) so the <code>javac</code> and <code>java</code> commands work from any folder. Typed once via My Computer &rarr; Properties &rarr; Advanced &rarr; Environment Variables.</li>
+<li>The saved file name must match the <b>public</b> class name exactly, including capitalisation, e.g. <code>HelloWorld.java</code> for <code>public class HelloWorld</code>.</li>
+<li>At compile time the <code>.java</code> file is converted into bytecode (<code>.class</code>); at run time that bytecode is converted into machine-understandable instructions.</li>
+</ul>
+
+<p><b>Java comments:</b> statements that are not executed by the compiler or interpreter; used to explain code or temporarily hide it.</p>
+<div class="tw"><table>
+<tr><th>Type</th><th>Syntax</th><th>Use</th></tr>
+<tr><td>Single-line</td><td><code>// comment</code></td><td>comments out one line</td></tr>
+<tr><td>Multi-line</td><td><code>/* comment */</code></td><td>comments out multiple lines</td></tr>
+<tr><td>Documentation</td><td><code>/** comment */</code></td><td>read by the <code>javadoc</code> tool to auto-generate HTML documentation</td></tr>
+</table></div>
+<p>Program: Using all three comment types in one program.</p>
+<pre class="code" data-file="CommentsDemo.java"><code><span class="c">// This is a single-line comment</span>
+<span class="c">/* This is a
+   multi-line comment */</span>
+<span class="c">/** Documentation comment: prints a greeting. */</span>
+<span class="k">public class</span> CommentsDemo {
+    <span class="k">public static void</span> main(String[] args) {
+        System.out.println("Comments do not affect output.");
+    }
+}</code></pre>
+<pre class="out">Comments do not affect output.</pre>
+
+<div class="recall"><b>Quick recall</b> File name must match public class name; <code>public static void main(String[] args)</code> is mandatory for execution. Steps: install JDK &rarr; set PATH &rarr; write &rarr; <code>javac</code> &rarr; <code>java</code>. 3 comment types: <code>//</code>, <code>/* */</code>, <code>/** */</code>.</div>
+<a class="top" href="#top">↑ top</a></section>
