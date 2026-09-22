@@ -55,7 +55,18 @@
 <li><mark>Cochlea &amp; basilar membrane</mark>: acts as a biological frequency analyzer &ndash; high frequencies resonate near the stiff base, low frequencies near the flexible apex.</li>
 <li><mark>Auditory masking</mark>: a louder sound renders a softer adjacent-frequency sound inaudible; exploited by perceptual codecs.</li>
 <li><mark>How hearing works (5 steps)</mark>: (1) sound waves vibrate the eardrum; (2) vibrations pass through the ossicles malleus &rarr; incus &rarr; stapes; (3) ossicles drive the fluid-filled cochlea; (4) hair cells convert motion to electrical signals sent along the auditory nerve; (5) the brain translates the signals into sound.</li>
-<li><mark>Pathway to the brain</mark>: hair cells (cochlea) &rarr; auditory nerve &rarr; cochlear nucleus &rarr; superior olivary nucleus (compares both ears) &rarr; lateral lemniscus &rarr; inferior colliculus &rarr; (medial geniculate body) &rarr; auditory cortex in the temporal lobe.</li>
+<li><mark>Pathway to the brain</mark> (in order):
+  <ol>
+  <li>Hair cells (cochlea)</li>
+  <li>Auditory nerve</li>
+  <li>Cochlear nucleus</li>
+  <li>Superior olivary nucleus &ndash; compares both ears</li>
+  <li>Lateral lemniscus</li>
+  <li>Inferior colliculus</li>
+  <li>(Medial geniculate body)</li>
+  <li>Auditory cortex in the temporal lobe</li>
+  </ol>
+</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Part</th><th>Structures</th><th>Job</th></tr>
@@ -187,7 +198,14 @@
 <li><mark>AMDF</mark> (low-complexity alternative): $\text{AMDF}[k] = \frac{1}{N}\sum |x[n]-x[n+k]|$; pitch lag is found from a <b>dip</b> instead of a peak.</li>
 <li><mark>Cepstrum</mark>: $c[n] = \mathcal{F}^{-1}\{\log|X(\omega)|\}$; separates the vocal tract from the excitation, giving a clean peak at quefrency $T_0$.</li>
 <li><mark>SIFT</mark>: LP inverse filter removes the vocal tract first; autocorrelation of the residual gives an unambiguous pitch peak.</li>
-<li><mark>General procedure</mark>: pre-processing (filter, digitise) &rarr; framing + windowing ($x_m[n] = x[n]\,w[n-mL]$) &rarr; pitch detection &rarr; post-processing (smooth the contour).</li>
+<li><mark>General procedure</mark> (4 stages):
+  <ol>
+  <li><b>Pre-processing</b> &ndash; filter, digitise.</li>
+  <li><b>Framing + windowing</b> &ndash; $x_m[n] = x[n]\,w[n-mL]$.</li>
+  <li><b>Pitch detection</b>.</li>
+  <li><b>Post-processing</b> &ndash; smooth the contour.</li>
+  </ol>
+</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Method</th><th>How $T_0$ is found</th><th>Weakness</th></tr>
@@ -480,7 +498,14 @@
 <p class="draw">&#9997; Draw it: vertical flow from Initial Codebook to Partitioning to Centroid Update to Distortion Check decision diamond.</p></figure>
 <ul>
 <li><mark>Distortion measures</mark>: Squared Euclidean (MSE) $d(\mathbf{x},\mathbf{y}) = \sum(x_i-y_i)^2$; Weighted Euclidean $d = (\mathbf{x}-\mathbf{y})^T\mathbf{W}(\mathbf{x}-\mathbf{y})$; Itakura-Saito (spectral distortion between LPC envelopes).</li>
-<li><mark>LBG algorithm</mark> (4 steps): (1) start with an initial codebook; (2) <b>partition</b> &ndash; assign each training vector to its nearest codevector (Voronoi region); (3) <b>update</b> &ndash; recompute each codevector as the centroid of its assigned vectors; (4) <b>check convergence</b> &ndash; stop when $(D_{old}-D_{new})/D_{old} \lt \epsilon$, else repeat.</li>
+<li><mark>LBG algorithm</mark> &ndash; 4 steps:
+  <ol>
+  <li><b>Initialise</b> — start with an initial codebook.</li>
+  <li><b>Partition</b> — assign each training vector to its nearest codevector (Voronoi region).</li>
+  <li><b>Update</b> — recompute each codevector as the centroid of its assigned vectors.</li>
+  <li><b>Check convergence</b> — stop when $(D_{old}-D_{new})/D_{old} \lt \epsilon$, else repeat.</li>
+  </ol>
+</li>
 <li><mark>Codebook types</mark>: Full-Search (lowest distortion, $O(N)$ search); Tree-Structured (TSVQ, fast $O(\log_2 N)$ search); Multistage (MSVQ, low complexity for large codebooks); Split VQ (common for LPC parameter quantization).</li>
 </ul>
 <div class="ex"><b>Worked Example: Tiny LBG 2D Codebook Centroid Update</b>

@@ -7,10 +7,26 @@
 <div class="def"><b>Definition:</b> <mark>Big data</mark> refers to data sets whose volume, velocity and variety exceed the capacity of traditional database systems to capture, store, manage and analyse them, and which therefore need new, distributed, cost-effective forms of processing to extract insight and support decisions.</div>
 <figure class="fig"><div class="canvas"><div class="chain">
 <div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
-</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes left to right joined by arrows, a decade under each.</p></figure>
+</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes joined by arrows in order, a decade under each.</p></figure>
 <ul>
-<li><mark>Evolution</mark>: file systems → relational databases (1970) → data warehouses → web-scale data → Google's GFS/MapReduce papers → open-source Hadoop (2006) → NoSQL, Spark, cloud.</li>
-<li><mark>Why traditional RDBMS fails</mark>: <b>scale-up only</b> (one bigger server has a cost and hardware ceiling), <b>fixed schema</b> (cannot hold JSON/logs/video without redesign), <b>speed</b> (row-by-row inserts cannot keep up with continuous streams), <b>cost</b> (licensed DB + high-end storage), <b>single point of failure</b>.</li>
+<li><mark>Evolution</mark> (stages of Fig 1.1):
+  <ul>
+  <li><b>Flat files</b> (1960s) — data kept in ordinary files, no query language.</li>
+  <li><b>RDBMS</b> (Codd's relational model, 1970) — tables, SQL, fixed schema.</li>
+  <li><b>Data warehouses</b> (1990s) — historical data collected for reporting.</li>
+  <li><b>Web-scale data</b> — search engines and social media outgrow one server; Google's GFS / MapReduce papers answer it.</li>
+  <li><b>Hadoop</b> (open source, 2006) — then NoSQL, Spark, cloud and data lakes.</li>
+  </ul>
+</li>
+<li><mark>Why traditional RDBMS fails</mark> at this scale:
+  <ul>
+  <li><b>Scale-up only</b> — one bigger server has a cost and hardware ceiling.</li>
+  <li><b>Fixed schema</b> — cannot hold JSON / logs / video without redesign.</li>
+  <li><b>Speed</b> — row-by-row inserts cannot keep up with continuous streams.</li>
+  <li><b>Cost</b> — licensed DB plus high-end storage.</li>
+  <li><b>Single point of failure</b> — one machine holds the data.</li>
+  </ul>
+</li>
 <li><mark>Big data approach</mark>: split data across many cheap commodity machines, move computation to where data sits (data locality), store raw data first and decide structure later (schema-on-read).</li>
 <li><mark>Advantages</mark> (mnemonic D-C-F-P-S-A): better <b>D</b>ecisions, reduced <b>C</b>ost, <b>F</b>raud detection, increased <b>P</b>roductivity, improved <b>S</b>ervice, increased <b>A</b>gility.</li>
 <li><mark>Disadvantages</mark> (T-S-C): lack of skilled <b>T</b>alent, <b>S</b>ecurity risks, <b>C</b>ompliance burden.</li>
@@ -127,8 +143,22 @@
 </div></div><figcaption><b>Fig 1.11</b> · Core components of Hadoop (Hadoop 2.x / 3.x)</figcaption><p class="draw">✍ Draw it: four stacked boxes, top to bottom: Applications, YARN, HDFS, Common.</p></figure>
 <ul>
 <li><mark>HDFS (storage)</mark>: master–slave. <b>NameNode</b> stores metadata only (namespace, file→block map); <b>DataNodes</b> store the actual blocks (default 128 MB) and send heartbeats. Each block is <mark>replicated 3 times</mark>, rack-aware, for fault tolerance.</li>
-<li><mark>MapReduce (processing)</mark>: a <b>map</b> function turns each input record into (key, value) pairs; the framework <b>shuffles and sorts</b> them by key; a <b>reduce</b> function aggregates all values sharing a key and writes the result to HDFS. Classic example: word count.</li>
-<li><mark>YARN (resource management)</mark>: introduced in Hadoop 2 to separate resource management from processing. <b>ResourceManager</b> (Scheduler + ApplicationsManager) is the per-cluster master; <b>NodeManager</b> runs on every worker node; an <b>ApplicationMaster</b> per job negotiates <b>Containers</b> (CPU + memory bundles) to run tasks.</li>
+<li><mark>MapReduce (processing)</mark> &ndash; three phases:
+  <ul>
+  <li><b>Map</b> — turns each input record into (key, value) pairs.</li>
+  <li><b>Shuffle and sort</b> — the framework groups the pairs by key.</li>
+  <li><b>Reduce</b> — aggregates all values sharing a key and writes the result to HDFS.</li>
+  <li>Classic example: word count.</li>
+  </ul>
+</li>
+<li><mark>YARN (resource management)</mark> &ndash; introduced in Hadoop 2 to separate resource management from processing:
+  <ul>
+  <li><b>ResourceManager</b> (Scheduler + ApplicationsManager) — the per-cluster master.</li>
+  <li><b>NodeManager</b> — runs on every worker node.</li>
+  <li><b>ApplicationMaster</b> — one per job, negotiates resources.</li>
+  <li><b>Containers</b> — CPU + memory bundles in which the tasks run.</li>
+  </ul>
+</li>
 <li><mark>How they fit together</mark>: HDFS and YARN's worker daemons (DataNode + NodeManager) run on the <i>same</i> physical nodes, so a MapReduce/Spark task can run right where its data block already sits — <mark>data locality</mark>.</li>
 <li><mark>Key features</mark>: scalable (add nodes), fault tolerant (replication + task re-run), cost-effective (commodity hardware, open source).</li>
 </ul>
@@ -321,7 +351,16 @@
 <li><mark>3. Analyze</mark>: select a technique (classification, regression, clustering, association, graph analytics), build the model, evaluate it.</li>
 <li><mark>4. Report</mark>: communicate findings with visualisations to non-technical decision makers.</li>
 <li><mark>5. Act</mark>: deploy the model / change the business process, monitor results; new questions restart the loop.</li>
-<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark> (business understanding → data understanding → data preparation → modeling → evaluation → deployment).</li>
+<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark>:
+  <ol>
+  <li>Business understanding</li>
+  <li>Data understanding</li>
+  <li>Data preparation</li>
+  <li>Modeling</li>
+  <li>Evaluation</li>
+  <li>Deployment</li>
+  </ol>
+</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Step</th><th>Input</th><th>Output</th></tr>

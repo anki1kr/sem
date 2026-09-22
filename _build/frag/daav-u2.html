@@ -324,7 +324,7 @@
 <div class="def"><b>Definition:</b> <mark>Data ingestion</mark> is the process of getting data from its sources into the data system being built or used (for storage and processing), either in <mark>batches</mark> or as a continuous <mark>stream</mark>, according to an <mark>ingestion policy</mark>.</div>
 <figure class="fig"><div class="canvas"><div class="chain">
 <div class="n">Sources<small>DB, files, sensors, APIs</small></div><div class="ar">collect</div><div class="n">Ingestion layer<small>batch / stream</small></div><div class="ar">validate</div><div class="n">Staging<small>clean, convert</small></div><div class="ar">load</div><div class="n hi">Storage</div>
-</div></div><figcaption><b>Fig 2.12</b> · Data ingestion pipeline</figcaption><p class="draw">✍ Draw it: 4 boxes left to right, label arrows collect, validate, load; shade Storage.</p></figure>
+</div></div><figcaption><b>Fig 2.12</b> · Data ingestion pipeline</figcaption><p class="draw">✍ Draw it: 4 boxes in order, label arrows collect, validate, load; shade Storage.</p></figure>
 <ul>
 <li><mark>Batch ingestion</mark>: data collected and loaded at intervals (e.g. nightly load of the day's sales). <span class="hg">(ikattha karke ek saath)</span></li>
 <li><mark>Streaming (real-time) ingestion</mark>: each record flows in as it is produced (sensor readings, tweets, clicks). <span class="hg">(lagatar behta hua)</span></li>
@@ -519,7 +519,16 @@
   <li><mark>Data integration complexity</mark>: merging many sources cleanly is hard.</li>
   <li><mark>Data governance</mark>: needs clear ownership, policies and stewardship.</li>
   </ul></li>
-<li><mark>How to improve quality</mark> (6 steps): define standards → data profiling (study structure/patterns/anomalies) → validation rules at entry → data governance (policies, steward roles) → regular audits → automated monitoring (continuous tracking with alerts).</li>
+<li><mark>How to improve quality</mark> (6 steps):
+ <ol>
+ <li><b>Define standards</b> — agree what "good" data means.</li>
+ <li><b>Data profiling</b> — study structure, patterns and anomalies.</li>
+ <li><b>Validation rules at entry</b> — stop bad data at the source.</li>
+ <li><b>Data governance</b> — policies and steward roles.</li>
+ <li><b>Regular audits</b>.</li>
+ <li><b>Automated monitoring</b> — continuous tracking with alerts.</li>
+ </ol>
+</li>
 </ul>
 <div class="mn"><b>Mnemonic</b> Good quality = <b>"ACRC"</b>: Accuracy, Completeness, Relevance, Consolidation. Improve it = <b>"D-P-V-G-R-A"</b>: Define standards, Profile, Validate at entry, Govern, Regular audits, Automate monitoring.</div>
 <div class="mn"><b>Mnemonic</b> Dirty data <b>"MIDIO"</b> = Missing, Invalid, Duplicate, Inconsistent, Outliers.</div>
@@ -822,7 +831,16 @@
 <tr><td>Real-time trading (statistical arbitrage)</td><td>Pattern / anomaly detection on large-scale market data</td></tr>
 <tr><td>Flight-delay prediction, dynamic pricing (travel)</td><td>Regression / classification on historical + live data</td></tr></table></div>
 <ul>
-<li><mark>Grouped by domain</mark> (an exam-friendly way to organise these): <b>Travel</b> — dynamic pricing, flight-delay prediction; <b>Marketing</b> — cross-sell/upsell, churn prediction, sentiment analysis; <b>Healthcare</b> — disease prediction, medication effectiveness; <b>Sales</b> — discount offers, demand forecasting; <b>Credit &amp; insurance</b> — claims prediction, fraud &amp; risk detection; <b>Automation</b> — self-driving cars, pilotless drones.</li>
+<li><mark>Grouped by domain</mark> (an exam-friendly way to organise these):
+ <ul>
+ <li><b>Travel</b> — dynamic pricing, flight-delay prediction.</li>
+ <li><b>Marketing</b> — cross-sell/upsell, churn prediction, sentiment analysis.</li>
+ <li><b>Healthcare</b> — disease prediction, medication effectiveness.</li>
+ <li><b>Sales</b> — discount offers, demand forecasting.</li>
+ <li><b>Credit &amp; insurance</b> — claims prediction, fraud &amp; risk detection.</li>
+ <li><b>Automation</b> — self-driving cars, pilotless drones.</li>
+ </ul>
+</li>
 </ul>
 <div class="mn"><b>Mnemonic</b> <b>"C-M-D-N"</b> core recommender toolkit = <b>C</b>ollaborative filtering, <b>M</b>atrix factorisation, <b>D</b>eep learning, <b>N</b>LP; checked by <b>A/B testing</b>.</div>
 <div class="recall"><b>Quick recall</b> Recommendation system: acquire viewing data → prepare user × item matrix → collaborative filtering / matrix factorisation / deep learning → A/B test → personalised page. Cosine similarity finds similar users.</div>

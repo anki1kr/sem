@@ -22,9 +22,19 @@
 <div class="def"><b>Definition:</b> <mark>Big data</mark> refers to data sets whose volume, velocity and variety exceed the capacity of traditional database systems to capture, store, manage and analyse them, and which therefore need new, distributed and cost-effective forms of processing to extract insight and support decisions.</div>
 <figure class="fig"><div class="canvas"><div class="chain">
 <div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
-</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes left to right joined by arrows, a decade under each.</p></figure>
+</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes joined by arrows in order, a decade under each.</p></figure>
 <ul>
-<li><mark>Evolution</mark>: file systems → relational databases (Codd's relational model, 1970) → data warehouses for reporting → web-scale data from search engines and social media → Google's GFS (2003) and MapReduce (2004) papers → open-source Hadoop (2006) → NoSQL, Spark and cloud platforms.</li>
+<li><mark>Evolution</mark> (the stages drawn in Fig 1.1):
+ <ul>
+ <li><b>File systems</b> — data kept in ordinary flat files, no query language.</li>
+ <li><b>Relational databases</b> — Codd's relational model, 1970: tables and SQL.</li>
+ <li><b>Data warehouses</b> — historical data gathered for reporting.</li>
+ <li><b>Web-scale data</b> — search engines and social media outgrow a single server.</li>
+ <li><b>Google's papers</b> — GFS (2003) and MapReduce (2004) show the distributed answer.</li>
+ <li><b>Hadoop</b> — open-source implementation, 2006.</li>
+ <li><b>NoSQL, Spark and cloud platforms</b> — today's stack.</li>
+ </ul>
+</li>
 <li>The term "3 Vs" (volume, velocity, variety) is usually traced to <mark>Doug Laney</mark>'s 2001 META Group note; later authors added more Vs.</li>
 <li><mark>Why traditional RDBMS fails</mark> at this scale:
  <ul>
@@ -445,7 +455,14 @@
 <li><mark>fsimage and edit log</mark>: the NameNode keeps its metadata in two files. The <b>fsimage</b> is a complete snapshot of the namespace at one point in time; the <b>edit log</b> is an append-only record of every change (create, rename, append, ...) since that snapshot. On restart the NameNode reloads the fsimage and replays the edit log to rebuild its current state, instead of writing a brand-new snapshot on every single change.</li>
 <li>The Secondary NameNode periodically pulls the edit log over RPC and merges it into its own copy of the fsimage (this is exactly what "checkpointing" means), so a restarted NameNode has a shorter edit log to replay and recovers faster — but, as above, it still cannot take over automatically the way a Standby NameNode in HA mode can.</li>
 <li>Because the NameNode keeps this state in memory, production clusters typically also persist it to <mark>two local disks</mark> (in case one disk fails) and to an <mark>NFS-mounted volume</mark> (in case the whole machine fails).</li>
-<li><mark>Terms:</mark> <b>Heartbeat</b> — the signal a DataNode sends the NameNode at regular intervals; missing heartbeats mark it dead. <b>Balancing</b> — after a DataNode dies, its blocks become under-replicated, so the NameNode signals DataNodes holding surviving copies of those blocks to replicate them elsewhere, restoring even distribution. <b>Replication</b> — the copying itself is carried out by the DataNodes, not the NameNode. Rule: no two replicas of the same block are ever placed on the same DataNode.</li>
+<li><mark>Terms:</mark>
+ <ul>
+ <li><b>Heartbeat</b> — the signal a DataNode sends the NameNode at regular intervals; missing heartbeats mark it dead.</li>
+ <li><b>Balancing</b> — after a DataNode dies its blocks become under-replicated, so the NameNode signals DataNodes holding surviving copies to replicate them elsewhere, restoring even distribution.</li>
+ <li><b>Replication</b> — the copying itself is carried out by the DataNodes, not the NameNode.</li>
+ <li><b>Rule</b> — no two replicas of the same block are ever placed on the same DataNode.</li>
+ </ul>
+</li>
 </ul>
 <figure class="fig"><div class="canvas"><div class="flow">
 <div class="n t">NameNode restart</div>
@@ -575,7 +592,16 @@ reduce(key = word, values = [1, 1, ...]):
 <li><mark>NodeManager (NM)</mark>: slave daemon on every worker node; launches and monitors containers and reports the node's resource usage and health to the RM.</li>
 <li><mark>ApplicationMaster (AM)</mark>: one per application; negotiates containers from the RM and works with NMs to run and monitor the application's tasks.</li>
 <li><mark>Container</mark>: a bundle of resources (memory, CPU cores) on one node in which a task runs.</li>
-<li><mark>Job flow</mark>: client submits → RM starts AM in a container → AM requests containers → RM grants → AM asks NMs to launch tasks → tasks report to AM → AM finishes and deregisters.</li>
+<li><mark>Job flow</mark> (order of steps):
+ <ol>
+ <li>Client submits the job.</li>
+ <li>RM starts the AM in a container.</li>
+ <li>AM requests containers; RM grants them.</li>
+ <li>AM asks the NMs to launch the tasks.</li>
+ <li>Tasks report progress to the AM.</li>
+ <li>AM finishes and deregisters.</li>
+ </ol>
+</li>
 <li>YARN replaced Hadoop 1's <mark>JobTracker/TaskTracker</mark>, which mixed resource management with MapReduce and limited scalability.</li>
 </ul>
 <figure class="fig"><div class="canvas"><div class="stack">

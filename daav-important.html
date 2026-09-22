@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
 <title>Data Acquisition, Analysis &amp; Visualization &middot; Important Questions</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>%F0%9F%8E%93</text></svg>">
 <style>
 :root{--brand:#0f6b64;--brand2:#0a4843;--paper:#faf8f4;--card:#ffffff;--ink:#1d1b18;
 --muted:#5f5a52;--rule:#e2ddd3;--soft:color-mix(in srgb,var(--brand) 8%,#fff);
@@ -12,7 +12,7 @@
 --body:"Segoe UI",system-ui,-apple-system,Roboto,"Noto Sans",sans-serif;--disp:Georgia,"Times New Roman",serif;
 --mono:"Cascadia Mono",Consolas,"Courier New",monospace;--maxw:900px}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
-body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.75 var(--body);-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:17px/1.6 var(--body);-webkit-text-size-adjust:100%}
 main{max-width:var(--maxw);margin:0 auto;padding:0 16px 80px}
 a{color:var(--brand2)}
 .cover{background:linear-gradient(135deg,var(--brand2),var(--brand));color:#fff;padding:44px 16px 34px}
@@ -35,8 +35,8 @@ h4{font-size:18px;margin:26px 0 6px}
 .hook{font-size:18px;background:var(--soft);border-left:4px solid var(--brand);padding:10px 14px;border-radius:0 8px 8px 0}
 .def{border:1.5px solid var(--brand);border-radius:10px;padding:10px 14px;margin:14px 0}
 .def>b:first-child{color:var(--brand2)}
-ul,ol{padding-left:24px}li{margin:8px 0}
-mark{background:var(--mark);padding:0 3px;border-radius:3px;color:inherit}
+ul,ol{padding-left:24px}li{margin:6px 0}
+mark{background:var(--mark);padding:0 3px;border-radius:3px;color:inherit;-webkit-box-decoration-break:clone;box-decoration-break:clone}
 .hg{color:var(--muted);font-style:italic;font-size:.93em}
 .mn{background:#fff7d6;border:1px dashed #d4a514;border-radius:10px;padding:10px 14px;margin:14px 0}
 .mn>b:first-child{display:block;font-size:13px;letter-spacing:.06em;text-transform:uppercase;color:#8a6500}
@@ -106,7 +106,6 @@ figcaption b{color:var(--ink)}
 .boxes>.b{border:1.8px solid var(--ink);border-radius:8px;padding:8px 10px;background:var(--boxfill);font-size:14.5px;line-height:1.45}
 .boxes>.b>b:first-child{display:block;color:var(--brand2);font-size:15.5px;margin-bottom:2px}
 .boxes>.b.hi{background:var(--hifill)}
-@media (max-width:640px){.boxes.c3,.boxes.c4,.boxes.c5{--c:2}body{font-size:16px}.topic{padding:4px 14px 14px}}
 svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--body)}
 .sv rect,.sv circle,.sv ellipse,.sv polygon{fill:var(--boxfill);stroke:var(--ink);stroke-width:1.8}
 .sv line,.sv path,.sv polyline{fill:none;stroke:var(--ink);stroke-width:1.8}
@@ -121,6 +120,28 @@ svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--
 #zoom.on{display:block}#zoom .zb{position:fixed;top:10px;right:12px;display:flex;gap:8px;z-index:10}
 #zoom button{font:600 16px var(--body);border:0;border-radius:8px;padding:6px 14px;cursor:pointer}
 #zoom .zc{background:#fff;border-radius:12px;padding:16px;margin:0 auto;transform-origin:top center}
+@media (max-width:640px){.boxes.c3,.boxes.c4,.boxes.c5{--c:2}
+body{font-size:16px;line-height:1.65}
+main{padding:0 14px 60px}
+.topic{background:none;border:0;border-top:1px solid var(--rule);border-radius:0;padding:2px 0 20px;margin:28px 0 0}
+.topic>h3{margin:16px 0 10px;font-size:21px}
+svg.sv{max-width:none}
+figure.fig{border:0;border-radius:0;background:none;padding:8px 0 4px}
+figure.fig .canvas{overscroll-behavior-x:contain;padding:2px 0}
+.def,.mn,.note,.recall,.ex,.hook,.draw{border:0;border-left:3px solid var(--rule);border-radius:0;background:none;padding:6px 0 6px 12px}
+.def{border-left-color:var(--brand)}.mn{border-left-color:#d4a514}.note{border-left-color:#e2919f}
+.recall{border-left-color:#7fbd9a}.hook{border-left-color:var(--brand);font-size:16px}
+li{margin:9px 0}ul,ol{padding-left:20px}
+.chain{flex-direction:column;width:auto;min-width:0}
+.chain>.n{max-width:100%;width:100%}
+.chain>.n+.n{margin-left:0;margin-top:30px}
+.chain>.n+.n::before{left:50%;top:-26px;width:0;height:18px;border-top:0;border-left:2px solid var(--ink)}
+.chain>.n+.n::after{left:calc(50% - 5px);top:-10px;border:5px solid transparent;border-top:7px solid var(--ink)}
+.chain>.ar{min-width:0;width:100%;padding:18px 0 6px}
+.chain>.ar::after{left:50%;right:auto;top:0;bottom:auto;width:0;height:11px;border-top:0;border-left:2px solid var(--ink)}
+.chain>.ar::before{left:calc(50% - 5px);right:auto;top:9px;bottom:auto;border:5px solid transparent;border-top:8px solid var(--ink)}
+.top{padding:8px 0;font-size:14px}
+.sa dd{padding-left:10px}}
 @media print{.cover{background:none;color:#000;padding:0}.cover .chips,nav.toc,.top,#zoom{display:none}
 .topic,figure.fig{break-inside:avoid-page;box-shadow:none}body{background:#fff;font-size:12pt}}
 </style>
@@ -144,10 +165,26 @@ svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--
 <div class="def"><b>Definition:</b> <mark>Big data</mark> refers to data sets whose volume, velocity and variety exceed the capacity of traditional database systems to capture, store, manage and analyse them, and which therefore need new, distributed, cost-effective forms of processing to extract insight and support decisions.</div>
 <figure class="fig"><div class="canvas"><div class="chain">
 <div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
-</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes left to right joined by arrows, a decade under each.</p></figure>
+</div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes joined by arrows in order, a decade under each.</p></figure>
 <ul>
-<li><mark>Evolution</mark>: file systems → relational databases (1970) → data warehouses → web-scale data → Google's GFS/MapReduce papers → open-source Hadoop (2006) → NoSQL, Spark, cloud.</li>
-<li><mark>Why traditional RDBMS fails</mark>: <b>scale-up only</b> (one bigger server has a cost and hardware ceiling), <b>fixed schema</b> (cannot hold JSON/logs/video without redesign), <b>speed</b> (row-by-row inserts cannot keep up with continuous streams), <b>cost</b> (licensed DB + high-end storage), <b>single point of failure</b>.</li>
+<li><mark>Evolution</mark> (stages of Fig 1.1):
+  <ul>
+  <li><b>Flat files</b> (1960s) — data kept in ordinary files, no query language.</li>
+  <li><b>RDBMS</b> (Codd's relational model, 1970) — tables, SQL, fixed schema.</li>
+  <li><b>Data warehouses</b> (1990s) — historical data collected for reporting.</li>
+  <li><b>Web-scale data</b> — search engines and social media outgrow one server; Google's GFS / MapReduce papers answer it.</li>
+  <li><b>Hadoop</b> (open source, 2006) — then NoSQL, Spark, cloud and data lakes.</li>
+  </ul>
+</li>
+<li><mark>Why traditional RDBMS fails</mark> at this scale:
+  <ul>
+  <li><b>Scale-up only</b> — one bigger server has a cost and hardware ceiling.</li>
+  <li><b>Fixed schema</b> — cannot hold JSON / logs / video without redesign.</li>
+  <li><b>Speed</b> — row-by-row inserts cannot keep up with continuous streams.</li>
+  <li><b>Cost</b> — licensed DB plus high-end storage.</li>
+  <li><b>Single point of failure</b> — one machine holds the data.</li>
+  </ul>
+</li>
 <li><mark>Big data approach</mark>: split data across many cheap commodity machines, move computation to where data sits (data locality), store raw data first and decide structure later (schema-on-read).</li>
 <li><mark>Advantages</mark> (mnemonic D-C-F-P-S-A): better <b>D</b>ecisions, reduced <b>C</b>ost, <b>F</b>raud detection, increased <b>P</b>roductivity, improved <b>S</b>ervice, increased <b>A</b>gility.</li>
 <li><mark>Disadvantages</mark> (T-S-C): lack of skilled <b>T</b>alent, <b>S</b>ecurity risks, <b>C</b>ompliance burden.</li>
@@ -264,8 +301,22 @@ svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--
 </div></div><figcaption><b>Fig 1.11</b> · Core components of Hadoop (Hadoop 2.x / 3.x)</figcaption><p class="draw">✍ Draw it: four stacked boxes, top to bottom: Applications, YARN, HDFS, Common.</p></figure>
 <ul>
 <li><mark>HDFS (storage)</mark>: master–slave. <b>NameNode</b> stores metadata only (namespace, file→block map); <b>DataNodes</b> store the actual blocks (default 128 MB) and send heartbeats. Each block is <mark>replicated 3 times</mark>, rack-aware, for fault tolerance.</li>
-<li><mark>MapReduce (processing)</mark>: a <b>map</b> function turns each input record into (key, value) pairs; the framework <b>shuffles and sorts</b> them by key; a <b>reduce</b> function aggregates all values sharing a key and writes the result to HDFS. Classic example: word count.</li>
-<li><mark>YARN (resource management)</mark>: introduced in Hadoop 2 to separate resource management from processing. <b>ResourceManager</b> (Scheduler + ApplicationsManager) is the per-cluster master; <b>NodeManager</b> runs on every worker node; an <b>ApplicationMaster</b> per job negotiates <b>Containers</b> (CPU + memory bundles) to run tasks.</li>
+<li><mark>MapReduce (processing)</mark> &ndash; three phases:
+  <ul>
+  <li><b>Map</b> — turns each input record into (key, value) pairs.</li>
+  <li><b>Shuffle and sort</b> — the framework groups the pairs by key.</li>
+  <li><b>Reduce</b> — aggregates all values sharing a key and writes the result to HDFS.</li>
+  <li>Classic example: word count.</li>
+  </ul>
+</li>
+<li><mark>YARN (resource management)</mark> &ndash; introduced in Hadoop 2 to separate resource management from processing:
+  <ul>
+  <li><b>ResourceManager</b> (Scheduler + ApplicationsManager) — the per-cluster master.</li>
+  <li><b>NodeManager</b> — runs on every worker node.</li>
+  <li><b>ApplicationMaster</b> — one per job, negotiates resources.</li>
+  <li><b>Containers</b> — CPU + memory bundles in which the tasks run.</li>
+  </ul>
+</li>
 <li><mark>How they fit together</mark>: HDFS and YARN's worker daemons (DataNode + NodeManager) run on the <i>same</i> physical nodes, so a MapReduce/Spark task can run right where its data block already sits — <mark>data locality</mark>.</li>
 <li><mark>Key features</mark>: scalable (add nodes), fault tolerant (replication + task re-run), cost-effective (commodity hardware, open source).</li>
 </ul>
@@ -458,7 +509,16 @@ svg.sv{display:block;margin:0 auto;max-width:100%;height:auto;font-family:var(--
 <li><mark>3. Analyze</mark>: select a technique (classification, regression, clustering, association, graph analytics), build the model, evaluate it.</li>
 <li><mark>4. Report</mark>: communicate findings with visualisations to non-technical decision makers.</li>
 <li><mark>5. Act</mark>: deploy the model / change the business process, monitor results; new questions restart the loop.</li>
-<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark> (business understanding → data understanding → data preparation → modeling → evaluation → deployment).</li>
+<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark>:
+  <ol>
+  <li>Business understanding</li>
+  <li>Data understanding</li>
+  <li>Data preparation</li>
+  <li>Modeling</li>
+  <li>Evaluation</li>
+  <li>Deployment</li>
+  </ol>
+</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Step</th><th>Input</th><th>Output</th></tr>
