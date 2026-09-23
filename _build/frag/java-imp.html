@@ -1,10 +1,10 @@
 <section class="unit" id="imp">
 <h2><span class="uno">Important questions</span>8-mark answers</h2>
-<p class="unit-sub">Paper: 6 &times; 1 mark + 3 &times; 8 marks (an 8 can come as 4 + 4). Each answer below is written to the 8-mark length.</p>
+<p class="unit-sub">Paper format: 6 &times; 1 mark + 3 &times; 8 marks (an 8-mark question can also appear as 4 + 4). Every answer below is written to full 8-mark exam depth with simple, easy-to-understand explanations.</p>
 
 <section class="topic" id="iq1"><h3>Q1. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; define the three terms, then open up the JVM into its subsystems and explain how bytecode gets executed.</p>
-<div class="def"><b>Definition:</b> The <mark>JVM</mark> (Java Virtual Machine) is a runtime engine that loads intermediate <mark>bytecode</mark> (<code>.class</code> file) produced by <code>javac</code>, verifies it, and converts it into machine code for execution. <mark>JDK</mark> = JRE + development tools; <mark>JRE</mark> = JVM + runtime libraries.</div>
+<p class="hook">Unit I &middot; 8 marks &middot; Exam focus: Define JDK, JRE, and JVM clearly, illustrate the compile-and-run pipeline, open up the JVM into its internal subsystems, and explain how bytecode is executed.</p>
+<div class="def"><b>Definition:</b> The <mark>JVM (Java Virtual Machine)</mark> is the abstract execution engine that loads, verifies, and executes intermediate <mark>bytecode</mark> (<code>.class</code> files) by translating it into native machine code. <mark>JDK</mark> is the full development kit (compiler <code>javac</code> + tools + JRE); <mark>JRE</mark> is the runtime environment (JVM + standard runtime class libraries like <code>rt.jar</code>).</div>
 <figure class="fig"><div class="canvas"><div class="chain">
 <div class="n">Hello.java<small>Source code</small></div>
 <div class="ar">javac</div>
@@ -16,20 +16,26 @@
 <p class="draw">&#9997; Draw it: horizontal chain from .java file box through javac arrow to .class bytecode box through JVM arrow to machine code box.</p></figure>
 <pre class="code" data-file="HelloWorld.java"><code><span class="c">// Every Java program must be inside a class</span>
 <span class="k">public class</span> HelloWorld {
-    <span class="c">// Entry point method executed by JVM</span>
+    <span class="c">// Entry point method executed by the JVM launcher</span>
     <span class="k">public static void</span> main(String[] args) {
         System.out.println("Hello, Java!");
     }
 }</code></pre>
 <pre class="out">Hello, Java!</pre>
 <ul>
-<li><mark>Pipeline on this program</mark>: <code>javac HelloWorld.java</code> &rarr; <code>HelloWorld.class</code> (bytecode) &rarr; <code>java HelloWorld</code> &rarr; JVM loads, verifies, executes &rarr; output above.</li>
+<li><mark>Execution Pipeline</mark> (Fig 1.6):
+  <ol>
+  <li><b>Write:</b> You author human-readable code in <code>HelloWorld.java</code>.</li>
+  <li><b>Compile:</b> Running <code>javac HelloWorld.java</code> invokes the Java compiler, translating your code into platform-independent intermediate <b>bytecode</b> stored in <code>HelloWorld.class</code>.</li>
+  <li><b>Execute:</b> Running <code>java HelloWorld</code> starts the JVM, which loads the bytecode, verifies its integrity, and translates it into native CPU instructions for the host operating system.</li>
+  </ol>
+</li>
 </ul>
 <div class="tw"><table>
-<tr><th>Feature</th><th>JDK</th><th>JRE</th><th>JVM</th></tr>
-<tr><td>Full form</td><td>Java Development Kit</td><td>Java Runtime Environment</td><td>Java Virtual Machine</td></tr>
-<tr><td>Purpose</td><td>Development &amp; Compilation</td><td>Running applications</td><td>Executing bytecode</td></tr>
-<tr><td>Contains</td><td>JRE + Tools (<code>javac</code>)</td><td>JVM + Core Libraries</td><td>Class Loader + Execution Engine</td></tr>
+<tr><th>Component</th><th>Full Form</th><th>Target Audience</th><th>What It Contains</th></tr>
+<tr><td><b>JDK</b></td><td>Java Development Kit</td><td>Software Developers</td><td>Development Tools (<code>javac</code>, <code>jar</code>, <code>javadoc</code>, <code>jdb</code>) + JRE</td></tr>
+<tr><td><b>JRE</b></td><td>Java Runtime Environment</td><td>End Users / Clients</td><td>JVM + Core Runtime Class Libraries (e.g. <code>java.lang</code>, <code>java.util</code>)</td></tr>
+<tr><td><b>JVM</b></td><td>Java Virtual Machine</td><td>The Operating System</td><td>Class Loader + Runtime Memory Areas + Execution Engine (Interpreter, JIT, GC)</td></tr>
 </table></div>
 <figure class="fig"><div class="canvas"><div class="stack">
 <div class="l hi"><b>Class Loader Subsystem</b><small>Load &rarr; Link (Verify, Prepare, Resolve) &rarr; Initialize</small></div>
@@ -47,93 +53,46 @@
 <figcaption><b>Fig 1.7</b> &middot; JVM Internal Architecture Subsystems</figcaption>
 <p class="draw">&#9997; Draw it: stack diagram showing Class Loader at top, 5 Runtime Data Areas in middle rows, and Execution Engine at bottom.</p></figure>
 <ul>
-<li><mark>Class Loader Subsystem</mark>: <b>Loading</b> (<code>.class</code> file); <b>Linking</b> (Verify, Prepare, Resolve); <b>Initialization</b> (runs static initializers).</li>
-<li><mark>Runtime Data Areas</mark>: Method Area (class/field/static data); Heap (all objects, GC-managed); Java Stack (frames + local variables); PC Register (current instruction address); Native Method Stack (native C/C++ frames).</li>
-<li><mark>Execution Engine</mark>: Interpreter (bytecode line by line); JIT (compiles hot code to native); GC (frees unreferenced heap).</li>
-<li><mark>WORA</mark>: class loader + execution engine live inside the JVM, not the OS, so the same <code>.class</code> file runs unchanged on any OS with a compatible JVM.</li>
+<li><mark>1. Class Loader Subsystem</mark>:
+  Responsible for bringing <code>.class</code> bytecode files into memory through three sequential phases:
+  <ul>
+  <li><b>Loading:</b> Reads the binary bytecode from disk into the JVM memory.</li>
+  <li><b>Linking:</b> Divided into three security steps:
+    <br>&bull; <i>Verify:</i> Checks that bytecode conforms to Java language specifications and does not corrupt system memory.
+    <br>&bull; <i>Prepare:</i> Allocates memory for static variables and assigns their default primitive values.
+    <br>&bull; <i>Resolve:</i> Replaces symbolic memory references with direct physical memory pointers.</li>
+  <li><b>Initialization:</b> Executes static blocks and assigns actual initial values to static variables.</li>
+  </ul>
+</li>
+<li><mark>2. Runtime Data Areas (JVM Memory Layout)</mark>:
+  <ul>
+  <li><b>Method Area (Shared across threads):</b> Stores class-level data, method codes, static variables, and runtime constant pools.</li>
+  <li><b>Heap Area (Shared across threads):</b> The central storage where ALL objects, instances, and arrays are allocated using <code>new</code>. Automatically managed by the Garbage Collector.</li>
+  <li><b>Java Stack (Thread-isolated):</b> Created per thread. Every method invocation creates a temporary <i>Stack Frame</i> storing local variables, intermediate calculations, and return addresses. When the method finishes, its frame is destroyed.</li>
+  <li><b>PC (Program Counter) Register (Thread-isolated):</b> Holds the exact physical memory address of the JVM bytecode instruction currently being executed by the thread.</li>
+  <li><b>Native Method Stack (Thread-isolated):</b> Manages low-level native C/C++ function calls invoked via the Java Native Interface (JNI).</li>
+  </ul>
+</li>
+<li><mark>3. Execution Engine</mark>:
+  The computational heart that executes the loaded instructions:
+  <ul>
+  <li><b>Interpreter:</b> Reads bytecode instructions one-by-one and executes them. Fast to start up, but slower for repeated loops.</li>
+  <li><b>JIT (Just-In-Time) Compiler:</b> Monitors execution to identify "hotspot" code (frequently executed loops). It compiles these hotspots directly into native machine code, boosting execution speed up to native C++ levels.</li>
+  <li><b>Garbage Collector (GC):</b> Automatically tracks and reclaims memory occupied by abandoned objects on the heap that no longer have any active references.</li>
+  </ul>
+</li>
+<li><mark>Why Java is "Write Once, Run Anywhere" (WORA)</mark>:
+  Bytecode is 100% platform-independent. The JVM translates bytecode into local CPU machine instructions. While the <i>JVM itself is platform-dependent</i> (different installers for Windows, Linux, macOS), the compiled <code>.class</code> file runs identically on all of them without changing a single line of code!
+</li>
 </ul>
-<div class="note"><b>Common mistake:</b> thinking bytecode is CPU machine code. Bytecode is instructions for the JVM; the JVM translates it into CPU instructions.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the JDK/JRE/JVM definition + table, and only the Runtime Data Areas + Execution Engine part of Fig 1.7 (skip the compile pipeline figure).</div>
-<div class="recall"><b>Quick recall</b> JDK = JRE + Tools; JRE = JVM + Libraries. JVM architecture = Class Loader + Runtime Data Areas (Heap, Stack, Method Area, PC, Native Stack) + Execution Engine (Interpreter + JIT + GC).</div>
+<div class="note"><b>Common mistake:</b> Do not confuse bytecode with machine code. Bytecode is the intermediate instruction set understood only by the JVM; the JVM converts bytecode into native CPU machine instructions.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the JDK/JRE/JVM definitions and table, draw the Runtime Data Areas part of Fig 1.7, and explain Heap vs Stack.</div>
+<div class="recall"><b>Quick recall</b> JDK = JRE + Tools (<code>javac</code>); JRE = JVM + Libraries (<code>rt.jar</code>). JVM = Class Loader (Load, Link, Init) + 5 Runtime Areas (Method, Heap, Stack, PC, Native) + Execution Engine (Interpreter + JIT + GC).</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq2"><h3>Q2. Difference between method overloading and method overriding, with a suitable example</h3>
-<p class="hook">Unit II &middot; 8 marks &middot; give both definitions, the difference table, and one program for each &mdash; overloading and overriding are never demonstrated by the same code.</p>
-<div class="def"><b>Method overloading:</b> Defining <mark>two or more methods with the same name but different parameter lists</mark> (number, type or order of parameters) in the same class. The call is decided at <mark>compile time</mark> &mdash; compile-time (static) polymorphism.</div>
-<div class="def"><b>Method overriding:</b> A <mark>child class redefines a method of its parent class with the same name, same parameters and same return type</mark>. The method that runs is decided at <mark>run time</mark> by the actual object &mdash; run-time (dynamic) polymorphism.</div>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 260" width="700">
-<text class="b" x="170" y="22">Overloading (same class)</text>
-<rect class="hi" x="40" y="40" width="260" height="190" rx="8"/>
-<text class="b" x="170" y="64">class Shape</text>
-<rect x="60" y="85" width="220" height="44" rx="6"/><text x="170" y="107">area(int side)</text>
-<rect x="60" y="150" width="220" height="44" rx="6"/><text x="170" y="172">area(int l, int b)</text>
-<text class="s" x="170" y="215">same name, different parameters</text>
-<text class="b" x="530" y="22">Overriding (parent and child)</text>
-<rect class="hi" x="410" y="40" width="240" height="74" rx="8"/><text class="b" x="530" y="62">class Shape</text><text x="530" y="90">void draw()</text>
-<rect x="410" y="170" width="240" height="74" rx="6"/><text class="b" x="530" y="192">class Circle extends Shape</text><text x="530" y="220">void draw()  (new body)</text>
-<path class="arr" d="M530 168 V116"/>
-<text class="s l" x="540" y="143">same signature</text>
-</svg></div><figcaption><b>Fig 2.27</b> &middot; Overloading lives inside one class; overriding needs a parent and a child with the same method signature</figcaption><p class="draw">&#9997; Draw it: left, one big box with two method boxes of the same name; right, a parent box and a child box with the same method, arrow from child up to parent.</p></figure>
-<div class="tw"><table>
-<tr><th>Basis</th><th>Method overloading</th><th>Method overriding</th></tr>
-<tr><td>Same name, parameters</td><td>Same name, different parameters</td><td>Same name, same parameters</td></tr>
-<tr><td>Where</td><td>Same class</td><td>Parent and child classes</td></tr>
-<tr><td>Polymorphism</td><td>Compile-time (static)</td><td>Run-time (dynamic)</td></tr>
-<tr><td>Binding</td><td>Static (early) binding</td><td>Dynamic (late) binding</td></tr>
-<tr><td>Return type</td><td>May differ; alone cannot overload</td><td>Same, or covariant subclass type</td></tr>
-<tr><td>Inheritance</td><td>Not needed</td><td>Required</td></tr>
-<tr><td>static/private/final</td><td>Can be overloaded</td><td>Cannot be overridden</td></tr>
-</table></div>
-<div class="note"><b>If the question says "operator overloading":</b> Java does <b>not</b> allow user-defined operator overloading (unlike C++) &mdash; only the built-in <code>+</code> is overloaded, for <code>String</code> joining. So write that one line, then answer <mark>method overloading</mark> as below.</div>
-<p><b>Program 1 &mdash; overloading (same class, different parameter list):</b></p>
-<pre class="code" data-file="OverloadDemo.java"><code><span class="k">class</span> Calculator {
-    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b) {              <span class="c">// 2 int parameters</span>
-        <span class="k">return</span> a + b;
-    }
-    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b, <span class="k">int</span> c) {       <span class="c">// different NUMBER of parameters</span>
-        <span class="k">return</span> a + b + c;
-    }
-    <span class="k">double</span> add(<span class="k">double</span> a, <span class="k">double</span> b) {     <span class="c">// different TYPE of parameters</span>
-        <span class="k">return</span> a + b;
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> OverloadDemo {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Calculator c = <span class="k">new</span> Calculator();
-        System.out.println(c.add(2, 3));       <span class="c">// compiler picks add(int,int)</span>
-        System.out.println(c.add(2, 3, 4));    <span class="c">// picks add(int,int,int)</span>
-        System.out.println(c.add(2.5, 1.5));   <span class="c">// picks add(double,double)</span>
-    }
-}</code></pre>
-<pre class="out">5
-9
-4.0</pre>
-<p><b>Program 2 &mdash; overriding (parent/child, same signature):</b></p>
-<pre class="code" data-file="Bike2.java"><code><span class="k">class</span> Vehicle {
-    <span class="k">void</span> run() {
-        System.out.println("Vehicle is running");
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> Bike2 <span class="k">extends</span> Vehicle {
-    <span class="k">void</span> run() {                        <span class="c">// same name, same parameters as Vehicle's run()</span>
-        System.out.println("Bike is running safely");
-    }
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Bike2 obj = <span class="k">new</span> Bike2();
-        obj.run();                       <span class="c">// only the overridden version executes</span>
-    }
-}</code></pre>
-<pre class="out">Bike is running safely</pre>
-<div class="mn"><b>Mnemonic</b> <b>"LOAD in one class, RIDE up to the parent"</b>: over<b>load</b> = same class, different parameters; over<b>ride</b> = child over parent, same parameters.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write both definitions, Fig 2.27, and the difference table only (skip both programs, or keep just OverloadDemo).</div>
-<div class="recall"><b>Quick recall</b> Overloading = same class, different parameters, compile time. Overriding = parent-child, same signature, run time, decided by the actual object.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq3"><h3>Q3. Explain the features (buzzwords) of Java. Why is Java called platform independent?</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; list all buzzwords, then be ready to expand any single one (usually platform independence) into its own short question.</p>
-<div class="def"><b>Definition:</b> <mark>Java</mark> is a high-level, object-oriented, class-based, platform-independent programming language created by James Gosling at Sun Microsystems in 1995.</div>
+<section class="topic" id="iq2"><h3>Q2. Explain the features (buzzwords) of Java. Why is Java called platform independent?</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; Exam focus: The 12 official Java buzzwords defined in simple English, followed by a dedicated breakdown of Platform Independence (WORA).</p>
+<div class="def"><b>Definition:</b> <mark>Java</mark> is an object-oriented, class-based, high-level, concurrent, and platform-independent programming language designed in 1995 by James Gosling at Sun Microsystems. Its core design philosophy is embodied in 12 foundational architectural features known as the <b>Java Buzzwords</b>.</div>
 <figure class="fig"><div class="canvas"><div class="boxes c4">
 <div class="b hi"><b>Simple</b></div>
 <div class="b"><b>Object-Oriented</b></div>
@@ -151,55 +110,30 @@
 <figcaption><b>Fig 1.4</b> &middot; All 12 Java buzzwords at a glance</figcaption>
 <p class="draw">&#9997; Draw it: a 4-column, 3-row grid of 12 small boxes, one buzzword per box.</p></figure>
 <ul>
-<li><mark>Simple</mark>: C/C++-like syntax; no pointers, no operator overloading; JVM auto-manages memory.</li>
-<li><mark>Object-Oriented</mark>: software organised as objects, each holding data + behaviour together.</li>
-<li><mark>Platform independent</mark>: same bytecode runs anywhere a JVM exists (Windows/Linux/macOS) = <mark>WORA</mark> (Write Once, Run Anywhere); <code>javac</code> compiles to platform-independent <code>.class</code> bytecode; JVM, not OS, executes it.</li>
-<li><mark>Secured</mark>: no pointers; runs in the JVM's sandbox; public-key encryption for security.</li>
-<li><mark>Robust</mark>: strong memory management; no pointers; built-in exception handling; compile-time type checking.</li>
-<li><mark>Architecture neutral</mark>: no implementation-dependent sizes &mdash; <code>int</code> always 4 bytes, on every platform.</li>
-<li><mark>Portable</mark>: bytecode carried to any platform; <code>javac</code> itself written in ANSI C (clean portability boundary).</li>
-<li><mark>Dynamic</mark>: carries run-time info to verify/resolve access to objects.</li>
-<li><mark>Interpreted</mark>: bytecode translated on the fly into native instructions; not stored anywhere.</li>
-<li><mark>High performance</mark>: JIT (Just-In-Time) compiler translates bytecode directly to native machine code, for speed.</li>
-<li><mark>Multithreaded</mark>: many things happen at once; threads share one common memory area.</li>
-<li><mark>Distributed</mark>: built for the internet's distributed environment; RMI calls methods on another machine over a network.</li>
+<li><mark>1. Simple</mark>: Syntax is clean and derived from C++, but intentionally removes confusing, error-prone features like direct memory pointers, multiple inheritance through classes, and operator overloading. Memory is automatically managed by Garbage Collection.</li>
+<li><mark>2. Object-Oriented</mark>: Everything in Java revolves around classes and objects encapsulating data (state) and methods (behavior), enforcing the 4 OOP pillars: Abstraction, Encapsulation, Inheritance, and Polymorphism.</li>
+<li><mark>3. Platform Independent (WORA)</mark>: You compile your source code once, and the resulting bytecode runs on any operating system that has a compatible JVM installed.</li>
+<li><mark>4. Secured</mark>: Programs run inside the controlled JVM "sandbox". With no raw pointers, applications cannot accidentally or maliciously access private operating system memory. The Bytecode Verifier checks for safety before execution.</li>
+<li><mark>5. Robust (Crash-Resistant)</mark>: Emphasizes early bug detection: strict compile-time type checking, mandatory run-time exception handling (<code>try-catch</code>), and automatic Garbage Collection that prevents memory leaks.</li>
+<li><mark>6. Architecture Neutral</mark>: Primitive data type sizes never change across hardware platforms. In C, an <code>int</code> can be 2 bytes on a 16-bit CPU and 4 bytes on a 32-bit CPU; in Java, an <code>int</code> is strictly <b>4 bytes on every machine on Earth</b>.</li>
+<li><mark>7. Portable</mark>: The compiled bytecode file (<code>.class</code>) can be copied to any computer via USB, email, or network, running without recompilation.</li>
+<li><mark>8. Dynamic</mark>: Classes are linked dynamically on-demand at runtime. New classes, libraries, and methods can be linked into a running application without restarting it.</li>
+<li><mark>9. Interpreted</mark>: The JVM execution engine reads and interprets intermediate bytecode instructions on the fly into native machine code.</li>
+<li><mark>10. High Performance</mark>: The modern Just-In-Time (JIT) compiler detects frequently executed code and translates it directly into native CPU instructions, delivering performance comparable to compiled languages like C++.</li>
+<li><mark>11. Multithreaded</mark>: Java has built-in language-level support for running multiple threads concurrently (e.g. playing audio while downloading a file), sharing common heap memory efficiently.</li>
+<li><mark>12. Distributed</mark>: Engineered for the internet era. Java includes rich networking libraries (TCP/IP, HTTP) and Remote Method Invocation (RMI), allowing a program on one computer to invoke methods running on a completely different server across the globe.</li>
 </ul>
-<div class="mn"><b>Mnemonic</b> remember all 12 in three groups of four &mdash; <b>SOPS</b> (Simple, OOP, Platform-independent, Secured) &middot; <b>RAPD</b> (Robust, Architecture-neutral, Portable, Dynamic) &middot; <b>IHMD</b> (Interpreted, High-performance, Multithreaded, Distributed).</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.4, and explain only 4 buzzwords in one line each &mdash; Simple, Platform-independent, Robust, Multithreaded.</div>
-<div class="recall"><b>Quick recall</b> 12 buzzwords in 3 groups of 4 (SOPS / RAPD / IHMD). Platform independence = bytecode + JVM = WORA.</div>
+<div class="mn"><b>Mnemonic</b> Remember the 12 buzzwords in 3 friendly groups of 4:
+<br>&bull; <b>SOPS:</b> <b>S</b>imple, <b>O</b>bject-Oriented, <b>P</b>latform-Independent, <b>S</b>ecured.
+<br>&bull; <b>RAPD:</b> <b>R</b>obust, <b>A</b>rchitecture-Neutral, <b>P</b>ortable, <b>D</b>ynamic.
+<br>&bull; <b>IHMD:</b> <b>I</b>nterpreted, <b>H</b>igh-Performance, <b>M</b>ultithreaded, <b>D</b>istributed.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig 1.4, and explain the 4 most critical buzzwords: Simple, Platform Independent, Robust, and Multithreaded.</div>
+<div class="recall"><b>Quick recall</b> 12 Buzzwords grouped as SOPS, RAPD, IHMD. Platform independence = javac compiles to universal bytecode &rarr; JVM translates to host CPU instructions = Write Once, Run Anywhere.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq4"><h3>Q4. Explain the structure of a Java program. What are the steps to compile and run it?</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; break down every keyword of the HelloWorld program, then the 4-step compile/run pipeline.</p>
-<div class="def"><b>Definition:</b> A Java program consists of one or more class definitions where execution begins at the <code>public static void main(String[] args)</code> entry point.</div>
-<p>Use the <code>HelloWorld</code> program and its output from <b>Q1</b> as the example here.</p>
-<figure class="fig"><div class="canvas"><div class="flow">
-<div class="n t">Start</div>
-<div class="n">Install the JDK; add its <code>bin</code> folder to the PATH</div>
-<div class="n io">Write the source code in any editor (e.g. Notepad); save as ClassName.java</div>
-<div class="n hi">Compile: javac ClassName.java &rarr; creates ClassName.class</div>
-<div class="n io">Run: java ClassName</div>
-<div class="n t">Output appears</div>
-</div></div>
-<figcaption><b>Fig 1.9</b> &middot; Steps to write, compile and run a Java program</figcaption>
-<p class="draw">&#9997; Draw it: vertical flow &mdash; Start oval, 4 process/IO boxes, Stop oval.</p></figure>
-<ul>
-<li><code>public</code>: class/method accessible from outside the package; required so JVM can call it.</li>
-<li><code>class</code>: keyword defining a class template.</li>
-<li><code>static</code>: lets JVM call <code>main()</code> without creating an object first.</li>
-<li><code>void</code>: return type &mdash; <code>main</code> returns nothing.</li>
-<li><code>main</code>: entry-point method name recognised by the JVM.</li>
-<li><code>String[] args</code>: array of string parameters passed via command line.</li>
-<li><code>System.out.println()</code>: <code>System</code> = class in <code>java.lang</code>; <code>out</code> = output-stream object; <code>println()</code> prints argument + newline.</li>
-<li>Saved file name must match the <b>public</b> class name exactly, including capitalisation.</li>
-</ul>
-<div class="recall"><b>Quick recall</b> File name must match public class name; <code>public static void main(String[] args)</code> is mandatory. Steps: install JDK &rarr; set PATH &rarr; write &rarr; <code>javac</code> &rarr; <code>java</code>.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.9, and give the HelloWorld program (Q1) with its output.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq5"><h3>Q5. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; the 8-primitives table plus the widening/narrowing rule is one of the most common short-and-long question pairs.</p>
-<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a built-in Java data type that directly holds simple values in memory without creating an object.</div>
+<section class="topic" id="iq3"><h3>Q3. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; Exam focus: The 8 primitive data types with exact sizes, ranges, and defaults, followed by the widening vs narrowing type casting rules and a working code demo.</p>
+<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a core, built-in Java data type that stores simple values directly in memory (on the stack) without creating an object on the heap. Java provides exactly <b>8 primitive types</b>.</div>
 <figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Java Data Types</span><ul>
 <li><span>Primitive</span><ul>
   <li><span>Integral (byte, short, int, long)</span></li>
@@ -214,200 +148,58 @@
 <figcaption><b>Fig 1.10</b> &middot; Hierarchy tree of Java Data Types</figcaption>
 <p class="draw">&#9997; Draw it: top node Data Types branching into Primitive and Non-Primitive, listing the 8 primitives under Primitive.</p></figure>
 <div class="tw"><table>
-<tr><th>Type</th><th>Size</th><th>Default</th><th>Range</th><th>Example</th></tr>
-<tr><td><code>byte</code></td><td>1 byte</td><td><code>0</code></td><td>-128 to 127</td><td><code>byte b = 100;</code></td></tr>
-<tr><td><code>short</code></td><td>2 bytes</td><td><code>0</code></td><td>-32,768 to 32,767</td><td><code>short s = 5000;</code></td></tr>
-<tr><td><code>int</code></td><td>4 bytes</td><td><code>0</code></td><td>-2<sup>31</sup> to 2<sup>31</sup>-1</td><td><code>int i = 42;</code></td></tr>
-<tr><td><code>long</code></td><td>8 bytes</td><td><code>0L</code></td><td>-2<sup>63</sup> to 2<sup>63</sup>-1</td><td><code>long l = 999L;</code></td></tr>
-<tr><td><code>float</code></td><td>4 bytes</td><td><code>0.0f</code></td><td>~1.4e-45 to ~3.4e+38</td><td><code>float f = 3.14f;</code></td></tr>
-<tr><td><code>double</code></td><td>8 bytes</td><td><code>0.0d</code></td><td>~4.9e-324 to ~1.7e+308</td><td><code>double d = 99.99;</code></td></tr>
-<tr><td><code>char</code></td><td>2 bytes</td><td><code>'&#92;u0000'</code></td><td>0 to 65,535 (Unicode)</td><td><code>char c = 'A';</code></td></tr>
-<tr><td><code>boolean</code></td><td>1 bit (JVM dep.)</td><td><code>false</code></td><td><code>true</code>/<code>false</code></td><td><code>boolean flag = true;</code></td></tr>
+<tr><th>Data Type</th><th>Memory Size</th><th>Default Value</th><th>Valid Range</th><th>Practical Example</th></tr>
+<tr><td><code>byte</code></td><td>1 byte (8 bits)</td><td><code>0</code></td><td>-128 to +127</td><td><code>byte age = 21;</code></td></tr>
+<tr><td><code>short</code></td><td>2 bytes (16 bits)</td><td><code>0</code></td><td>-32,768 to +32,767</td><td><code>short year = 2026;</code></td></tr>
+<tr><td><code>int</code></td><td>4 bytes (32 bits)</td><td><code>0</code></td><td>-2<sup>31</sup> to +2<sup>31</sup> - 1 (~2.14 billion)</td><td><code>int salary = 75000;</code></td></tr>
+<tr><td><code>long</code></td><td>8 bytes (64 bits)</td><td><code>0L</code></td><td>-2<sup>63</sup> to +2<sup>63</sup> - 1</td><td><code>long aadhaar = 987654321012L;</code></td></tr>
+<tr><td><code>float</code></td><td>4 bytes (32 bits)</td><td><code>0.0f</code></td><td>~1.4e-45 to ~3.4e+38 (6-7 decimals)</td><td><code>float pi = 3.14159f;</code></td></tr>
+<tr><td><code>double</code></td><td>8 bytes (64 bits)</td><td><code>0.0d</code></td><td>~4.9e-324 to ~1.7e+308 (15 decimals)</td><td><code>double price = 999.99;</code></td></tr>
+<tr><td><code>char</code></td><td>2 bytes (16 bits)</td><td><code>'\u0000'</code></td><td>0 to 65,535 (16-bit Unicode characters)</td><td><code>char grade = 'A';</code></td></tr>
+<tr><td><code>boolean</code></td><td>1 bit (JVM dep.)</td><td><code>false</code></td><td>Only <code>true</code> or <code>false</code></td><td><code>boolean isPassed = true;</code></td></tr>
 </table></div>
 <ul>
-<li><mark>Widening (Implicit)</mark>: smaller to larger type, automatic, no data loss: <code>byte &rarr; short &rarr; int &rarr; long &rarr; float &rarr; double</code>.</li>
-<li><mark>Narrowing (Explicit)</mark>: larger to smaller type, manual, cast syntax <code>(target_type)</code>; may lose data.</li>
-<li>Variables are of 3 kinds: <mark>local</mark> (inside a method, no default value), <mark>instance</mark> (per object), <mark>static</mark> (per class, shared).</li>
+<li><mark>Why is `char` 2 bytes in Java?</mark>
+  Unlike C/C++ which uses 1-byte ASCII (256 characters), Java uses 2-byte <b>Unicode</b> to support international alphabets including Hindi, Chinese, and Arabic.
+</li>
+<li><mark>Widening Type Casting (Implicit / Automatic)</mark>:
+  Converting a smaller data type into a larger data type.
+  <br><b>Rule:</b> Done automatically by the Java compiler because there is zero risk of data loss. Think of pouring water from a small glass into a giant bucket!
+  <br><b>Order:</b> <code>byte &rarr; short &rarr; int &rarr; long &rarr; float &rarr; double</code>.
+</li>
+<li><mark>Narrowing Type Casting (Explicit / Manual)</mark>:
+  Converting a larger data type into a smaller data type.
+  <br><b>Rule:</b> Requires explicit manual casting syntax <code>(target_type)</code> because data truncation, precision loss, or overflow can occur. Think of pouring water from a full bucket into a small glass&mdash;excess water spills!
+</li>
 </ul>
-<pre class="code" data-file="DataTypeDemo.java"><code><span class="k">public class</span> DataTypeDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">byte</span> b = 100;
-        <span class="k">int</span> i = b;            <span class="c">// Implicit widening: byte -> int</span>
-        <span class="k">double</span> d = 10.5;
-        <span class="k">int</span> x = (<span class="k">int</span>) d;      <span class="c">// Explicit narrowing: double -> int</span>
-        <span class="k">char</span> c = 'A';
-        <span class="k">boolean</span> flag = <span class="k">true</span>;
-        System.out.println("b=" + b + ", i=" + i + ", x=" + x + ", c=" + c + ", flag=" + flag);
+<pre class="code" data-file="CastingDemo.java"><code>public class CastingDemo {
+    public static void main(String[] args) {
+        // Widening: byte -> int (automatic, safe)
+        byte b = 42;
+        int i = b;
+
+        // Narrowing: double -> int (explicit, truncates decimal)
+        double d = 99.78;
+        int x = (int) d; // x becomes 99, 0.78 is lost!
+
+        char c = 'A';
+        boolean flag = true;
+
+        System.out.println("Widened int: " + i);
+        System.out.println("Narrowed int: " + x);
+        System.out.println("Char: " + c + ", Boolean: " + flag);
     }
 }</code></pre>
-<pre class="out">b=100, i=100, x=10, c=A, flag=true</pre>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 1.10, and the 8-primitives table (skip widening/narrowing and the program).</div>
-<div class="recall"><b>Quick recall</b> 8 primitive types; widening is automatic, narrowing needs explicit <code>(type)</code> cast.</div>
-<a class="top" href="#top">&uarr; top</a></section>
+<pre class="out">Widened int: 42
+Narrowed int: 99
+Char: A, Boolean: true</pre>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig 1.10, and present the 8-primitives table (skip the code).</div>
+<div class="recall"><b>Quick recall</b> 8 primitives: byte(1), short(2), int(4), long(8), float(4), double(8), char(2, Unicode), boolean(true/false). Widening = smaller &rarr; larger (automatic). Narrowing = larger &rarr; smaller (manual cast, potential data loss).</div>
+<a class="top" href="#top">↑ top</a></section>
 
-<section class="topic" id="iq6"><h3>Q6. Explain the different categories of operators in Java with their precedence.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; list every operator category, then the precedence order &mdash; a favourite standalone or combined-with-expressions question.</p>
-<div class="def"><b>Definition:</b> An <mark>operator</mark> is a special symbol that operates on one, two, or three operands to perform calculations and produce a result value.</div>
-<div class="tw"><table>
-<tr><th>Category</th><th>Symbols</th><th>Behaviour</th></tr>
-<tr><td>Arithmetic</td><td><code>+ - * / %</code></td><td>Addition, subtraction, multiplication, division, modulus.</td></tr>
-<tr><td>Unary / Increment</td><td><code>++ -- + - ! ~</code></td><td>Pre-increment (<code>++x</code>: increment first), Post-increment (<code>x++</code>: use then increment).</td></tr>
-<tr><td>Relational</td><td><code>== != &gt; &lt; &gt;= &lt;=</code></td><td>Compares two operands; returns boolean.</td></tr>
-<tr><td>Logical</td><td><code>&amp;&amp; || !</code></td><td>Short-circuit AND/OR, logical NOT.</td></tr>
-<tr><td>Bitwise &amp; Shift</td><td><code>&amp; | ^ ~ &lt;&lt; &gt;&gt; &gt;&gt;&gt;</code></td><td>AND, OR, XOR, NOT, left-shift, signed/unsigned right-shift.</td></tr>
-<tr><td>Assignment</td><td><code>= += -= *= /= %=</code></td><td>Assigns value; compound assignment performs op then assigns.</td></tr>
-<tr><td>Cast</td><td><code>(type)</code></td><td>Explicitly converts a value from one type to another.</td></tr>
-<tr><td>Ternary</td><td><code>cond ? v1 : v2</code></td><td>Shorthand <code>if-else</code>, evaluates to <code>v1</code> if true, <code>v2</code> if false.</td></tr>
-<tr><td>Type comparison</td><td><code>instanceof</code></td><td>Checks if an object is an instance of a class/interface.</td></tr>
-</table></div>
-<figure class="fig"><div class="canvas"><div class="boxes c3">
-<div class="b hi"><b>1. Unary &amp; Parentheses</b><code>()  ++  --  !  ~</code> (Right to Left)</div>
-<div class="b"><b>2. Multiplicative</b><code>*  /  %</code> (Left to Right)</div>
-<div class="b hi"><b>3. Additive</b><code>+  -</code> (Left to Right)</div>
-<div class="b"><b>4. Shift &amp; Relational</b><code>&lt;&lt; &gt;&gt; &lt; &gt; &lt;= &gt;=</code> (Left to Right)</div>
-<div class="b hi"><b>5. Equality &amp; Bitwise</b><code>== != &amp; ^ |</code> (Left to Right)</div>
-<div class="b"><b>6. Logical &amp; Ternary &amp; Assign</b><code>&amp;&amp; || ?: = +=</code> (Right/Left)</div>
-</div></div>
-<figcaption><b>Fig 1.14</b> &middot; Operator Precedence Hierarchy from highest to lowest</figcaption>
-<p class="draw">&#9997; Draw it: 6-tier box stack showing precedence from top (parentheses/unary) to bottom (assignment).</p></figure>
-<pre class="code" data-file="OperatorDemo.java"><code><span class="k">public class</span> OperatorDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">int</span> a = 10, b = 3;
-        <span class="k">int</span> pre = ++a;             <span class="c">// Pre-increment: a becomes 11, pre=11</span>
-        <span class="k">int</span> post = b++;            <span class="c">// Post-increment: post=3, b becomes 4</span>
-        <span class="k">int</span> bit = 5 &amp; 3;           <span class="c">// Bitwise AND: 101 & 011 = 001 (1)</span>
-        <span class="k">int</span> max = (a &gt; b) ? a : b;  <span class="c">// Ternary operator</span>
-        System.out.println("pre=" + pre + ", post=" + post + ", bit=" + bit + ", max=" + max);
-    }
-}</code></pre>
-<pre class="out">pre=11, post=3, bit=1, max=11</pre>
-<div class="note"><b>Common mistake:</b> Confusing <code>&amp;&amp;</code> (short-circuit logical AND) with <code>&amp;</code> (bitwise AND). <code>&amp;&amp;</code> stops evaluating if the first condition is false.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, the operator category table, and Fig 1.14 (skip the program).</div>
-<div class="recall"><b>Quick recall</b> Pre-increment increments before use; post-increment uses then increments. Ternary: <code>cond ? trueVal : falseVal</code>.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq7"><h3>Q7. Explain selection statements in Java: if, if-else-if ladder, and switch.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; the if-else-if ladder (grade calculation) is the classic worked example; switch is usually asked alongside it.</p>
-<div class="def"><b>Definition:</b> <mark>Selection statements</mark> allow a program to choose between different execution paths based on the boolean result of a condition or discrete value match.</div>
-<ul>
-<li><code>if</code>: executes a block only if the condition is <code>true</code>.</li>
-<li><code>if-else</code>: executes the <code>if</code> block when true, <code>else</code> block when false.</li>
-<li><code>else-if</code> ladder: tests conditions top to bottom; first true one runs, rest skipped; final <code>else</code> catches remainder.</li>
-<li><code>switch</code>: multi-way branch comparing an int/char/String expression against <code>case</code> values; needs <code>break</code> to prevent fall-through.</li>
-</ul>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 500" width="540">
-<ellipse cx="170" cy="40" rx="45" ry="16"/><text x="170" y="45">Start</text>
-<path class="arr" d="M170 56 V76"/>
-<polygon points="170,78 270,118 170,158 70,118"/><text x="170" y="122">marks&gt;=90?</text>
-<path class="arr" d="M270 118 H338"/><text class="s" x="300" y="108">Yes</text>
-<rect class="hi" x="340" y="93" width="150" height="50" rx="6"/><text x="415" y="123">Grade = A</text>
-<path class="arr" d="M170 158 V196"/><text class="s" x="188" y="182">No</text>
-<polygon points="170,198 270,238 170,278 70,238"/><text x="170" y="242">marks&gt;=80?</text>
-<path class="arr" d="M270 238 H338"/><text class="s" x="300" y="228">Yes</text>
-<rect class="hi" x="340" y="213" width="150" height="50" rx="6"/><text x="415" y="243">Grade = B</text>
-<path class="arr" d="M170 278 V316"/><text class="s" x="188" y="302">No</text>
-<polygon points="170,318 270,358 170,398 70,358"/><text x="170" y="362">marks&gt;=70?</text>
-<path class="arr" d="M270 358 H338"/><text class="s" x="300" y="348">Yes</text>
-<rect class="hi" x="340" y="333" width="150" height="50" rx="6"/><text x="415" y="363">Grade = C</text>
-<path class="arr" d="M170 398 V428"/><text class="s" x="188" y="417">No</text>
-<rect x="100" y="430" width="140" height="44" rx="6"/><text x="170" y="456">Grade = F</text>
-</svg></div>
-<figcaption><b>Fig 1.18</b> &middot; If-else-if ladder flowchart (grade calculation, pattern continues for D/E)</figcaption>
-<p class="draw">&#9997; Draw it: a vertical chain of diamonds, each "No" going down to the next diamond, each "Yes" branching right to a grade box; the last "No" ends at grade F.</p></figure>
-<div class="tw"><table>
-<tr><th>Basis</th><th>if-else / ladder</th><th>switch</th></tr>
-<tr><td>Tests</td><td>Any boolean condition (ranges, multiple variables)</td><td>One variable/expression against fixed <code>int</code>/<code>char</code>/<code>String</code> values</td></tr>
-<tr><td>Readability</td><td>Gets messy with many conditions</td><td>Cleaner for many discrete values</td></tr>
-<tr><td>Fall-through</td><td>Not applicable</td><td>Happens if <code>break</code> is missed</td></tr>
-<tr><td>Best for</td><td>Range checks (e.g. <code>marks&gt;=90</code>)</td><td>Exact-value menus (e.g. day number, choice)</td></tr>
-</table></div>
-<pre class="code" data-file="SelectionDemo.java"><code><span class="k">public class</span> SelectionDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">int</span> number = 15;
-        <span class="k">if</span> (number % 2 == 0) {
-            System.out.println(number + " is Even");
-        } <span class="k">else</span> {
-            System.out.println(number + " is Odd");
-        }
-        <span class="k">int</span> day = 2;
-        <span class="k">switch</span> (day) {
-            <span class="k">case</span> 1: System.out.println("Monday"); <span class="k">break</span>;
-            <span class="k">case</span> 2: System.out.println("Tuesday"); <span class="k">break</span>;
-            <span class="k">default</span>: System.out.println("Other day");
-        }
-    }
-}</code></pre>
-<pre class="out">15 is Odd
-Tuesday</pre>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 1.18, and the SelectionDemo program (skip the comparison table).</div>
-<div class="recall"><b>Quick recall</b> <code>if-else</code> evaluates boolean expressions; <code>switch</code> matches discrete values. Always add <code>break</code> in <code>switch</code> cases.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq8"><h3>Q8. Explain iteration (looping) statements and jump statements in Java.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; while vs do-while is the classic differentiate question; break/continue is the jump-statement half.</p>
-<div class="def"><b>Definition:</b> <mark>Iteration statements</mark> (loops) repeatedly execute a statement block as long as a loop termination condition remains true.</div>
-<ul>
-<li><code>for</code>: entry-controlled, best when the number of iterations is known (initialization; condition; update).</li>
-<li><code>while</code>: entry-controlled, tests condition before executing the body.</li>
-<li><code>do-while</code>: exit-controlled, executes the body at least once before testing the condition.</li>
-<li><code>break</code>: immediately terminates the innermost loop or switch block.</li>
-<li><code>continue</code>: skips the rest of the current iteration and jumps to the next loop test.</li>
-<li>A <mark>labelled</mark> loop (<code>label: for(...)</code>) lets <code>break label;</code>/<code>continue label;</code> target an outer loop from inside a nested one.</li>
-</ul>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 220" width="540">
-<text class="b" x="130" y="20">while Loop (Entry-controlled)</text>
-<polygon points="130,40 210,75 130,110 50,75" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
-<text x="130" y="75">Condition?</text>
-<path class="arr" d="M130 110 V150"/>
-<rect x="70" y="150" width="120" height="40" rx="6"/><text x="130" y="170">Loop Body</text>
-<path class="arr" d="M70 170 H20 V75 H50"/>
-
-<text class="b" x="400" y="20">do-while Loop (Exit-controlled)</text>
-<rect x="340" y="40" width="120" height="40" rx="6"/><text x="400" y="60">Loop Body</text>
-<path class="arr" d="M400 80 V120"/>
-<polygon points="400,120 480,155 400,190 320,155" fill="#fbe9d8" stroke="#1d1b18" stroke-width="1.8"/>
-<text x="400" y="155">Condition?</text>
-<path class="arr" d="M320 155 H280 V60 H340"/>
-</svg></div>
-<figcaption><b>Fig 1.19</b> &middot; Flowchart comparison between while (entry-controlled) and do-while (exit-controlled) loops</figcaption>
-<p class="draw">&#9997; Draw it: left diagram for while (condition top, body bottom), right diagram for do-while (body top, condition bottom).</p></figure>
-<div class="tw"><table>
-<tr><th>Feature</th><th>while Loop</th><th>do-while Loop</th></tr>
-<tr><td>Control Type</td><td>Entry-controlled</td><td>Exit-controlled</td></tr>
-<tr><td>Condition Check</td><td>Tested at the beginning</td><td>Tested at the end</td></tr>
-<tr><td>Minimum Executions</td><td>0 times</td><td>At least 1 time</td></tr>
-<tr><td>Syntax</td><td><code>while(cond) { ... }</code></td><td><code>do { ... } while(cond);</code></td></tr>
-</table></div>
-<pre class="code" data-file="LoopDemo.java"><code><span class="k">public class</span> LoopDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">int</span> sum = 0;
-        <span class="k">for</span> (<span class="k">int</span> i = 1; i &lt;= 5; i++) {
-            <span class="k">if</span> (i == 4) <span class="k">continue</span>; <span class="c">// Skip i=4</span>
-            sum += i;
-        }
-        System.out.println("Sum = " + sum);
-        <span class="k">int</span> count = 1;
-        <span class="k">do</span> {
-            System.out.print(count + " ");
-            count++;
-        } <span class="k">while</span> (count &lt;= 3);
-        System.out.println();
-    }
-}</code></pre>
-<pre class="out">Sum = 11
-1 2 3</pre>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 1.19, and the LoopDemo program (skip labelled loops).</div>
-<div class="recall"><b>Quick recall</b> <code>while</code> checks first, 0+ times; <code>do-while</code> runs body first, 1+ times. <code>break</code> exits, <code>continue</code> skips one iteration.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq9"><h3>Q9. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; both dimensions are explicitly in scope, so draw both memory diagrams and give one program for each.</p>
-<div class="def"><b>Definition:</b> An <mark>array</mark> is a fixed-size indexed collection of homogeneous elements stored in contiguous heap memory.</div>
-<ul>
-<li><mark>1D Array</mark>: single row of elements accessed by index <code>arr[i]</code> (0 to length-1).</li>
-<li><mark>2D Array</mark>: array of 1D arrays forming a matrix accessed as <code>arr[r][c]</code>.</li>
-<li><mark>Declaration</mark> only creates a reference (<code>int marks[];</code>); <mark>creation</mark> with <code>new</code> allocates heap memory and fills default values.</li>
-</ul>
+<section class="topic" id="iq4"><h3>Q4. What is an array? Write a Java program to find the largest and smallest element in an array.</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; Exam focus: Definition, contiguous heap memory layout, zero-based indexing, and a working program that finds both the maximum and minimum element in one pass.</p>
+<div class="def"><b>Definition:</b> An <mark>array</mark> in Java is a dynamically created container object that holds a fixed number of homogeneous (same-type) values stored in contiguous memory locations on the heap, accessed using zero-based integer indices.</div>
 <figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 120" width="540">
 <rect class="hi" x="40" y="40" width="70" height="40"/><text x="75" y="60">12 [0]</text>
 <rect class="hi" x="110" y="40" width="70" height="40"/><text x="145" y="60">45 [1]</text>
@@ -419,109 +211,480 @@ Tuesday</pre>
 </svg></div>
 <figcaption><b>Fig 1.21</b> &middot; 1D Array memory structure and zero-based indexing</figcaption>
 <p class="draw">&#9997; Draw it: horizontal strip of 6 contiguous boxes with values and zero-based indices [0] to [5].</p></figure>
-<pre class="code" data-file="Array1DDemo.java"><code><span class="k">public class</span> Array1DDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">int</span>[] arr = {12, 45, 7, 23, 89, 34};
-        <span class="k">int</span> sum = 0;
-        <span class="k">int</span> max = arr[0];
-        <span class="k">for</span> (<span class="k">int</span> val : arr) {
-            sum += val;
-            <span class="k">if</span> (val &gt; max) max = val;
+<ul>
+<li><mark>1D Array</mark>: A linear sequence of elements accessed by index <code>arr[i]</code> ranging from <code>0</code> to <code>arr.length - 1</code>.</li>
+<li><mark>2D Array</mark>: In Java, a 2D array is technically an <b>array of arrays</b>, accessed as <code>arr[row][col]</code>; each row can even have a different length (a <i>jagged</i> array).</li>
+<li><mark>Memory Mechanics</mark>: The array variable (e.g. <code>int[] marks</code>) is a reference stored on the <b>Stack</b>. The actual array contents are allocated on the <b>Heap</b> when instantiated with the <code>new</code> keyword.</li>
+<li><mark>Largest/Smallest Algorithm</mark>: Assume the first element is both the current largest and smallest, then scan every remaining element once &mdash; whenever a value beats the current largest, replace it; whenever a value is below the current smallest, replace that too. One pass, O(n) time.</li>
+</ul>
+<pre class="code" data-file="ArrayMinMax.java"><code>public class ArrayMinMax {
+    public static void main(String[] args) {
+        int[] arr = {12, 45, 7, 23, 89, 34};
+        int max = arr[0], min = arr[0];
+
+        // single pass: update max and min together
+        for (int val : arr) {
+            if (val > max) max = val;
+            if (val < min) min = val;
         }
-        System.out.println("Sum = " + sum + ", Max = " + max);
+        System.out.println("Largest = " + max + ", Smallest = " + min);
     }
 }</code></pre>
-<pre class="out">Sum = 210, Max = 89</pre>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 180" width="540">
-<text class="b" x="140" y="20">2D Matrix Array (2x2)</text>
-<rect class="hi" x="40" y="40" width="80" height="40"/><text x="80" y="60">[0][0]=1</text>
-<rect class="hi" x="120" y="40" width="80" height="40"/><text x="160" y="60">[0][1]=2</text>
-<rect class="hi" x="40" y="80" width="80" height="40"/><text x="80" y="100">[1][0]=3</text>
-<rect class="hi" x="120" y="80" width="80" height="40"/><text x="160" y="100">[1][1]=4</text>
+<pre class="out">Largest = 89, Smallest = 7</pre>
+<div class="note"><b>Common mistake:</b> Accessing index <code>arr[arr.length]</code> throws <code>ArrayIndexOutOfBoundsException</code>. The highest valid index is always <code>arr.length - 1</code> because Java arrays start at index 0. Also initialize both <code>max</code> and <code>min</code> to <code>arr[0]</code>, never to <code>0</code> &mdash; an array of only negative numbers would otherwise give a wrong "largest".</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig 1.21, and give the program (skip the 2D array point).</div>
+<div class="recall"><b>Quick recall</b> Arrays are objects allocated on the heap, indexed from 0 to length-1. Largest/smallest = one loop, two trackers (<code>max</code>, <code>min</code>), both seeded from <code>arr[0]</code>.</div>
+<a class="top" href="#top">↑ top</a></section>
 
-<text class="b" x="390" y="20">Jagged Array Layout</text>
-<rect x="300" y="40" width="60" height="35"/><text x="330" y="57">row[0]</text>
-<rect class="hi" x="360" y="40" width="50" height="35"/><text x="385" y="57">val 1</text>
-<rect class="hi" x="410" y="40" width="50" height="35"/><text x="435" y="57">val 2</text>
+<section class="topic" id="iq5"><h3>Q5. What is containership in Java? Explain with an example, and differentiate it from inheritance.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: Definition of containership/composition as a HAS-A relationship, how it differs from inheritance's IS-A relationship, and a working delegation example.</p>
+<div class="def"><b>Definition:</b> <mark>Containership</mark> (composition / aggregation) is a relationship in which a class contains an object of another class as its data member. It represents a <mark>HAS-A</mark> relationship and reuses code by delegating work to the contained object.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 360 180" width="360">
+<rect x="20" y="20" width="320" height="140" rx="8"/>
+<text class="b" x="180" y="42">Bike</text>
+<text class="s l" x="36" y="100">model</text>
+<rect class="hi" x="90" y="75" width="180" height="50" rx="4"/><text x="180" y="100">Engine engine</text>
+<text class="s" x="180" y="145">Bike HAS-A Engine</text>
+</svg></div><figcaption><b>Fig Q1</b> &middot; Containership: an Engine object lives inside every Bike object</figcaption><p class="draw">&#9997; Draw it: one big box Bike, a smaller shaded box Engine inside it, write HAS-A below.</p></figure>
+<ul>
+<li>Implemented by declaring a <mark>reference field</mark> of another class: <code>Engine engine;</code></li>
+<li>The outer class <mark>delegates</mark> work to it: <code>engine.start()</code>.</li>
+<li><mark>Loose coupling</mark>: the contained object can be replaced without changing any class hierarchy.</li>
+<li>Textbooks split it into <mark>composition</mark> (part cannot exist without the whole, strong) and <mark>aggregation</mark> (part can exist separately, weak).</li>
+<li>Rule of thumb: prefer HAS-A over IS-A (inheritance) when "X is a Y" sounds wrong &mdash; a Bike is not an Engine, but it has one.</li>
+</ul>
+<pre class="code" data-file="BikeEngine.java"><code>class Engine {
+    int cc;
+    Engine(int cc) { this.cc = cc; }
+    void start() { System.out.println(cc + " cc engine started"); }
+}
 
-<rect x="300" y="85" width="60" height="35"/><text x="330" y="102">row[1]</text>
-<rect class="hi" x="360" y="85" width="50" height="35"/><text x="385" y="102">val 1</text>
-<rect class="hi" x="410" y="85" width="50" height="35"/><text x="435" y="102">val 2</text>
-<rect class="hi" x="460" y="85" width="50" height="35"/><text x="485" y="102">val 3</text>
-</svg></div>
-<figcaption><b>Fig 1.22</b> &middot; Memory layout comparison between 2D Regular Array and Jagged Array</figcaption>
-<p class="draw">&#9997; Draw it: left diagram 2x2 grid for regular 2D array, right diagram rows with different column lengths for jagged array.</p></figure>
-<pre class="code" data-file="Array2DDemo.java"><code><span class="k">public class</span> Array2DDemo {
-    <span class="k">public static void</span> main(String[] args) {
-        <span class="k">int</span>[][] a = {{1, 2}, {3, 4}};
-        <span class="k">int</span>[][] b = {{5, 6}, {7, 8}};
-        <span class="k">int</span>[][] sum = <span class="k">new int</span>[2][2];
-        <span class="k">for</span> (<span class="k">int</span> i = 0; i &lt; 2; i++) {
-            <span class="k">for</span> (<span class="k">int</span> j = 0; j &lt; 2; j++) {
-                sum[i][j] = a[i][j] + b[i][j];
-                System.out.print(sum[i][j] + " ");
-            }
-            System.out.println();
-        }
+class Bike {
+    String model;
+    Engine engine;                  // Bike HAS-A Engine (containership)
+
+    Bike(String model, int cc) {
+        this.model = model;
+        engine = new Engine(cc);    // contained object created inside
+    }
+    void ride() {
+        engine.start();             // work delegated to the contained object
+        System.out.println(model + " is running");
+    }
+}
+
+public class BikeEngine {
+    public static void main(String[] args) {
+        new Bike("Pulsar", 150).ride();
     }
 }</code></pre>
-<pre class="out">6 8
-10 12</pre>
-<div class="note"><b>Common mistake:</b> Accessing <code>arr[arr.length]</code> throws <code>ArrayIndexOutOfBoundsException</code> &mdash; valid indices are <code>0</code> to <code>length-1</code>.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 1.21, and the Array1DDemo program (skip 2D/jagged).</div>
-<div class="recall"><b>Quick recall</b> Arrays are zero-indexed, stored on the heap; <code>arr.length</code> gives size. Jagged arrays have sub-arrays of different lengths.</div>
+<pre class="out">150 cc engine started
+Pulsar is running</pre>
+<div class="tw"><table>
+<tr><th>Inheritance (IS-A)</th><th>Containership (HAS-A)</th></tr>
+<tr><td>Child is a kind of parent</td><td>Class contains an object of another class</td></tr>
+<tr><td>Keyword <code>extends</code></td><td>Reference field + <code>new</code></td></tr>
+<tr><td>Dog IS-A Animal</td><td>Bike HAS-A Engine</td></tr>
+<tr><td>Fixed at compile time, tight coupling</td><td>Contained part can be swapped, loose coupling</td></tr>
+<tr><td>Parent methods used directly</td><td>Methods used through the object (<code>engine.start()</code>)</td></tr>
+</table></div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig Q1, and the IS-A vs HAS-A table (skip the code).</div>
+<div class="recall"><b>Quick recall</b> Containership = object inside object = HAS-A, implemented with a reference field and delegation. Inheritance = <code>extends</code> = IS-A.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq10"><h3>Q10. Explain abstract class and interface in Java</h3>
-<p class="hook">Unit II &middot; 8 marks &middot; both definitions, the difference table, one program, and then multiple inheritance through interfaces.</p>
-<div class="def"><b>Abstract class:</b> a class declared <mark>abstract</mark> that <mark>cannot be instantiated</mark>; can have abstract methods (no body), concrete methods (with body), variables and constructors. Subclass must override all abstract methods or itself be abstract.</div>
-<div class="def"><b>Interface:</b> a reference type declared <mark>interface</mark>, defining a <mark>contract</mark>: methods public and abstract by default, variables public static final (constants). A class uses <mark>implements</mark> to supply the bodies; one class can implement many interfaces &mdash; Java's route to <mark>multiple inheritance</mark>.</div>
+<section class="topic" id="iq6"><h3>Q6. Short note on class and objects</h3>
+<p class="hook">Unit II &middot; 4 or 8 marks &middot; Exam focus: Clear definitions, the 3 steps of object creation, memory distribution (stack vs heap), State-Behavior-Identity characteristics, and access modifiers.</p>
+<div class="def"><b>Class:</b> A <mark>user-defined blueprint or template</mark> that defines the data members (state) and methods (behavior) common to all objects created from it. A class declaration consumes zero memory for data until an object is instantiated.</div>
+<div class="def"><b>Object:</b> An <mark>identifiable runtime instance of a class</mark> created on the heap with the <code>new</code> keyword. It possesses its own private copy of the class's instance variables and consumes physical memory.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">class Student<br>(roll, name, show())</span><ul>
+<li><span>Object s1<br>1, Aman</span></li><li><span>Object s2<br>2, Riya</span></li><li><span>Object s3<br>3, Kabir</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig 2.1</b> &middot; One class (blueprint) gives many objects, each with its own data</figcaption><p class="draw">&#9997; Draw it: one box on top for the class, three boxes below joined to it, write values inside each.</p></figure>
+<ul>
+<li><mark>The Three Steps of Object Creation</mark>:
+  In the statement <code>Car c1 = new Car();</code>:
+  <ol>
+  <li><b>Declaration:</b> <code>Car c1</code> declares a reference variable named <code>c1</code> of type <code>Car</code> on the <b>Stack</b>.</li>
+  <li><b>Instantiation:</b> The <code>new</code> keyword allocates memory on the <b>Heap</b> for the new object.</li>
+  <li><b>Initialization:</b> The constructor <code>Car()</code> executes, initializing the object's instance variables.</li>
+  </ol>
+</li>
+<li><mark>The Three Universal Properties of Any Object (SBI)</mark>:
+  <ul>
+  <li><b>State:</b> The values stored in its instance variables (e.g. <code>brand = "Tata Nexon"</code>, <code>speed = 40</code>).</li>
+  <li><b>Behavior:</b> The actions it can perform via its methods (e.g. <code>accelerate()</code>).</li>
+  <li><b>Identity:</b> A unique memory address managed internally by the JVM distinguishing it from all other objects.</li>
+  </ul>
+</li>
+</ul>
+<pre class="code" data-file="CarDemo.java"><code>class Car {
+    String brand; // State (data member)
+    int speed;
+
+    void accelerate(int by) { // Behavior (method)
+        speed += by;
+    }
+
+    void display() {
+        System.out.println(brand + " running at " + speed + " km/h");
+    }
+}
+
+public class CarDemo {
+    public static void main(String[] args) {
+        Car c1 = new Car(); // Object 1
+        c1.brand = "Tata Nexon";
+        c1.accelerate(50);
+
+        Car c2 = new Car(); // Object 2
+        c2.brand = "Maruti Swift";
+        c2.accelerate(70);
+
+        c1.display();
+        c2.display();
+    }
+}</code></pre>
+<pre class="out">Tata Nexon running at 50 km/h
+Maruti Swift running at 70 km/h</pre>
+<div class="tw"><table>
+<tr><th>Point of Comparison</th><th>Class</th><th>Object</th></tr>
+<tr><td><b>Core Concept</b></td><td>Conceptual blueprint or prototype</td><td>Concrete, physical instance of the class</td></tr>
+<tr><td><b>Memory Allocation</b></td><td>Consumes no heap memory for data variables</td><td>Allocated dedicated physical memory on the heap</td></tr>
+<tr><td><b>Creation Mechanism</b></td><td>Created using the <code>class</code> keyword</td><td>Created at runtime using the <code>new</code> keyword</td></tr>
+<tr><td><b>Real-World Analogy</b></td><td>Architectural blueprint of a house</td><td>The physical brick-and-mortar house</td></tr>
+</table></div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 220" width="560">
+<text class="b" x="110" y="32">Stack (references)</text>
+<text class="b" x="420" y="32">Heap (objects)</text>
+<rect x="20" y="50" width="180" height="150" rx="6"/>
+<rect x="300" y="50" width="240" height="150" rx="6"/>
+<rect class="hi" x="40" y="70" width="140" height="40" rx="4"/><text x="110" y="90">c1 (Car)</text>
+<rect class="hi" x="40" y="140" width="140" height="40" rx="4"/><text x="110" y="160">c2 (Car)</text>
+<rect x="320" y="65" width="200" height="50" rx="4"/><text x="420" y="90">brand=Tata Nexon, speed=40</text>
+<rect x="320" y="135" width="200" height="50" rx="4"/><text x="420" y="160">brand=Maruti Swift, speed=60</text>
+<path class="arr" d="M180 90 H320"/>
+<path class="arr" d="M180 160 H320"/>
+</svg></div><figcaption><b>Fig 2.2 (reused)</b> &middot; The reference variable lives on the stack; the object it points to lives on the heap</figcaption><p class="draw">&#9997; Draw it: two tall boxes (Stack, Heap), small reference boxes c1, c2 in Stack, object boxes in Heap, arrows left to right.</p></figure>
+<div class="mn"><b>Mnemonic</b> Class = Cookie cutter; Object = Baked cookie! Every object has <b>S-B-I</b>: State, Behavior, Identity.</div>
+<div class="note"><b>If it comes as an 8-mark question:</b> Draw Fig 2.1 and Fig 2.2 (stack-to-heap pointer relationship), present the comparison table, explain the 3 steps of object creation, and list the 4 access specifiers (<code>private</code>, default, <code>protected</code>, <code>public</code>).</div>
+<div class="recall"><b>Quick recall</b> Class = blueprint; Object = runtime instance on the heap. Creation: Declaration (stack) &rarr; Instantiation (<code>new</code> on heap) &rarr; Initialization (constructor). SBI = State, Behavior, Identity.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq7"><h3>Q7. Explain constructors and their types in Java, with an example.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: The constructor rules (same name, no return type, auto-called by new), the four types, and one program that exercises all of them.</p>
+<div class="def"><b>Definition:</b> A <mark>constructor</mark> is a special member of a class that has the <mark>same name as the class</mark>, has <mark>no return type</mark> (not even <code>void</code>), and is called automatically by <code>new</code> to initialise a newly created object.</div>
+<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Constructors</span><ul>
+<li><span>Default<br>(added by compiler)</span></li><li><span>No-arg<br>(written by us)</span></li><li><span>Parameterized</span></li><li><span>Copy<br>(user-written)</span></li></ul></li></ul></div></div>
+<figcaption><b>Fig Q2</b> &middot; Types of constructors in Java</figcaption><p class="draw">&#9997; Draw it: root box Constructors with four boxes under it.</p></figure>
+<ul>
+<li><mark>Default constructor</mark>: if a class has <b>no</b> constructor, the compiler adds one with no parameters; fields get default values (0, <code>null</code>, <code>false</code>). It disappears as soon as you write any constructor of your own.</li>
+<li><mark>No-arg constructor</mark>: written by the programmer with no parameters, to set fixed starting values.</li>
+<li><mark>Parameterized constructor</mark>: takes arguments, so each object can start with different values: <code>new Point(3, 4)</code>.</li>
+<li><mark>Copy constructor</mark>: takes an object of the same class and copies its fields: <code>Point(Point p)</code>. Java does not provide it automatically (unlike C++); the programmer writes it.</li>
+<li><mark>Constructor overloading</mark>: several constructors in one class that differ in parameter list; <code>new</code> picks the matching one, exactly like method overloading.</li>
+</ul>
+<pre class="code" data-file="ConstructorTypes.java"><code>class Point {
+    int x, y;
+    Point() { x = 0; y = 0; }    // no-arg constructor
+    Point(int a, int b) {        // parameterized constructor (overloaded)
+        x = a; y = b;
+    }
+    Point(Point p) {             // copy constructor (we write it ourselves)
+        x = p.x; y = p.y;
+    }
+    void show(String label) {
+        System.out.println(label + " = (" + x + ", " + y + ")");
+    }
+}
+
+class Empty { int n; }           // no constructor: compiler adds default one
+
+public class ConstructorTypes {
+    public static void main(String[] args) {
+        Point p1 = new Point();         p1.show("p1");
+        Point p2 = new Point(3, 4);     p2.show("p2");
+        Point p3 = new Point(p2);       p3.show("p3 (copy of p2)");
+        System.out.println("Empty n = " + new Empty().n);
+    }
+}</code></pre>
+<pre class="out">p1 = (0, 0)
+p2 = (3, 4)
+p3 (copy of p2) = (3, 4)
+Empty n = 0</pre>
+<div class="tw"><table>
+<tr><th>Constructor</th><th>Method</th></tr>
+<tr><td>Name same as class</td><td>Any valid name</td></tr>
+<tr><td>No return type</td><td>Must have a return type (or <code>void</code>)</td></tr>
+<tr><td>Called automatically by <code>new</code></td><td>Called explicitly by the programmer</td></tr>
+<tr><td>Not inherited</td><td>Inherited by subclasses</td></tr>
+</table></div>
+<div class="note"><b>Common mistake:</b> thinking a no-arg constructor written by the programmer is the same as the compiler's default constructor. Strictly, "default constructor" means only the one the compiler auto-supplies when you write none at all.</div>
+<div class="mn"><b>Mnemonic</b> <b>S-N-A</b> rules: Same name as class, No return type, Automatically called by <code>new</code>.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig Q2, and explain no-arg + parameterized constructors (skip the copy constructor and the table).</div>
+<div class="recall"><b>Quick recall</b> 4 types: default, no-arg, parameterized, copy; picked by overload resolution on the parameter list; constructors are not inherited.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq8"><h3>Q8. What is polymorphism? Explain the types of inheritance in Java.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: A one-line polymorphism recap (Q10 has the full overloading/overriding answer), then the 5 types of inheritance, which three Java supports directly with <code>extends</code>, and why the other two need interfaces.</p>
+<div class="def"><b>Polymorphism:</b> The ability of the <mark>same method call to behave differently</mark> depending on the arguments passed (<b>compile-time / static</b> polymorphism, via method overloading) or the actual object on the heap (<b>run-time / dynamic</b> polymorphism, via method overriding). See Q10 for the full definitions, table, and both programs.</div>
+<div class="def"><b>Inheritance:</b> The mechanism by which one class (subclass / child) acquires the fields and methods of another class (superclass / parent) using the <mark>extends</mark> keyword. It represents an <mark>IS-A</mark> relationship. Based on how classes connect, it comes in <mark>5 types: single, multilevel, hierarchical, multiple and hybrid</mark>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 200 260" width="200">
+<rect class="hi" x="40" y="20" width="120" height="40" rx="4"/><text x="100" y="40">Vehicle</text>
+<rect x="40" y="110" width="120" height="40" rx="4"/><text x="100" y="130">Car</text>
+<rect x="40" y="200" width="120" height="40" rx="4"/><text x="100" y="220">ElectricCar</text>
+<path class="arr" d="M100 110 V60"/>
+<path class="arr" d="M100 200 V150"/>
+</svg></div><figcaption><b>Fig Q3</b> &middot; Multilevel inheritance: a chain, grandparent to parent to child</figcaption><p class="draw">&#9997; Draw it: three boxes in a column, arrows up between them.</p></figure>
+<ul>
+<li><mark>IS-A test</mark>: "ElectricCar is a Car, Car is a Vehicle" makes sense, so inheritance fits.</li>
+<li>A class can <code>extends</code> <mark>only one</mark> class &mdash; Java classes never support multiple inheritance directly.</li>
+<li><mark>Multiple</mark> (one child, two+ parents) and <mark>Hybrid</mark> (a mix) are achieved only through <mark>interfaces</mark>, to avoid the <b>Diamond Problem</b>: if two parent classes both implemented the same method differently, the child's call would be ambiguous. Interfaces have no method body to conflict, so this never arises (see Q11).</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Type</th><th>Shape</th><th>With classes?</th><th>Example</th></tr>
+<tr><td>Single</td><td>A &lt;- B</td><td>Yes</td><td>Dog extends Animal</td></tr>
+<tr><td>Multilevel</td><td>A &lt;- B &lt;- C</td><td>Yes</td><td>ElectricCar &lt;- Car &lt;- Vehicle</td></tr>
+<tr><td>Hierarchical</td><td>A &lt;- B, A &lt;- C</td><td>Yes</td><td>Savings, Current extend Account</td></tr>
+<tr><td>Multiple</td><td>A, B &lt;- C</td><td>No, via interfaces</td><td>Smartphone implements Camera, MusicPlayer</td></tr>
+<tr><td>Hybrid</td><td>Mix of above</td><td>No, via interfaces</td><td>Hierarchical + Multiple combined</td></tr>
+</table></div>
+<p><b>Program &mdash; Hierarchical inheritance</b> (one parent, two children):</p>
+<pre class="code" data-file="HierarchicalDemo.java"><code>class Account {
+    void info() { System.out.println("Bank account"); }
+}
+
+class Savings extends Account {          // child 1
+    void rate() { System.out.println("Savings: interest 4%"); }
+}
+
+class Current extends Account {          // child 2 of the SAME parent
+    void rate() { System.out.println("Current: no interest"); }
+}
+
+public class HierarchicalDemo {
+    public static void main(String[] args) {
+        Savings s = new Savings();
+        Current c = new Current();
+        s.info(); s.rate();
+        c.info(); c.rate();
+    }
+}</code></pre>
+<pre class="out">Bank account
+Savings: interest 4%
+Bank account
+Current: no interest</pre>
+<div class="mn"><b>Mnemonic</b> <b>S-M-H</b> yes, <b>M-H</b> no: Single, Multilevel, Hierarchical work with <code>extends</code>; Multiple, Hybrid need interfaces.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the inheritance definition, draw Fig Q3, and give the types table (skip polymorphism and the program).</div>
+<div class="recall"><b>Quick recall</b> Polymorphism = same call, different behaviour (compile-time overload / run-time override). Inheritance: 5 types; classes do single, multilevel, hierarchical directly; multiple and hybrid only via interfaces, because of the diamond problem.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq9"><h3>Q9. Explain static data members, static methods and static blocks in Java.</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: The "one shared copy" definition, instance vs static comparison table, static block execution order, and a counter program.</p>
+<div class="def"><b>Definition:</b> A <mark>static data member</mark> (class variable) is declared with <code>static</code> and has <mark>only one copy shared by all objects</mark> of the class; it is created when the class is loaded. A <mark>static method</mark> belongs to the class and can be called without an object, and a <mark>static block</mark> runs once when the class is loaded.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 240" width="600">
+<rect x="30" y="30" width="150" height="60" rx="4"/><text x="105" y="60">v1: name=Aman</text>
+<rect x="225" y="30" width="150" height="60" rx="4"/><text x="300" y="60">v2: name=Riya</text>
+<rect x="420" y="30" width="150" height="60" rx="4"/><text x="495" y="60">v3: name=Kabir</text>
+<rect class="hi" x="190" y="150" width="220" height="50" rx="4"/><text x="300" y="175">static count = 3</text>
+<path class="arr" d="M105 90 L250 150"/>
+<path class="arr" d="M300 90 V150"/>
+<path class="arr" d="M495 90 L350 150"/>
+<text class="s" x="300" y="220">one shared copy, stored with the class</text>
+</svg></div><figcaption><b>Fig Q4</b> &middot; Each object has its own name, but all share the single static count</figcaption><p class="draw">&#9997; Draw it: three object boxes on top, one shaded box below labelled static count, three arrows down into it.</p></figure>
+<ul>
+<li><mark>Shared copy</mark>: change it through any object or the class name, all objects see the new value. Good for counters, rates, constants.</li>
+<li>Access it as <mark>ClassName.var</mark> (preferred), e.g. <code>Visitor.count</code>.</li>
+<li><mark>Static method</mark>: called as <code>ClassName.method()</code>; can use static members directly but <b>cannot use instance variables, <code>this</code> or <code>super</code></b> directly. <code>main</code> is static so the JVM can call it without an object.</li>
+<li><mark>Static block</mark> <code>static { ... }</code>: runs once when the class is loaded, before any object; used to initialise static data.</li>
+</ul>
+<div class="tw"><table>
+<tr><th>Instance variable</th><th>Static variable</th></tr>
+<tr><td>One copy per object</td><td>One copy per class</td></tr>
+<tr><td>Created when object is created</td><td>Created when class is loaded</td></tr>
+<tr><td>Accessed by <code>obj.var</code></td><td>Accessed by <code>ClassName.var</code></td></tr>
+<tr><td>Example: student name</td><td>Example: total students</td></tr>
+</table></div>
+<p>Program: object counter using a static variable, static block and static method.</p>
+<pre class="code" data-file="CounterDemo.java"><code>class Visitor {
+    static int count;            // ONE shared copy for all objects
+    String name;                 // separate copy in each object
+
+    static {                     // static block: runs once, when class loads
+        count = 0;
+        System.out.println("static block ran");
+    }
+    Visitor(String n) {
+        name = n;
+        count++;                 // every new object updates the shared copy
+    }
+    static void report() {       // static method: called without an object
+        System.out.println("Visitors so far = " + count);
+    }
+}
+
+public class CounterDemo {
+    public static void main(String[] args) {
+        new Visitor("Aman");
+        new Visitor("Riya");
+        new Visitor("Kabir");
+        Visitor.report();
+    }
+}</code></pre>
+<pre class="out">static block ran
+Visitors so far = 3</pre>
+<div class="note"><b>Common mistake:</b> using an instance field inside a static method (like <code>main</code>) directly. A static method has no <code>this</code>, so create an object first.</div>
+<div class="mn"><b>Mnemonic</b> <b>V-M-B</b>: static can be applied to Variables, Methods and Blocks.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write the definition, draw Fig Q4, and the instance-vs-static table (skip the program).</div>
+<div class="recall"><b>Quick recall</b> static = belongs to the class, one shared copy. Static block runs once at class loading, before any object. Static method has no <code>this</code> and cannot touch instance variables directly.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq10"><h3>Q10. Difference between method overloading and method overriding, with a suitable example</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: Provide clear definitions for both, a comprehensive comparison table, and two distinct code programs (overloading and overriding must never be demonstrated in the same code snippet!).</p>
+<div class="def"><b>Method Overloading:</b> Defining <mark>two or more methods with the same name but different parameter lists</mark> (varying by number, type, or order of parameters) within the <i>same class</i>. The method call is resolved at <mark>compile time</mark> &mdash; known as <b>Compile-time (Static) Polymorphism</b>.</div>
+<div class="def"><b>Method Overriding:</b> When a <mark>subclass (child) provides its own specific implementation of a method that is already defined in its superclass (parent)</mark>, using the <i>exact same name, same parameter list, and compatible return type</i>. The method to execute is resolved at <mark>run time</mark> based on the actual object instance &mdash; known as <b>Run-time (Dynamic) Polymorphism</b>.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 260" width="700">
+<text class="b" x="170" y="22">Overloading (same class)</text>
+<rect class="hi" x="40" y="40" width="260" height="190" rx="8"/>
+<text class="b" x="170" y="64">class Shape</text>
+<rect x="60" y="85" width="220" height="44" rx="6"/><text x="170" y="107">area(int side)</text>
+<rect x="60" y="150" width="220" height="44" rx="6"/><text x="170" y="172">area(int l, int b)</text>
+<text class="s" x="170" y="215">same name, different parameters</text>
+<text class="b" x="530" y="22">Overriding (parent and child)</text>
+<rect class="hi" x="410" y="40" width="240" height="74" rx="8"/><text class="b" x="530" y="62">class Shape</text><text x="530" y="90">void draw()</text>
+<rect x="410" y="170" width="240" height="74" rx="6"/><text class="b" x="530" y="192">class Circle extends Shape</text><text x="530" y="220">void draw()  (new body)</text>
+<path class="arr" d="M530 168 V116"/>
+<text class="s l" x="540" y="143">same signature</text>
+</svg></div><figcaption><b>Fig 2.27</b> &middot; Overloading lives inside one class; overriding needs a parent and a child with the same method signature</figcaption><p class="draw">&#9997; Draw it: left, one big box with two method boxes of the same name; right, a parent box and a child box with the same method, arrow from child up to parent.</p></figure>
+<div class="tw"><table>
+<tr><th>Point of Comparison</th><th>Method Overloading</th><th>Method Overriding</th></tr>
+<tr><td><b>Class Scope</b></td><td>Occurs within the <b>same class</b></td><td>Occurs between <b>parent (super) and child (sub) classes</b></td></tr>
+<tr><td><b>Method Signature</b></td><td>Same name, but <b>different parameters</b> (count/type/order)</td><td>Must have the <b>exact same name and parameter list</b></td></tr>
+<tr><td><b>Polymorphism Type</b></td><td><b>Compile-time (Static)</b> polymorphism</td><td><b>Run-time (Dynamic)</b> polymorphism</td></tr>
+<tr><td><b>Binding Mechanism</b></td><td>Static (early) binding decided by the compiler</td><td>Dynamic (late) binding resolved by the JVM at runtime</td></tr>
+<tr><td><b>Return Type</b></td><td>Return type can differ, but return type alone cannot overload</td><td>Must be identical, or a covariant (subclass) type</td></tr>
+<tr><td><b>Inheritance Needed?</b></td><td>No inheritance required</td><td><b>Inheritance (extends) is strictly mandatory</b></td></tr>
+<tr><td><b>private / static / final</b></td><td>Can be overloaded easily</td><td><b>Cannot be overridden</b> (they cannot be dynamically dispatched)</td></tr>
+</table></div>
+<div class="note"><b>Important Exam Warning on Operator Overloading:</b> Unlike C++, Java does <b>not</b> support user-defined operator overloading (to maintain simplicity and avoid code obfuscation). The only built-in overloaded operator in Java is the <code>+</code> operator, which performs addition on numbers and concatenation on <code>String</code> objects. If the question asks about operator overloading, state this rule first, then write the method overloading answer below.</div>
+
+<p><b>Program 1 &mdash; Method Overloading (Inside One Class):</b></p>
+<pre class="code" data-file="OverloadDemo.java"><code>class Calculator {
+    // 1. Two integer parameters
+    int add(int a, int b) {
+        return a + b;
+    }
+    // 2. Overloaded by NUMBER of parameters (three integers)
+    int add(int a, int b, int c) {
+        return a + b + c;
+    }
+    // 3. Overloaded by TYPE of parameters (two doubles)
+    double add(double a, double b) {
+        return a + b;
+    }
+}
+
+public class OverloadDemo {
+    public static void main(String[] args) {
+        Calculator c = new Calculator();
+        System.out.println("2 ints: " + c.add(5, 10));       // Calls add(int, int)
+        System.out.println("3 ints: " + c.add(5, 10, 15));   // Calls add(int, int, int)
+        System.out.println("2 doubles: " + c.add(2.5, 3.5)); // Calls add(double, double)
+    }
+}</code></pre>
+<pre class="out">2 ints: 15
+3 ints: 30
+2 doubles: 6.0</pre>
+
+<p><b>Program 2 &mdash; Method Overriding (Inheritance &mdash; Parent and Child Classes):</b></p>
+<pre class="code" data-file="OverrideDemo.java"><code>class Vehicle {
+    // Parent method
+    void run() {
+        System.out.println("Vehicle is running on the road");
+    }
+}
+
+public class OverrideDemo extends Vehicle {
+    // Overriding parent method with child-specific implementation
+    @Override
+    void run() {
+        System.out.println("Bike is running safely at 60 km/h");
+    }
+
+    public static void main(String[] args) {
+        // Parent reference pointing to child object (Dynamic Method Dispatch)
+        Vehicle v = new OverrideDemo();
+        v.run(); // Calls the overridden child method at runtime!
+    }
+}</code></pre>
+<pre class="out">Bike is running safely at 60 km/h</pre>
+<div class="mn"><b>Mnemonic</b> <b>"LOAD inside one room, RIDE up the stairs"</b>: Over<b>load</b> stays inside the same class room with different parameters. Over<b>ride</b> rides up the inheritance staircase from child to parent with the exact same signature.</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write both definitions, draw Fig 2.27, and present the difference table (skip Program 1 and keep just Program 2).</div>
+<div class="recall"><b>Quick recall</b> Overloading = same class, different parameters, compile-time binding. Overriding = parent-child inheritance, same signature, run-time dynamic dispatch decided by the actual object on the heap.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq11"><h3>Q11. Explain abstract class and interface in Java</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; Exam focus: Detailed definitions, comparison table, working code example, and how interfaces achieve Multiple Inheritance safely without the Diamond Problem.</p>
+<div class="def"><b>Abstract Class:</b> A class declared with the <mark>abstract</mark> keyword that <mark>cannot be directly instantiated</mark> with <code>new</code>. It serves as a partial template and can contain both abstract methods (without bodies) and concrete methods (with bodies), instance variables, and constructors.</div>
+<div class="def"><b>Interface:</b> A pure specification blueprint declared with the <mark>interface</mark> keyword defining a strict <mark>contract</mark>. All methods are public and abstract by default, and variables are public, static, and final constants. A class uses the <mark>implements</mark> keyword to provide method bodies. A single class can implement multiple interfaces, giving Java clean <mark>Multiple Inheritance</mark>.</div>
 <figure class="fig"><div class="canvas"><div class="boxes c2">
 <div class="b hi"><b>abstract class Account</b>double balance;<br>Account(double b) { ... }<br>abstract double interest();<br>void show() { ... }</div>
 <div class="b hi"><b>interface Printable</b>void print();<br>(public abstract by default)<br>constants only</div>
 <div class="b"><b>extends (only one class)</b>class Savings extends Account</div>
 <div class="b"><b>implements (many interfaces)</b>class Savings implements Printable</div>
 </div></div><figcaption><b>Fig 2.28</b> &middot; One class can extend one abstract class and implement any number of interfaces</figcaption><p class="draw">&#9997; Draw it: two shaded boxes on top (abstract class, interface), two boxes below with the keywords extends and implements.</p></figure>
-<ul>
-<li><mark>Abstract class rules</mark>: no objects (<code>new Account()</code> is an error); can have constructors, instance variables; 1 abstract method forces the whole class abstract; partial abstraction.</li>
-<li><mark>Interface rules</mark>: methods public abstract by default, variables public static final; no constructors; implementing methods must be <code>public</code>; Java 8+ allows default/static methods too.</li>
-</ul>
-<div class="tw"><table><tr><th>Basis</th><th>Abstract class</th><th>Interface</th></tr>
-<tr><td>Keyword</td><td>abstract class</td><td>interface</td></tr>
-<tr><td>Methods</td><td>Abstract and concrete</td><td>Abstract (plus default/static from Java 8)</td></tr>
-<tr><td>Variables</td><td>Any kind (instance, static, final)</td><td>Only public static final constants</td></tr>
-<tr><td>Constructor</td><td>Yes</td><td>No</td></tr>
-<tr><td>Inheritance keyword</td><td>extends</td><td>implements</td></tr>
-<tr><td>Multiple inheritance</td><td>No (extend only one class)</td><td>Yes (implement many)</td></tr>
-<tr><td>Abstraction</td><td>Partial</td><td>Full (for abstract methods)</td></tr>
-<tr><td>Use when</td><td>Related classes share code and state</td><td>Unrelated classes share a capability</td></tr></table></div>
-<pre class="code" data-file="AbstractInterface.java"><code><span class="k">interface</span> Printable {                 <span class="c">// interface: only a contract</span>
-    <span class="k">void</span> print();                     <span class="c">// public abstract by default</span>
+<div class="tw"><table>
+<tr><th>Feature</th><th>Abstract Class</th><th>Interface</th></tr>
+<tr><td><b>Declaration Keyword</b></td><td>Declared using <code>abstract class</code></td><td>Declared using <code>interface</code></td></tr>
+<tr><td><b>Methods Supported</b></td><td>Can have both <b>abstract</b> (no body) and <b>concrete</b> (with body) methods</td><td>All methods public abstract by default (Java 8+ allows <code>default</code> and <code>static</code> methods)</td></tr>
+<tr><td><b>Variables Allowed</b></td><td>Can have instance, static, and final variables of any access level</td><td>Variables are strictly <b>public static final</b> (constants only)</td></tr>
+<tr><td><b>Constructors</b></td><td><b>Has constructors</b> (invoked by subclass using <code>super()</code>)</td><td><b>Cannot have constructors</b> (cannot be instantiated in any way)</td></tr>
+<tr><td><b>Inheritance Keyword</b></td><td>A subclass uses <b><code>extends</code></b></td><td>An implementing class uses <b><code>implements</code></b></td></tr>
+<tr><td><b>Multiple Inheritance</b></td><td><b>Not supported</b> (a class can extend only ONE superclass)</td><td><b>Supported</b> (a class can implement MULTIPLE interfaces)</td></tr>
+<tr><td><b>Design Purpose</b></td><td>Used when related classes share common code and state</td><td>Used when unrelated classes need to guarantee a shared capability</td></tr>
+</table></div>
+<pre class="code" data-file="AbstractInterfaceDemo.java"><code>// Interface defining a pure contract
+interface Printable {
+    void print(); // public abstract by default
 }
 
-<span class="k">abstract</span> <span class="k">class</span> Account {              <span class="c">// abstract class: partial blueprint</span>
-    <span class="k">double</span> balance;
-    Account(<span class="k">double</span> balance) { this.balance = balance; }
-    <span class="k">abstract</span> <span class="k">double</span> interest();       <span class="c">// no body</span>
-    <span class="k">void</span> show() { System.out.println("Balance = " + balance); }
+// Abstract class providing a partial blueprint with state and constructor
+abstract class Account {
+    double balance;
+    Account(double balance) {
+        this.balance = balance;
+    }
+    abstract double computeInterest(); // Must be implemented by child
+    void display() {
+        System.out.println("Current Balance = " + balance);
+    }
 }
 
-<span class="k">class</span> Savings <span class="k">extends</span> Account <span class="k">implements</span> Printable {
-    Savings(<span class="k">double</span> balance) { super(balance); }
-    <span class="k">double</span> interest() { <span class="k">return</span> balance * 0.04; }
-    <span class="k">public</span> <span class="k">void</span> print() { System.out.println("Interest = " + interest()); }
+// Concrete class extending one class and implementing an interface
+class SavingsAccount extends Account implements Printable {
+    SavingsAccount(double balance) {
+        super(balance);
+    }
+    @Override
+    double computeInterest() {
+        return balance * 0.05; // 5% interest
+    }
+    @Override
+    public void print() {
+        System.out.println("Savings Statement -> Interest: " + computeInterest());
+    }
 }
 
-<span class="k">public</span> <span class="k">class</span> AbstractInterface {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Savings s = <span class="k">new</span> Savings(10000);
-        s.show();
-        s.print();
+public class AbstractInterfaceDemo {
+    public static void main(String[] args) {
+        SavingsAccount sa = new SavingsAccount(10000);
+        sa.display();
+        sa.print();
     }
 }</code></pre>
-<pre class="out">Balance = 10000.0
-Interest = 400.0</pre>
-<p><b>Multiple inheritance through interfaces:</b> a class can implement many interfaces at once &mdash; Java's way to give multiple inheritance without the ambiguity of two parent classes.</p>
+<pre class="out">Current Balance = 10000.0
+Savings Statement -> Interest: 500.0</pre>
+
+<h4>Multiple Inheritance Through Interfaces (Resolving the Diamond Problem)</h4>
+<p>In C++, if class D inherits from both class B and class C which both inherit from class A, method calls become ambiguous if B and C both implemented the same method with different code (the notorious <b>Diamond Problem</b>). Java strictly forbids extending multiple classes. However, Java allows implementing multiple interfaces (Fig 2.16) because interfaces contain only method declarations without bodies&mdash;the child class writes its own single implementation, eliminating any ambiguity!</p>
 <figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 360 180" width="360">
 <rect class="hi" x="20" y="20" width="130" height="40" rx="4"/><text x="85" y="40">Camera</text>
 <rect class="hi" x="210" y="20" width="130" height="40" rx="4"/><text x="275" y="40">MusicPlayer</text>
@@ -529,209 +692,292 @@ Interest = 400.0</pre>
 <path class="arr dash" d="M150 120 L85 60"/>
 <path class="arr dash" d="M210 120 L275 60"/>
 </svg></div><figcaption><b>Fig 2.16</b> &middot; Multiple inheritance: one child, two parents (in Java only through interfaces)</figcaption><p class="draw">&#9997; Draw it: two boxes on top, one box below, dashed arrows up to both.</p></figure>
-<ul>
-<li><code>class Smartphone implements Camera, MusicPlayer { ... }</code> &mdash; must give a body to every abstract method of both.</li>
-<li>Cannot <code>extend</code> two classes: <mark>diamond problem</mark> (same method in both parents = ambiguous call); interfaces avoid this &mdash; implementing class writes its own single body.</li>
-</ul>
-<div class="mn"><b>Mnemonic</b> <b>"Abstract = Half-built house, Interface = Rule book"</b>: a half-built house already has some walls (concrete methods, variables, constructor); a rule book only lists what must be done.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write both definitions, Fig 2.28, and the difference table (skip the program and the multiple-inheritance figure).</div>
-<div class="recall"><b>Quick recall</b> Abstract class: extends, one only, can mix abstract + concrete + constructor. Interface: implements, many allowed, public abstract methods + public static final constants &mdash; this is how Java gets multiple inheritance.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq11"><h3>Q11. Short note on array of objects</h3>
-<p class="hook">Unit II &middot; usually a 4-mark short note; see the note below for the 8-mark version.</p>
-<div class="def"><b>Definition:</b> An <mark>array of objects</mark> is an array whose elements are <mark>references to objects</mark> of a class. The array stores references, not the objects themselves; each object must be created separately with <code>new</code>.</div>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 600 250" width="600">
-<text class="s" x="300" y="32">objects on the heap</text>
-<rect x="40" y="50" width="140" height="50" rx="4"/><text x="110" y="75">Java, 450</text>
-<rect x="220" y="50" width="140" height="50" rx="4"/><text x="290" y="75">DBMS, 380</text>
-<rect x="400" y="50" width="140" height="50" rx="4"/><text x="470" y="75">C++, 300</text>
-<text class="r" x="92" y="200">shelf</text>
-<rect class="hi" x="100" y="180" width="90" height="40"/><text x="145" y="200">[0]</text>
-<rect class="hi" x="190" y="180" width="90" height="40"/><text x="235" y="200">[1]</text>
-<rect class="hi" x="280" y="180" width="90" height="40"/><text x="325" y="200">[2]</text>
-<path class="arr" d="M145 180 L110 100"/>
-<path class="arr" d="M235 180 L290 100"/>
-<path class="arr" d="M325 180 L470 100"/>
-<text class="s" x="235" y="235">array of references</text>
-</svg></div><figcaption><b>Fig 2.4</b> &middot; Array of objects: each cell stores a reference that points to a separate object</figcaption><p class="draw">&#9997; Draw it: a row of 3 joined cells at the bottom, 3 object boxes on top, one arrow from each cell to its box.</p></figure>
-<ul>
-<li><mark>Syntax</mark>: <code>ClassName[] arr = new ClassName[size];</code></li>
-<li><mark>Step 1</mark>: creating the array only creates <code>size</code> references, all <mark>null</mark>.</li>
-<li><mark>Step 2</mark>: create each object: <code>arr[0] = new ClassName(...);</code></li>
-<li><mark>Step 3</mark>: access members through the index: <code>arr[i].member</code>.</li>
-<li>Use: storing records of many students, employees or products and processing them in a loop.</li>
-</ul>
-<pre class="code" data-file="StudentArray.java"><code><span class="k">class</span> Student {
-    String name;
-    <span class="k">int</span> marks;
-    Student(String name, <span class="k">int</span> marks) {
-        this.name = name;
-        this.marks = marks;
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> StudentArray {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Student[] list = <span class="k">new</span> Student[3];       <span class="c">// step 1: array of 3 references (all null)</span>
-        list[0] = <span class="k">new</span> Student("Aman", 78);      <span class="c">// step 2: create each object</span>
-        list[1] = <span class="k">new</span> Student("Riya", 91);
-        list[2] = <span class="k">new</span> Student("Kabir", 65);
-
-        <span class="k">for</span> (<span class="k">int</span> i = 0; i &lt; list.length; i++) { <span class="c">// step 3: use them</span>
-            System.out.println(list[i].name + " : " + list[i].marks);
-        }
-    }
-}</code></pre>
-<pre class="out">Aman : 78
-Riya : 91
-Kabir : 65</pre>
-<div class="note"><b>Common mistake:</b> using <code>list[0].name</code> before <code>list[0] = new Student(...)</code> throws <mark>NullPointerException</mark>, because the cell still holds null.</div>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 560 220" width="560">
-<text class="b" x="110" y="32">Stack (references)</text>
-<text class="b" x="420" y="32">Heap (objects)</text>
-<rect x="20" y="50" width="180" height="150" rx="6"/>
-<rect x="300" y="50" width="240" height="150" rx="6"/>
-<rect class="hi" x="40" y="70" width="140" height="40" rx="4"/><text x="110" y="90">s1</text>
-<rect class="hi" x="40" y="140" width="140" height="40" rx="4"/><text x="110" y="160">s2</text>
-<rect x="320" y="65" width="200" height="50" rx="4"/><text x="420" y="90">roll=1, name=Aman</text>
-<rect x="320" y="135" width="200" height="50" rx="4"/><text x="420" y="160">roll=2, name=Riya</text>
-<path class="arr" d="M180 90 H320"/>
-<path class="arr" d="M180 160 H320"/>
-</svg></div><figcaption><b>Fig 2.2</b> · The reference variable lives on the stack; the object it points to lives on the heap</figcaption><p class="draw">✍ Draw it: two tall boxes (Stack, Heap), small boxes s1, s2 in Stack, object boxes in Heap, arrows left to right.</p></figure>
-<div class="note"><b>If it comes as 8 marks:</b> also draw Fig 2.2 (reference lives on the stack, object lives on the heap) to explain why two separate steps are needed, and add one line comparing it with a normal array (a normal array's cells hold values directly; an array of objects' cells hold addresses).</div>
-<div class="recall"><b>Quick recall</b> Array of objects = array of references; create the array first, then each object with <code>new</code>.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq12"><h3>Q12. Short note on class and objects</h3>
-<p class="hook">Unit II &middot; usually a 4-mark short note; see the note below for the 8-mark version.</p>
-<div class="def"><b>Class:</b> A <mark>user-defined blueprint</mark> (template) that describes the <mark>data members</mark> (state) and <mark>methods</mark> (behaviour) common to all its objects. A class takes no memory for data until objects are created.</div>
-<div class="def"><b>Object:</b> A <mark>real instance of a class</mark> created at run time with <code>new</code>. It has its own copy of the data members and occupies memory on the heap.</div>
-<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">class Student<br>(roll, name, show())</span><ul>
-<li><span>Object s1<br>1, Aman</span></li><li><span>Object s2<br>2, Riya</span></li><li><span>Object s3<br>3, Kabir</span></li></ul></li></ul></div></div>
-<figcaption><b>Fig 2.1</b> &middot; One class (blueprint) gives many objects, each with its own data</figcaption><p class="draw">&#9997; Draw it: one box on top for the class, three boxes below joined to it, write values inside each.</p></figure>
-<ul>
-<li><mark>Syntax of a class</mark>: <code>class ClassName { data members; methods; }</code></li>
-<li><mark>Object creation</mark>, 3 steps in <code>Car c1 = new Car();</code>: <b>declaration</b> (<code>Car c1</code>); <b>instantiation</b> (<code>new</code> allocates memory); <b>initialization</b> (constructor <code>Car()</code> runs).</li>
-<li>Members are accessed with the <mark>dot operator</mark>: <code>c1.brand</code>, <code>c1.display()</code>.</li>
-<li>Every object has <mark>state</mark> (values of variables), <mark>behaviour</mark> (methods) and <mark>identity</mark> (its own memory reference).</li>
-</ul>
-<pre class="code" data-file="CarDemo.java"><code><span class="k">class</span> Car {
-    String brand;          <span class="c">// data member (state)</span>
-    <span class="k">int</span> speed;
-
-    <span class="k">void</span> accelerate(<span class="k">int</span> by) {   <span class="c">// method (behaviour)</span>
-        speed = speed + by;
-    }
-
-    <span class="k">void</span> display() {
-        System.out.println(brand + " is running at " + speed + " km/h");
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> CarDemo {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Car c1 = <span class="k">new</span> Car();   <span class="c">// object 1</span>
-        c1.brand = "Tata Nexon";
-        c1.accelerate(40);
-
-        Car c2 = <span class="k">new</span> Car();   <span class="c">// object 2, same class, own data</span>
-        c2.brand = "Maruti Swift";
-        c2.accelerate(60);
-
-        c1.display();
-        c2.display();
-    }
-}</code></pre>
-<pre class="out">Tata Nexon is running at 40 km/h
-Maruti Swift is running at 60 km/h</pre>
-<div class="tw"><table><tr><th>Basis</th><th>Class</th><th>Object</th></tr>
-<tr><td>Meaning</td><td>Blueprint / template</td><td>Instance of the class</td></tr>
-<tr><td>Memory</td><td>No memory for data when declared</td><td>Gets memory on the heap when created</td></tr>
-<tr><td>Created with</td><td>class keyword</td><td>new keyword</td></tr>
-<tr><td>Example</td><td>Car</td><td>c1 (Tata Nexon), c2 (Maruti Swift)</td></tr></table></div>
-<div class="mn"><b>Mnemonic</b> <b>"Class = cookie cutter, Object = cookie"</b>. Object has <b>S-B-I</b>: State, Behaviour, Identity.</div>
-<div class="note"><b>If it comes as 8 marks:</b> also draw Fig 2.2 (the reference variable lives on the stack, the object it points to lives on the heap) and add the access-modifier table (private/default/protected/public) that decides who can use a class member.</div>
-<div class="recall"><b>Quick recall</b> Class = blueprint, object = instance made by <code>new</code>; reference on stack, object on heap.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
-<section class="topic" id="iq13"><h3>Q13. Packages</h3>
-<p class="hook">Unit II &middot; 8 marks &middot; define, show the built-in tree, create-compile-run a user package, list the import ways, and mention subpackages.</p>
-<div class="def"><b>Definition:</b> A <mark>package</mark> is a group of related classes and interfaces stored together in one folder, declared with the <mark>package</mark> keyword. Packages are <mark>built-in</mark> (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code>) or <mark>user-defined</mark>.</div>
-<figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Packages</span><ul>
-<li><span>Built-in</span><ul><li><span>java.lang</span></li><li><span>java.util</span></li><li><span>java.io</span></li></ul></li>
-<li><span>User-defined</span><ul><li><span>mypack</span></li><li><span>college.exam</span></li></ul></li></ul></li></ul></div></div>
-<figcaption><b>Fig 2.19</b> &middot; Types of packages</figcaption><p class="draw">&#9997; Draw it: root Packages, two children Built-in and User-defined, 2-3 names under each.</p></figure>
-<div class="tw"><table>
-<tr><th>Built-in package</th><th>Contains (examples)</th></tr>
-<tr><td><code>java.lang</code></td><td>String, Math, System (imported automatically)</td></tr>
-<tr><td><code>java.util</code></td><td>Scanner, ArrayList, Arrays</td></tr>
-<tr><td><code>java.io</code></td><td>File, InputStreamReader, IOException</td></tr>
-</table></div>
-<ul>
-<li><mark>Advantages</mark>: avoids name conflicts, groups related classes, access protection, reusability, easier maintenance.</li>
-<li><mark>package statement</mark> must be the <mark>first statement</mark> of the file; package name = folder name (lowercase).</li>
-<li><mark>Compile</mark> with <code>javac -d . File.java</code>; <code>-d .</code> auto-creates the package folder; classes used from outside the package must be <mark>public</mark>.</li>
-</ul>
-<p><b>File 1</b> <code>mypack/Calculator.java</code>:</p>
-<pre class="code"><code><span class="k">package</span> mypack;
-
-<span class="k">public</span> <span class="k">class</span> Calculator {
-    <span class="k">public</span> <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b) {
-        <span class="k">return</span> a + b;
-    }
-}</code></pre>
-<p><b>File 2</b> <code>UsePackage.java</code> (in the folder that contains <code>mypack</code>):</p>
-<pre class="code"><code><span class="k">import</span> mypack.Calculator;
-
-<span class="k">public</span> <span class="k">class</span> UsePackage {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Calculator c = <span class="k">new</span> Calculator();
-        System.out.println("Sum = " + c.add(10, 20));
-    }
-}</code></pre>
-<p><b>Commands:</b> <code>javac -d . mypack/Calculator.java</code> &rarr; <code>javac UsePackage.java</code> &rarr; <code>java UsePackage</code></p>
-<pre class="out">Sum = 30</pre>
-<div class="tw"><table>
-<tr><th>Way to import</th><th>Syntax</th><th>Imports</th></tr>
-<tr><td>1. Fully qualified name</td><td><code>pack.A obj = new pack.A();</code></td><td>No import statement needed at all</td></tr>
-<tr><td>2. Single-type import</td><td><code>import pack.A;</code></td><td>Only that one class</td></tr>
-<tr><td>3. On-demand (wildcard) import</td><td><code>import pack.*;</code></td><td>All public classes of the package (not its sub-packages)</td></tr>
-</table></div>
-<ul>
-<li><mark>Subpackage</mark>: package inside a package, named <code>packagename.subpackagename</code> (dot = folder inside folder), e.g. <code>pack.subpack</code>; compiled same way, <code>javac -d .</code> (nested folders); run <code>java pack.subpack.ClassName</code>; wildcard import (<code>pack.*</code>) never pulls in a subpackage &mdash; import it separately.</li>
-</ul>
-<div class="note"><b>Common mistake:</b> "Only one public class per package" is WRONG. The rule is one public class per <b>source file</b>, named after it; a package can hold many public classes, each in its own file.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 2.19, and the Calculator/UsePackage create-compile-run demo (skip the import-ways table and subpackage bullet).</div>
-<div class="recall"><b>Quick recall</b> package = folder of classes; <code>package</code> statement first, <code>javac -d .</code> to compile, <code>java pkg.Class</code> to run. Import: fully-qualified name, single-class, or <code>*</code> (never sub-packages). Subpackage = dot-separated nested folder.</div>
+<div class="mn"><b>Intuitive Analogy:</b> An <b>Abstract Class</b> is like a half-built house (it has some solid walls and a foundation, but some rooms are left for you to finish). An <b>Interface</b> is an architectural blueprint or contract (it lists the exact rooms that must exist, but provides zero bricks or mortar).</div>
+<div class="note"><b>If it comes as a 4-mark question:</b> Write both definitions, draw Fig 2.28, and present the comparison table (skip the code and the Diamond Problem section).</div>
+<div class="recall"><b>Quick recall</b> Abstract class = extends, partial blueprint, can have constructors &amp; instance variables. Interface = implements, pure contract, constants only, enables Multiple Inheritance safely without the Diamond Problem.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
 <section class="topic" id="iq-1m"><h3>1-mark questions</h3>
-<dl class="sa">
-<dt>Q1. Define JVM and Bytecode.</dt><dd>JVM is an abstract execution engine that executes Java bytecode. Bytecode is the platform-independent intermediate format compiled from <code>.java</code> source code.</dd>
-<dt>Q2. Differentiate JDK, JRE, and JVM.</dt><dd>JDK contains development tools + JRE; JRE contains class libraries + JVM; JVM is the execution runtime engine that runs bytecode.</dd>
-<dt>Q3. What is Write Once, Run Anywhere (WORA)?</dt><dd>Java's principle where code compiled into bytecode on one platform can run without modification on any OS containing a compatible JVM.</dd>
-<dt>Q4. What is the role of the JIT compiler?</dt><dd>Just-In-Time compiler compiles frequently used bytecode sequences into native CPU instructions at runtime to accelerate execution speed.</dd>
-<dt>Q5. List the 8 primitive data types in Java.</dt><dd><code>byte</code>, <code>short</code>, <code>int</code>, <code>long</code>, <code>float</code>, <code>double</code>, <code>char</code>, and <code>boolean</code>.</dd>
-<dt>Q6. Differentiate widening and narrowing casting.</dt><dd>Widening is automatic conversion of a smaller type to a larger type (e.g., <code>int</code> to <code>double</code>); narrowing is manual conversion of a larger type to a smaller type with cast syntax <code>(int) d</code>.</dd>
-<dt>Q7. What is automatic type promotion in expressions?</dt><dd>In expressions, <code>byte</code>, <code>short</code>, and <code>char</code> are promoted to <code>int</code>; if an operand is <code>long</code>, <code>float</code>, or <code>double</code>, the whole expression promotes to that larger type.</dd>
-<dt>Q8. Differentiate pre-increment and post-increment operators.</dt><dd>Pre-increment (<code>++x</code>) increments the variable before evaluating its value; post-increment (<code>x++</code>) evaluates the current value first before incrementing.</dd>
-<dt>Q9. What is short-circuit evaluation in logical operators?</dt><dd>In <code>&amp;&amp;</code>, if the first condition is false, the second is skipped. In <code>||</code>, if the first condition is true, the second is skipped.</dd>
-<dt>Q10. Explain ternary operator syntax.</dt><dd>Conditional shorthand: <code>condition ? value_if_true : value_if_false;</code>.</dd>
-<dt>Q11. Differentiate while and do-while loops.</dt><dd><code>while</code> is entry-controlled (0 min executions); <code>do-while</code> is exit-controlled, executing the body at least once.</dd>
-<dt>Q12. Differentiate break and continue statements.</dt><dd><code>break</code> exits the loop or switch block immediately; <code>continue</code> skips the remainder of the current iteration and jumps to the next loop evaluation.</dd>
-<dt>Q13. What is a jagged array?</dt><dd>A multi-dimensional array where each row/sub-array can have a different number of columns/elements.</dd>
-<dt>Q14. How is array length obtained in Java?</dt><dd>Using the built-in <code>.length</code> field of the array object (e.g., <code>arr.length</code>).</dd>
-<dt>Q15. What are the advantages and disadvantages of arrays in Java?</dt><dd>Advantages: code optimization (one variable for many values) and random access (<code>O(1)</code> by index). Disadvantage: fixed size &mdash; cannot grow at runtime, so the Collection framework is used when size must change.</dd>
-<dt>Q16. Differentiate array declaration and array creation.</dt><dd>Declaration (<code>int marks[];</code>) only creates a reference variable with no memory for elements; creation (<code>marks = new int[6];</code>) allocates heap memory for the given size and fills it with default values.</dd>
-<dt>Q17. Define class and object.</dt><dd>A class is a user-defined blueprint containing fields and methods. An object is an instance of a class created with <code>new</code>, having its own state and memory on the heap.</dd>
-<dt>Q18. What is an array of objects?</dt><dd>An array whose elements are references to objects of one class, e.g. <code>Book[] b = new Book[3];</code>. Each object must be created separately with <code>new</code>, otherwise the element is <code>null</code>.</dd>
-<dt>Q19. Why does Java not support multiple inheritance with classes?</dt><dd>To avoid the diamond problem: if two parents have the same method, the child's call becomes ambiguous. Multiple inheritance is achieved through interfaces instead.</dd>
-<dt>Q20. Differentiate overloading and overriding.</dt><dd>Overloading: same name, different parameters, same class, compile-time. Overriding: same signature in a child class, needs inheritance, run-time (dynamic dispatch).</dd>
-<dt>Q21. What is dynamic method dispatch?</dt><dd>The mechanism by which a call to an overridden method through a parent-class reference is resolved at run time according to the actual object type.</dd>
-<dt>Q22. What is an abstract class?</dt><dd>A class declared <code>abstract</code> that cannot be instantiated; it can have abstract (bodyless) methods, concrete methods and constructors. Subclasses must override the abstract methods.</dd>
-<dt>Q23. Define interface.</dt><dd>A reference type with public abstract methods and public static final constants; a class uses <code>implements</code> to provide the bodies and may implement several interfaces.</dd>
-<dt>Q24. What is a package? Name two built-in packages.</dt><dd>A named group of related classes and interfaces giving a namespace and access control. Examples: <code>java.lang</code>, <code>java.util</code>.</dd>
-</dl>
+<p class="hook">Quick revision flashcards &middot; High-yield 1-mark concepts written in clear, direct English with supporting micro-diagrams for instant exam recall.</p>
+<div class="qa-grid">
+
+<!-- Q1 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q1</span><h4 class="qa-q">Define JVM and Bytecode.</h4></div>
+  <div class="qa-ans"><b>Bytecode:</b> The platform-independent intermediate instruction set compiled from <code>.java</code> source code by <code>javac</code>.<br><b>JVM:</b> The runtime engine that loads, verifies, and executes bytecode by translating it into native CPU machine code.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect x="5" y="16" width="75" height="36" rx="5"/><text class="s b" x="42" y="28">App.java</text><text class="s" x="42" y="42">Source</text>
+      <path class="arr" d="M82 34 H106"/>
+      <rect class="hi" x="108" y="16" width="75" height="36" rx="5"/><text class="s b" x="145" y="28">javac</text><text class="s" x="145" y="42">Compiler</text>
+      <path class="arr" d="M185 34 H209"/>
+      <rect x="211" y="16" width="75" height="36" rx="5"/><text class="s b" x="248" y="28">App.class</text><text class="s" x="248" y="42">Bytecode</text>
+      <path class="arr" d="M288 34 H304"/>
+      <rect class="hi" x="306" y="16" width="30" height="36" rx="5"/><text class="s b" x="321" y="34">JVM</text>
+    </svg>
+  </div>
+  <div class="qa-key">Flow: Source (.java) &rarr; javac &rarr; Bytecode (.class) &rarr; JVM execution.</div>
+</div>
+
+<!-- Q2 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q2</span><h4 class="qa-q">Differentiate JDK, JRE, and JVM.</h4></div>
+  <div class="qa-ans"><b>JDK:</b> Complete developer toolbox containing compiler (<code>javac</code>) + tools + JRE.<br><b>JRE:</b> Runtime package for running apps containing core class libraries + JVM.<br><b>JVM:</b> The actual execution engine that runs bytecode.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 75" width="340" height="75">
+      <rect x="5" y="6" width="330" height="63" rx="6"/>
+      <text class="s b l" x="14" y="20">JDK (Development Kit: javac, jar, jdb)</text>
+      <rect class="hi" x="15" y="26" width="310" height="38" rx="5"/>
+      <text class="s b l" x="25" y="40">JRE (Runtime: rt.jar libraries + JVM)</text>
+      <rect x="180" y="32" width="135" height="26" rx="4"/>
+      <text class="s b" x="247" y="45">JVM (Execution Engine)</text>
+    </svg>
+  </div>
+  <div class="qa-key">Nesting: JDK = JRE + Tools; JRE = JVM + Core Libraries.</div>
+</div>
+
+<!-- Q3 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q3</span><h4 class="qa-q">What is Write Once, Run Anywhere (WORA)?</h4></div>
+  <div class="qa-ans">Java source code is compiled into universal intermediate <b>bytecode</b>. Any computer with a compatible JVM installed can execute this bytecode without recompiling, making Java platform-independent.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 75" width="340" height="75">
+      <rect class="hi" x="10" y="20" width="90" height="35" rx="5"/>
+      <text class="s b" x="55" y="32">App.class</text><text class="s" x="55" y="46">(Bytecode)</text>
+      <path class="arr" d="M102 30 L160 16"/><path class="arr" d="M102 37 H160"/><path class="arr" d="M102 44 L160 58"/>
+      <rect x="165" y="5" width="165" height="20" rx="3"/><text class="s" x="247" y="15">Windows JVM &rarr; x86</text>
+      <rect class="hi" x="165" y="28" width="165" height="20" rx="3"/><text class="s b" x="247" y="38">Linux JVM &rarr; ARM</text>
+      <rect x="165" y="51" width="165" height="20" rx="3"/><text class="s" x="247" y="61">macOS JVM &rarr; Apple Silicon</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key concept: Bytecode is platform-independent; JVM is platform-dependent.</div>
+</div>
+
+<!-- Q4 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q4</span><h4 class="qa-q">What is the role of the JIT compiler?</h4></div>
+  <div class="qa-ans">The <b>Just-In-Time (JIT)</b> compiler monitors bytecode at runtime, identifies frequently executed "hotspot" loops, and compiles them directly into native machine code to dramatically boost execution speed.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect x="10" y="15" width="90" height="35" rx="5"/><text class="s" x="55" y="32">Bytecode</text>
+      <path class="arr" d="M102 32 H138"/>
+      <rect class="hi" x="140" y="12" width="85" height="42" rx="5"/><text class="s b" x="182" y="26">JIT</text><text class="s" x="182" y="42">Hotspot</text>
+      <path class="arr" d="M227 32 H253"/>
+      <rect x="255" y="15" width="75" height="35" rx="5"/><text class="s b" x="292" y="32">Native CPU</text>
+    </svg>
+  </div>
+  <div class="qa-key">Role: Compiles hot bytecode into native CPU instructions at runtime.</div>
+</div>
+
+<!-- Q5 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q5</span><h4 class="qa-q">List the 8 primitive data types in Java.</h4></div>
+  <div class="qa-ans">Scalar types stored directly on the stack:<br>
+  &bull; <b>Integers:</b> <code>byte</code> (1B), <code>short</code> (2B), <code>int</code> (4B), <code>long</code> (8B)<br>
+  &bull; <b>Floating-point:</b> <code>float</code> (4B), <code>double</code> (8B)<br>
+  &bull; <b>Character &amp; Boolean:</b> <code>char</code> (2B Unicode), <code>boolean</code> (true/false)</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="5" y="15" width="75" height="34" rx="4"/><text class="s b" x="42" y="32">Int (1-8B)</text>
+      <rect x="85" y="15" width="75" height="34" rx="4"/><text class="s" x="122" y="32">Float (4/8B)</text>
+      <rect class="hi" x="165" y="15" width="80" height="34" rx="4"/><text class="s b" x="205" y="32">Char (2B)</text>
+      <rect x="250" y="15" width="85" height="34" rx="4"/><text class="s" x="292" y="32">Bool (1-bit)</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key numbers: byte(1), short(2), int(4), long(8), float(4), double(8), char(2).</div>
+</div>
+
+<!-- Q6 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q6</span><h4 class="qa-q">Differentiate widening and narrowing type casting.</h4></div>
+  <div class="qa-ans"><b>Widening (Implicit):</b> Converting smaller type to larger type (e.g. <code>int &rarr; double</code>); automatic and safe.<br><b>Narrowing (Explicit):</b> Converting larger type to smaller type (e.g. <code>double &rarr; int</code>); manual cast <code>(int)</code>, may truncate data.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect x="10" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="82" y="27">Widening</text><text class="s" x="82" y="45">byte &rarr; double (Auto)</text>
+      <rect class="hi" x="185" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="257" y="27">Narrowing</text><text class="s" x="257" y="45">(int) double (Manual)</text>
+    </svg>
+  </div>
+  <div class="qa-key">Rule: Widening is automatic; Narrowing requires explicit cast syntax.</div>
+</div>
+
+<!-- Q7 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q7</span><h4 class="qa-q">Differentiate method overloading and overriding.</h4></div>
+  <div class="qa-ans"><b>Overloading:</b> Same class, same name, different parameters; resolved at <b>compile time</b>.<br><b>Overriding:</b> Parent-child classes, exact same name and parameters; resolved at <b>runtime</b> via dynamic dispatch.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect class="hi" x="10" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="82" y="27">Overloading</text><text class="s" x="82" y="45">Same Class &middot; Static</text>
+      <rect x="185" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="257" y="27">Overriding</text><text class="s" x="257" y="45">Subclass &middot; Dynamic</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key difference: Compile-time (Overloading) vs Run-time (Overriding).</div>
+</div>
+
+<!-- Q8 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q8</span><h4 class="qa-q">What is the significance of the static keyword?</h4></div>
+  <div class="qa-ans">Declares class-level members (variables or methods) shared across all objects. A <code>static</code> method can be invoked directly on the class name without creating an instance with <code>new</code>.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="15" y="12" width="140" height="40" rx="5"/>
+      <text class="s b" x="85" y="26">ClassName.method()</text><text class="s" x="85" y="42">No object needed</text>
+      <path class="arr" d="M160 32 H185"/>
+      <rect x="190" y="12" width="135" height="40" rx="5"/>
+      <text class="s b" x="257" y="26">Shared Memory</text><text class="s" x="257" y="42">Lives in Method Area</text>
+    </svg>
+  </div>
+  <div class="qa-key">Role: Belong to the class, not individual instances; accessed without <code>new</code>.</div>
+</div>
+
+<!-- Q9 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q9</span><h4 class="qa-q">What is an abstract class?</h4></div>
+  <div class="qa-ans">A class declared with <code>abstract</code> that cannot be instantiated with <code>new</code>. It can contain both abstract methods (no body) and concrete methods (with body), instance variables, and constructors.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect class="hi" x="15" y="10" width="310" height="50" rx="6"/>
+      <text class="s b" x="170" y="26">abstract class Account</text>
+      <text class="s" x="170" y="44">Abstract methods + Concrete methods + Constructor</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key takeaway: Partial blueprint; cannot be instantiated directly.</div>
+</div>
+
+<!-- Q10 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q10</span><h4 class="qa-q">What is an interface in Java?</h4></div>
+  <div class="qa-ans">A pure contract blueprint where all methods are <code>public abstract</code> by default, and all variables are <code>public static final</code> constants. Implemented using <code>implements</code> to achieve Multiple Inheritance.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect class="hi" x="15" y="10" width="310" height="50" rx="6"/>
+      <text class="s b" x="170" y="26">interface Printable</text>
+      <text class="s" x="170" y="44">Public abstract methods + Public static final constants</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key takeaway: Pure contract; enables multiple inheritance safely.</div>
+</div>
+
+<!-- Q11 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q11</span><h4 class="qa-q">Differentiate while and do-while loops.</h4></div>
+  <div class="qa-ans"><b>while:</b> Entry-controlled; checks condition before running body (can execute 0 times).<br><b>do-while:</b> Exit-controlled; checks condition after running body (guaranteed at least 1 execution).</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect x="10" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="82" y="27">while Loop</text><text class="s" x="82" y="45">Entry &middot; 0+ runs</text>
+      <rect class="hi" x="185" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="257" y="27">do-while Loop</text><text class="s" x="257" y="45">Exit &middot; 1+ runs guaranteed</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key difference: Check first (0+ runs) vs Run first (1+ runs).</div>
+</div>
+
+<!-- Q12 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q12</span><h4 class="qa-q">What is a package in Java?</h4></div>
+  <div class="qa-ans">A directory container grouping related classes and interfaces. Prevents namespace naming collisions, controls access visibility, and is compiled using <code>javac -d . File.java</code>.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="10" y="12" width="140" height="40" rx="5"/>
+      <text class="s b" x="80" y="26">package mypack;</text><text class="s" x="80" y="42">Namespace Folder</text>
+      <path class="arr" d="M155 32 H185"/>
+      <rect x="190" y="12" width="140" height="40" rx="5"/>
+      <text class="s b" x="260" y="26">import mypack.*;</text><text class="s" x="260" y="42">Access Classes</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key takeaway: Namespace folder container; prevents naming collisions.</div>
+</div>
+
+<!-- Q13 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q13</span><h4 class="qa-q">What is an Array of Objects?</h4></div>
+  <div class="qa-ans">An array holding references to objects rather than primitive values. Step 1 (<code>new Student[3]</code>) creates null references; Step 2 (<code>new Student()</code>) creates each individual object on the heap.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="10" y="15" width="100" height="35" rx="4"/><text class="s b" x="60" y="32">arr[0] = ref</text>
+      <path class="arr" d="M115 32 H155"/>
+      <rect x="160" y="10" width="165" height="45" rx="5"/>
+      <text class="s b" x="242" y="26">Object on Heap</text><text class="s" x="242" y="42">new Student("Aman")</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key rule: Array stores references on stack/heap; objects allocated separately.</div>
+</div>
+
+<!-- Q14 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q14</span><h4 class="qa-q">Why does Java not support multiple inheritance with classes?</h4></div>
+  <div class="qa-ans">To avoid the <b>Diamond Problem</b> where inheriting conflicting implementations of the same method from two parent classes causes ambiguity. Java uses interfaces instead because interfaces have no method bodies to conflict.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect x="30" y="10" width="110" height="24" rx="4"/><text class="s" x="85" y="22">Class B</text>
+      <rect x="200" y="10" width="110" height="24" rx="4"/><text class="s" x="255" y="22">Class C</text>
+      <path class="arr" d="M85 36 L145 48"/><path class="arr" d="M255 36 L195 48"/>
+      <rect class="hi" x="115" y="44" width="110" height="22" rx="4"/><text class="s b" x="170" y="55">Class D (Blocked)</text>
+    </svg>
+  </div>
+  <div class="qa-key">Solution: Multiple inheritance is allowed in Java only through interfaces.</div>
+</div>
+
+<!-- Q15 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q15</span><h4 class="qa-q">What is the difference between break and continue?</h4></div>
+  <div class="qa-ans"><b>break:</b> Immediately exits and terminates the entire innermost loop or switch block.<br><b>continue:</b> Skips only the rest of the current iteration and jumps directly to the next loop evaluation.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 70" width="340" height="70">
+      <rect class="hi" x="10" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="82" y="27">break</text><text class="s" x="82" y="45">Exits Loop Completely</text>
+      <rect x="185" y="10" width="145" height="50" rx="5"/>
+      <text class="s b" x="257" y="27">continue</text><text class="s" x="257" y="45">Skips to Next Iteration</text>
+    </svg>
+  </div>
+  <div class="qa-key">Rule: <code>break</code> terminates; <code>continue</code> skips current pass.</div>
+</div>
+
+<!-- Q16 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q16</span><h4 class="qa-q">List the four types of constructors in Java.</h4></div>
+  <div class="qa-ans"><b>Default:</b> compiler-added, no parameters.<br><b>No-arg:</b> programmer-written, no parameters.<br><b>Parameterized:</b> takes arguments so each object differs.<br><b>Copy:</b> copies another object's fields (written manually, not automatic like C++).</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="5" y="15" width="78" height="34" rx="4"/><text class="s b" x="44" y="32">Default</text>
+      <rect x="88" y="15" width="78" height="34" rx="4"/><text class="s" x="127" y="32">No-arg</text>
+      <rect class="hi" x="171" y="15" width="82" height="34" rx="4"/><text class="s b" x="212" y="32">Param.</text>
+      <rect x="258" y="15" width="78" height="34" rx="4"/><text class="s" x="297" y="32">Copy</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key rule: a constructor has the same name as the class and no return type.</div>
+</div>
+
+<!-- Q17 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q17</span><h4 class="qa-q">What is containership (composition) in Java?</h4></div>
+  <div class="qa-ans">A class holding an object of another class as a data member &mdash; a <b>HAS-A</b> relationship (e.g. a Bike has an Engine), unlike inheritance's IS-A relationship.</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect x="10" y="8" width="320" height="49" rx="6"/><text class="s b" x="170" y="24">class Bike</text>
+      <rect class="hi" x="105" y="30" width="130" height="22" rx="4"/><text class="s" x="170" y="45">Engine engine</text>
+    </svg>
+  </div>
+  <div class="qa-key">Key difference: IS-A (inheritance, extends) vs HAS-A (containership, reference field).</div>
+</div>
+
+<!-- Q18 -->
+<div class="qa-card">
+  <div class="qa-header"><span class="qa-badge">Q18</span><h4 class="qa-q">List the five types of inheritance. Which does Java support directly?</h4></div>
+  <div class="qa-ans">Single, Multilevel, Hierarchical, Multiple, Hybrid. Java classes support only <b>Single, Multilevel, Hierarchical</b> directly with <code>extends</code>; Multiple and Hybrid need interfaces (to avoid the diamond problem).</div>
+  <div class="qa-diag">
+    <svg class="sv" viewBox="0 0 340 65" width="340" height="65">
+      <rect class="hi" x="10" y="10" width="145" height="45" rx="5"/><text class="s b" x="82" y="28">S-M-H</text><text class="s" x="82" y="45">via extends</text>
+      <rect x="185" y="10" width="145" height="45" rx="5"/><text class="s b" x="257" y="28">Multiple / Hybrid</text><text class="s" x="257" y="45">via interfaces only</text>
+    </svg>
+  </div>
+  <div class="qa-key">Rule: S-M-H via extends; M-H only via interfaces.</div>
+</div>
+
+</div>
 <a class="top" href="#top">&uarr; top</a></section>
 </section>

@@ -132,6 +132,14 @@ figure.fig .canvas{overscroll-behavior-x:contain;padding:2px 0}
 .def{border-left-color:var(--brand)}.mn{border-left-color:#d4a514}.note{border-left-color:#e2919f}
 .recall{border-left-color:#7fbd9a}.hook{border-left-color:var(--brand);font-size:16px}
 li{margin:9px 0}ul,ol{padding-left:20px}
+.chain{flex-direction:column;width:auto;min-width:0}
+.chain>.n{max-width:100%;width:100%}
+.chain>.n+.n{margin-left:0;margin-top:30px}
+.chain>.n+.n::before{left:50%;top:-26px;width:0;height:18px;border-top:0;border-left:2px solid var(--ink)}
+.chain>.n+.n::after{left:calc(50% - 5px);top:-10px;border:5px solid transparent;border-top:7px solid var(--ink)}
+.chain>.ar{min-width:0;width:100%;padding:18px 0 6px}
+.chain>.ar::after{left:50%;right:auto;top:0;bottom:auto;width:0;height:11px;border-top:0;border-left:2px solid var(--ink)}
+.chain>.ar::before{left:calc(50% - 5px);right:auto;top:9px;bottom:auto;border:5px solid transparent;border-top:8px solid var(--ink)}
 .top{padding:8px 0;font-size:14px}
 .sa dd{padding-left:10px}}
 @media print{.cover{background:none;color:#000;padding:0}.cover .chips,nav.toc,.top,#zoom{display:none}
