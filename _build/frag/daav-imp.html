@@ -9,27 +9,27 @@
 <div class="n">Flat files<small>1960s</small></div><div class="n">RDBMS<small>1970s onward</small></div><div class="n">Data warehouse<small>1990s</small></div><div class="n hi">Hadoop / NoSQL<small>2006 onward</small></div><div class="n">Cloud + data lakes<small>2010s onward</small></div>
 </div></div><figcaption><b>Fig 1.1</b> · Evolution of data management leading to big data</figcaption><p class="draw">✍ Draw it: five boxes joined by arrows in order, a decade under each.</p></figure>
 <ul>
-<li><mark>Evolution</mark> (stages of Fig 1.1):
+<li><mark>Evolution</mark> (Fig 1.1):
   <ul>
-  <li><b>Flat files</b> (1960s) — data kept in ordinary files, no query language.</li>
-  <li><b>RDBMS</b> (Codd's relational model, 1970) — tables, SQL, fixed schema.</li>
-  <li><b>Data warehouses</b> (1990s) — historical data collected for reporting.</li>
-  <li><b>Web-scale data</b> — search engines and social media outgrow one server; Google's GFS / MapReduce papers answer it.</li>
-  <li><b>Hadoop</b> (open source, 2006) — then NoSQL, Spark, cloud and data lakes.</li>
+  <li><b>Flat files</b> (1960s) — no query language.</li>
+  <li><b>RDBMS</b> (Codd, 1970) — tables, SQL, fixed schema.</li>
+  <li><b>Data warehouses</b> (1990s) — historical data for reporting.</li>
+  <li><b>Web-scale data</b> — search/social outgrow one server; Google GFS/MapReduce answer it.</li>
+  <li><b>Hadoop</b> (2006, open source) → NoSQL, Spark, cloud, data lakes.</li>
   </ul>
 </li>
-<li><mark>Why traditional RDBMS fails</mark> at this scale:
+<li><mark>Why RDBMS fails</mark> at this scale:
   <ul>
-  <li><b>Scale-up only</b> — one bigger server has a cost and hardware ceiling.</li>
-  <li><b>Fixed schema</b> — cannot hold JSON / logs / video without redesign.</li>
-  <li><b>Speed</b> — row-by-row inserts cannot keep up with continuous streams.</li>
-  <li><b>Cost</b> — licensed DB plus high-end storage.</li>
+  <li><b>Scale-up only</b> — cost/hardware ceiling on one server.</li>
+  <li><b>Fixed schema</b> — can't hold JSON/logs/video without redesign.</li>
+  <li><b>Speed</b> — row-by-row inserts can't match continuous streams.</li>
+  <li><b>Cost</b> — licensed DB + high-end storage.</li>
   <li><b>Single point of failure</b> — one machine holds the data.</li>
   </ul>
 </li>
-<li><mark>Big data approach</mark>: split data across many cheap commodity machines, move computation to where data sits (data locality), store raw data first and decide structure later (schema-on-read).</li>
-<li><mark>Advantages</mark> (mnemonic D-C-F-P-S-A): better <b>D</b>ecisions, reduced <b>C</b>ost, <b>F</b>raud detection, increased <b>P</b>roductivity, improved <b>S</b>ervice, increased <b>A</b>gility.</li>
-<li><mark>Disadvantages</mark> (T-S-C): lack of skilled <b>T</b>alent, <b>S</b>ecurity risks, <b>C</b>ompliance burden.</li>
+<li><mark>Big data approach</mark>: many cheap commodity machines; computation moves to data (data locality); raw first, structure later (schema-on-read).</li>
+<li><mark>Advantages</mark> (D-C-F-P-S-A): <b>D</b>ecisions, <b>C</b>ost cut, <b>F</b>raud detection, <b>P</b>roductivity, <b>S</b>ervice, <b>A</b>gility.</li>
+<li><mark>Disadvantages</mark> (T-S-C): <b>T</b>alent shortage, <b>S</b>ecurity risk, <b>C</b>ompliance burden.</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Point</th><th>Traditional data</th><th>Big data</th></tr>
@@ -53,11 +53,11 @@
 <li><span>Organisational</span><ul><li><span>Transactions</span></li><li><span>ERP / CRM</span></li></ul></li>
 </ul></li></ul></div></div><figcaption><b>Fig 1.5</b> · Three families of big data sources</figcaption><p class="draw">✍ Draw it: root box, three category boxes, 2-3 example boxes under each.</p></figure>
 <ul>
-<li><mark>Human-generated</mark> (social data): posts, likes, comments, tweets, photos, emails, blogs, reviews, search queries — mostly unstructured.</li>
-<li><mark>Machine-generated</mark> (sensor data): IoT devices, smart meters, CCTV, GPS in cabs, satellite imagery, RFID tags, and <mark>logs</mark> written by web servers/apps (clickstreams) — high velocity. Smart TVs, wearables and connected cars are further examples.</li>
-<li><mark>Organisational / transactional</mark>: sales, billing, banking/UPI transactions, stock trades, ERP (inventory, HR) and CRM records — mostly structured.</li>
-<li>Other named sources: <mark>public/open data</mark> (government portals, census), scientific data, healthcare records, mobile call detail records.</li>
-<li>Also split as <mark>internal</mark> (ERP, logs, inside the company) vs <mark>external</mark> (social media, open data, outside the company).</li>
+<li><mark>Human-generated</mark>: posts, likes, comments, tweets, photos, emails, blogs, reviews, search queries — mostly unstructured.</li>
+<li><mark>Machine-generated</mark>: IoT, smart meters, CCTV, GPS (cabs), satellite imagery, RFID, <mark>logs</mark> (clickstreams) — high velocity; also smart TVs, wearables, connected cars.</li>
+<li><mark>Organisational/transactional</mark>: sales, billing, UPI/banking, stock trades, ERP (inventory, HR), CRM — mostly structured.</li>
+<li>Other sources: <mark>public/open data</mark> (govt portals, census), scientific data, healthcare records, call detail records.</li>
+<li>Also: <mark>internal</mark> (ERP, logs, in-house) vs <mark>external</mark> (social media, open data).</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Source</th><th>Typical type</th><th>V stressed</th><th>Example</th></tr>
@@ -79,10 +79,10 @@
 <li><span>Unstructured</span><ul><li><span>Text documents</span></li><li><span>Images, video</span></li></ul></li>
 </ul></li></ul></div></div><figcaption><b>Fig 1.4</b> · Classification of big data by structure</figcaption><p class="draw">✍ Draw it: root box, three child boxes, two example boxes under each.</p></figure>
 <ul>
-<li><mark>Structured</mark>: predefined schema, rows/columns, easy to query with SQL. Examples: bank account table, IRCTC booking records.</li>
-<li><mark>Semi-structured</mark>: no fixed table schema but tags/keys mark the fields, so it is self-describing. Examples: JSON from an API, XML files, web server logs.</li>
-<li><mark>Unstructured</mark>: no data model; needs special processing (text mining, image/speech analysis). Examples: WhatsApp messages, YouTube videos, CCTV footage.</li>
-<li>Unstructured data is widely quoted as forming the largest share of an organisation's data (often cited around ~80%) — a useful sense of scale, not an exact measurement.</li>
+<li><mark>Structured</mark>: fixed schema, rows/columns, SQL-queryable. E.g. bank account table, IRCTC booking.</li>
+<li><mark>Semi-structured</mark>: no fixed schema, tags/keys self-describe. E.g. JSON (API), XML, web logs.</li>
+<li><mark>Unstructured</mark>: no data model; needs text mining/image/speech analysis. E.g. WhatsApp messages, YouTube videos, CCTV.</li>
+<li>Unstructured often cited as largest share of org data (~80%) — scale sense, not exact.</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Point</th><th>Structured</th><th>Semi-structured</th><th>Unstructured</th></tr>
@@ -117,8 +117,8 @@
 <li><mark>NoSQL databases</mark>: HBase, Cassandra, MongoDB, Redis, Neo4j.</li>
 <li><mark>Batch processing</mark>: Hadoop MapReduce, Apache Spark. <mark>Streaming</mark>: Kafka Streams, Spark Streaming, Apache Flink/Storm.</li>
 <li><mark>Analytics</mark>: SQL-on-Hadoop (Hive, Impala), scripting (Pig), ML (Spark MLlib), R and Python.</li>
-<li><mark>Visualisation</mark>: Tableau, Power BI. <mark>Cloud platforms</mark> (AWS, Azure, GCP) package all of this as managed services.</li>
-<li><mark>Languages</mark>: Hadoop's core is written in <b>Java</b>; Hadoop Streaming lets jobs be written in <b>Python</b>, and Hadoop Pipes gives a native <b>C++</b> API.</li>
+<li><mark>Visualisation</mark>: Tableau, Power BI. <mark>Cloud</mark> (AWS, Azure, GCP) packages all this as managed services.</li>
+<li><mark>Languages</mark>: Hadoop core = <b>Java</b>; Streaming API → <b>Python</b> jobs; Pipes → native <b>C++</b>.</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Point</th><th>Batch processing</th><th>Stream processing</th></tr>
@@ -142,25 +142,25 @@
 <div class="l">Hadoop Common<small>shared Java libraries and utilities</small></div>
 </div></div><figcaption><b>Fig 1.11</b> · Core components of Hadoop (Hadoop 2.x / 3.x)</figcaption><p class="draw">✍ Draw it: four stacked boxes, top to bottom: Applications, YARN, HDFS, Common.</p></figure>
 <ul>
-<li><mark>HDFS (storage)</mark>: master–slave. <b>NameNode</b> stores metadata only (namespace, file→block map); <b>DataNodes</b> store the actual blocks (default 128 MB) and send heartbeats. Each block is <mark>replicated 3 times</mark>, rack-aware, for fault tolerance.</li>
-<li><mark>MapReduce (processing)</mark> &ndash; three phases:
+<li><mark>HDFS (storage)</mark>: master–slave. <b>NameNode</b> = metadata only (namespace, block map); <b>DataNodes</b> = actual blocks (128 MB default), send heartbeats. Blocks <mark>replicated 3×</mark>, rack-aware, for fault tolerance.</li>
+<li><mark>MapReduce (processing)</mark> &ndash; 3 phases:
   <ul>
-  <li><b>Map</b> — turns each input record into (key, value) pairs.</li>
-  <li><b>Shuffle and sort</b> — the framework groups the pairs by key.</li>
-  <li><b>Reduce</b> — aggregates all values sharing a key and writes the result to HDFS.</li>
+  <li><b>Map</b> — record → (key, value) pairs.</li>
+  <li><b>Shuffle/sort</b> — groups pairs by key.</li>
+  <li><b>Reduce</b> — aggregates values per key, writes to HDFS.</li>
   <li>Classic example: word count.</li>
   </ul>
 </li>
-<li><mark>YARN (resource management)</mark> &ndash; introduced in Hadoop 2 to separate resource management from processing:
+<li><mark>YARN (resources)</mark> &ndash; Hadoop 2, separates resource mgmt from processing:
   <ul>
-  <li><b>ResourceManager</b> (Scheduler + ApplicationsManager) — the per-cluster master.</li>
-  <li><b>NodeManager</b> — runs on every worker node.</li>
+  <li><b>ResourceManager</b> (Scheduler + ApplicationsManager) — per-cluster master.</li>
+  <li><b>NodeManager</b> — on every worker node.</li>
   <li><b>ApplicationMaster</b> — one per job, negotiates resources.</li>
-  <li><b>Containers</b> — CPU + memory bundles in which the tasks run.</li>
+  <li><b>Containers</b> — CPU+memory bundles running tasks.</li>
   </ul>
 </li>
-<li><mark>How they fit together</mark>: HDFS and YARN's worker daemons (DataNode + NodeManager) run on the <i>same</i> physical nodes, so a MapReduce/Spark task can run right where its data block already sits — <mark>data locality</mark>.</li>
-<li><mark>Key features</mark>: scalable (add nodes), fault tolerant (replication + task re-run), cost-effective (commodity hardware, open source).</li>
+<li><mark>Fit together</mark>: DataNode + NodeManager on same physical nodes → tasks run where data sits — <mark>data locality</mark>.</li>
+<li><mark>Key features</mark>: scalable (add nodes), fault tolerant (replication + task re-run), cost-effective (commodity HW, open source).</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Layer</th><th>Master daemon</th><th>Slave daemon</th></tr>
@@ -185,12 +185,12 @@
 <rect x="131" y="107" width="130" height="48" rx="6"/><text x="196" y="123">Value</text><text class="s" x="196" y="142">usefulness</text>
 </svg></div><figcaption><b>Fig 1.3</b> · The 5 Vs of big data</figcaption><p class="draw">✍ Draw it: an oval "Big Data" in the centre, five boxes around it like a star, one V in each.</p></figure>
 <ul>
-<li><mark>Volume</mark>: sheer amount of data (TB, PB, EB). Example: years of bank transaction records.</li>
-<li><mark>Velocity</mark>: speed of generation/processing. Example: UPI fraud checks in real time.</li>
-<li><mark>Variety</mark>: different forms — structured tables, JSON/XML, text, images, video.</li>
-<li><mark>Veracity</mark>: trustworthiness/quality — noise, missing values, duplicates, sensor errors.</li>
-<li><mark>Value</mark>: the business/social benefit extracted; judged by positive <mark>Return on Investment</mark>.</li>
-<li><mark>Extensions</mark>: <mark>Variability</mark> (meaning/flow rate changes over time, e.g. seasonal spikes) and <mark>Visualization</mark> (presenting huge data so humans understand it).</li>
+<li><mark>Volume</mark>: amount of data (TB/PB/EB). E.g. years of bank transaction records.</li>
+<li><mark>Velocity</mark>: speed of generation/processing. E.g. UPI fraud checks, real time.</li>
+<li><mark>Variety</mark>: forms — structured tables, JSON/XML, text, images, video.</li>
+<li><mark>Veracity</mark>: trust/quality — noise, missing values, duplicates, sensor errors.</li>
+<li><mark>Value</mark>: business/social benefit extracted; judged by positive <mark>ROI</mark>.</li>
+<li><mark>Extensions</mark>: <mark>Variability</mark> (meaning/flow rate changes, e.g. seasonal spikes); <mark>Visualization</mark> (presenting huge data for humans).</li>
 </ul>
 <div class="tw"><table>
 <tr><th>V</th><th>Question</th><th>Example</th></tr>
@@ -222,8 +222,8 @@
 <text class="b" x="432" y="212">Scale out</text><text class="s" x="432" y="235">add commodity nodes</text>
 </svg></div><figcaption><b>Fig 1.24</b> · Vertical scaling (RDBMS) vs horizontal scaling (NoSQL)</figcaption><p class="draw">✍ Draw it: left, small box with an up-arrow to a bigger box; right, a dashed cluster of equal boxes with one "+ Node".</p></figure>
 <ul>
-<li><mark>Why NoSQL</mark>: RDBMS clusters are hard to shard; NoSQL runs natively on commodity clusters (scale-out), allows flexible schema, and avoids the impedance mismatch between application objects and flat rows.</li>
-<li>Consistency model is usually <mark>BASE</mark> (eventual consistency) rather than strict <mark>ACID</mark>.</li>
+<li><mark>Why NoSQL</mark>: RDBMS clusters hard to shard; NoSQL scale-out on commodity clusters, flexible schema, avoids app-object/row impedance mismatch.</li>
+<li>Consistency: usually <mark>BASE</mark> (eventual), not strict <mark>ACID</mark>.</li>
 </ul>
 <div class="tw"><table><tr><th>Advantages</th><th>Disadvantages</th></tr>
 <tr><td><mark>Horizontal scaling</mark> on cheap commodity servers</td><td><mark>Weaker consistency</mark>: many systems are only eventually consistent</td></tr>
@@ -233,7 +233,7 @@
 <tr><td>Fast reads/writes for simple access patterns</td><td>Not suited to multi-row transactions (banking ledgers)</td></tr>
 <tr><td>Mostly open source, lower cost</td><td>Less mature tooling/reporting than SQL</td></tr>
 </table></div>
-<p><b>When to use NoSQL:</b> huge, fast-growing, varied data with simple access patterns (catalogues, sessions, feeds, IoT). <b>When to stay with RDBMS:</b> strong consistency and complex joins (banking, accounting).</p>
+<p><b>Use NoSQL:</b> huge, fast-growing, varied data, simple access (catalogues, sessions, feeds, IoT). <b>Stay RDBMS:</b> strong consistency, complex joins (banking, accounting).</p>
 <div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.24, and give any 2 advantages + 2 disadvantages from the table.</div>
 <div class="recall"><b>Quick recall</b> NoSQL = non-relational, schema-less, scale-out, BASE; strong on scale/flexibility, weak on joins/standard query language/strict consistency.</div>
 <a class="top" href="#top">↑ top</a></section>
@@ -246,9 +246,9 @@
 <div class="n">Sources<small>DB, files, APIs, logs</small></div><div class="n">Extract</div><div class="n hi">Transform<small>clean, map, join</small></div><div class="n">Load</div><div class="n">Data warehouse<small>→ BI reports</small></div>
 </div></div><figcaption><b>Fig 1.9</b> · ETL integration pipeline</figcaption><p class="draw">✍ Draw it: five boxes in a row: Sources → Extract → Transform → Load → Warehouse.</p></figure>
 <ul>
-<li><mark>Challenges</mark>: heterogeneous formats (CSV/JSON/XML/images), schema mismatch (<code>cust_id</code> vs <code>customerNo</code>), data quality/veracity, mixing batch and streaming, semantic conflicts.</li>
-<li><mark>Schema mapping</mark>: match each source field to a target field (types, units). <mark>Entity resolution</mark>: recognise the same real-world entity across sources.</li>
-<li><mark>ETL</mark> (Extract-Transform-Load): transform before loading, suits data warehouses. <mark>ELT</mark> (Extract-Load-Transform): load raw first, transform inside the target — suits big data/lakes.</li>
+<li><mark>Challenges</mark>: heterogeneous formats (CSV/JSON/XML/images), schema mismatch (<code>cust_id</code> vs <code>customerNo</code>), data quality/veracity, batch+streaming mix, semantic conflicts.</li>
+<li><mark>Schema mapping</mark>: match source field → target field (types, units). <mark>Entity resolution</mark>: same real-world entity across sources.</li>
+<li><mark>ETL</mark>: transform before load, for warehouses. <mark>ELT</mark>: load raw first, transform in target, for lakes.</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Point</th><th>ETL</th><th>ELT</th></tr>
@@ -274,9 +274,9 @@
 <text class="s" x="380" y="315">each dashed boundary = one unit stored, read and replicated together</text>
 </svg></div><figcaption><b>Fig 1.29</b> · Customer and Order aggregates (e-commerce example)</figcaption><p class="draw">✍ Draw it: two dashed boundaries; left holds Customer → Billing Address; right holds Order with three children (Item, Shipping Address, Payment); a dashed arrow "by id" from Order to Customer.</p></figure>
 <ul>
-<li>Links <b>between</b> aggregates are stored as <mark>references by id</mark>, not nested copies.</li>
-<li><mark>Aggregate-oriented</mark> databases: key-value, document, column-family. <mark>Aggregate-ignorant</mark>: relational and graph.</li>
-<li><mark>Consequence</mark>: updates are atomic <i>within</i> one aggregate; a whole aggregate is the natural unit of sharding and replication (one node serves a read).</li>
+<li>Links <b>between</b> aggregates: <mark>references by id</mark>, not nested copies.</li>
+<li><mark>Aggregate-oriented</mark>: key-value, document, column-family. <mark>Aggregate-ignorant</mark>: relational, graph.</li>
+<li><mark>Consequence</mark>: atomic updates <i>within</i> one aggregate; aggregate = unit of sharding/replication (one node per read).</li>
 </ul>
 <div class="tw"><table>
 <tr><th>Point</th><th>Aggregate-oriented</th><th>Aggregate-ignorant</th></tr>
@@ -304,11 +304,11 @@
 <ellipse cx="143" cy="166" rx="80" ry="26"/><text x="143" y="166">Programmability</text>
 </svg></div><figcaption><b>Fig 2.8</b> · 5P wheel: five P's around data science</figcaption><p class="draw">✍ Draw it: centre circle "Data Science", 5 ellipses around it like a star, one spoke line to each.</p></figure>
 <ul>
-<li><mark>Purpose</mark>: the challenge from the big data strategy — why. <mark>People</mark>: data scientists, domain experts, engineers — who.</li>
+<li><mark>Purpose</mark>: challenge from big-data strategy — why. <mark>People</mark>: data scientists, domain experts, engineers — who.</li>
 <li><mark>Process</mark>: acquire, prepare, analyse, report, act — how. <mark>Platforms</mark>: Hadoop/HDFS, Spark, NoSQL, cloud — on what.</li>
-<li><mark>Programmability</mark>: Python, R, SQL, Java, workflow scripts — with what code, making steps repeatable/scalable.</li>
-<li><mark>Interdependence</mark>: purpose chooses people; process decides the platform; platform decides the programming tools.</li>
-<li><mark>Alternate framing</mark> (skill-based): domain knowledge, statistics/maths, programming, machine learning, communication.</li>
+<li><mark>Programmability</mark>: Python, R, SQL, Java, workflow scripts — code that makes steps repeatable/scalable.</li>
+<li><mark>Interdependence</mark>: purpose → people; process → platform; platform → programming tools.</li>
+<li><mark>Alternate framing</mark> (skills): domain knowledge, stats/maths, programming, ML, communication.</li>
 </ul>
 <div class="tw"><table>
 <tr><th>P</th><th>Question</th><th>Food-delivery example</th></tr>
@@ -346,12 +346,12 @@
 <text class="s" x="365" y="170">iterate with new questions</text>
 </svg></div><figcaption><b>Fig 2.9</b> · Data science process loop (5 steps, iterative)</figcaption><p class="draw">✍ Draw it: 5 boxes in a row with arrows, a return arrow under them from Act back to Acquire; write 2-word hints above.</p></figure>
 <ul>
-<li><mark>1. Acquire</mark>: identify and retrieve data — from traditional databases, text files, remote/web APIs, or NoSQL storage.</li>
-<li><mark>2. Prepare</mark> = <b>Explore</b> (summary stats, correlations, outliers, plots) + <b>Pre-process</b> (clean missing/invalid/duplicate values; wrangle — scaling, feature selection).</li>
-<li><mark>3. Analyze</mark>: select a technique (classification, regression, clustering, association, graph analytics), build the model, evaluate it.</li>
-<li><mark>4. Report</mark>: communicate findings with visualisations to non-technical decision makers.</li>
-<li><mark>5. Act</mark>: deploy the model / change the business process, monitor results; new questions restart the loop.</li>
-<li><mark>Alternate framing</mark>: the same idea as a 6-stage cycle, <mark>CRISP-DM</mark>:
+<li><mark>1. Acquire</mark>: identify + retrieve data — DBs, text files, web APIs, NoSQL.</li>
+<li><mark>2. Prepare</mark> = <b>Explore</b> (stats, correlations, outliers, plots) + <b>Pre-process</b> (clean missing/invalid/duplicate; scale, select features).</li>
+<li><mark>3. Analyze</mark>: pick technique (classification, regression, clustering, association, graph), build + evaluate model.</li>
+<li><mark>4. Report</mark>: communicate findings visually to non-technical decision makers.</li>
+<li><mark>5. Act</mark>: deploy model/change process, monitor; new questions restart loop.</li>
+<li><mark>Alternate framing</mark>: same idea as 6-stage <mark>CRISP-DM</mark>:
   <ol>
   <li>Business understanding</li>
   <li>Data understanding</li>
@@ -383,12 +383,12 @@
 <li><span>Ingestion</span></li><li><span>Storage</span></li><li><span>Quality</span></li><li><span>Operations</span></li><li><span>Scalability</span></li><li><span>Security</span></li>
 </ul></li></ul></div></div><figcaption><b>Fig 2.11</b> · Six concerns of big data management</figcaption><p class="draw">✍ Draw it: one root box, 6 child boxes in a row joined by tree lines.</p></figure>
 <ul>
-<li><mark>Ingestion</mark>: bringing data in, in <b>batch</b> (periodic) or <b>streaming</b> (continuous) mode, under an ingestion/error policy (e.g. Kafka, Sqoop).</li>
-<li><mark>Storage</mark>: choice across the memory hierarchy (cache → RAM → SSD → HDD → tape) and models (HDFS, NoSQL, data warehouse vs data lake).</li>
-<li><mark>Quality</mark>: keeping data accurate/complete/consistent — cleaning missing, invalid, duplicate, inconsistent values (MIDIO) and outliers.</li>
-<li><mark>Operations</mark>: what can be done with the data — selection, projection, join, union, aggregation — run in parallel at scale.</li>
-<li><mark>Scalability</mark>: <b>scale up</b> (bigger single machine) or <b>scale out</b> (more commodity machines, via partitioning + replication).</li>
-<li><mark>Security</mark>: access control, encryption at rest and in transit, privacy/anonymisation, auditing — protecting the CIA triad (Confidentiality, Integrity, Availability).</li>
+<li><mark>Ingestion</mark>: data in, <b>batch</b> (periodic) or <b>streaming</b> (continuous), under an ingestion/error policy (Kafka, Sqoop).</li>
+<li><mark>Storage</mark>: memory hierarchy (cache → RAM → SSD → HDD → tape); models (HDFS, NoSQL, warehouse vs lake).</li>
+<li><mark>Quality</mark>: accurate/complete/consistent — clean missing, invalid, duplicate, inconsistent values (MIDIO), outliers.</li>
+<li><mark>Operations</mark>: selection, projection, join, union, aggregation — run in parallel at scale.</li>
+<li><mark>Scalability</mark>: <b>scale up</b> (bigger machine) or <b>scale out</b> (more commodity machines; partition + replicate).</li>
+<li><mark>Security</mark>: access control, encryption (rest + transit), privacy/anonymisation, auditing — protects <mark>CIA triad</mark> (Confidentiality, Integrity, Availability).</li>
 </ul>
 <div class="mn"><b>Mnemonic</b> <b>"I Saw Queen Oprah Speak Secretly"</b> = Ingestion, Storage, Quality, Operations, Scalability, Security. Data model = <b>SOC</b>: Structure, Operations, Constraints.</div>
 <div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 2.11, and explain only Ingestion and Storage (the two most-asked concerns) in one line each.</div>
@@ -445,8 +445,8 @@
 <div class="n t">Act: personalised home page for every user</div>
 </div></div><figcaption><b>Fig 2.27</b> · A recommendation system walked through the five data science steps</figcaption><p class="draw">✍ Draw it: six boxes top to bottom, ovals at both ends; write the step name first in each box.</p></figure>
 <ul>
-<li><mark>Well-known fact</mark>: the Netflix Prize (2006-2009) offered a US$1 million prize for a 10% ratings-accuracy improvement; winners relied heavily on matrix factorisation and model ensembles.</li>
-<li>Similar systems: Amazon product suggestions, YouTube videos, Spotify playlists.</li>
+<li><mark>Well-known fact</mark>: Netflix Prize (2006-2009) — US$1M for 10% ratings-accuracy gain; winners used matrix factorisation + model ensembles.</li>
+<li>Similar systems: Amazon suggestions, YouTube, Spotify playlists.</li>
 </ul>
 <div class="tw"><table><tr><th>Technique</th><th>What it does</th></tr>
 <tr><td>Collaborative filtering</td><td>Recommends what similar users liked</td></tr>

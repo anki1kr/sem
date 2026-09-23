@@ -155,50 +155,17 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 
 </div></header>
 <main>
-<nav class="toc"><details open><summary>Questions</summary><ol><li><a href="#iq1">Q1. Explain the features (buzzwords) of Java. Why is Java called platform independent?</a></li><li><a href="#iq2">Q2. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</a></li><li><a href="#iq3">Q3. Explain the structure of a Java program. What are the steps to compile and run it?</a></li><li><a href="#iq4">Q4. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</a></li><li><a href="#iq5">Q5. Explain the different categories of operators in Java with their precedence.</a></li><li><a href="#iq6">Q6. Explain selection statements in Java: if, if-else-if ladder, and switch.</a></li><li><a href="#iq7">Q7. Explain iteration (looping) statements and jump statements in Java.</a></li><li><a href="#iq8">Q8. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</a></li><li><a href="#iq9">Q9. Difference between method overloading and method overriding, with a suitable example</a></li><li><a href="#iq10">Q10. Explain abstract class and interface in Java</a></li><li><a href="#iq11">Q11. Short note on array of objects</a></li><li><a href="#iq12">Q12. Short note on class and objects</a></li><li><a href="#iq13">Q13. Packages</a></li><li><a href="#iq-1m">1-mark questions</a></li></ol></details></nav>
+<nav class="toc"><details open><summary>Questions</summary><ol><li><a href="#cue">Cue sheet &mdash; every answer in one screen</a></li><li><a href="#iq1">Q1. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</a></li><li><a href="#iq2">Q2. Difference between method overloading and method overriding, with a suitable example</a></li><li><a href="#iq3">Q3. Explain the features (buzzwords) of Java. Why is Java called platform independent?</a></li><li><a href="#iq4">Q4. Explain the structure of a Java program. What are the steps to compile and run it?</a></li><li><a href="#iq5">Q5. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</a></li><li><a href="#iq6">Q6. Explain the different categories of operators in Java with their precedence.</a></li><li><a href="#iq7">Q7. Explain selection statements in Java: if, if-else-if ladder, and switch.</a></li><li><a href="#iq8">Q8. Explain iteration (looping) statements and jump statements in Java.</a></li><li><a href="#iq9">Q9. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</a></li><li><a href="#iq10">Q10. Explain abstract class and interface in Java</a></li><li><a href="#iq11">Q11. Short note on array of objects</a></li><li><a href="#iq12">Q12. Short note on class and objects</a></li><li><a href="#iq13">Q13. Packages</a></li><li><a href="#iq-1m">1-mark questions</a></li></ol></details></nav>
 <section class="unit" id="imp">
 <h2><span class="uno">Important questions</span>8-mark answers</h2>
 <p class="unit-sub">Paper: 6 &times; 1 mark + 3 &times; 8 marks (an 8 can come as 4 + 4). Each answer below is written to the 8-mark length.</p>
 
-<section class="topic" id="iq1"><h3>Q1. Explain the features (buzzwords) of Java. Why is Java called platform independent?</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; list all buzzwords, then be ready to expand any single one (usually platform independence) into its own short question.</p>
-<div class="def"><b>Definition:</b> <mark>Java</mark> is a high-level, object-oriented, class-based, platform-independent programming language created by James Gosling at Sun Microsystems in 1995.</div>
-<figure class="fig"><div class="canvas"><div class="boxes c4">
-<div class="b hi"><b>Simple</b></div>
-<div class="b"><b>Object-Oriented</b></div>
-<div class="b hi"><b>Platform independent</b></div>
-<div class="b"><b>Secured</b></div>
-<div class="b hi"><b>Robust</b></div>
-<div class="b"><b>Architecture neutral</b></div>
-<div class="b hi"><b>Portable</b></div>
-<div class="b"><b>Dynamic</b></div>
-<div class="b hi"><b>Interpreted</b></div>
-<div class="b"><b>High performance</b></div>
-<div class="b hi"><b>Multithreaded</b></div>
-<div class="b"><b>Distributed</b></div>
-</div></div>
-<figcaption><b>Fig 1.4</b> &middot; All 12 Java buzzwords at a glance</figcaption>
-<p class="draw">&#9997; Draw it: a 4-column, 3-row grid of 12 small boxes, one buzzword per box.</p></figure>
-<ul>
-<li><mark>Simple</mark>: syntax based on C/C++; no explicit pointers or operator overloading; the JVM manages memory automatically.</li>
-<li><mark>Object-Oriented</mark>: software is organised as objects, each holding both data and behaviour.</li>
-<li><mark>Platform independent</mark>: the same bytecode runs on Windows, Linux, macOS &mdash; anywhere a JVM exists. This is <mark>WORA</mark> (Write Once, Run Anywhere): <code>javac</code> compiles source into platform-independent <code>.class</code> bytecode, and any machine with a JVM can execute that same file, because the JVM (not the OS) is what actually runs it.</li>
-<li><mark>Secured</mark>: no explicit pointers, every program runs inside the JVM's sandbox, and Java uses a public-key encryption system for security.</li>
-<li><mark>Robust</mark>: strong memory management, no pointers, and built-in exception handling with compile-time type checking.</li>
-<li><mark>Architecture neutral</mark>: no implementation-dependent feature sizes &mdash; <code>int</code> is always 4 bytes in Java on every platform.</li>
-<li><mark>Portable</mark>: the same bytecode file can be carried to any platform; <code>javac</code> itself is written in ANSI C for a clean portability boundary.</li>
-<li><mark>Dynamic</mark>: carries extensive run-time information to verify and resolve access to objects.</li>
-<li><mark>Interpreted</mark>: bytecode is translated on the fly into native instructions and is not stored anywhere.</li>
-<li><mark>High performance</mark>: the JIT (Just-In-Time) compiler translates bytecode directly into native machine code for speed.</li>
-<li><mark>Multithreaded</mark>: supports many things happening at once; threads share one common memory area.</li>
-<li><mark>Distributed</mark>: designed for the internet's distributed environment; RMI lets a program call methods on another machine over a network.</li>
-</ul>
-<div class="mn"><b>Mnemonic</b> remember all 12 in three groups of four &mdash; <b>SOPS</b> (Simple, OOP, Platform-independent, Secured) &middot; <b>RAPD</b> (Robust, Architecture-neutral, Portable, Dynamic) &middot; <b>IHMD</b> (Interpreted, High-performance, Multithreaded, Distributed).</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.4, and explain only 4 buzzwords in one line each &mdash; Simple, Platform-independent, Robust, Multithreaded.</div>
-<div class="recall"><b>Quick recall</b> 12 buzzwords in 3 groups of 4 (SOPS / RAPD / IHMD). Platform independence = bytecode + JVM = WORA.</div>
+<section class="topic" id="cue"><h3>Cue sheet &mdash; every answer in one screen</h3>
+<p class="hook">Revise from this first: each line is the skeleton of that answer &mdash; the recall points, the figure to draw, and the mnemonic. Expand it into sentences in the exam.</p>
+<dl class="sa"><dt>Q1. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</dt><dd>JDK = JRE + Tools; JRE = JVM + Libraries. JVM architecture = Class Loader + Runtime Data Areas (Heap, Stack, Method Area, PC, Native Stack) + Execution Engine (Interpreter + JIT + GC). &middot; <b>Draw:</b> Fig 1.6 &middot; Fig 1.7</dd><dt>Q2. Difference between method overloading and method overriding, with a suitable example</dt><dd>Overloading = same class, different parameters, compile time. Overriding = parent-child, same signature, run time, decided by the actual object. &middot; <b>Draw:</b> Fig 2.27 &middot; <b>Mnemonic</b> <b>"LOAD in one class, RIDE up to the parent"</b>: over<b>load</b> = same class, different parameters; over<b>ride</b> = child over parent, same parameters.</dd><dt>Q3. Explain the features (buzzwords) of Java. Why is Java called platform independent?</dt><dd>12 buzzwords in 3 groups of 4 (SOPS / RAPD / IHMD). Platform independence = bytecode + JVM = WORA. &middot; <b>Draw:</b> Fig 1.4 &middot; <b>Mnemonic</b> remember all 12 in three groups of four &mdash; <b>SOPS</b> (Simple, OOP, Platform-independent, Secured) &middot; <b>RAPD</b> (Robust, Architecture-neutral, Portable, Dynamic) &middot; <b>IHMD</b> (Interpreted, High-performance, Multithreaded, Distributed).</dd><dt>Q4. Explain the structure of a Java program. What are the steps to compile and run it?</dt><dd>File name must match public class name; <code>public static void main(String[] args)</code> is mandatory. Steps: install JDK &rarr; set PATH &rarr; write &rarr; <code>javac</code> &rarr; <code>java</code>. &middot; <b>Draw:</b> Fig 1.9</dd><dt>Q5. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</dt><dd>8 primitive types; widening is automatic, narrowing needs explicit <code>(type)</code> cast. &middot; <b>Draw:</b> Fig 1.10</dd><dt>Q6. Explain the different categories of operators in Java with their precedence.</dt><dd>Pre-increment increments before use; post-increment uses then increments. Ternary: <code>cond ? trueVal : falseVal</code>. &middot; <b>Draw:</b> Fig 1.14</dd><dt>Q7. Explain selection statements in Java: if, if-else-if ladder, and switch.</dt><dd><code>if-else</code> evaluates boolean expressions; <code>switch</code> matches discrete values. Always add <code>break</code> in <code>switch</code> cases. &middot; <b>Draw:</b> Fig 1.18</dd><dt>Q8. Explain iteration (looping) statements and jump statements in Java.</dt><dd><code>while</code> checks first, 0+ times; <code>do-while</code> runs body first, 1+ times. <code>break</code> exits, <code>continue</code> skips one iteration. &middot; <b>Draw:</b> Fig 1.19</dd><dt>Q9. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</dt><dd>Arrays are zero-indexed, stored on the heap; <code>arr.length</code> gives size. Jagged arrays have sub-arrays of different lengths. &middot; <b>Draw:</b> Fig 1.21 &middot; Fig 1.22</dd><dt>Q10. Explain abstract class and interface in Java</dt><dd>Abstract class: extends, one only, can mix abstract + concrete + constructor. Interface: implements, many allowed, public abstract methods + public static final constants &mdash; this is how Java gets multiple inheritance. &middot; <b>Draw:</b> Fig 2.28 &middot; Fig 2.16 &middot; <b>Mnemonic</b> <b>"Abstract = Half-built house, Interface = Rule book"</b>: a half-built house already has some walls (concrete methods, variables, constructor); a rule book only lists what must be done.</dd><dt>Q11. Short note on array of objects</dt><dd>Array of objects = array of references; create the array first, then each object with <code>new</code>. &middot; <b>Draw:</b> Fig 2.4 &middot; Fig 2.2</dd><dt>Q12. Short note on class and objects</dt><dd>Class = blueprint, object = instance made by <code>new</code>; reference on stack, object on heap. &middot; <b>Draw:</b> Fig 2.1 &middot; <b>Mnemonic</b> <b>"Class = cookie cutter, Object = cookie"</b>. Object has <b>S-B-I</b>: State, Behaviour, Identity.</dd><dt>Q13. Packages</dt><dd>package = folder of classes; <code>package</code> statement first, <code>javac -d .</code> to compile, <code>java pkg.Class</code> to run. Import: fully-qualified name, single-class, or <code>*</code> (never sub-packages). Subpackage = dot-separated nested folder. &middot; <b>Draw:</b> Fig 2.19</dd></dl>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq2"><h3>Q2. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</h3>
+<section class="topic" id="iq1"><h3>Q1. Explain JDK, JRE and JVM, and describe the internal architecture of the JVM with the compilation-execution pipeline.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; define the three terms, then open up the JVM into its subsystems and explain how bytecode gets executed.</p>
 <div class="def"><b>Definition:</b> The <mark>JVM</mark> (Java Virtual Machine) is a runtime engine that loads intermediate <mark>bytecode</mark> (<code>.class</code> file) produced by <code>javac</code>, verifies it, and converts it into machine code for execution. <mark>JDK</mark> = JRE + development tools; <mark>JRE</mark> = JVM + runtime libraries.</div>
 <figure class="fig"><div class="canvas"><div class="chain">
@@ -210,6 +177,17 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 </div></div>
 <figcaption><b>Fig 1.6</b> &middot; Java compilation and execution pipeline</figcaption>
 <p class="draw">&#9997; Draw it: horizontal chain from .java file box through javac arrow to .class bytecode box through JVM arrow to machine code box.</p></figure>
+<pre class="code" data-file="HelloWorld.java"><code><span class="c">// Every Java program must be inside a class</span>
+<span class="k">public class</span> HelloWorld {
+    <span class="c">// Entry point method executed by JVM</span>
+    <span class="k">public static void</span> main(String[] args) {
+        System.out.println("Hello, Java!");
+    }
+}</code></pre>
+<pre class="out">Hello, Java!</pre>
+<ul>
+<li><mark>Pipeline on this program</mark>: <code>javac HelloWorld.java</code> &rarr; <code>HelloWorld.class</code> (bytecode) &rarr; <code>java HelloWorld</code> &rarr; JVM loads, verifies, executes &rarr; output above.</li>
+</ul>
 <div class="tw"><table>
 <tr><th>Feature</th><th>JDK</th><th>JRE</th><th>JVM</th></tr>
 <tr><td>Full form</td><td>Java Development Kit</td><td>Java Runtime Environment</td><td>Java Virtual Machine</td></tr>
@@ -232,27 +210,132 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 <figcaption><b>Fig 1.7</b> &middot; JVM Internal Architecture Subsystems</figcaption>
 <p class="draw">&#9997; Draw it: stack diagram showing Class Loader at top, 5 Runtime Data Areas in middle rows, and Execution Engine at bottom.</p></figure>
 <ul>
-<li><mark>Class Loader Subsystem</mark>: <b>Loading</b> (loads <code>.class</code> file), <b>Linking</b> (Verification, Preparation, Resolution), <b>Initialization</b> (runs static initializers).</li>
-<li><mark>Runtime Data Areas</mark>: Method Area (class/field/static data), Heap (all objects, managed by the garbage collector), Java Stack (frames for active methods and local variables), PC Register (address of the current instruction), Native Method Stack (state for native C/C++ methods).</li>
-<li><mark>Execution Engine</mark>: Interpreter (executes bytecode one instruction at a time), JIT Compiler (compiles hot bytecode into native code), Garbage Collector (frees unreferenced heap memory).</li>
-<li><mark>WORA</mark>: because the class-loader and execution engine sit inside the JVM and not the OS, the same <code>.class</code> file runs unchanged on any OS with a compatible JVM.</li>
+<li><mark>Class Loader Subsystem</mark>: <b>Loading</b> (<code>.class</code> file); <b>Linking</b> (Verify, Prepare, Resolve); <b>Initialization</b> (runs static initializers).</li>
+<li><mark>Runtime Data Areas</mark>: Method Area (class/field/static data); Heap (all objects, GC-managed); Java Stack (frames + local variables); PC Register (current instruction address); Native Method Stack (native C/C++ frames).</li>
+<li><mark>Execution Engine</mark>: Interpreter (bytecode line by line); JIT (compiles hot code to native); GC (frees unreferenced heap).</li>
+<li><mark>WORA</mark>: class loader + execution engine live inside the JVM, not the OS, so the same <code>.class</code> file runs unchanged on any OS with a compatible JVM.</li>
 </ul>
 <div class="note"><b>Common mistake:</b> thinking bytecode is CPU machine code. Bytecode is instructions for the JVM; the JVM translates it into CPU instructions.</div>
 <div class="note"><b>If it comes as 4 marks:</b> write the JDK/JRE/JVM definition + table, and only the Runtime Data Areas + Execution Engine part of Fig 1.7 (skip the compile pipeline figure).</div>
 <div class="recall"><b>Quick recall</b> JDK = JRE + Tools; JRE = JVM + Libraries. JVM architecture = Class Loader + Runtime Data Areas (Heap, Stack, Method Area, PC, Native Stack) + Execution Engine (Interpreter + JIT + GC).</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq3"><h3>Q3. Explain the structure of a Java program. What are the steps to compile and run it?</h3>
-<p class="hook">Unit I &middot; 8 marks &middot; break down every keyword of the HelloWorld program, then the 4-step compile/run pipeline.</p>
-<div class="def"><b>Definition:</b> A Java program consists of one or more class definitions where execution begins at the <code>public static void main(String[] args)</code> entry point.</div>
-<pre class="code" data-file="HelloWorld.java"><code><span class="c">// Every Java program must be inside a class</span>
-<span class="k">public class</span> HelloWorld {
-    <span class="c">// Entry point method executed by JVM</span>
-    <span class="k">public static void</span> main(String[] args) {
-        System.out.println("Hello, Java!");
+<section class="topic" id="iq2"><h3>Q2. Difference between method overloading and method overriding, with a suitable example</h3>
+<p class="hook">Unit II &middot; 8 marks &middot; give both definitions, the difference table, and one program for each &mdash; overloading and overriding are never demonstrated by the same code.</p>
+<div class="def"><b>Method overloading:</b> Defining <mark>two or more methods with the same name but different parameter lists</mark> (number, type or order of parameters) in the same class. The call is decided at <mark>compile time</mark> &mdash; compile-time (static) polymorphism.</div>
+<div class="def"><b>Method overriding:</b> A <mark>child class redefines a method of its parent class with the same name, same parameters and same return type</mark>. The method that runs is decided at <mark>run time</mark> by the actual object &mdash; run-time (dynamic) polymorphism.</div>
+<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 260" width="700">
+<text class="b" x="170" y="22">Overloading (same class)</text>
+<rect class="hi" x="40" y="40" width="260" height="190" rx="8"/>
+<text class="b" x="170" y="64">class Shape</text>
+<rect x="60" y="85" width="220" height="44" rx="6"/><text x="170" y="107">area(int side)</text>
+<rect x="60" y="150" width="220" height="44" rx="6"/><text x="170" y="172">area(int l, int b)</text>
+<text class="s" x="170" y="215">same name, different parameters</text>
+<text class="b" x="530" y="22">Overriding (parent and child)</text>
+<rect class="hi" x="410" y="40" width="240" height="74" rx="8"/><text class="b" x="530" y="62">class Shape</text><text x="530" y="90">void draw()</text>
+<rect x="410" y="170" width="240" height="74" rx="6"/><text class="b" x="530" y="192">class Circle extends Shape</text><text x="530" y="220">void draw()  (new body)</text>
+<path class="arr" d="M530 168 V116"/>
+<text class="s l" x="540" y="143">same signature</text>
+</svg></div><figcaption><b>Fig 2.27</b> &middot; Overloading lives inside one class; overriding needs a parent and a child with the same method signature</figcaption><p class="draw">&#9997; Draw it: left, one big box with two method boxes of the same name; right, a parent box and a child box with the same method, arrow from child up to parent.</p></figure>
+<div class="tw"><table>
+<tr><th>Basis</th><th>Method overloading</th><th>Method overriding</th></tr>
+<tr><td>Same name, parameters</td><td>Same name, different parameters</td><td>Same name, same parameters</td></tr>
+<tr><td>Where</td><td>Same class</td><td>Parent and child classes</td></tr>
+<tr><td>Polymorphism</td><td>Compile-time (static)</td><td>Run-time (dynamic)</td></tr>
+<tr><td>Binding</td><td>Static (early) binding</td><td>Dynamic (late) binding</td></tr>
+<tr><td>Return type</td><td>May differ; alone cannot overload</td><td>Same, or covariant subclass type</td></tr>
+<tr><td>Inheritance</td><td>Not needed</td><td>Required</td></tr>
+<tr><td>static/private/final</td><td>Can be overloaded</td><td>Cannot be overridden</td></tr>
+</table></div>
+<div class="note"><b>If the question says "operator overloading":</b> Java does <b>not</b> allow user-defined operator overloading (unlike C++) &mdash; only the built-in <code>+</code> is overloaded, for <code>String</code> joining. So write that one line, then answer <mark>method overloading</mark> as below.</div>
+<p><b>Program 1 &mdash; overloading (same class, different parameter list):</b></p>
+<pre class="code" data-file="OverloadDemo.java"><code><span class="k">class</span> Calculator {
+    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b) {              <span class="c">// 2 int parameters</span>
+        <span class="k">return</span> a + b;
+    }
+    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b, <span class="k">int</span> c) {       <span class="c">// different NUMBER of parameters</span>
+        <span class="k">return</span> a + b + c;
+    }
+    <span class="k">double</span> add(<span class="k">double</span> a, <span class="k">double</span> b) {     <span class="c">// different TYPE of parameters</span>
+        <span class="k">return</span> a + b;
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> OverloadDemo {
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Calculator c = <span class="k">new</span> Calculator();
+        System.out.println(c.add(2, 3));       <span class="c">// compiler picks add(int,int)</span>
+        System.out.println(c.add(2, 3, 4));    <span class="c">// picks add(int,int,int)</span>
+        System.out.println(c.add(2.5, 1.5));   <span class="c">// picks add(double,double)</span>
     }
 }</code></pre>
-<pre class="out">Hello, Java!</pre>
+<pre class="out">5
+9
+4.0</pre>
+<p><b>Program 2 &mdash; overriding (parent/child, same signature):</b></p>
+<pre class="code" data-file="Bike2.java"><code><span class="k">class</span> Vehicle {
+    <span class="k">void</span> run() {
+        System.out.println("Vehicle is running");
+    }
+}
+
+<span class="k">public</span> <span class="k">class</span> Bike2 <span class="k">extends</span> Vehicle {
+    <span class="k">void</span> run() {                        <span class="c">// same name, same parameters as Vehicle's run()</span>
+        System.out.println("Bike is running safely");
+    }
+    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
+        Bike2 obj = <span class="k">new</span> Bike2();
+        obj.run();                       <span class="c">// only the overridden version executes</span>
+    }
+}</code></pre>
+<pre class="out">Bike is running safely</pre>
+<div class="mn"><b>Mnemonic</b> <b>"LOAD in one class, RIDE up to the parent"</b>: over<b>load</b> = same class, different parameters; over<b>ride</b> = child over parent, same parameters.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write both definitions, Fig 2.27, and the difference table only (skip both programs, or keep just OverloadDemo).</div>
+<div class="recall"><b>Quick recall</b> Overloading = same class, different parameters, compile time. Overriding = parent-child, same signature, run time, decided by the actual object.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq3"><h3>Q3. Explain the features (buzzwords) of Java. Why is Java called platform independent?</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; list all buzzwords, then be ready to expand any single one (usually platform independence) into its own short question.</p>
+<div class="def"><b>Definition:</b> <mark>Java</mark> is a high-level, object-oriented, class-based, platform-independent programming language created by James Gosling at Sun Microsystems in 1995.</div>
+<figure class="fig"><div class="canvas"><div class="boxes c4">
+<div class="b hi"><b>Simple</b></div>
+<div class="b"><b>Object-Oriented</b></div>
+<div class="b hi"><b>Platform independent</b></div>
+<div class="b"><b>Secured</b></div>
+<div class="b hi"><b>Robust</b></div>
+<div class="b"><b>Architecture neutral</b></div>
+<div class="b hi"><b>Portable</b></div>
+<div class="b"><b>Dynamic</b></div>
+<div class="b hi"><b>Interpreted</b></div>
+<div class="b"><b>High performance</b></div>
+<div class="b hi"><b>Multithreaded</b></div>
+<div class="b"><b>Distributed</b></div>
+</div></div>
+<figcaption><b>Fig 1.4</b> &middot; All 12 Java buzzwords at a glance</figcaption>
+<p class="draw">&#9997; Draw it: a 4-column, 3-row grid of 12 small boxes, one buzzword per box.</p></figure>
+<ul>
+<li><mark>Simple</mark>: C/C++-like syntax; no pointers, no operator overloading; JVM auto-manages memory.</li>
+<li><mark>Object-Oriented</mark>: software organised as objects, each holding data + behaviour together.</li>
+<li><mark>Platform independent</mark>: same bytecode runs anywhere a JVM exists (Windows/Linux/macOS) = <mark>WORA</mark> (Write Once, Run Anywhere); <code>javac</code> compiles to platform-independent <code>.class</code> bytecode; JVM, not OS, executes it.</li>
+<li><mark>Secured</mark>: no pointers; runs in the JVM's sandbox; public-key encryption for security.</li>
+<li><mark>Robust</mark>: strong memory management; no pointers; built-in exception handling; compile-time type checking.</li>
+<li><mark>Architecture neutral</mark>: no implementation-dependent sizes &mdash; <code>int</code> always 4 bytes, on every platform.</li>
+<li><mark>Portable</mark>: bytecode carried to any platform; <code>javac</code> itself written in ANSI C (clean portability boundary).</li>
+<li><mark>Dynamic</mark>: carries run-time info to verify/resolve access to objects.</li>
+<li><mark>Interpreted</mark>: bytecode translated on the fly into native instructions; not stored anywhere.</li>
+<li><mark>High performance</mark>: JIT (Just-In-Time) compiler translates bytecode directly to native machine code, for speed.</li>
+<li><mark>Multithreaded</mark>: many things happen at once; threads share one common memory area.</li>
+<li><mark>Distributed</mark>: built for the internet's distributed environment; RMI calls methods on another machine over a network.</li>
+</ul>
+<div class="mn"><b>Mnemonic</b> remember all 12 in three groups of four &mdash; <b>SOPS</b> (Simple, OOP, Platform-independent, Secured) &middot; <b>RAPD</b> (Robust, Architecture-neutral, Portable, Dynamic) &middot; <b>IHMD</b> (Interpreted, High-performance, Multithreaded, Distributed).</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.4, and explain only 4 buzzwords in one line each &mdash; Simple, Platform-independent, Robust, Multithreaded.</div>
+<div class="recall"><b>Quick recall</b> 12 buzzwords in 3 groups of 4 (SOPS / RAPD / IHMD). Platform independence = bytecode + JVM = WORA.</div>
+<a class="top" href="#top">&uarr; top</a></section>
+
+<section class="topic" id="iq4"><h3>Q4. Explain the structure of a Java program. What are the steps to compile and run it?</h3>
+<p class="hook">Unit I &middot; 8 marks &middot; break down every keyword of the HelloWorld program, then the 4-step compile/run pipeline.</p>
+<div class="def"><b>Definition:</b> A Java program consists of one or more class definitions where execution begins at the <code>public static void main(String[] args)</code> entry point.</div>
+<p>Use the <code>HelloWorld</code> program and its output from <b>Q1</b> as the example here.</p>
 <figure class="fig"><div class="canvas"><div class="flow">
 <div class="n t">Start</div>
 <div class="n">Install the JDK; add its <code>bin</code> folder to the PATH</div>
@@ -264,22 +347,22 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 <figcaption><b>Fig 1.9</b> &middot; Steps to write, compile and run a Java program</figcaption>
 <p class="draw">&#9997; Draw it: vertical flow &mdash; Start oval, 4 process/IO boxes, Stop oval.</p></figure>
 <ul>
-<li><code>public</code>: makes the class/method accessible from outside the package by the JVM.</li>
-<li><code>class</code>: keyword used to define a class template.</li>
-<li><code>static</code>: allows the JVM to call <code>main()</code> without creating an object first.</li>
-<li><code>void</code>: return type indicating <code>main</code> returns nothing.</li>
-<li><code>main</code>: name of the entry-point method recognised by the JVM.</li>
+<li><code>public</code>: class/method accessible from outside the package; required so JVM can call it.</li>
+<li><code>class</code>: keyword defining a class template.</li>
+<li><code>static</code>: lets JVM call <code>main()</code> without creating an object first.</li>
+<li><code>void</code>: return type &mdash; <code>main</code> returns nothing.</li>
+<li><code>main</code>: entry-point method name recognised by the JVM.</li>
 <li><code>String[] args</code>: array of string parameters passed via command line.</li>
-<li><code>System.out.println()</code>: <code>System</code> is a class in <code>java.lang</code>; <code>out</code> is an output-stream object; <code>println()</code> prints the argument followed by a newline.</li>
-<li>The saved file name must match the <b>public</b> class name exactly, including capitalisation.</li>
+<li><code>System.out.println()</code>: <code>System</code> = class in <code>java.lang</code>; <code>out</code> = output-stream object; <code>println()</code> prints argument + newline.</li>
+<li>Saved file name must match the <b>public</b> class name exactly, including capitalisation.</li>
 </ul>
 <div class="recall"><b>Quick recall</b> File name must match public class name; <code>public static void main(String[] args)</code> is mandatory. Steps: install JDK &rarr; set PATH &rarr; write &rarr; <code>javac</code> &rarr; <code>java</code>.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.9, and give the HelloWorld program with its output.</div>
+<div class="note"><b>If it comes as 4 marks:</b> write the definition, draw Fig 1.9, and give the HelloWorld program (Q1) with its output.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq4"><h3>Q4. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</h3>
+<section class="topic" id="iq5"><h3>Q5. Explain primitive data types in Java. Differentiate widening and narrowing type casting.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; the 8-primitives table plus the widening/narrowing rule is one of the most common short-and-long question pairs.</p>
-<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a predefined, built-in data type provided by Java that directly holds simple values in memory without creating an object.</div>
+<div class="def"><b>Definition:</b> A <mark>primitive data type</mark> is a built-in Java data type that directly holds simple values in memory without creating an object.</div>
 <figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Java Data Types</span><ul>
 <li><span>Primitive</span><ul>
   <li><span>Integral (byte, short, int, long)</span></li>
@@ -305,8 +388,8 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 <tr><td><code>boolean</code></td><td>1 bit (JVM dep.)</td><td><code>false</code></td><td><code>true</code>/<code>false</code></td><td><code>boolean flag = true;</code></td></tr>
 </table></div>
 <ul>
-<li><mark>Widening (Implicit)</mark>: converting a smaller type to a larger type automatically, no data loss: <code>byte &rarr; short &rarr; int &rarr; long &rarr; float &rarr; double</code>.</li>
-<li><mark>Narrowing (Explicit)</mark>: converting a larger type to a smaller type manually using cast syntax <code>(target_type)</code>; may lose data.</li>
+<li><mark>Widening (Implicit)</mark>: smaller to larger type, automatic, no data loss: <code>byte &rarr; short &rarr; int &rarr; long &rarr; float &rarr; double</code>.</li>
+<li><mark>Narrowing (Explicit)</mark>: larger to smaller type, manual, cast syntax <code>(target_type)</code>; may lose data.</li>
 <li>Variables are of 3 kinds: <mark>local</mark> (inside a method, no default value), <mark>instance</mark> (per object), <mark>static</mark> (per class, shared).</li>
 </ul>
 <pre class="code" data-file="DataTypeDemo.java"><code><span class="k">public class</span> DataTypeDemo {
@@ -325,7 +408,7 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 <div class="recall"><b>Quick recall</b> 8 primitive types; widening is automatic, narrowing needs explicit <code>(type)</code> cast.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq5"><h3>Q5. Explain the different categories of operators in Java with their precedence.</h3>
+<section class="topic" id="iq6"><h3>Q6. Explain the different categories of operators in Java with their precedence.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; list every operator category, then the precedence order &mdash; a favourite standalone or combined-with-expressions question.</p>
 <div class="def"><b>Definition:</b> An <mark>operator</mark> is a special symbol that operates on one, two, or three operands to perform calculations and produce a result value.</div>
 <div class="tw"><table>
@@ -366,13 +449,13 @@ li{margin:9px 0}ul,ol{padding-left:20px}
 <div class="recall"><b>Quick recall</b> Pre-increment increments before use; post-increment uses then increments. Ternary: <code>cond ? trueVal : falseVal</code>.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq6"><h3>Q6. Explain selection statements in Java: if, if-else-if ladder, and switch.</h3>
+<section class="topic" id="iq7"><h3>Q7. Explain selection statements in Java: if, if-else-if ladder, and switch.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; the if-else-if ladder (grade calculation) is the classic worked example; switch is usually asked alongside it.</p>
 <div class="def"><b>Definition:</b> <mark>Selection statements</mark> allow a program to choose between different execution paths based on the boolean result of a condition or discrete value match.</div>
 <ul>
 <li><code>if</code>: executes a block only if the condition is <code>true</code>.</li>
 <li><code>if-else</code>: executes the <code>if</code> block when true, <code>else</code> block when false.</li>
-<li><code>else-if</code> ladder: tests multiple conditions top to bottom; the first true one runs and skips the rest; a final <code>else</code> catches everything remaining.</li>
+<li><code>else-if</code> ladder: tests conditions top to bottom; first true one runs, rest skipped; final <code>else</code> catches remainder.</li>
 <li><code>switch</code>: multi-way branch comparing an int/char/String expression against <code>case</code> values; needs <code>break</code> to prevent fall-through.</li>
 </ul>
 <figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 540 500" width="540">
@@ -423,7 +506,7 @@ Tuesday</pre>
 <div class="recall"><b>Quick recall</b> <code>if-else</code> evaluates boolean expressions; <code>switch</code> matches discrete values. Always add <code>break</code> in <code>switch</code> cases.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq7"><h3>Q7. Explain iteration (looping) statements and jump statements in Java.</h3>
+<section class="topic" id="iq8"><h3>Q8. Explain iteration (looping) statements and jump statements in Java.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; while vs do-while is the classic differentiate question; break/continue is the jump-statement half.</p>
 <div class="def"><b>Definition:</b> <mark>Iteration statements</mark> (loops) repeatedly execute a statement block as long as a loop termination condition remains true.</div>
 <ul>
@@ -480,9 +563,9 @@ Tuesday</pre>
 <div class="recall"><b>Quick recall</b> <code>while</code> checks first, 0+ times; <code>do-while</code> runs body first, 1+ times. <code>break</code> exits, <code>continue</code> skips one iteration.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq8"><h3>Q8. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</h3>
+<section class="topic" id="iq9"><h3>Q9. What is an array? Explain 1-D and 2-D arrays with their memory layout and Java programs.</h3>
 <p class="hook">Unit I &middot; 8 marks &middot; both dimensions are explicitly in scope, so draw both memory diagrams and give one program for each.</p>
-<div class="def"><b>Definition:</b> An <mark>array</mark> is a fixed-size, contiguous indexed collection of homogeneous elements stored in contiguous heap memory.</div>
+<div class="def"><b>Definition:</b> An <mark>array</mark> is a fixed-size indexed collection of homogeneous elements stored in contiguous heap memory.</div>
 <ul>
 <li><mark>1D Array</mark>: single row of elements accessed by index <code>arr[i]</code> (0 to length-1).</li>
 <li><mark>2D Array</mark>: array of 1D arrays forming a matrix accessed as <code>arr[r][c]</code>.</li>
@@ -552,83 +635,10 @@ Tuesday</pre>
 <div class="recall"><b>Quick recall</b> Arrays are zero-indexed, stored on the heap; <code>arr.length</code> gives size. Jagged arrays have sub-arrays of different lengths.</div>
 <a class="top" href="#top">&uarr; top</a></section>
 
-<section class="topic" id="iq9"><h3>Q9. Difference between method overloading and method overriding, with a suitable example</h3>
-<p class="hook">Unit II &middot; 8 marks &middot; give both definitions, the difference table, and one program for each &mdash; overloading and overriding are never demonstrated by the same code.</p>
-<div class="def"><b>Method overloading:</b> Defining <mark>two or more methods with the same name but different parameter lists</mark> (number, type or order of parameters) in the same class. The call is decided at <mark>compile time</mark> &mdash; compile-time (static) polymorphism.</div>
-<div class="def"><b>Method overriding:</b> A <mark>child class redefines a method of its parent class with the same name, same parameters and same return type</mark>. The method that runs is decided at <mark>run time</mark> by the actual object &mdash; run-time (dynamic) polymorphism.</div>
-<figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 700 260" width="700">
-<text class="b" x="170" y="22">Overloading (same class)</text>
-<rect class="hi" x="40" y="40" width="260" height="190" rx="8"/>
-<text class="b" x="170" y="64">class Shape</text>
-<rect x="60" y="85" width="220" height="44" rx="6"/><text x="170" y="107">area(int side)</text>
-<rect x="60" y="150" width="220" height="44" rx="6"/><text x="170" y="172">area(int l, int b)</text>
-<text class="s" x="170" y="215">same name, different parameters</text>
-<text class="b" x="530" y="22">Overriding (parent and child)</text>
-<rect class="hi" x="410" y="40" width="240" height="74" rx="8"/><text class="b" x="530" y="62">class Shape</text><text x="530" y="90">void draw()</text>
-<rect x="410" y="170" width="240" height="74" rx="6"/><text class="b" x="530" y="192">class Circle extends Shape</text><text x="530" y="220">void draw()  (new body)</text>
-<path class="arr" d="M530 168 V116"/>
-<text class="s l" x="540" y="143">same signature</text>
-</svg></div><figcaption><b>Fig 2.27</b> &middot; Overloading lives inside one class; overriding needs a parent and a child with the same method signature</figcaption><p class="draw">&#9997; Draw it: left, one big box with two method boxes of the same name; right, a parent box and a child box with the same method, arrow from child up to parent.</p></figure>
-<div class="tw"><table>
-<tr><th>Basis</th><th>Method overloading</th><th>Method overriding</th></tr>
-<tr><td>Same name, parameters</td><td>Same name, different parameters</td><td>Same name, same parameters</td></tr>
-<tr><td>Where</td><td>Same class</td><td>Parent and child classes</td></tr>
-<tr><td>Polymorphism</td><td>Compile-time (static)</td><td>Run-time (dynamic)</td></tr>
-<tr><td>Binding</td><td>Static (early) binding</td><td>Dynamic (late) binding</td></tr>
-<tr><td>Return type</td><td>May differ; alone cannot overload</td><td>Same, or covariant subclass type</td></tr>
-<tr><td>Inheritance</td><td>Not needed</td><td>Required</td></tr>
-<tr><td>static/private/final</td><td>Can be overloaded</td><td>Cannot be overridden</td></tr>
-</table></div>
-<p><b>Program 1 &mdash; overloading (same class, different parameter list):</b></p>
-<pre class="code" data-file="OverloadDemo.java"><code><span class="k">class</span> Calculator {
-    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b) {              <span class="c">// 2 int parameters</span>
-        <span class="k">return</span> a + b;
-    }
-    <span class="k">int</span> add(<span class="k">int</span> a, <span class="k">int</span> b, <span class="k">int</span> c) {       <span class="c">// different NUMBER of parameters</span>
-        <span class="k">return</span> a + b + c;
-    }
-    <span class="k">double</span> add(<span class="k">double</span> a, <span class="k">double</span> b) {     <span class="c">// different TYPE of parameters</span>
-        <span class="k">return</span> a + b;
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> OverloadDemo {
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Calculator c = <span class="k">new</span> Calculator();
-        System.out.println(c.add(2, 3));       <span class="c">// compiler picks add(int,int)</span>
-        System.out.println(c.add(2, 3, 4));    <span class="c">// picks add(int,int,int)</span>
-        System.out.println(c.add(2.5, 1.5));   <span class="c">// picks add(double,double)</span>
-    }
-}</code></pre>
-<pre class="out">5
-9
-4.0</pre>
-<p><b>Program 2 &mdash; overriding (parent/child, same signature):</b></p>
-<pre class="code" data-file="Bike2.java"><code><span class="k">class</span> Vehicle {
-    <span class="k">void</span> run() {
-        System.out.println("Vehicle is running");
-    }
-}
-
-<span class="k">public</span> <span class="k">class</span> Bike2 <span class="k">extends</span> Vehicle {
-    <span class="k">void</span> run() {                        <span class="c">// same name, same parameters as Vehicle's run()</span>
-        System.out.println("Bike is running safely");
-    }
-    <span class="k">public</span> <span class="k">static</span> <span class="k">void</span> main(String[] args) {
-        Bike2 obj = <span class="k">new</span> Bike2();
-        obj.run();                       <span class="c">// only the overridden version executes</span>
-    }
-}</code></pre>
-<pre class="out">Bike is running safely</pre>
-<div class="mn"><b>Mnemonic</b> <b>"LOAD in one class, RIDE up to the parent"</b>: over<b>load</b> = same class, different parameters; over<b>ride</b> = child over parent, same parameters.</div>
-<div class="note"><b>If it comes as 4 marks:</b> write both definitions, Fig 2.27, and the difference table only (skip both programs, or keep just OverloadDemo).</div>
-<div class="recall"><b>Quick recall</b> Overloading = same class, different parameters, compile time. Overriding = parent-child, same signature, run time, decided by the actual object.</div>
-<a class="top" href="#top">&uarr; top</a></section>
-
 <section class="topic" id="iq10"><h3>Q10. Explain abstract class and interface in Java</h3>
 <p class="hook">Unit II &middot; 8 marks &middot; both definitions, the difference table, one program, and then multiple inheritance through interfaces.</p>
-<div class="def"><b>Abstract class:</b> A class declared with the <mark>abstract</mark> keyword that <mark>cannot be instantiated</mark>. It can have abstract methods (no body) and concrete methods (with body), variables and constructors. A subclass must override all abstract methods or itself be abstract.</div>
-<div class="def"><b>Interface:</b> A reference type declared with the <mark>interface</mark> keyword that defines a <mark>contract</mark>: methods are public and abstract by default and variables are public static final (constants). A class uses <mark>implements</mark> to provide the bodies. One class can implement many interfaces, which is how Java achieves <mark>multiple inheritance</mark>.</div>
+<div class="def"><b>Abstract class:</b> a class declared <mark>abstract</mark> that <mark>cannot be instantiated</mark>; can have abstract methods (no body), concrete methods (with body), variables and constructors. Subclass must override all abstract methods or itself be abstract.</div>
+<div class="def"><b>Interface:</b> a reference type declared <mark>interface</mark>, defining a <mark>contract</mark>: methods public and abstract by default, variables public static final (constants). A class uses <mark>implements</mark> to supply the bodies; one class can implement many interfaces &mdash; Java's route to <mark>multiple inheritance</mark>.</div>
 <figure class="fig"><div class="canvas"><div class="boxes c2">
 <div class="b hi"><b>abstract class Account</b>double balance;<br>Account(double b) { ... }<br>abstract double interest();<br>void show() { ... }</div>
 <div class="b hi"><b>interface Printable</b>void print();<br>(public abstract by default)<br>constants only</div>
@@ -636,8 +646,8 @@ Tuesday</pre>
 <div class="b"><b>implements (many interfaces)</b>class Savings implements Printable</div>
 </div></div><figcaption><b>Fig 2.28</b> &middot; One class can extend one abstract class and implement any number of interfaces</figcaption><p class="draw">&#9997; Draw it: two shaded boxes on top (abstract class, interface), two boxes below with the keywords extends and implements.</p></figure>
 <ul>
-<li><mark>Abstract class rules</mark>: cannot create objects (<code>new Account()</code> is an error); can have constructors, instance variables; one abstract method forces the whole class to be abstract; gives partial abstraction.</li>
-<li><mark>Interface rules</mark>: methods public abstract by default, variables public static final; no constructors; implementing methods must be <code>public</code>; from Java 8 an interface can also have default/static methods.</li>
+<li><mark>Abstract class rules</mark>: no objects (<code>new Account()</code> is an error); can have constructors, instance variables; 1 abstract method forces the whole class abstract; partial abstraction.</li>
+<li><mark>Interface rules</mark>: methods public abstract by default, variables public static final; no constructors; implementing methods must be <code>public</code>; Java 8+ allows default/static methods too.</li>
 </ul>
 <div class="tw"><table><tr><th>Basis</th><th>Abstract class</th><th>Interface</th></tr>
 <tr><td>Keyword</td><td>abstract class</td><td>interface</td></tr>
@@ -674,7 +684,7 @@ Tuesday</pre>
 }</code></pre>
 <pre class="out">Balance = 10000.0
 Interest = 400.0</pre>
-<p><b>Multiple inheritance through interfaces:</b> a class can implement many interfaces at once, which is how Java gives multiple inheritance without the ambiguity of two parent classes.</p>
+<p><b>Multiple inheritance through interfaces:</b> a class can implement many interfaces at once &mdash; Java's way to give multiple inheritance without the ambiguity of two parent classes.</p>
 <figure class="fig"><div class="canvas"><svg class="sv" viewBox="0 0 360 180" width="360">
 <rect class="hi" x="20" y="20" width="130" height="40" rx="4"/><text x="85" y="40">Camera</text>
 <rect class="hi" x="210" y="20" width="130" height="40" rx="4"/><text x="275" y="40">MusicPlayer</text>
@@ -683,8 +693,8 @@ Interest = 400.0</pre>
 <path class="arr dash" d="M210 120 L275 60"/>
 </svg></div><figcaption><b>Fig 2.16</b> &middot; Multiple inheritance: one child, two parents (in Java only through interfaces)</figcaption><p class="draw">&#9997; Draw it: two boxes on top, one box below, dashed arrows up to both.</p></figure>
 <ul>
-<li><code>class Smartphone implements Camera, MusicPlayer { ... }</code> &mdash; <code>Smartphone</code> must give a body to every abstract method of both interfaces.</li>
-<li>Java classes cannot <code>extend</code> two classes at once because of the <mark>diamond problem</mark> (two parents with the same method make the call ambiguous); interfaces avoid this since the implementing class always writes its own single body for each method.</li>
+<li><code>class Smartphone implements Camera, MusicPlayer { ... }</code> &mdash; must give a body to every abstract method of both.</li>
+<li>Cannot <code>extend</code> two classes: <mark>diamond problem</mark> (same method in both parents = ambiguous call); interfaces avoid this &mdash; implementing class writes its own single body.</li>
 </ul>
 <div class="mn"><b>Mnemonic</b> <b>"Abstract = Half-built house, Interface = Rule book"</b>: a half-built house already has some walls (concrete methods, variables, constructor); a rule book only lists what must be done.</div>
 <div class="note"><b>If it comes as 4 marks:</b> write both definitions, Fig 2.28, and the difference table (skip the program and the multiple-inheritance figure).</div>
@@ -765,7 +775,7 @@ Kabir : 65</pre>
 <figcaption><b>Fig 2.1</b> &middot; One class (blueprint) gives many objects, each with its own data</figcaption><p class="draw">&#9997; Draw it: one box on top for the class, three boxes below joined to it, write values inside each.</p></figure>
 <ul>
 <li><mark>Syntax of a class</mark>: <code>class ClassName { data members; methods; }</code></li>
-<li><mark>Creating an object</mark>, three steps in <code>Car c1 = new Car();</code>: <b>declaration</b> (<code>Car c1</code>), <b>instantiation</b> (<code>new</code> allocates memory), <b>initialization</b> (the constructor <code>Car()</code> runs).</li>
+<li><mark>Object creation</mark>, 3 steps in <code>Car c1 = new Car();</code>: <b>declaration</b> (<code>Car c1</code>); <b>instantiation</b> (<code>new</code> allocates memory); <b>initialization</b> (constructor <code>Car()</code> runs).</li>
 <li>Members are accessed with the <mark>dot operator</mark>: <code>c1.brand</code>, <code>c1.display()</code>.</li>
 <li>Every object has <mark>state</mark> (values of variables), <mark>behaviour</mark> (methods) and <mark>identity</mark> (its own memory reference).</li>
 </ul>
@@ -810,7 +820,7 @@ Maruti Swift is running at 60 km/h</pre>
 
 <section class="topic" id="iq13"><h3>Q13. Packages</h3>
 <p class="hook">Unit II &middot; 8 marks &middot; define, show the built-in tree, create-compile-run a user package, list the import ways, and mention subpackages.</p>
-<div class="def"><b>Definition:</b> A <mark>package</mark> is a group of related classes and interfaces stored together in one folder, declared with the <mark>package</mark> keyword. It works like a folder in a computer. Packages are <mark>built-in</mark> (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code>) or <mark>user-defined</mark>.</div>
+<div class="def"><b>Definition:</b> A <mark>package</mark> is a group of related classes and interfaces stored together in one folder, declared with the <mark>package</mark> keyword. Packages are <mark>built-in</mark> (<code>java.lang</code>, <code>java.util</code>, <code>java.io</code>) or <mark>user-defined</mark>.</div>
 <figure class="fig"><div class="canvas"><div class="tree"><ul><li><span class="hi">Packages</span><ul>
 <li><span>Built-in</span><ul><li><span>java.lang</span></li><li><span>java.util</span></li><li><span>java.io</span></li></ul></li>
 <li><span>User-defined</span><ul><li><span>mypack</span></li><li><span>college.exam</span></li></ul></li></ul></li></ul></div></div>
@@ -824,7 +834,7 @@ Maruti Swift is running at 60 km/h</pre>
 <ul>
 <li><mark>Advantages</mark>: avoids name conflicts, groups related classes, access protection, reusability, easier maintenance.</li>
 <li><mark>package statement</mark> must be the <mark>first statement</mark> of the file; package name = folder name (lowercase).</li>
-<li><mark>Compile</mark> with <code>javac -d . File.java</code>; <code>-d .</code> creates the package folder automatically. Classes used from outside the package must be <mark>public</mark>.</li>
+<li><mark>Compile</mark> with <code>javac -d . File.java</code>; <code>-d .</code> auto-creates the package folder; classes used from outside the package must be <mark>public</mark>.</li>
 </ul>
 <p><b>File 1</b> <code>mypack/Calculator.java</code>:</p>
 <pre class="code"><code><span class="k">package</span> mypack;
@@ -852,7 +862,7 @@ Maruti Swift is running at 60 km/h</pre>
 <tr><td>3. On-demand (wildcard) import</td><td><code>import pack.*;</code></td><td>All public classes of the package (not its sub-packages)</td></tr>
 </table></div>
 <ul>
-<li><mark>Subpackage</mark>: a package inside a package, named <code>packagename.subpackagename</code> (dot = folder inside folder), e.g. <code>pack.subpack</code>. Compiled the same way with <code>javac -d .</code> (creates nested folders) and run with <code>java pack.subpack.ClassName</code>. A wildcard import (<code>pack.*</code>) never pulls in a subpackage &mdash; it must be imported on its own.</li>
+<li><mark>Subpackage</mark>: package inside a package, named <code>packagename.subpackagename</code> (dot = folder inside folder), e.g. <code>pack.subpack</code>; compiled same way, <code>javac -d .</code> (nested folders); run <code>java pack.subpack.ClassName</code>; wildcard import (<code>pack.*</code>) never pulls in a subpackage &mdash; import it separately.</li>
 </ul>
 <div class="note"><b>Common mistake:</b> "Only one public class per package" is WRONG. The rule is one public class per <b>source file</b>, named after it; a package can hold many public classes, each in its own file.</div>
 <div class="note"><b>If it comes as 4 marks:</b> write the definition, Fig 2.19, and the Calculator/UsePackage create-compile-run demo (skip the import-ways table and subpackage bullet).</div>

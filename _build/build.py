@@ -296,6 +296,29 @@ def revision(body):
     return re.sub(r'<section class="topic" id="([^"]+)">.*?</section>', topic, body, flags=re.S)
 
 
+def cue_sheet(s):
+    """Last-minute revision block: one line per question, assembled from the answers' own
+    Quick-recall text + figure numbers + mnemonic. Adds no new facts, only re-surfaces them."""
+    rows = []
+    for m in re.finditer(r'<section class="topic" id="(iq\d+)">\s*<h3>(.*?)</h3>(.*?)</section>', s, flags=re.S):
+        qid, head, blk = m.group(1), m.group(2), m.group(3)
+        head = re.sub(r"<[^>]+>", "", head).strip()
+        rec = re.search(r'<div class="recall">(.*?)</div>', blk, flags=re.S)
+        rec = re.sub(r"<b>Quick recall</b>\s*", "", rec.group(1)).strip() if rec else ""
+        figs = " &middot; ".join(dict.fromkeys(re.findall(r"<b>(Fig[\w.\s]+?)</b>", blk)))
+        mn = re.search(r'<div class="mn">(.*?)</div>', blk, flags=re.S)
+        mn = re.sub(r"<b>Mnemonic</b>\s*", "", mn.group(1)).strip() if mn else ""
+        bits = [b for b in (rec, f"<b>Draw:</b> {figs}" if figs else "", f"<b>Mnemonic</b> {mn}" if mn else "") if b]
+        rows.append(f"<dt>{head}</dt><dd>{' &middot; '.join(bits)}</dd>")
+    if not rows:
+        return s
+    cue = ('<section class="topic" id="cue"><h3>Cue sheet &mdash; every answer in one screen</h3>\n'
+           '<p class="hook">Revise from this first: each line is the skeleton of that answer &mdash; '
+           'the recall points, the figure to draw, and the mnemonic. Expand it into sentences in the exam.</p>\n'
+           f'<dl class="sa">{"".join(rows)}</dl>\n<a class="top" href="#top">&uarr; top</a></section>\n\n')
+    return s.replace('<section class="topic" id="iq1">', cue + '<section class="topic" id="iq1">', 1)
+
+
 def build_imp(key, cfg, page, body, full_out):
     """frag/<key>-imp.html (important-question 8-mark answers) -> sessional/<key>-important.html, same shell."""
     f = FRAG / f"{key}-imp.html"
@@ -321,6 +344,7 @@ def build_imp(key, cfg, page, body, full_out):
         for e in errs:
             print(f"  HARD: {f.name}: {e}")
         return
+    s = cue_sheet(s)
     toc = "".join(f'<li><a href="#{m.group(1)}">{re.sub("<[^>]+>", "", m.group(2))}</a></li>'
                   for m in re.finditer(r'<section class="topic" id="([^"]+)">\s*<h3>(.*?)</h3>', s, flags=re.S))
     ipage = re.sub(r'<nav class="toc">.*?</nav>',
